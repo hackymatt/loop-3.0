@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: default
+  annotations:
+    app.kubernetes.io/managed-by: "Helm"
+  labels:
+    app: nginx
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: loopedupl/nginx:{{ .Values.tag }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          {{- if ne .Values.host "loop.edu.pl" }}
+          volumeMounts:
+            - name: basic-auth
+              mountPath: /etc/nginx/.htpasswd
+              readOnly: true
+              subPath: auth
+          {{- end}}
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      {{- if ne .Values.host "loop.edu.pl" }}
+      volumes:
+        - name: basic-auth
+          secret:
+            secretName: auth
+      {{- end}}

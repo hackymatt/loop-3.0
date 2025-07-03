@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "O nas – Platforma do Nauki Programowania Online",
+    "description": "loop to innowacyjna platforma do nauki programowania online. Oferujemy kursy dla początkujących oraz zaawansowanych. Dołącz do nas i ucz się programowania w najnowszych technologiach!"
+  },
+  "hero": {
+    "title": "Interaktywne kursy online",
+    "subtitle": "to innowacyjna platforma edukacyjna, która oferuje kursy programowania prowadzone przez doświadczonych specjalistów. Ucz się w praktyczny sposób, zdobywaj certyfikaty i rozwijaj swoje umiejętności w dynamicznie rozwijającej się branży IT.",
+    "button": "Zobacz kursy"
+  },
+  "mission": {
+    "title": "Nasza misja",
+    "subtitle": "Naszym celem jest stworzenie platformy, która umożliwia efektywną naukę programowania w sposób dostępny dla każdego, niezależnie od poziomu zaawansowania, łącząc teorię z praktyką.",
+    "methods": [
+      {
+        "name": "Interaktywne ćwiczenia",
+        "description": "Wideo, teksty oraz interaktywne ćwiczenia, w których uczestnicy piszą kod w edytorze sprawdzanym przez AI."
+      },
+      {
+        "name": "Testy i quizy",
+        "description": "Narzędzia oceniające wiedzę i utrwalające materiał z natychmiastową informacją zwrotną."
+      },
+      {
+        "name": "Dostępność na każdym poziomie",
+        "description": "Kursy zaprojektowane dla początkujących oraz zaawansowanych programistów, oferujące elastyczne podejście do nauki."
+      }
+    ]
+  },
+  "coreValues": {
+    "title": "Główne wartości",
+    "subtitle": "W naszych działaniach kierujemy się czterema kluczowymi wartościami, które definiują naszą misję i stanowią fundament naszych działań.",
+    "values": [
+      {
+        "name": "Dostępność",
+        "description": "Wierzymy, że nauka programowania powinna być dostępna dla każdego, niezależnie od doświadczenia czy tła zawodowego.",
+        "icon": "ic-popularity.svg"
+      },
+      {
+        "name": "Praktyczność",
+        "description": "Skupiamy się na praktycznym podejściu do nauki, które pozwala zdobywać umiejętności nie tylko teoretyczne, ale i praktyczne.",
+        "icon": "ic-web-programming.svg"
+      },
+      {
+        "name": "Innowacyjność",
+        "description": "Stawiamy na nowoczesne metody nauczania, łącząc technologię z efektywnymi technikami edukacyjnymi.",
+        "icon": "ic-chip.svg"
+      },
+      {
+        "name": "Wsparcie",
+        "description": "Zapewniamy wsparcie na każdym etapie nauki, pomagając uczestnikom rozwijać się i pokonywać trudności.",
+        "icon": "ic-cooperate.svg"
+      }
+    ]
+  }
+}

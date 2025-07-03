@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "title": "Plany cenowe – Wybierz najlepszy dla siebie",
+    "description": "Sprawdź nasze elastyczne plany cenowe i wybierz opcję najlepiej dopasowaną do Twoich potrzeb. Zacznij naukę programowania z dostępem do kursów, certyfikatów i wsparcia instruktorów."
+  },
+  "title": {
+    "cards": "Elastyczne plany dopasowane do Twoich potrzeb",
+    "columns": "Porównaj plany"
+  },
+  "subtitle": {
+    "cards": "Zacznij uczyć się programowania już teraz i rozwijaj swoje umiejętności zgodnie z własnymi potrzebami.",
+    "columns": "Wybierz najlepszy plan dla siebie i zacznij uczyć się programować w swoim własnym tempie."
+  },
+  "monthly": "Miesięcznie",
+  "yearly": "Rocznie",
+  "monthlyShort": "mc",
+  "save": "-",
+  "popular": "POPULARNY",
+  "current": "Obecny plan",
+  "choose": "Wybierz",
+  "perYear": "na rok",
+  "hide": "Ukryj",
+  "show": "Pokaż",
+  "allFeatures": "wszystkie funkcje"
+}

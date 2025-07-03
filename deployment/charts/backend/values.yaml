@@ -1,0 +1,6 @@
+tag: latest
+replicas: 1
+env:
+  ENV: "PROD"
+  CSRF_TRUSTED_ORIGINS: "https://loop.edu.pl,https://www.loop.edu.pl"
+  ALLOWED_HOST: "loop.edu.pl,www.loop.edu.pl"

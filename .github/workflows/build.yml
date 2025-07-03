@@ -1,0 +1,48 @@
+name: Build and Push Docker Image
+
+on:
+  workflow_call:
+    inputs:
+      service:
+        required: true
+        type: string
+      context:
+        required: true
+        type: string
+      file:
+        required: false
+        type: string
+      image_name:
+        required: true
+        type: string
+      tag:
+        required: true
+        type: string
+    secrets:
+      dockerhub_username:
+        required: true
+      dockerhub_token:
+        required: true
+
+jobs:
+  build-and-push:
+    name: Build and Push ${{ inputs.service }} Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to Docker registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.dockerhub_username }}
+          password: ${{ secrets.dockerhub_token }}
+
+      - name: Build and push ${{ inputs.service }} image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ inputs.context }}
+          file: ${{ inputs.file }}
+          push: true
+          tags: ${{ inputs.image_name }}:${{ inputs.tag }}

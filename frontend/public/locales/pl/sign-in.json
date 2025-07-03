@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "title": "Logowanie – Uzyskaj Dostęp do Platformy",
+    "description": "Zaloguj się na swoje konto, aby kontynuować naukę programowania, śledzić postępy i zdobywać certyfikaty na platformie loop."
+  },
+  "title": "Zaloguj się",
+  "subtitle": "Nie masz jeszcze konta?",
+  "link": "Wypróbuj za darmo",
+  "or": "lub",
+  "button": "Zaloguj się",
+  "forgotPassword": "Zapomniałeś hasła?"
+}

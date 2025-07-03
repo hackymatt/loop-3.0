@@ -1,0 +1,52 @@
+FROM node:20-alpine as BUILD_IMAGE
+
+WORKDIR /usr/src/app/frontend
+
+COPY package.json package-lock.json ./
+
+# install dependencies
+RUN npm install --legacy-peer-deps
+
+COPY . .
+
+ARG ENV=DEV
+ENV NEXT_PUBLIC_ENV=$ENV
+
+ARG API_URL=https://dev.loop.edu.pl/api
+ENV NEXT_PUBLIC_API_URL=$API_URL
+
+ARG WS_URL=wss://dev.loop.edu.pl/ws
+ENV NEXT_PUBLIC_WS_URL=$WS_URL
+
+ARG GOOGLE_CLIENT_ID=570842553290-me2nmn43nr89bgglao8o3iak7i0k0reb.apps.googleusercontent.com
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+
+ARG FACEBOOK_CLIENT_ID=1576703186506729
+ENV NEXT_PUBLIC_FACEBOOK_CLIENT_ID=$FACEBOOK_CLIENT_ID
+
+ARG GITHUB_CLIENT_ID=Ov23lirUZmm9YlNzR6Dq
+ENV NEXT_PUBLIC_GITHUB_CLIENT_ID=$GITHUB_CLIENT_ID
+
+ARG MIN_PASSWORD_LENGTH=8
+ENV NEXT_PUBLIC_MIN_PASSWORD_LENGTH=$MIN_PASSWORD_LENGTH
+
+# build
+RUN npm run build
+
+# remove dev dependencies
+RUN npm prune --omit=dev --legacy-peer-deps
+
+FROM node:18-alpine
+
+WORKDIR /usr/src/app/frontend
+
+# copy from build image
+COPY --from=BUILD_IMAGE /usr/src/app/frontend/package.json ./package.json
+COPY --from=BUILD_IMAGE /usr/src/app/frontend/node_modules ./node_modules
+COPY --from=BUILD_IMAGE /usr/src/app/frontend/next.config.mjs next.config.mjs
+COPY --from=BUILD_IMAGE /usr/src/app/frontend/next-i18next.config.mjs next-i18next.config.mjs
+COPY --from=BUILD_IMAGE /usr/src/app/frontend/.next ./.next
+COPY --from=BUILD_IMAGE /usr/src/app/frontend/public ./public
+
+EXPOSE 3000
+CMD ["npm", "start"]

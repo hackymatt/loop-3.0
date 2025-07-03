@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "title": "Programming at Your Fingertips with loop – Online Coding Courses",
+    "description": "Learn to code with loop – a modern online learning platform. Courses for beginners and advanced users in JavaScript, Python, SQL and more. Start your coding journey today!"
+  },
+  "title": "Programming at your fingertips with",
+  "subtitle": "Learn programming faster with AI, interactive courses, and mentor support.",
+  "button": "Start learning for free",
+  "sign-up": { "header": "Create your free account", "button": "Get started" },
+  "certificate": {
+    "student": "John Doe",
+    "course": "Introduction to Python Programming",
+    "header": "Certification",
+    "title": "Looking for a certificate?",
+    "subtitle": "Get your official certificate and showcase your skills!"
+  },
+  "pricing": {
+    "header": "Pricing Plans",
+    "title": "Transparent Pricing",
+    "subtitle": "Choose from flexible pricing options tailored to your needs and budget – with no hidden fees."
+  },
+  "technology": {
+    "header": "Technologies",
+    "title": "Cutting-edge technologies",
+    "subtitle": "Explore a selection of modern and powerful technologies to enhance your development skills and projects.",
+    "button": "View all"
+  },
+  "testimonial": "What our students say",
+  "course": {
+    "header": "Courses",
+    "title": "Top courses for You",
+    "subtitle": "Discover expertly designed courses tailored to help you master new skills and advance your career in technology.",
+    "button": "View all"
+  },
+  "advertisement": {
+    "part1": "Start now",
+    "part2": "build your future",
+    "part3": "in IT!",
+    "button": "Try for free"
+  },
+  "platform": {
+    "header": "Learning with AI",
+    "title": "Intelligent learning with",
+    "subtitle": "A modern learning environment powered by AI. Save time, learn efficiently, and enhance your skills in a clear, intuitive code editor."
+  },
+  "app": {
+    "title": "Download the app",
+    "subtitle": "Learning programming made even easier with our app!"
+  }
+}

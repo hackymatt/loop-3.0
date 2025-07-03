@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Lekcja [name] - kontynuuj naukę",
+    "description": "Kontynuuj naukę i zdobądź jeszcze więcej praktycznych umiejętności dzięki lekcji [name]. Zakończ ją i rozwijaj swoje umiejętności programistyczne."
+  },
+  "errors": {
+    "progress": "Wystąpił błąd. Spróbuj ponownie.",
+    "answer": "Wystąpił błąd. Spróbuj ponownie.",
+    "hint": "Wystąpił błąd. Spróbuj ponownie."
+  },
+  "reading": { "estimatedTime": "Szacowany czas", "submit": "Zrozumiałem!" },
+  "video": { "submit": "Zrozumiałem!" },
+  "quiz": {
+    "type": { "label": "Typ pytania", "single": "Jednokrotny wybór", "multi": "Wielokrotny wybór" },
+    "submit": "Sprawdź!",
+    "answer": "Pokaż odpowiedź"
+  },
+  "coding": {
+    "introduction": "Wprowadzenie",
+    "instructions": "Instrukcje",
+    "editor": {
+      "label": "Edytor kodu",
+      "runCode": { "start": "Uruchom kod", "stop": "Zatrzymaj kod" },
+      "submit": "Sprawdź!"
+    },
+    "hint": { "button": "Podpowiedź", "label": "Podpowiedź" },
+    "answer": "Pokaż odpowiedź",
+    "console": "Konsola",
+    "context": "Kontekst",
+    "exercise": "Ćwiczenie",
+    "logs": {
+      "open": "Ustanowiono połączenie z serwerem.",
+      "close": "Zamknieto połączenie z serwerem."
+    }
+  },
+  "upgrade": {
+    "title": "Odblokuj pełny dostęp!",
+    "description": "Zdobądź wszystkie rozdziały, więcej punktów i dodatkowe materiały!",
+    "banner": {
+      "title": "Jesteś na darmowym planie i masz dostęp tylko do jednego rozdziału.",
+      "description": "Aby kontynuować naukę i odblokować kolejne rozdziały — przejdź na wyższy!"
+    },
+    "button": "Wróć do kursu"
+  }
+}

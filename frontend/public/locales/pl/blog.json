@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "posts": {
+      "title": "Blog – Porady, nowości i inspiracje programistyczne",
+      "description": "Czytaj artykuły o programowaniu, trendach w IT i wskazówkach dla początkujących oraz zaawansowanych. Bądź na bieżąco z najnowszymi wpisami na naszym blogu."
+    },
+    "post": {
+      "title": "[name] - przeczytaj artykuł już teraz",
+      "description": "Przeczytaj nasz artykuł pod tytułem [name]. Odkryj praktyczne porady i najlepsze praktyki, które pomogą Ci w rozwoju umiejętności programistycznych."
+    }
+  },
+  "title": "Ostatnio dodane",
+  "subtitle": "Bądź na bieżąco z najnowszymi informacjami i aktualizacjami od naszego zespołu.",
+  "button": "Zobacz wszystkie",
+  "search": "Szukaj",
+  "categories": "Kategorie",
+  "recentPosts": "Ostatnie wpisy",
+  "popularTags": "Popularne tagi",
+  "tags": "Tagi",
+  "prev": "Poprzedni",
+  "next": "Następny"
+}

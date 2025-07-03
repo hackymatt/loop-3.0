@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "title": "Błąd serwera",
+    "description": "Coś poszło nie tak po naszej stronie. Przepraszamy za niedogodności – spróbuj ponownie za chwilę lub skontaktuj się z naszym zespołem wsparcia."
+  },
+  "title": "500 Błąd serwera",
+  "subtitle": "Wystąpił błąd, spróbuj ponownie później.",
+  "button": "Przejdź do strony głównej"
+}

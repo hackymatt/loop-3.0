@@ -1,0 +1,16 @@
+{
+  "title": { "part1": "Zarejestruj się teraz,", "part2": "aby otrzymać zniżkę" },
+  "subtitle": "Zapisz się do newslettera",
+  "email": {
+    "label": "Wpisz swój adres e-mail",
+    "errors": { "required": "E-mail jest wymagany", "invalid": "Nieprawidłowy adres e-mail" }
+  },
+  "button": "Subskrybuj",
+  "marketingConsent": {
+    "label": {
+      "accept": "Wyrażam zgodę na otrzymywanie na podany adres poczty elektronicznej informacji handlowych dotyczących usług oraz w celu otrzymywania newslettera — więcej informacji uzyskają Państwo ",
+      "link": "tutaj"
+    },
+    "errors": { "required": "To pole jest wymagane" }
+  }
+}

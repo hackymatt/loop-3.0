@@ -1,0 +1,11 @@
+{
+  "install": "Zainstaluj na",
+  "steps": {
+    "click": "Kliknij na",
+    "screen": { "iOS": "na dole ekranu", "Android": "na górze ekranu" },
+    "chose": "Wybierz opcję",
+    "add": { "iOS": "Do ekranu głownego", "Android": "Dodaj do ekranu głównego" }
+  },
+  "title": "Zainstaluj aplikację",
+  "subtitle": "Zainstaluj aplikację na swoim urządzeniu, aby mieć łatwy dostęp do nauki w każdej chwili. Bez [platform], bez pobierania, bez problemów."
+}

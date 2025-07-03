@@ -1,0 +1,88 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: pl\n"
+
+msgid "You received this email to notify you of important changes to your account in loop."
+msgstr "Otrzymałeś tego e-maila, aby poinformować Cię o ważnych zmianach na Twoim koncie w loop."
+
+msgid "Activate your account"
+msgstr "Aktywuj swoje konto"
+
+msgid "Hi %(email)s, Thank you for registering. Please click the link below to activate your account:"
+msgstr "Cześć %(email)s, dziękujemy za rejestrację. Kliknij poniższy link, aby aktywować swoje konto:"
+
+msgid "The link is valid for 24 hours."
+msgstr "Link jest ważny przez 24 godziny."
+
+msgid "If you didn't register on our platform, you can safely ignore this email."
+msgstr "Jeśli to nie Ty się zarejestrowałeś, możesz bez obaw zignorować tego maila."
+
+msgid "Reset your password"
+msgstr "Zresetuj swoje hasło"
+
+msgid "Hi %(email)s, please click the link below to reset your password:"
+msgstr "Cześć %(email)s, kliknij poniższy link, aby zresetować swoje hasło:"
+
+msgid "If you didn't request password reset on our platform, you can safely ignore this email."
+msgstr "Jeśli to nie Ty się poprosiłeś o reset hasło, możesz bez obaw zignorować tego maila."
+
+msgid "Account with this email address does not exist."
+msgstr "Konto z podanym adresem e-mail nie istnieje."
+
+msgid "Account with this email address already exists."
+msgstr "Konto z podanym adresem e-mail już istnieje."
+
+msgid "Password must be at least 8 characters long."
+msgstr "Hasło musi mieć co najmniej 8 znaków."
+
+msgid "Password must contain at least one uppercase letter."
+msgstr "Hasło musi zawierać co najmniej jedną wielką literę."
+
+msgid "Password must contain at least one lowercase letter."
+msgstr "Hasło musi zawierać co najmniej jedną małą literę."
+
+msgid "Password must contain at least one special character."
+msgstr "Hasło musi zawierać co najmniej jeden znak specjalny."
+
+msgid "Password must contain at least one digit."
+msgstr "Hasło musi zawierać co najmniej jedną cyfrę."
+
+msgid "You must provide either a token or an email."
+msgstr "Musisz podać token lub adres e-mail."
+
+msgid "Invalid token"
+msgstr "Niepoprawny token"
+
+msgid "Invalid activation link"
+msgstr "Niepoprawny link aktywacyjny"
+
+msgid "Incorrect email or password"
+msgstr "Niepoprawny email lub hasło"
+
+msgid "Inactive user"
+msgstr "Użytkownik nieaktywny"
+
+msgid "Refresh token is required"
+msgstr "Token odświeżania jest wymagany."
+
+msgid "Code is required"
+msgstr "Kod jest wymagany"
+
+msgid "Failed to retrieve access token"
+msgstr "Nie udało się uzyskać tokena dostępu"
+
+msgid "No email found in GitHub account"
+msgstr "Nie znaleziono adresu e-mail na koncie GitHub"
+
+msgid "Access token is required"
+msgstr "Token dostępu jest wymagany"
+
+msgid "Password change is only available for accounts created with an email address."
+msgstr "Zmiana hasła jest dostępna tylko dla kont założonych za pomocą adresu e-mail."
+
+msgid "Incorrect password."
+msgstr "Nieprawidłowe hasło."
+
+msgid "Almost there! Review your answers and give it another shot."
+msgstr "Prawie dobrze! Przejrzyj swoje odpowiedzi i spróbuj ponownie."

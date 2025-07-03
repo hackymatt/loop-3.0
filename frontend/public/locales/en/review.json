@@ -1,0 +1,14 @@
+{
+  "title": "Review",
+  "submit": "Post review",
+  "cancel": "Cancel",
+  "rating": {
+    "label": "Your rating",
+    "errors": { "minRating": "Rating must be greater than or equal to 1." }
+  },
+  "review": { "label": "Review (optional)" },
+  "congratulations": {
+    "label": "Congratulations",
+    "text": "You've successfully completed the course. We'd love to hear what you think!"
+  }
+}

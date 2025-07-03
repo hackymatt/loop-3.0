@@ -1,0 +1,18 @@
+{
+  "title": "Opinia",
+  "submit": "Opublikuj opinię",
+  "cancel": "Anuluj",
+  "rating": {
+    "label": "Twoja ocena",
+    "errors": {
+      "minRating": "Ocena musi być większa lub równa 1."
+    }
+  },
+  "review": {
+    "label": "Opinia (opcjonalnie)"
+  },
+  "congratulations": {
+    "label": "Gratulacje",
+    "text": "Kurs ukończony! Będzie nam miło, jeśli podzielisz się swoją opinią."
+  }
+}

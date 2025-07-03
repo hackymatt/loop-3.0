@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "personal": {
+      "title": "Dane Osobowe – Zmień Imię, Nazwisko i Zdjęcie",
+      "description": "Zarządzaj swoim profilem na platformie. Edytuj imię, nazwisko oraz zdjęcie profilowe, aby lepiej dopasować konto do siebie."
+    },
+    "manage": {
+      "title": "Zarządzaj Kontem – Zmień Hasło lub Usuń Konto",
+      "description": "Zaktualizuj dane swojego konta, zmień hasło lub usuń konto. Dbaj o bezpieczeństwo i kontroluj swoje ustawienia na naszej platformie edukacyjnej."
+    },
+    "subscription": {
+      "title": "Subskrypcja – Sprawdź i Zmień Swój Plan",
+      "description": "Zobacz szczegóły swojej subskrypcji, porównaj dostępne plany i zmień pakiet, aby dopasować go do swoich potrzeb edukacyjnych."
+    }
+  },
+  "email": {
+    "label": "Email",
+    "errors": { "required": "Email jest wymagany", "invalid": "Email jest nieprawidłowy" }
+  },
+  "firstName": {
+    "label": "Imię",
+    "errors": { "required": "Imię jest wymagane" }
+  },
+  "lastName": {
+    "label": "Nazwisko",
+    "errors": { "required": "Nazwisko jest wymagane" }
+  },
+  "password": {
+    "label": "Hasło",
+    "placeholder": "Wpisz hasło",
+    "errors": {
+      "required": "Hasło jest wymagane",
+      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
+      "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
+      "number": "Hasło musi zawierać co najmniej jedną cyfrę",
+      "specialCharacter": "Hasło musi zawierać co najmniej jeden znak specjalny"
+    }
+  },
+  "oldPassword": {
+    "label": "Obecne hasło",
+    "placeholder": "Wpisz hasło",
+    "errors": {
+      "required": "Hasło jest wymagane",
+      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
+      "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
+      "number": "Hasło musi zawierać co najmniej jedną cyfrę",
+      "specialCharacter": "Hasło musi zawierać co najmniej jeden znak specjalny"
+    }
+  },
+  "newPassword": {
+    "label": "Nowe hasło",
+    "placeholder": "Wpisz hasło",
+    "errors": {
+      "required": "Hasło jest wymagane",
+      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
+      "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
+      "number": "Hasło musi zawierać co najmniej jedną cyfrę",
+      "specialCharacter": "Hasło musi zawierać co najmniej jeden znak specjalny",
+      "same": "Nowe hasło musi się różnić od starego hasła"
+    }
+  },
+  "termsAcceptance": {
+    "label": {
+      "accept": "Akceptuję",
+      "terms": "regulamin",
+      "and": "oraz",
+      "privacy": "politykę prywatności."
+    },
+    "errors": { "required": "To pole jest wymagane" }
+  },
+  "dataProcessingConsent": {
+    "label": "Wyrażam zgodę na przetwarzanie moich danych osobowych zawartych w formularzu w celu i zakresie niezbędnym do realizacji usługi i tylko w takim celu.",
+    "errors": { "required": "To pole jest wymagane" }
+  },
+  "personal": { "title": "Dane osobowe", "button": "Zapisz" },
+  "manage": { "title": "Zarządzaj kontem", "button": "Zapisz" },
+  "subscription": {
+    "title": "Subskrypcja",
+    "label": "Obecny plan",
+    "billing": { "label": "Rozliczenie", "monthly": "Miesięczne", "yearly": "Roczne" },
+    "renewal": "Odnowienie",
+    "on": "dnia",
+    "button": "Anuluj subskrypcję",
+    "cancel": "Anuluj",
+    "description": "Czy na pewno chcesz anulować subskrypcję? Ta akcja jest nieodwracalna.",
+    "sell": "Zdobądź umiejętności programistyczne, które przyspieszą rozwój Twojej kariery! Zyskaj dostęp do wszystkich kursów oraz certyfikatów.",
+    "error": "Wystąpił błąd. Spróbuj ponownie."
+  },
+  "logout": { "title": "Wyloguj się", "error": "Wystąpił błąd. Spróbuj ponownie." },
+  "photo": { "change": "Zmień zdjęcie", "error": "Wystąpił błąd. Spróbuj ponownie." },
+  "delete": {
+    "text": "Wszystkie Twoje dane profilowe oraz związane z nauką zostaną trwale usunięte. Jeśli chcesz anulować subskrypcję, sprawdź",
+    "button": "Usuń konto",
+    "cancel": "Anuluj",
+    "description": "Czy na pewno chcesz usunąć swoje konto? Ta akcja jest nieodwracalna."
+  }
+}

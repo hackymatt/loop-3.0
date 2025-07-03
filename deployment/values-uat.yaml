@@ -1,0 +1,16 @@
+backend:
+  tag: latest.uat
+  replicas: 1
+  env:
+    ENV: "UAT"
+    CSRF_TRUSTED_ORIGINS: "https://uat.loop.edu.pl,https://www.uat.loop.edu.pl"
+    ALLOWED_HOST: "uat.loop.edu.pl,www.uat.loop.edu.pl"
+
+frontend:
+  tag: latest.uat
+  replicas: 1
+
+nginx:
+  tag: latest.uat
+  replicas: 1
+  host: uat.loop.edu.pl

@@ -1,0 +1,27 @@
+name: Backend Linting Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  lint-backend:
+    name: Lint Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          sudo apt-get install -y libjpeg-dev
+          python -m pip install --upgrade pip
+          pip install -r requirements-lint.txt
+          pip install -r requirements.txt
+
+      - name: Run linting
+        run: |
+          cd backend
+          pylint core --recursive=true --fail-under=10
+          black . --check

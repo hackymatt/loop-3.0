@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Activate your account" %}{% endblock %}
+
+{% block content %}
+    {{ message_1|safe }}
+    <br /><br />
+    {{ activation_url }}
+    <br /><br />
+    {{ message_2|safe }}
+    <br /><br />
+    {{ message_3|safe }}
+{% endblock %}

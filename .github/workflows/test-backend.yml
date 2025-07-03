@@ -1,0 +1,80 @@
+name: Backend Testing Workflow
+
+on:
+  workflow_call:
+    secrets:
+      LOCAL:
+        required: true
+      DB_NAME:
+        required: true
+      DB_HOST:
+        required: true
+      REDIS_URL:
+        required: true
+      CONTACT_EMAIL:
+        required: true
+      NOREPLY_EMAIL:
+        required: true
+      GOOGLE_CREDENTIALS:
+        required: true
+      ADMIN_EMAIL:
+        required: true
+      ADMIN_PASSWORD:
+        required: true
+      DUMMY_STUDENT_EMAIL:
+        required: true
+      DUMMY_STUDENT_PASSWORD:
+        required: true
+
+jobs:
+  test-backend:
+    name: Test Backend
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7.2.5-bookworm
+        ports: [6379:6379]
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: [5432:5432]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    env:
+      LOCAL: ${{ secrets.LOCAL }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+      NOREPLY_EMAIL: ${{ secrets.NOREPLY_EMAIL }}
+      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      DUMMY_STUDENT_EMAIL: ${{ secrets.DUMMY_STUDENT_EMAIL }}
+      DUMMY_STUDENT_PASSWORD: ${{ secrets.DUMMY_STUDENT_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          sudo apt-get install -y libjpeg-dev
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+          pip install -r requirements.txt
+          pip install django-cors-headers
+
+      - name: Run tests
+        run: |
+          cd backend
+          coverage run manage.py test
+          coverage report

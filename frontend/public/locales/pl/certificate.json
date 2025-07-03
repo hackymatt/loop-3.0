@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "certificates": {
+      "title": "Twój Certyfikaty – Osiągnięcia w Nauce Programowania",
+      "description": "Zobacz swoje certyfikaty potwierdzające ukończenie kursów programowania na platformie loop. Podziel się swoimi osiągnięciami z innymi!"
+    },
+    "certificate": {
+      "title": "Certyfikat dla [studentName] za ukończenie kursu [courseName]",
+      "description": "Certyfikat potwierdza, że [studentName] pomyślnie ukończył(a) kurs [courseName] na platformie loop. Podziel się swoim osiągnięciem!"
+    }
+  },
+  "title": "Certyfikaty",
+  "label": "CERTYFIKAT UKOŃCZENIA",
+  "name": "Jan Kowalski",
+  "award": "PRZYZNANY DLA",
+  "completion": "ZA UKOŃCZENIE",
+  "date": "DNIA",
+  "buttons": {
+    "png": "Pobierz jako PNG",
+    "pdf": "Pobierz jako PDF",
+    "linkedin": "Udostępnij na LinkedIn"
+  }
+}

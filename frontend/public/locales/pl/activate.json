@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "title": "Aktywacja Konta – Potwierdź Adres E-mail",
+    "description": "Kliknij link aktywacyjny, aby potwierdzić swój adres e-mail i uzyskać pełny dostęp do platformy do nauki programowania online."
+  },
+  "title": "Sprawdź swoją skrzynkę mailową",
+  "subtitle": "Wysłaliśmy wiadomość z linkiem aktywacyjnym. Sprawdź skrzynkę, w tym folder spam.",
+  "link": "Wróć do logowania",
+  "help": "Nie otrzymałeś wiadomości?",
+  "button": "Wyślij ponownie"
+}

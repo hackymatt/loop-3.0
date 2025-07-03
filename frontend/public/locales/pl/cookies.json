@@ -1,0 +1,28 @@
+{
+  "text": {
+    "main": "Korzystamy z plików cookies, aby zapewnić Ci lepsze doświadczenie na naszej stronie. Możesz zaakceptować wszystkie lub dostosować swoje preferencje. Więcej informacji znajdziesz w naszej",
+    "manage": "Zarządzaj cookies",
+    "mandatory": "Wymagane",
+    "optional": "Opcjonalne"
+  },
+  "privacyPolicy": "polityce prywatności",
+  "button": {
+    "acceptAll": "Akceptuje wszystkie",
+    "acceptSelected": "Akceptuję wybrane",
+    "manage": "Więcej opcji"
+  },
+  "options": {
+    "mandatory": {
+      "title": "Niezbędne pliki cookies",
+      "description": "Te pliki cookies są niezbędne do prawidłowego działania strony i nie mogą być wyłączone w naszych systemach. Służą one m.in. do zapisania Twoich preferencji dotyczących prywatności, logowania się na konto oraz wypełniania formularzy."
+    },
+    "analytics": {
+      "title": "Analityczne pliki cookies",
+      "description": "Te pliki cookies pozwalają nam zbierać dane statystyczne na temat korzystania ze strony. Dzięki nim możemy zrozumieć, jak użytkownicy poruszają się po stronie, co pozwala na jej ciągłe ulepszanie. Zebrane dane są anonimowe."
+    },
+    "marketing": {
+      "title": "Reklamowe pliki cookies",
+      "description": "Te pliki cookies są wykorzystywane do wyświetlania reklam dopasowanych do Twoich zainteresowań. Mogą być one używane przez nas lub naszych partnerów reklamowych, aby wyświetlać spersonalizowane treści reklamowe na innych stronach."
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "title": "Programowanie na wyciągniecie ręki z loop – Platforma do Nauki Programowania Online",
+    "description": "Ucz się programowania z loop – nowoczesną platformą edukacyjną online. Kursy dla początkujących i zaawansowanych z JavaScript, Python, SQL i nie tylko. Zacznij już dziś!"
+  },
+  "title": "Programowanie na wyciągniecie ręki z",
+  "subtitle": "Ucz się programowania szybciej z AI, interaktywnymi kursami i wsparciem mentorów.",
+  "button": "Rozpocznij naukę za darmo",
+  "sign-up": { "header": "Utwórz darmowe konto", "button": "Zacznij teraz" },
+  "certificate": {
+    "student": "Jan Kowalski",
+    "course": "Wprowadzenie do programowania w Pythonie",
+    "header": "Certyfikat",
+    "title": "Chcesz zdobyć wiedzę i otrzymać certyfikat?",
+    "subtitle": "Zdobądź oficjalny certyfikat i pokaż swoje umiejętności!"
+  },
+  "pricing": {
+    "header": "Plany cenowe",
+    "title": "Przejrzyste ceny",
+    "subtitle": "Wybierz spośród elastycznych opcji cenowych dostosowanych do Twoich potrzeb i budżetu – bez ukrytych opłat."
+  },
+  "technology": {
+    "header": "Technologie",
+    "title": "Nowoczesne technologie",
+    "subtitle": "Odkryj zestaw nowoczesnych i potężnych technologii, które pomogą Ci rozwijać umiejętności i realizować projekty.",
+    "button": "Zobacz wszystkie"
+  },
+  "testimonial": "Co mówią nasi uczniowie",
+  "course": {
+    "header": "Kursy",
+    "title": "Najlepsze kursy dla Ciebie",
+    "subtitle": "Odkryj starannie opracowane kursy, które pomogą Ci opanować nowe umiejętności i rozwijać karierę w branży technologicznej.",
+    "button": "Zobacz wszystkie"
+  },
+  "advertisement": {
+    "part1": "Zacznij teraz",
+    "part2": "twórz swoją przyszłość",
+    "part3": "w IT!",
+    "button": "Wypróbuj za darmo"
+  },
+  "platform": {
+    "header": "Nauka z AI",
+    "title": "Inteligentna nauka z",
+    "subtitle": "Nowoczesne środowisko nauki wspierane przez AI. Oszczędzaj czas, ucz się efektywnie i rozwijaj swoje umiejętności w przejrzystym, intuicyjnym edytorze kodu."
+  },
+  "app": {
+    "title": "Pobierz aplikację",
+    "subtitle": "Nauka programowania jeszcze łatwiejsza dzięki naszej aplikacji!"
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "title": "Support",
+    "description": "Have questions or need assistance? Check out our frequently asked questions or contact our support team. We’re here to help you!"
+  },
+  "title": "Frequently asked questions",
+  "moreQuestions": {
+    "title": "Still have questions?",
+    "subtitle": "Please describe your case to receive the most accurate advice.",
+    "button": "Contact us"
+  },
+  "header": "Welcome to support",
+  "faq": [
+    {
+      "id": "account",
+      "title": "Account",
+      "icon": "solar:user-id-bold",
+      "content": [
+        {
+          "question": "How do I create an account?",
+          "answer": "Click the 'Try for free' button on the homepage. You can sign up using your email address or log in with Google, Facebook, or GitHub."
+        },
+        {
+          "question": "Do I need to activate my account after registration?",
+          "answer": "Yes, if you sign up using email, you'll receive a message with an activation link. Click it to activate your account and access the platform."
+        },
+        {
+          "question": "What are the password requirements?",
+          "answer": "Your password must be at least 8 characters long and include one uppercase letter, one lowercase letter, and one special character (e.g., !, @, #)."
+        },
+        {
+          "question": "How can I change my password?",
+          "answer": "If you log in using email and password, you can change it in the 'Account Settings' → 'Manage Account' section."
+        },
+        {
+          "question": "I forgot my password – what should I do?",
+          "answer": "On the login page, click 'Forgot password?'. Enter your email address, and you'll receive a message with a reset link."
+        },
+        {
+          "question": "How can I update my personal details?",
+          "answer": "Log in and go to 'Account Settings' → 'Personal Info' to edit your name or other profile details."
+        },
+        {
+          "question": "Where can I check or change my subscription plan?",
+          "answer": "Log in and go to 'Account Settings' → 'Subscription' to view your current plan or switch to another."
+        },
+        {
+          "question": "How do I delete my account?",
+          "answer": "Log in and go to 'Account Settings' → 'Manage Account'. You'll find the option to delete your account there."
+        }
+      ]
+    },
+    {
+      "id": "courses",
+      "title": "Courses",
+      "icon": "solar:tag-price-bold",
+      "content": [
+        {
+          "question": "How do courses work on the platform?",
+          "answer": "Courses consist of interactive lessons that you complete at your own pace. These are not live classes – you learn whenever you want."
+        },
+        {
+          "question": "Do I need to install any additional software?",
+          "answer": "No. Everything runs in your browser. You just need a computer or tablet with internet access."
+        },
+        {
+          "question": "Can I pause a course and continue later?",
+          "answer": "Yes. Your progress is saved automatically, so you can return to the course at any time."
+        },
+        {
+          "question": "Do the courses include practical tasks?",
+          "answer": "Yes. Each course includes interactive exercises and tasks that you can complete directly in your browser."
+        },
+        {
+          "question": "Will I get a certificate after completing a course?",
+          "answer": "Yes. After completing a course on the Basic or Premium plan, you’ll receive a certificate that you can download or share."
+        },
+        {
+          "question": "Is access to courses time-limited?",
+          "answer": "No. Once you purchase access, you have unlimited time to complete the course within your chosen plan."
+        },
+        {
+          "question": "Can I use the courses on my phone?",
+          "answer": "Yes, our platform also works on mobile devices. For the best experience, we recommend using a tablet or computer."
+        }
+      ]
+    },
+    {
+      "id": "certificates",
+      "title": "Certificates",
+      "icon": "solar:diploma-bold",
+      "content": [
+        {
+          "question": "Will I get a certificate after completing a course?",
+          "answer": "Yes, after completing a course on the Basic or Premium plan, you'll receive a personalized certificate in PDF or PNG format."
+        },
+        {
+          "question": "Is the certificate available immediately after completing the course?",
+          "answer": "Yes, the certificate is generated automatically once all lessons are completed. You can download it directly from the platform."
+        },
+        {
+          "question": "What does the certificate look like?",
+          "answer": "The certificate includes your name, course title, completion date, and our programming school’s signature. You can add it to your CV or LinkedIn profile."
+        },
+        {
+          "question": "Can I get a certificate with a free plan?",
+          "answer": "No. Certificates are available only to users with an active Basic or Premium plan."
+        },
+        {
+          "question": "Does the certificate have a unique ID?",
+          "answer": "Yes, every certificate has a unique ID that allows for verification."
+        },
+        {
+          "question": "Are the certificates recognized by employers?",
+          "answer": "Certificates demonstrate course completion and practical skills gained. Many learners add them to their portfolio or LinkedIn profiles as proof of learning."
+        }
+      ]
+    },
+    {
+      "id": "points",
+      "title": "Points",
+      "icon": "solar:medal-star-bold",
+      "content": [
+        {
+          "question": "How do I earn points on the platform?",
+          "answer": "You earn points by completing quizzes, tasks in courses, and finishing chapters and entire courses."
+        },
+        {
+          "question": "What are points used for?",
+          "answer": "Points show your learning progress and engagement."
+        },
+        {
+          "question": "Do points affect my certificate?",
+          "answer": "No. You receive a certificate after completing the course regardless of your points. However, points are a sign of active learning."
+        },
+        {
+          "question": "Can I lose earned points?",
+          "answer": "No, points earned during learning stay on your account and do not expire."
+        },
+        {
+          "question": "Where can I check my points?",
+          "answer": "Your current point total is visible in your dashboard."
+        }
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Payments",
+      "icon": "solar:wallet-bold",
+      "content": [
+        {
+          "question": "What payment methods are available?",
+          "answer": "We accept payments by credit/debit card (Visa, Mastercard, etc.), as well as Google Pay and Apple Pay. All payments are processed securely via Stripe."
+        },
+        {
+          "question": "Is the payment one-time or recurring?",
+          "answer": "Our plans are subscription-based – the payment renews automatically every month or year unless you cancel beforehand."
+        },
+        {
+          "question": "Can I pay using Google Pay or Apple Pay?",
+          "answer": "Yes, Stripe supports both Google Pay and Apple Pay – you can use them during checkout on our platform."
+        },
+        {
+          "question": "Will I receive an invoice for my subscription?",
+          "answer": "Yes, after each payment you will receive an invoice that you can download from your account settings under 'Payments'."
+        },
+        {
+          "question": "How can I cancel my subscription?",
+          "answer": "You can cancel your subscription at any time in the account settings under 'Subscription'. After cancellation, you'll retain access to courses until the end of the billing period."
+        },
+        {
+          "question": "Are my payment details secure?",
+          "answer": "Yes, we use Stripe – one of the world’s most secure payment platforms. Your card details are not stored on our servers."
+        },
+        {
+          "question": "Do you offer a free trial?",
+          "answer": "Every user can start learning for free with our free plan, which gives access to one chapter of each course. It's a great way to test the platform before upgrading."
+        },
+        {
+          "question": "What should I do if my payment was declined?",
+          "answer": "Make sure your card is active and has sufficient funds. You can also try a different payment method (e.g. Google Pay). If the problem persists, contact our technical support."
+        }
+      ]
+    }
+  ]
+}
