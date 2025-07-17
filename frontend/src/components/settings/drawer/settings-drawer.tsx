@@ -1,8 +1,9 @@
 "use client";
 
-import type { ThemeColorScheme } from "src/theme/types";
+import type { Language } from "src/locales/types";
 
 import { useEffect, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { hasKeys, varAlpha } from "minimal-shared/utils";
 
 import Box from "@mui/material/Box";
@@ -13,24 +14,27 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { useColorScheme } from "@mui/material/styles";
 
-import { themeConfig } from "src/theme/theme-config";
-import { primaryColorPresets, secondaryColorPresets } from "src/theme/with-settings";
+import { useRouter, usePathname } from "src/routes/hooks";
 
+import { LANGUAGE } from "src/consts/language";
+import { langs } from "src/layouts/langs-config";
+
+import { LargeBlock } from "./styles";
 import { Iconify } from "../../iconify";
 import { BaseOption } from "./base-option";
 import { Scrollbar } from "../../scrollbar";
-import { SmallBlock, LargeBlock } from "./styles";
-import { PresetsOptions } from "./presets-options";
-import { FullScreenButton } from "./fullscreen-button";
-import { FontSizeOptions, FontFamilyOptions } from "./font-options";
+import { LanguageOptions } from "./language-options";
 import { useSettingsContext } from "../context/use-settings-context";
 
-import type { SettingsState, SettingsDrawerProps } from "../types";
+import type { SettingsDrawerProps } from "../types";
 
 // ----------------------------------------------------------------------
 
 export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
   const settings = useSettingsContext();
+  const pathname = usePathname();
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { mode, setMode, systemMode } = useColorScheme();
 
@@ -42,16 +46,37 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
   }, [mode, systemMode]);
 
   // Visible options by default settings
-  const isFontFamilyVisible = hasKeys(defaultSettings, ["fontFamily"]);
-  const isDirectionVisible = hasKeys(defaultSettings, ["direction"]);
   const isColorSchemeVisible = hasKeys(defaultSettings, ["colorScheme"]);
-  const isPrimaryColorVisible = hasKeys(defaultSettings, ["primaryColor"]);
-  const isFontSizeVisible = hasKeys(defaultSettings, ["fontSize"]);
+
+  const handleChangeLang = useCallback(
+    (newLang: Language) => {
+      const segments = pathname.split("/");
+      const locales = Object.values(LANGUAGE);
+
+      settings.setField("language", newLang);
+      queryClient.invalidateQueries();
+
+      if (newLang === LANGUAGE.PL) {
+        if (segments.length > 1 && locales.includes(segments[1] as Language)) {
+          segments.splice(1, 1);
+        }
+      } else {
+        if (locales.includes(segments[1] as Language)) {
+          segments[1] = newLang;
+        } else {
+          segments.splice(1, 0, newLang);
+        }
+      }
+
+      router.push(segments.join("/") || "/");
+    },
+    [pathname, queryClient, router, settings]
+  );
 
   const handleReset = useCallback(() => {
     settings.onReset();
-    setMode(defaultSettings.colorScheme as ThemeColorScheme);
-  }, [defaultSettings.colorScheme, setMode, settings]);
+    handleChangeLang(LANGUAGE.PL);
+  }, [handleChangeLang, settings]);
 
   const renderHead = () => (
     <Box
@@ -66,8 +91,6 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
         Settings
       </Typography>
-
-      <FullScreenButton />
 
       <Tooltip title="Reset all">
         <IconButton onClick={handleReset}>
@@ -97,70 +120,13 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
     />
   );
 
-  const renderRtl = () => (
-    <BaseOption
-      label="Right to left"
-      icon="align-right"
-      selected={settings.state.direction === "rtl"}
-      onChangeOption={() =>
-        settings.setState({ direction: settings.state.direction === "ltr" ? "rtl" : "ltr" })
-      }
-    />
-  );
-
-  const renderPresets = () => (
-    <LargeBlock
-      title="Presets"
-      canReset={settings.state.primaryColor !== defaultSettings.primaryColor}
-      onReset={() => settings.setState({ primaryColor: defaultSettings.primaryColor })}
-    >
-      <PresetsOptions
-        options={
-          Object.keys(primaryColorPresets).map((key) => ({
-            name: key,
-            value: [primaryColorPresets[key].main, secondaryColorPresets[key].main],
-          })) as { name: SettingsState["primaryColor"]; value: string[] }[]
-        }
-        value={settings.state.primaryColor}
-        onChangeOption={(newOption) => settings.setState({ primaryColor: newOption })}
+  const renderLanguage = () => (
+    <LargeBlock title="Language" sx={{ gap: 2.5 }}>
+      <LanguageOptions
+        options={langs}
+        value={settings.state.language}
+        onChangeOption={handleChangeLang}
       />
-    </LargeBlock>
-  );
-
-  const renderFont = () => (
-    <LargeBlock title="Font" sx={{ gap: 2.5 }}>
-      {isFontFamilyVisible && (
-        <SmallBlock
-          label="Family"
-          canReset={settings.state.fontFamily !== defaultSettings.fontFamily}
-          onReset={() => settings.setState({ fontFamily: defaultSettings.fontFamily })}
-        >
-          <FontFamilyOptions
-            options={[
-              themeConfig.fontFamily.primary,
-              "Inter Variable",
-              "DM Sans Variable",
-              "Nunito Sans Variable",
-            ]}
-            value={settings.state.fontFamily}
-            onChangeOption={(newOption) => settings.setState({ fontFamily: newOption })}
-          />
-        </SmallBlock>
-      )}
-      {isFontSizeVisible && (
-        <SmallBlock
-          label="Size"
-          canReset={settings.state.fontSize !== defaultSettings.fontSize}
-          onReset={() => settings.setState({ fontSize: defaultSettings.fontSize })}
-          sx={{ gap: 5 }}
-        >
-          <FontSizeOptions
-            options={[12, 20]}
-            value={settings.state.fontSize}
-            onChangeOption={(newOption) => settings.setState({ fontSize: newOption })}
-          />
-        </SmallBlock>
-      )}
     </LargeBlock>
   );
 
@@ -169,6 +135,7 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
       anchor="right"
       open={settings.openDrawer}
       onClose={settings.onCloseDrawer}
+      disableScrollLock
       slotProps={{ backdrop: { invisible: true } }}
       PaperProps={{
         sx: [
@@ -196,11 +163,9 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
         >
           <Box sx={{ gap: 2, display: "flex", flexDirection: "column" }}>
             {isColorSchemeVisible && renderMode()}
-            {isDirectionVisible && renderRtl()}
           </Box>
 
-          {isPrimaryColorVisible && renderPresets()}
-          {(isFontFamilyVisible || isFontSizeVisible) && renderFont()}
+          {renderLanguage()}
         </Box>
       </Scrollbar>
     </Drawer>

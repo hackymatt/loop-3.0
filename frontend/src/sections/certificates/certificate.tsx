@@ -20,7 +20,7 @@ type Props = BoxProps &
   Omit<ICertificateProps, "id" | "completedAt"> & { completedAt?: string; showButtons?: boolean };
 
 export function Certificate({
-  courseName,
+  projectName,
   studentName,
   completedAt = new Date().toISOString(),
   showButtons = false,
@@ -187,7 +187,7 @@ export function Certificate({
             {t("completion")}
           </Typography>
           <Typography sx={{ fontSize: "0.8em", fontWeight: "bold", wordBreak: "break-word" }}>
-            {courseName}
+            {projectName}
           </Typography>
         </Box>
 
@@ -196,7 +196,7 @@ export function Certificate({
             {t("date")}
           </Typography>
           <Typography sx={{ fontSize: "0.7em", fontWeight: "bold", wordBreak: "break-word" }}>
-            {fDate(completedAt)}
+            {fDate(completedAt, "D MMMM YYYY")}
           </Typography>
         </Box>
       </Box>

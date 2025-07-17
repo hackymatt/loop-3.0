@@ -13,7 +13,7 @@ const endpoint = URLS.CERTIFICATES;
 type ICertificate = {
   id: string;
   student_name: string;
-  course_name: string;
+  project_name: string;
   completed_at: string;
 };
 export const certificatesQuery = (query?: QueryType) => {
@@ -24,10 +24,10 @@ export const certificatesQuery = (query?: QueryType) => {
   const queryFn = async (): Promise<ListQueryResponse<ICertificateProps[]>> => {
     const { results, records_count, pages_count } = await getListData<ICertificate>(queryUrl);
     const modifiedResults: ICertificateProps[] = (results ?? []).map(
-      ({ student_name, course_name, completed_at, ...rest }: ICertificate) => ({
+      ({ student_name, project_name, completed_at, ...rest }: ICertificate) => ({
         ...rest,
         studentName: student_name,
-        courseName: course_name,
+        projectName: project_name,
         completedAt: completed_at,
       })
     );

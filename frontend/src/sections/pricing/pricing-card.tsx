@@ -160,7 +160,7 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        href={isLoggedIn ? redirect : localize(paths.register)}
+        href={isLoggedIn ? redirect : localize(paths.auth.register)}
         disabled={isCurrentPlan}
         onClick={() => {
           if (!isLoggedIn) {

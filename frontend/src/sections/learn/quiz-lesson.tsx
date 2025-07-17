@@ -1,4 +1,4 @@
-import type { IQuizLessonProps } from "src/types/lesson";
+import type { IQuizSubstepProps } from "src/types/substep";
 
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -18,15 +18,15 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
-import { QUIZ_TYPE } from "src/consts/lesson";
+import { QUIZ_TYPE } from "src/consts/substep";
 import { useAnalytics } from "src/app/analytics-provider";
 
 import { Label } from "src/components/label";
 
 // ----------------------------------------------------------------------
 
-type QuizLessonProps = {
-  lesson: IQuizLessonProps;
+type QuizSubstepProps = {
+  substep: IQuizSubstepProps;
   onSubmit: (answer: boolean[]) => void;
   onShowAnswer: () => void;
   onSaveProgress: (answer: boolean[]) => void;
@@ -36,31 +36,31 @@ type QuizLessonProps = {
 
 // ----------------------------------------------------------------------
 
-export const QuizLesson = React.memo(function QuizLesson({
-  lesson,
+export const QuizSubstep = React.memo(function QuizSubstep({
+  substep,
   onSubmit,
   onShowAnswer,
   onSaveProgress,
   error,
   isLocked = false,
-}: QuizLessonProps) {
+}: QuizSubstepProps) {
   const { t } = useTranslation("learn");
   const { trackEvent } = useAnalytics();
 
-  const isMultiple = lesson.quizType === QUIZ_TYPE.MULTI;
+  const isMultiple = substep.quizType === QUIZ_TYPE.MULTI;
 
   // Form state
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
 
   useEffect(() => {
-    const userOption = (lesson.answer || [])
+    const userOption = (substep.answer || [])
       .map((value, index) => (value ? index : -1))
       .filter((index) => index !== -1);
 
     setSelectedOption(userOption.length === 0 ? null : userOption[0]);
     setSelectedOptions(userOption);
-  }, [lesson.answer]);
+  }, [substep.answer]);
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(Number(event.target.value));
@@ -74,7 +74,7 @@ export const QuizLesson = React.memo(function QuizLesson({
   };
 
   const handleSubmit = () => {
-    const answer = lesson.question.options.map((_, index) =>
+    const answer = substep.question.options.map((_, index) =>
       isMultiple ? selectedOptions.includes(index) : selectedOption === index
     );
     onSaveProgress(answer);
@@ -84,7 +84,7 @@ export const QuizLesson = React.memo(function QuizLesson({
   const renderOptions = () =>
     isMultiple ? (
       <FormGroup sx={{ width: 1, height: 1 }}>
-        {lesson.question.options.map((option, index) =>
+        {substep.question.options.map((option, index) =>
           isLocked ? (
             <Skeleton
               key={index}
@@ -112,7 +112,7 @@ export const QuizLesson = React.memo(function QuizLesson({
         onChange={handleRadioChange}
         sx={{ width: 1, height: 1 }}
       >
-        {(lesson.question?.options || Array.from({ length: 5 })).map((option, index) =>
+        {(substep.question?.options || Array.from({ length: 5 })).map((option, index) =>
           isLocked ? (
             <Skeleton
               key={index}
@@ -129,8 +129,8 @@ export const QuizLesson = React.memo(function QuizLesson({
   const renderHeader = () => (
     <Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Typography variant="h4">{lesson.name}</Typography>
-        <Label color="warning">{lesson.totalPoints} XP</Label>
+        <Typography variant="h4">{substep.name}</Typography>
+        <Label color="warning">{substep.totalPoints} XP</Label>
       </Box>
       <Typography variant="subtitle2" color="text.secondary">
         🧠 {t("quiz.type.label")}: {isMultiple ? t("quiz.type.multi") : t("quiz.type.single")}
@@ -152,7 +152,7 @@ export const QuizLesson = React.memo(function QuizLesson({
               mb: 2,
             }}
           >
-            {lesson.question.text}
+            {substep.question.text}
           </FormLabel>
         )}
         {renderOptions()}

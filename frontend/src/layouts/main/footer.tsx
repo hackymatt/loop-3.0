@@ -1,5 +1,11 @@
 import type { BoxProps } from "@mui/material/Box";
 import type { Theme, SxProps, Breakpoint } from "@mui/material/styles";
+import type {
+  IProjectLevelProp,
+  IProjectListProps,
+  IProjectCategoryProp,
+  IProjectTechnologyProp,
+} from "src/types/project";
 
 import { useTranslation } from "react-i18next";
 import { isEqualPath } from "minimal-shared/utils";
@@ -30,10 +36,16 @@ import { usePageLinks } from "../nav-config-main";
 // ----------------------------------------------------------------------
 
 export type FooterProps = BoxProps & {
+  data: {
+    featuredProjects: IProjectListProps[];
+    projectLevels: IProjectLevelProp[];
+    projectTechnologies: IProjectTechnologyProp[];
+    projectCategories: IProjectCategoryProp[];
+  };
   layoutQuery?: Breakpoint;
 };
 
-export function Footer({ layoutQuery = "md", sx, ...other }: FooterProps) {
+export function Footer({ data, layoutQuery = "md", sx, ...other }: FooterProps) {
   const { t } = useTranslation("navigation");
   const localize = useLocalizedPath();
 
@@ -42,7 +54,7 @@ export function Footer({ layoutQuery = "md", sx, ...other }: FooterProps) {
 
   const currentYear = new Date().getFullYear();
 
-  const listItems = usePageLinks();
+  const listItems = usePageLinks(data);
 
   const pathname = usePathname();
 
@@ -52,11 +64,11 @@ export function Footer({ layoutQuery = "md", sx, ...other }: FooterProps) {
     <>
       <Link
         component={RouterLink}
-        href={localize(paths.courses)}
+        href={localize(paths.projects)}
         variant="body2"
         sx={{ color: "text.primary" }}
       >
-        {t("courses")}
+        {t("projects")}
       </Link>
 
       {!isLoggedIn && (

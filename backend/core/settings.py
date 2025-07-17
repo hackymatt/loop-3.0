@@ -95,14 +95,14 @@ INSTALLED_APPS = [
     "user.type.admin_user",
     "user.type.student_user",
     "user.type.instructor_user",
-    "course.level",
-    "course.technology",
-    "course.category",
-    "course.lesson",
-    "course.chapter",
-    "course.enrollment",
-    "course.progress.apps.CourseProgressConfig",
-    "course",
+    "project.level",
+    "project.technology",
+    "project.category",
+    "project.substep",
+    "project.step",
+    "project.enrollment",
+    "project.progress.apps.ProjectProgressConfig",
+    "project",
     "review",
     "blog.topic",
     "blog.tag",
@@ -339,16 +339,16 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["console", "file"],
-            "level": "DEBUG",  # <-- zmienione
+            "level": "INFO" if DEBUG else "DEBUG",
             "propagate": True,
         },
         "core": {
             "handlers": ["console", "file"],
-            "level": "DEBUG",  # <-- zmienione
+            "level": "INFO" if DEBUG else "DEBUG",
             "propagate": False,
         },
         "django.request": {
-            "handlers": ["error_file", "console"],  # <-- dodaj console
+            "handlers": ["error_file", "console"],  
             "level": "ERROR",
             "propagate": False,
         },

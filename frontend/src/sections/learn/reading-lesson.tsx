@@ -1,4 +1,4 @@
-import type { IReadingLessonProps } from "src/types/lesson";
+import type { IReadingSubstepProps } from "src/types/substep";
 
 import React from "react";
 import { m } from "framer-motion";
@@ -13,29 +13,29 @@ import { Markdown } from "src/components/markdown";
 
 // ----------------------------------------------------------------------
 
-type ReadingLessonProps = {
-  lesson: IReadingLessonProps;
+type ReadingSubstepProps = {
+  substep: IReadingSubstepProps;
   onSubmit: () => void;
   isLocked?: boolean;
 };
 
 // ----------------------------------------------------------------------
 
-export const ReadingLesson = React.memo(function ReadingLesson({
-  lesson,
+export const ReadingSubstep = React.memo(function ReadingSubstep({
+  substep,
   onSubmit,
   isLocked = false,
-}: ReadingLessonProps) {
+}: ReadingSubstepProps) {
   const { t } = useTranslation("learn");
 
   const renderHeader = () => (
     <Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Typography variant="h4">{lesson.name}</Typography>
-        <Label color="warning">{lesson.totalPoints} XP</Label>
+        <Typography variant="h4">{substep.name}</Typography>
+        <Label color="warning">{substep.totalPoints} XP</Label>
       </Box>
       <Typography variant="subtitle2" color="text.secondary">
-        ⏱ {t("reading.estimatedTime")}: {lesson.duration} min
+        ⏱ {t("reading.estimatedTime")}: {substep.duration} min
       </Typography>
     </Box>
   );
@@ -54,7 +54,7 @@ export const ReadingLesson = React.memo(function ReadingLesson({
           ))}
         </>
       ) : (
-        <Markdown key={lesson.text} content={lesson.text} />
+        <Markdown key={substep.text} content={substep.text} />
       )}
     </m.div>
   );

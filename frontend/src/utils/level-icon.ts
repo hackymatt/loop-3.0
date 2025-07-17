@@ -1,4 +1,4 @@
-import type { LevelType } from "src/types/course";
+import type { LevelType } from "src/types/project";
 
 import { LEVEL_TYPE } from "src/consts/level";
 

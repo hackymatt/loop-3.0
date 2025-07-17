@@ -1,8 +1,8 @@
+import type { Language } from "src/locales/types";
 import type { GetQueryResponse } from "src/api/types";
 import type { ITestimonialProps } from "src/types/testimonial";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
 
 import { getSimpleListData } from "src/api/utils";
 
@@ -22,12 +22,14 @@ type IReview = {
   created_at: string;
 };
 
-export const featuredReviewsQuery = () => {
+export const featuredReviewsQuery = (language: Language) => {
   const url = endpoint;
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<ITestimonialProps[]>> => {
-    const results = await getSimpleListData<IReview>(queryUrl);
+    const results = await getSimpleListData<IReview>(queryUrl, {
+      headers: { "Accept-Language": language },
+    });
     const modifiedResults: ITestimonialProps[] = (results ?? []).map(
       ({ student, comment, created_at, ...rest }: IReview) => ({
         ...rest,
@@ -43,13 +45,4 @@ export const featuredReviewsQuery = () => {
   };
 
   return { url, queryFn, queryKey: compact([url]) };
-};
-
-export const useFeaturedReviews = (enabled: boolean = true) => {
-  const { queryKey, queryFn } = featuredReviewsQuery();
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return {
-    data: data?.results,
-    ...rest,
-  };
 };

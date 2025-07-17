@@ -39,7 +39,7 @@ export function ReviewSummary({
   onOpenForm,
   ...other
 }: Props) {
-  const { t } = useTranslation("course");
+  const { t } = useTranslation("project");
   const { t: locale } = useTranslation("locale");
 
   const { trackEvent } = useAnalytics();

@@ -30,7 +30,7 @@ export function LoginButton({ slotProps, sx }: LoginButtonProps) {
     <Button
       variant="outlined"
       size="small"
-      href={localize(paths.login)}
+      href={localize(paths.auth.login)}
       onClick={() => trackEvent({ category: "auth", label: "login" })}
       {...slotProps?.button}
       sx={[

@@ -1,6 +1,6 @@
 import type { JOIN_TYPE, USER_TYPE } from "src/consts/user";
 
-import type { ICourseListProps } from "./course";
+import type { IProjectListProps } from "./project";
 import type { ICertificateProps } from "./certificate";
 
 // ----------------------------------------------------------------------
@@ -23,6 +23,6 @@ export type IInstructorProps = IUserProps & {
 export type IDashboardProps = {
   totalPoints: number;
   dailyStreak: number;
-  courses: ICourseListProps[];
+  projects: IProjectListProps[];
   certificates: ICertificateProps[];
 };

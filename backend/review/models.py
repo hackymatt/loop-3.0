@@ -2,7 +2,7 @@ from django.db import models
 from core.base_model import BaseModel
 from django.core.validators import MinValueValidator, MaxValueValidator
 from user.type.student_user.models import Student
-from course.models import Course
+from project.models import Project
 from const import Language
 from global_config import CONFIG
 
@@ -18,7 +18,7 @@ class Review(BaseModel):
     student = models.ForeignKey(
         Student, on_delete=models.SET(get_dummy_student), related_name="reviews"
     )
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="reviews")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="reviews")
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
@@ -29,11 +29,11 @@ class Review(BaseModel):
     )
 
     def __str__(self):
-        return f"{self.student.user.email} - {self.course.slug} ({self.rating}/5)"  # pragma: no cover
+        return f"{self.student.user.email} - {self.project.slug} ({self.rating}/5)"  # pragma: no cover
 
     class Meta:
         db_table = "review"
         unique_together = (
             "student",
-            "course",
-        )  # A student can review a course only once
+            "project",
+        )  # A student can review a project only once

@@ -1,4 +1,4 @@
-import type { IVideoLessonProps } from "src/types/lesson";
+import type { IVideoSubstepProps } from "src/types/substep";
 
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -12,22 +12,22 @@ import { Iconify } from "src/components/iconify";
 
 // ----------------------------------------------------------------------
 
-type VideoLessonProps = { lesson: IVideoLessonProps; onSubmit: () => void; isLocked?: boolean };
+type VideoSubstepProps = { substep: IVideoSubstepProps; onSubmit: () => void; isLocked?: boolean };
 
 // ----------------------------------------------------------------------
 
-export const VideoLesson = React.memo(function VideoLesson({
-  lesson,
+export const VideoSubstep = React.memo(function VideoSubstep({
+  substep,
   onSubmit,
   isLocked = false,
-}: VideoLessonProps) {
+}: VideoSubstepProps) {
   const { t } = useTranslation("learn");
 
   const renderHeader = () => (
     <Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Typography variant="h4">{lesson.name}</Typography>
-        <Label color="warning">{lesson.totalPoints} XP</Label>
+        <Typography variant="h4">{substep.name}</Typography>
+        <Label color="warning">{substep.totalPoints} XP</Label>
       </Box>
     </Box>
   );
@@ -54,7 +54,7 @@ export const VideoLesson = React.memo(function VideoLesson({
         {isLocked ? (
           <Skeleton variant="rectangular" sx={{ borderRadius: 2, width: 1, height: 1 }} />
         ) : (
-          <Player controls url={lesson.videoUrl} width="100%" height="100%" />
+          <Player controls url={substep.videoUrl} width="100%" height="100%" />
         )}
       </Box>
     </Box>

@@ -9,14 +9,14 @@ from const import Urls
 
 urlpatterns = [
     path(
-        Urls.COURSE_REVIEW_SUMMARY,
+        Urls.Project_REVIEW_SUMMARY,
         ReviewSummaryViewSet.as_view({"get": "list"}),
         name="reviews-summary",
     ),
     path(
-        Urls.COURSE_REVIEWS,
+        Urls.Project_REVIEWS,
         ReviewViewSet.as_view({"get": "list"}),
-        name="course-reviews",
+        name="project-reviews",
     ),
     path(Urls.FEATURED_REVIEWS, FeaturedReviewsView.as_view(), name="featured-reviews"),
     path(Urls.REVIEW_SUBMIT, SubmitReviewView.as_view(), name="submit-review"),

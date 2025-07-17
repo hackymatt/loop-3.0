@@ -17,14 +17,11 @@ import { CONFIG } from "src/global-config";
 
 import { Logo } from "src/components/logo";
 
-import { langs } from "../langs-config";
 import { AuthCenteredContent } from "./content";
 import { MainSection } from "../core/main-section";
 import { LayoutSection } from "../core/layout-section";
 import { HeaderSection } from "../core/header-section";
-import { ThemeButton } from "../components/theme-button";
 import { SettingsButton } from "../components/settings-button";
-import { LanguagePopover } from "../components/language-popover";
 
 import type { AuthCenteredContentProps } from "./content";
 import type { MainSectionProps } from "../core/main-section";
@@ -76,14 +73,8 @@ export function AuthCenteredLayout({
             {t("help")}
           </Link>
 
-          {/** @slot Language popover */}
-          <LanguagePopover data={langs} />
-
-          {/** @slot Theme button */}
-          {CONFIG.isLocal && <ThemeButton />}
-
           {/** @slot Settings button */}
-          {CONFIG.isLocal && <SettingsButton />}
+          <SettingsButton />
         </Box>
       ),
     };

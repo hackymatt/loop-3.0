@@ -9,7 +9,7 @@ from review.serializers import (
 )
 from .models import Review
 from django.db.models import Count, functions
-from course.models import Course
+from project.models import Project
 from django.shortcuts import get_object_or_404
 from user.type.student_user.models import Student
 
@@ -19,15 +19,15 @@ class ReviewSummaryViewSet(viewsets.ViewSet):
 
     def list(self, request, slug=None):
         """
-        Get the review summary (rating counts) for a specific course based on the slug.
+        Get the review summary (rating counts) for a specific project based on the slug.
         """
-        course = Course.objects.filter(slug=slug).first()
-        if not course:
+        project = Project.objects.filter(slug=slug).first()
+        if not project:
             return Response({}, status=404)
 
-        # Get the review summary for the course
+        # Get the review summary for the project
         review_summary = (
-            Review.objects.filter(course=course)
+            Review.objects.filter(project=project)
             .values("rating")
             .annotate(count=Count("rating"))
             .order_by("rating")
@@ -43,9 +43,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
-        course_slug = self.kwargs["slug"]
-        course = get_object_or_404(Course, slug=course_slug, active=True)
-        return Review.objects.filter(course=course).order_by("-created_at")
+        project_slug = self.kwargs["slug"]
+        project = get_object_or_404(Project, slug=project_slug, active=True)
+        return Review.objects.filter(project=project).order_by("-created_at")
 
 
 class FeaturedReviewsView(views.APIView):
@@ -54,7 +54,7 @@ class FeaturedReviewsView(views.APIView):
         reviews = (
             Review.objects.filter(rating=5, language=lang)
             .annotate(comment_length=functions.Length("comment"))
-            .select_related("course", "student", "student__user")
+            .select_related("project", "student", "student__user")
             .order_by("-comment_length")
         )
         serializer = ReviewSerializer(reviews, many=True, context={"request": request})
@@ -67,7 +67,7 @@ class SubmitReviewView(views.APIView):
     def post(self, request):
         student = get_object_or_404(Student, user=request.user)
         slug = request.data.get("slug")
-        course = get_object_or_404(Course, slug=slug, active=True)
+        project = get_object_or_404(Project, slug=slug, active=True)
 
         rating = request.data.get("rating")
         comment = request.data.get("comment", "")
@@ -81,7 +81,7 @@ class SubmitReviewView(views.APIView):
         # update_or_create logika
         review, created = Review.objects.update_or_create(
             student=student,
-            course=course,
+            project=project,
             defaults={"rating": rating, "comment": comment, "language": language},
         )
 

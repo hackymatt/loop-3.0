@@ -64,7 +64,7 @@ function ElearningHeroIllustration({ sx, ...other }: BoxProps) {
     <Box
       component="img"
       alt="Teacher hero"
-      src={`${CONFIG.assetsDir}/assets/images/course/teacher-hero.webp`}
+      src={`${CONFIG.assetsDir}/assets/images/project/teacher-hero.webp`}
       sx={{
         ...baseStyles,
         right: 18,

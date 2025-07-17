@@ -1,10 +1,9 @@
 "use client";
 
-import { useTranslation } from "react-i18next";
+import type { ITestimonialProps } from "src/types/testimonial";
+import type { IBlogRecentProps, IBlogFeaturedPost } from "src/types/blog";
 
-import { useRecentPosts } from "src/api/blog/recent";
-import { useFeaturedPosts } from "src/api/blog/featured";
-import { useFeaturedReviews } from "src/api/review/featured";
+import { useTranslation } from "react-i18next";
 
 import { Faqs } from "../faqs";
 import { Testimonial } from "../testimonial";
@@ -17,14 +16,20 @@ import type { IFaqProps } from "../support/types";
 
 // ----------------------------------------------------------------------
 
-export function AboutView() {
+type AboutViewProps = {
+  data: {
+    featuredReviews: ITestimonialProps[];
+    featuredPosts: IBlogFeaturedPost[];
+    recentPosts: IBlogRecentProps[];
+  };
+};
+
+export function AboutView({ data }: AboutViewProps) {
   const { t } = useTranslation("faq");
   const faq = t("faq", { returnObjects: true }) as IFaqProps[];
-  const courses = faq.filter((f) => f.id === "courses")[0].content;
+  const projects = faq.filter((f) => f.id === "projects")[0].content;
 
-  const { data: featuredReviews } = useFeaturedReviews();
-  const { data: featuredPosts } = useFeaturedPosts();
-  const { data: recentPosts } = useRecentPosts();
+  const { featuredReviews, featuredPosts, recentPosts } = data;
 
   return (
     <>
@@ -36,7 +41,7 @@ export function AboutView() {
 
       {!!featuredReviews?.length && <Testimonial testimonials={featuredReviews || []} />}
 
-      <Faqs data={courses} />
+      <Faqs data={projects} />
 
       {!!featuredPosts?.length && !!recentPosts?.length && (
         <LatestPosts

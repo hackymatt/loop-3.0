@@ -15,17 +15,17 @@ export const URLS = {
   // CONTACT
   CONTACT: "/contact",
   // COURSE
-  COURSES: "/courses",
-  COURSE_CATEGORIES: "/course-categories",
-  COURSE_LEVELS: "/course-levels",
-  COURSE_TECHNOLOGIES: "/course-technologies",
-  SIMILAR_COURSES: "/similar-courses",
+  PROJECTS: "/projects",
+  COURSE_CATEGORIES: "/project-categories",
+  COURSE_LEVELS: "/project-levels",
+  COURSE_TECHNOLOGIES: "/project-technologies",
+  SIMILAR_PROJECTS: "/similar-projects",
   // LESSON
-  LESSON: "/lesson",
-  LESSON_PROGRESS: "/lesson/progress",
-  LESSON_SUBMIT: "/lesson/submit",
-  LESSON_ANSWER: "/lesson/answer",
-  LESSON_HINT: "/lesson/hint",
+  LESSON: "/substep",
+  LESSON_PROGRESS: "/substep/progress",
+  LESSON_SUBMIT: "/substep/submit",
+  LESSON_ANSWER: "/substep/answer",
+  LESSON_HINT: "/substep/hint",
   // REVIEWS
   REVIEWS: "/reviews",
   REVIEWS_SUMMARY: "/reviews-summary",
@@ -37,7 +37,7 @@ export const URLS = {
   RECENT_POSTS: "/recent-posts",
   // FEATURED
   FEATURED_TECHNOLOGIES: "/featured-technologies",
-  FEATURED_COURSES: "/featured-courses",
+  FEATURED_PROJECTS: "/featured-projects",
   FEATURED_REVIEWS: "/featured-reviews",
   FEATURED_POST: "/featured-post",
   // PLAN

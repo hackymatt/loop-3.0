@@ -106,7 +106,7 @@ export function ResetPasswordView() {
         {renderForm()}
       </Form>
 
-      <FormReturnLink href={localize(paths.login)} label={t("link")} />
+      <FormReturnLink href={localize(paths.auth.login)} label={t("link")} />
     </>
   );
 }

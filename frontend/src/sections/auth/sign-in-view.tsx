@@ -57,7 +57,7 @@ export function SignInView() {
           isLoggedIn: false,
           email: data.email,
         });
-        router.push(localize(paths.activate));
+        router.push(localize(paths.auth.activate));
       } else {
         const { email, first_name, last_name, image, user_type, join_type, is_active, plan } =
           responseData;
@@ -88,7 +88,7 @@ export function SignInView() {
         description={
           <>
             {`${t("subtitle")} `}
-            <Link component={RouterLink} href={localize(paths.register)} variant="subtitle2">
+            <Link component={RouterLink} href={localize(paths.auth.register)} variant="subtitle2">
               {t("link")}
             </Link>
           </>

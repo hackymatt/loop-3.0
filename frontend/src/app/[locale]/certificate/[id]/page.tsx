@@ -34,15 +34,15 @@ export async function generateMetadata({
 
     const certificate = await res.json();
 
-    const { student_name: studentName, course_name: courseName } = certificate;
+    const { student_name: studentName, project_name: projectName } = certificate;
 
     const title = translations.meta.certificate.title
       .replace("[studentName]", studentName)
-      .replace("[courseName]", courseName);
+      .replace("[projectName]", projectName);
 
     const description = translations.meta.certificate.description
       .replace("[studentName]", studentName)
-      .replace("[courseName]", courseName);
+      .replace("[projectName]", projectName);
 
     return createMetadata({ title, description, path: `${path}/${params.id}` });
   } catch {

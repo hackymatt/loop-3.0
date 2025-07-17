@@ -1,18 +1,16 @@
 "use client";
 
+import type { IPlanProps } from "src/types/plan";
 import type { FabProps } from "@mui/material/Fab";
 import type { UseBackToTopReturn } from "minimal-shared/hooks";
+import type { ITestimonialProps } from "src/types/testimonial";
+import type { IBlogRecentProps, IBlogFeaturedPost } from "src/types/blog";
+import type { IProjectListProps, IProjectTechnologyProp } from "src/types/project";
 
 import { useBackToTop } from "minimal-shared/hooks";
 
 import Fab from "@mui/material/Fab";
 import SvgIcon from "@mui/material/SvgIcon";
-
-import { useRecentPosts } from "src/api/blog/recent";
-import { useFeaturedPosts } from "src/api/blog/featured";
-import { useFeaturedCourses } from "src/api/course/featured";
-import { useFeaturedReviews } from "src/api/review/featured";
-import { useFeaturedTechnologies } from "src/api/course/technology/featured";
 
 import { ScrollProgress, useScrollProgress } from "src/components/animate/scroll-progress";
 
@@ -25,21 +23,34 @@ import { HomeLatestPosts } from "../_home/home-latest-posts";
 import { HomeDownloadApp } from "../_home/home-download-app";
 import { HomeTestimonials } from "../_home/home-testimonials";
 import { HomeAdvertisement } from "../_home/home-advertisement";
-import { HomeFeaturedCourses } from "../_home/home-featured-courses";
+import { HomeFeaturedProjects } from "../_home/home-featured-projects";
 import { HomeFeatureTechnologies } from "../_home/home-feature-technologies";
 
 // ----------------------------------------------------------------------
+type HomeViewProps = {
+  data: {
+    featuredProjects: IProjectListProps[];
+    featuredTechnologies: IProjectTechnologyProp[];
+    featuredReviews: ITestimonialProps[];
+    featuredPosts: IBlogFeaturedPost[];
+    recentPosts: IBlogRecentProps[];
+    plans: IPlanProps[];
+  };
+};
 
-export function HomeView() {
+export function HomeView({ data }: HomeViewProps) {
   const pageProgress = useScrollProgress();
 
   const { onBackToTop, isVisible } = useBackToTop("90%");
 
-  const { data: featuredCourses } = useFeaturedCourses();
-  const { data: featuredTechnologies } = useFeaturedTechnologies();
-  const { data: featuredReviews } = useFeaturedReviews();
-  const { data: featuredPosts } = useFeaturedPosts();
-  const { data: recentPosts } = useRecentPosts();
+  const {
+    featuredProjects,
+    featuredTechnologies,
+    featuredReviews,
+    featuredPosts,
+    recentPosts,
+    plans,
+  } = data;
 
   return (
     <>
@@ -57,13 +68,13 @@ export function HomeView() {
 
       <HomeCertificate />
 
-      {!!featuredCourses?.length && <HomeFeaturedCourses courses={featuredCourses} />}
+      {!!featuredProjects?.length && <HomeFeaturedProjects projects={featuredProjects} />}
 
       {!!featuredTechnologies?.length && (
         <HomeFeatureTechnologies technologies={featuredTechnologies} />
       )}
 
-      <HomePricing />
+      <HomePricing plans={plans} />
 
       <HomeFAQs />
 

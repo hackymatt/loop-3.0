@@ -85,7 +85,12 @@ export function AboutHero({ sx, ...other }: BoxProps) {
               {t("hero.subtitle")}
             </Typography>
 
-            <Button variant="contained" size="large" color="primary" href={localize(paths.courses)}>
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              href={localize(paths.projects)}
+            >
               {t("hero.button")}
             </Button>
           </Grid>
@@ -93,8 +98,8 @@ export function AboutHero({ sx, ...other }: BoxProps) {
           <Grid size={{ xs: 12, md: 6, lg: 6 }}>
             <Box
               component="img"
-              alt="Courses online"
-              src={`${CONFIG.assetsDir}/assets/illustrations/illustration-courses-hero.svg`}
+              alt="Projects online"
+              src={`${CONFIG.assetsDir}/assets/illustrations/illustration-projects-hero.svg`}
             />
           </Grid>
         </Grid>

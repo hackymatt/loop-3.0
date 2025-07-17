@@ -22,7 +22,7 @@ import {
   _sentences,
   _firstNames,
   _postTitles,
-  _courseNames,
+  _projectNames,
   _fullAddress,
   _phoneNumbers,
   _descriptions,
@@ -38,7 +38,7 @@ export const _mock = {
   boolean: (index: number) => _booleans[index],
   role: (index: number) => _roles[index],
   // Text
-  courseNames: (index: number) => _courseNames[index],
+  projectNames: (index: number) => _projectNames[index],
   taskNames: (index: number) => _taskNames[index],
   postTitle: (index: number) => _postTitles[index],
   jobTitle: (index: number) => _jobTitles[index],
@@ -68,7 +68,8 @@ export const _mock = {
   // Media
   image: {
     cover: (index: number) => `${CONFIG.assetsDir}/assets/images/cover/cover-${index + 1}.webp`,
-    course: (index: number) => `${CONFIG.assetsDir}/assets/images/course/course-${index + 1}.webp`,
+    project: (index: number) =>
+      `${CONFIG.assetsDir}/assets/images/project/project-${index + 1}.webp`,
     avatar: (index: number) => `${CONFIG.assetsDir}/assets/images/avatar/avatar-${index + 1}.webp`,
     travel: (index: number) => `${CONFIG.assetsDir}/assets/images/travel/travel-${index + 1}.webp`,
     career: (index: number) => `${CONFIG.assetsDir}/assets/images/career/career-${index + 1}.webp`,

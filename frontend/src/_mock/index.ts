@@ -16,7 +16,7 @@ export * from "./_members";
 
 export * from "./_pricing";
 
-export * from "./_courses";
+export * from "./_projects";
 
 export * from "./_products";
 

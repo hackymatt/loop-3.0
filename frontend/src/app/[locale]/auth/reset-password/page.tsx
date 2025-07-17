@@ -16,7 +16,9 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   const translations = await import(`public/locales/${params.locale}/reset-password.json`);
 
   const path =
-    params.locale === LANGUAGE.PL ? paths.resetPassword : `/${LANGUAGE.EN}${paths.resetPassword}`;
+    params.locale === LANGUAGE.PL
+      ? paths.auth.resetPassword
+      : `/${LANGUAGE.EN}${paths.auth.resetPassword}`;
 
   return createMetadata({
     title: translations.meta.title,

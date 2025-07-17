@@ -6,7 +6,7 @@ import { Box, Container } from "@mui/material";
 import { useDashboard } from "src/api/me/dashboard";
 
 import { ProfileSummary } from "../dashboard/profile-summary";
-import { CoursesProgress } from "../dashboard/courses-progress";
+import { ProjectsProgress } from "../dashboard/projects-progress";
 import { CertificatesProgress } from "../dashboard/certificates-progress";
 
 // ----------------------------------------------------------------------
@@ -32,7 +32,7 @@ export function DashboardView() {
           mb: 1,
         }}
       >
-        <CoursesProgress courses={dashboard?.courses || []} />
+        <ProjectsProgress projects={dashboard?.projects || []} />
 
         <CertificatesProgress certificates={dashboard?.certificates || []} />
       </Box>

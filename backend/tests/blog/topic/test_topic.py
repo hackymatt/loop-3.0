@@ -16,7 +16,7 @@ class TopicViewTest(TestCase):
         self.admin, self.admin_password = create_admin()
         self.student, self.student_password = create_student()
 
-        # Create a course topic and translations
+        # Create a project topic and translations
         self.topic = create_topic()
 
     # CREATE (Only Admin)
@@ -39,8 +39,8 @@ class TopicViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     # READ (Allowed for Everyone)
-    def test_get_course_topics_regular_user(self):
-        """Ensure users can fetch course topics in their preferred language."""
+    def test_get_project_topics_regular_user(self):
+        """Ensure users can fetch project topics in their preferred language."""
         login(self, self.student.user.email, self.student_password)
         self.client.credentials(HTTP_ACCEPT_LANGUAGE="pl")
         response = self.client.get(self.url, format="json")
@@ -52,7 +52,7 @@ class TopicViewTest(TestCase):
             self.topic.get_translation("pl").name,
         )
 
-    def test_get_course_topics_anonymous(self):
+    def test_get_project_topics_anonymous(self):
         response = self.client.get(self.url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["results"]), 1)
@@ -63,7 +63,7 @@ class TopicViewTest(TestCase):
 
     # UPDATE TRANSLATION (Only Admin)
     def test_update_topic_translation_admin(self):
-        """Ensure admins can update translations for existing course topics."""
+        """Ensure admins can update translations for existing project topics."""
         login(self, self.admin.user.email, self.admin_password)
         data = {"slug": "backend", "language": "pl", "name": "Backend"}
         url = f"{self.url}/{self.topic.id}"

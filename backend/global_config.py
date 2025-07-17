@@ -3,7 +3,6 @@ from django.conf import settings
 CONFIG = {
     "secret": settings.SECRET_KEY,
     "is_local": settings.LOCAL,
-    "broker_url": settings.BROKER_URL,
     "language": settings.LANGUAGE_CODE,
     "storages": settings.STORAGES,
     "admin_email": settings.ADMIN_EMAIL,

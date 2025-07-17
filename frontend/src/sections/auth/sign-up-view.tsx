@@ -63,7 +63,7 @@ export function SignUpView({ header, buttonText = "Utwórz konto" }: Props) {
       const { email, password } = data;
       await register({ email, password });
       user.setState({ email });
-      router.push(localize(paths.activate));
+      router.push(localize(paths.auth.activate));
       reset();
     } catch (error) {
       handleFormError(error);
@@ -80,7 +80,7 @@ export function SignUpView({ header, buttonText = "Utwórz konto" }: Props) {
           description={
             <>
               {`${t("subtitle")} `}
-              <Link component={RouterLink} href={localize(paths.login)} variant="subtitle2">
+              <Link component={RouterLink} href={localize(paths.auth.login)} variant="subtitle2">
                 {t("link")}
               </Link>
             </>

@@ -9,6 +9,6 @@
   "review": { "label": "Review (optional)" },
   "congratulations": {
     "label": "Congratulations",
-    "text": "You've successfully completed the course. We'd love to hear what you think!"
+    "text": "You've successfully completed the project. We'd love to hear what you think!"
   }
 }

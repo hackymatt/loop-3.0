@@ -1,8 +1,8 @@
+import type { Language } from "src/locales/types";
 import type { GetQueryResponse } from "src/api/types";
 import type { PlanType, IPlanProps } from "src/types/plan";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
 
 import { getSimpleListData } from "src/api/utils";
 
@@ -29,12 +29,14 @@ type IPlan = {
   options: IOption[];
 };
 
-export const plansQuery = () => {
+export const plansQuery = (language: Language) => {
   const url = endpoint;
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IPlanProps[]>> => {
-    const results = await getSimpleListData<IPlan>(queryUrl);
+    const results = await getSimpleListData<IPlan>(queryUrl, {
+      headers: { "Accept-Language": language },
+    });
     const modifiedResults: IPlanProps[] = (results ?? []).map(({ slug, ...rest }: IPlan) => ({
       ...rest,
       slug: slug as PlanType,
@@ -43,13 +45,4 @@ export const plansQuery = () => {
   };
 
   return { url, queryFn, queryKey: compact([url]) };
-};
-
-export const usePlans = (enabled: boolean = true) => {
-  const { queryKey, queryFn } = plansQuery();
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return {
-    data: data?.results,
-    ...rest,
-  };
 };

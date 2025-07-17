@@ -51,36 +51,36 @@
       ]
     },
     {
-      "id": "courses",
-      "title": "Courses",
+      "id": "projects",
+      "title": "Projects",
       "icon": "solar:tag-price-bold",
       "content": [
         {
-          "question": "How do courses work on the platform?",
-          "answer": "Courses consist of interactive lessons that you complete at your own pace. These are not live classes – you learn whenever you want."
+          "question": "How do projects work on the platform?",
+          "answer": "Projects consist of interactive substeps that you complete at your own pace. These are not live classes – you learn whenever you want."
         },
         {
           "question": "Do I need to install any additional software?",
           "answer": "No. Everything runs in your browser. You just need a computer or tablet with internet access."
         },
         {
-          "question": "Can I pause a course and continue later?",
-          "answer": "Yes. Your progress is saved automatically, so you can return to the course at any time."
+          "question": "Can I pause a project and continue later?",
+          "answer": "Yes. Your progress is saved automatically, so you can return to the project at any time."
         },
         {
-          "question": "Do the courses include practical tasks?",
-          "answer": "Yes. Each course includes interactive exercises and tasks that you can complete directly in your browser."
+          "question": "Do the projects include practical tasks?",
+          "answer": "Yes. Each project includes interactive exercises and tasks that you can complete directly in your browser."
         },
         {
-          "question": "Will I get a certificate after completing a course?",
-          "answer": "Yes. After completing a course on the Basic or Premium plan, you’ll receive a certificate that you can download or share."
+          "question": "Will I get a certificate after completing a project?",
+          "answer": "Yes. After completing a project on the Basic or Premium plan, you’ll receive a certificate that you can download or share."
         },
         {
-          "question": "Is access to courses time-limited?",
-          "answer": "No. Once you purchase access, you have unlimited time to complete the course within your chosen plan."
+          "question": "Is access to projects time-limited?",
+          "answer": "No. Once you purchase access, you have unlimited time to complete the project within your chosen plan."
         },
         {
-          "question": "Can I use the courses on my phone?",
+          "question": "Can I use the projects on my phone?",
           "answer": "Yes, our platform also works on mobile devices. For the best experience, we recommend using a tablet or computer."
         }
       ]
@@ -91,16 +91,16 @@
       "icon": "solar:diploma-bold",
       "content": [
         {
-          "question": "Will I get a certificate after completing a course?",
-          "answer": "Yes, after completing a course on the Basic or Premium plan, you'll receive a personalized certificate in PDF or PNG format."
+          "question": "Will I get a certificate after completing a project?",
+          "answer": "Yes, after completing a project on the Basic or Premium plan, you'll receive a personalized certificate in PDF or PNG format."
         },
         {
-          "question": "Is the certificate available immediately after completing the course?",
-          "answer": "Yes, the certificate is generated automatically once all lessons are completed. You can download it directly from the platform."
+          "question": "Is the certificate available immediately after completing the project?",
+          "answer": "Yes, the certificate is generated automatically once all substeps are completed. You can download it directly from the platform."
         },
         {
           "question": "What does the certificate look like?",
-          "answer": "The certificate includes your name, course title, completion date, and our programming school’s signature. You can add it to your CV or LinkedIn profile."
+          "answer": "The certificate includes your name, project title, completion date, and our programming school’s signature. You can add it to your CV or LinkedIn profile."
         },
         {
           "question": "Can I get a certificate with a free plan?",
@@ -112,7 +112,7 @@
         },
         {
           "question": "Are the certificates recognized by employers?",
-          "answer": "Certificates demonstrate course completion and practical skills gained. Many learners add them to their portfolio or LinkedIn profiles as proof of learning."
+          "answer": "Certificates demonstrate project completion and practical skills gained. Many learners add them to their portfolio or LinkedIn profiles as proof of learning."
         }
       ]
     },
@@ -123,7 +123,7 @@
       "content": [
         {
           "question": "How do I earn points on the platform?",
-          "answer": "You earn points by completing quizzes, tasks in courses, and finishing chapters and entire courses."
+          "answer": "You earn points by completing quizzes, tasks in projects, and finishing steps and entire projects."
         },
         {
           "question": "What are points used for?",
@@ -131,7 +131,7 @@
         },
         {
           "question": "Do points affect my certificate?",
-          "answer": "No. You receive a certificate after completing the course regardless of your points. However, points are a sign of active learning."
+          "answer": "No. You receive a certificate after completing the project regardless of your points. However, points are a sign of active learning."
         },
         {
           "question": "Can I lose earned points?",
@@ -166,7 +166,7 @@
         },
         {
           "question": "How can I cancel my subscription?",
-          "answer": "You can cancel your subscription at any time in the account settings under 'Subscription'. After cancellation, you'll retain access to courses until the end of the billing period."
+          "answer": "You can cancel your subscription at any time in the account settings under 'Subscription'. After cancellation, you'll retain access to projects until the end of the billing period."
         },
         {
           "question": "Are my payment details secure?",
@@ -174,7 +174,7 @@
         },
         {
           "question": "Do you offer a free trial?",
-          "answer": "Every user can start learning for free with our free plan, which gives access to one chapter of each course. It's a great way to test the platform before upgrading."
+          "answer": "Every user can start learning for free with our free plan, which gives access to one step of each project. It's a great way to test the platform before upgrading."
         },
         {
           "question": "What should I do if my payment was declined?",

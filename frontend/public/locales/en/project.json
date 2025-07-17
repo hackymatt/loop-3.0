@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "projects": {
+      "title": "Our Projects - Start learning programming with us",
+      "description": "We offer a wide selection of programming projects to help you gain practical skills in the latest technologies. Register now and start your journey in IT!"
+    },
+    "project": {
+      "title": "Project [name] - Start learning now",
+      "description": "Gain practical programming skills in [technologyName] with our [name] project. Register now and grow your IT career!"
+    }
+  },
+  "title": "Projects",
+  "filter": {
+    "level": "Skill levels",
+    "technology": "Technology",
+    "category": "Category",
+    "rating": { "title": "Rating", "more": "& Up" },
+    "status": {
+      "title": "Status",
+      "options": [
+        { "slug": "not-started", "name": "Not started" },
+        { "slug": "in-progress", "name": "In progress" },
+        { "slug": "completed", "name": "Completed" }
+      ]
+    }
+  },
+  "instructor": ["instructor"],
+  "student": ["student"],
+  "review": ["review"],
+  "hour": ["hour"],
+  "substep": ["substep"],
+  "video": ["video"],
+  "article": ["article"],
+  "exercise": ["exercise"],
+  "quiz": ["quiz"],
+  "sign-up": { "header": "Create your free account", "button": "Start learning for free" },
+  "start": "Start project for free",
+  "continue": "Continue project",
+  "access": "Lifetime access",
+  "certificate": {
+    "title": "Certificate of accomplishment",
+    "subtitle": "Include this credential on your LinkedIn profile, resume, or CV. Share it on social media and during your performance evaluation."
+  },
+  "chat": {
+    "title": "Chat",
+    "subtitle": "Join our project chat to get support and exchange experiences with other participants.",
+    "button": "Join the chat"
+  },
+  "preview": "Project Preview",
+  "prerequisites": {
+    "title": "Recommended Knowledge",
+    "none": "There are no prerequisites for this project."
+  },
+  "instructors": "Instructors",
+  "reviews": { "label": "Reviews", "button": "Write a review" },
+  "included": { "start": "Included with", "plans": "Basic and Premium" },
+  "overview": "Overview",
+  "similar": "Similar projects",
+  "viewAll": "View all",
+  "steps": {
+    "title": "Steps",
+    "start": "Start",
+    "continue": "Continue",
+    "show": "Show",
+    "hide": "Hide",
+    "substep": "substeps"
+  }
+}

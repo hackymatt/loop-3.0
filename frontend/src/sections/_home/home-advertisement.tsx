@@ -50,7 +50,7 @@ export function HomeAdvertisement({ sx, ...other }: BoxProps) {
       <Button
         size="large"
         variant="text"
-        href={localize(paths.register)}
+        href={localize(paths.auth.register)}
         endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
         sx={{ px: 2, borderRadius: "inherit" }}
       >
@@ -67,7 +67,7 @@ export function HomeAdvertisement({ sx, ...other }: BoxProps) {
           ...theme.mixins.bgGradient({
             images: [
               `linear-gradient(to bottom, ${varAlpha(theme.vars.palette.common.blackChannel, 0.72)}, ${varAlpha(theme.vars.palette.common.blackChannel, 0.72)})`,
-              `url(${CONFIG.assetsDir}/assets/images/course/course-large-2.webp)`,
+              `url(${CONFIG.assetsDir}/assets/images/project/project-large-2.webp)`,
             ],
           }),
           display: "flex",

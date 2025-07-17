@@ -82,7 +82,7 @@ export function SignInForm({
 
       <Link
         component={RouterLink}
-        href={paths.resetPassword}
+        href={paths.auth.resetPassword}
         variant="body2"
         color="inherit"
         sx={{ alignSelf: "flex-end" }}

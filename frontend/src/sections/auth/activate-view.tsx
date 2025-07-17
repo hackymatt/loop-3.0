@@ -46,7 +46,7 @@ export function ActivateView({ token }: { token: string | undefined }) {
         try {
           await activate({ token });
           user.setField("isActive", true);
-          router.push(localize(paths.login));
+          router.push(localize(paths.auth.login));
         } catch (error) {
           setState({ error: ((error as AxiosError).response?.data as { error: string }).error });
         }
@@ -66,7 +66,7 @@ export function ActivateView({ token }: { token: string | undefined }) {
       const { status } = await resend({ token, email: user.state.email || "" });
       user.setField("isActive", true);
       if (status === 200) {
-        router.push(localize(paths.login));
+        router.push(localize(paths.auth.login));
       }
     } catch (error) {
       setState({ error: ((error as AxiosError).response?.data as { root: string }).root });
@@ -104,7 +104,7 @@ export function ActivateView({ token }: { token: string | undefined }) {
         disabled={countdownSeconds.isCounting}
       />
 
-      <FormReturnLink href={localize(paths.login)} label={t("link")} />
+      <FormReturnLink href={localize(paths.auth.login)} label={t("link")} />
     </>
   );
 }

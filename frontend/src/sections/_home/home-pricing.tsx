@@ -11,8 +11,6 @@ import { Switch } from "@mui/material";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
-import { usePlans } from "src/api/plan/plans";
-
 import { varFade, MotionViewport } from "src/components/animate";
 
 import { PricingCard } from "../pricing/pricing-card";
@@ -21,11 +19,13 @@ import { PricingCard } from "../pricing/pricing-card";
 
 const variants: Variants = varFade("inUp", { distance: 24 });
 
-export function HomePricing({ sx, ...other }: BoxProps) {
+type HomePricingProps = {
+  plans: IPlanProps[];
+} & BoxProps;
+
+export function HomePricing({ plans, sx, ...other }: HomePricingProps) {
   const { t } = useTranslation("pricing");
   const { t: home } = useTranslation("home");
-
-  const { data: plans } = usePlans();
 
   const [isYearly, setIsYearly] = useState(true);
 

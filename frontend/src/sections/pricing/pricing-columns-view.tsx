@@ -11,17 +11,14 @@ import Switch from "@mui/material/Switch";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
-import { usePlans } from "src/api/plan/plans";
-
 import { PricingColumnHeader } from "./pricing-column-header";
 import { PricingColumnContentMobile, PricingColumnContentDesktop } from "./pricing-column-content";
 
 // ----------------------------------------------------------------------
+type PricingColumnsViewProps = { plans: IPlanProps[] };
 
-export function PricingColumnsView() {
+export function PricingColumnsView({ plans }: PricingColumnsViewProps) {
   const { t } = useTranslation("pricing");
-
-  const { data: plans } = usePlans();
 
   const [isYearly, setIsYearly] = useState(true);
 

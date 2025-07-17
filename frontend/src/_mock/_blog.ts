@@ -88,10 +88,10 @@ export const _careerPosts = Array.from({ length: 12 }, (_, index) => ({
   heroUrl: `${CONFIG.assetsDir}/assets/images/career/career-large-1.webp`,
 }));
 
-export const _coursePosts = Array.from({ length: 12 }, (_, index) => ({
+export const _projectPosts = Array.from({ length: 12 }, (_, index) => ({
   ...base(index),
-  content: content("course"),
-  heroUrl: _mock.image.course(index),
+  content: content("project"),
+  heroUrl: _mock.image.project(index),
   prevPost:
     index === 0
       ? null

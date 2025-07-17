@@ -13,7 +13,7 @@ const endpoint = URLS.CERTIFICATES;
 type ICertificate = {
   id: string;
   student_name: string;
-  course_name: string;
+  project_name: string;
   completed_at: string;
 };
 
@@ -23,12 +23,12 @@ export const certificateQuery = (id: string) => {
 
   const queryFn = async (): Promise<GetQueryResponse<ICertificateProps>> => {
     const { data } = await getData<ICertificate>(queryUrl);
-    const { student_name, course_name, completed_at, ...rest }: ICertificate = data;
+    const { student_name, project_name, completed_at, ...rest }: ICertificate = data;
 
     const modifiedResult: ICertificateProps = {
       ...rest,
       studentName: student_name,
-      courseName: course_name,
+      projectName: project_name,
       completedAt: completed_at,
     };
     return { results: modifiedResult };

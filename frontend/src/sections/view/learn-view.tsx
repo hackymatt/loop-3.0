@@ -5,11 +5,11 @@ import type { AxiosError } from "axios";
 import type { BoxProps } from "@mui/material";
 import type {
   IConfigProp,
-  IQuizLessonProps,
-  IVideoLessonProps,
-  ICodingLessonProps,
-  IReadingLessonProps,
-} from "src/types/lesson";
+  IQuizSubstepProps,
+  IVideoSubstepProps,
+  ICodingSubstepProps,
+  IReadingSubstepProps,
+} from "src/types/substep";
 
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
@@ -24,30 +24,30 @@ import { useWebSocket } from "src/hooks/use-websocket";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
-import { LESSON_TYPE } from "src/consts/lesson";
-import { useCourse } from "src/api/course/course";
-import { useLesson } from "src/api/course/lesson/lesson";
-import { useLessonHint } from "src/api/course/lesson/hint";
+import { LESSON_TYPE } from "src/consts/substep";
+import { useProject } from "src/api/project/project";
+import { useSubstep } from "src/api/project/substep/substep";
+import { useSubstepHint } from "src/api/project/substep/hint";
 import { useAccessToken } from "src/api/auth/access-token";
-import { useLessonSubmit } from "src/api/course/lesson/submit";
-import { useLessonAnswer } from "src/api/course/lesson/answer";
-import { useLessonProgress } from "src/api/course/lesson/progress";
+import { useSubstepSubmit } from "src/api/project/substep/submit";
+import { useSubstepAnswer } from "src/api/project/substep/answer";
+import { useSubstepProgress } from "src/api/project/substep/progress";
 
 import { SplashScreen } from "src/components/loading-screen";
 import { CustomBreadcrumbs } from "src/components/custom-breadcrumbs";
 
-import { QuizLesson } from "../learn/quiz-lesson";
-import { VideoLesson } from "../learn/video-lesson";
-import { CodingLesson } from "../learn/coding-lesson";
+import { QuizSubstep } from "../learn/quiz-substep";
+import { VideoSubstep } from "../learn/video-substep";
+import { CodingSubstep } from "../learn/coding-substep";
 import { NotFoundView } from "../error/not-found-view";
-import { ReadingLesson } from "../learn/reading-lesson";
+import { ReadingSubstep } from "../learn/reading-substep";
 import { UpgradeBanner } from "../learn/upgrade-banner";
 import { ArrowBasicButtons } from "../learn/arrow-buttons/arrow-buttons";
 
 interface LearnViewProps {
-  courseSlug: string;
-  chapterSlug: string;
-  lessonSlug: string;
+  projectSlug: string;
+  stepSlug: string;
+  substepSlug: string;
 }
 
 const ContentBox = ({ children, sx }: { children: ReactNode; sx?: BoxProps["sx"] }) => (
@@ -72,23 +72,23 @@ const ContentBox = ({ children, sx }: { children: ReactNode; sx?: BoxProps["sx"]
   </Box>
 );
 
-export function LearnView({ courseSlug, chapterSlug, lessonSlug }: LearnViewProps) {
+export function LearnView({ projectSlug, stepSlug, substepSlug }: LearnViewProps) {
   const { t } = useTranslation("learn");
   const localize = useLocalizedPath();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
   const {
-    data: courseData,
-    isLoading: isLoadingCourse,
-    isError: isErrorCourse,
-  } = useCourse(courseSlug);
+    data: projectData,
+    isLoading: isLoadingProject,
+    isError: isErrorProject,
+  } = useProject(projectSlug);
   const {
-    data: lessonData,
-    isLoading: isLoadingLesson,
-    isError: isErrorLesson,
-    error: lessonError,
-  } = useLesson(courseSlug, chapterSlug, lessonSlug);
+    data: substepData,
+    isLoading: isLoadingSubstep,
+    isError: isErrorSubstep,
+    error: substepError,
+  } = useSubstep(projectSlug, stepSlug, substepSlug);
   const { refetch: getToken } = useAccessToken(false);
 
   const { connect, disconnect, isRunning } = useWebSocket({
@@ -101,91 +101,91 @@ export function LearnView({ courseSlug, chapterSlug, lessonSlug }: LearnViewProp
     onClose: () => setLogs((prev) => [...prev, t("coding.logs.close")]),
   });
 
-  const { mutateAsync: saveProgress } = useLessonProgress();
-  const { mutateAsync: submit } = useLessonSubmit();
-  const { mutateAsync: showAnswer } = useLessonAnswer();
-  const { mutateAsync: showHint } = useLessonHint();
+  const { mutateAsync: saveProgress } = useSubstepProgress();
+  const { mutateAsync: submit } = useSubstepSubmit();
+  const { mutateAsync: showAnswer } = useSubstepAnswer();
+  const { mutateAsync: showHint } = useSubstepHint();
 
   const [error, setError] = useState<string>();
   const [logs, setLogs] = useState<any[]>([]);
 
-  const isLoading = isLoadingCourse || isLoadingLesson;
-  const isError = isErrorCourse || isErrorLesson;
-  const isLocked = (lessonError as AxiosError)?.status === 403;
+  const isLoading = isLoadingProject || isLoadingSubstep;
+  const isError = isErrorProject || isErrorSubstep;
+  const isLocked = (substepError as AxiosError)?.status === 403;
 
-  const allLessons = useMemo(
-    () => courseData?.chapters.flatMap((ch) => ch.lessons) ?? [],
-    [courseData?.chapters]
+  const allSubsteps = useMemo(
+    () => projectData?.steps.flatMap((ch) => ch.substeps) ?? [],
+    [projectData?.steps]
   );
-  const currentLessonIndex = useMemo(
-    () => allLessons.findIndex((l) => l.slug === lessonSlug),
-    [allLessons, lessonSlug]
+  const currentSubstepIndex = useMemo(
+    () => allSubsteps.findIndex((l) => l.slug === substepSlug),
+    [allSubsteps, substepSlug]
   );
-  const currentLessonInfo = useMemo(
-    () => allLessons[currentLessonIndex],
-    [allLessons, currentLessonIndex]
+  const currentSubstepInfo = useMemo(
+    () => allSubsteps[currentSubstepIndex],
+    [allSubsteps, currentSubstepIndex]
   );
-  const currentChapter = useMemo(
-    () => courseData?.chapters.find((ch) => ch.slug === chapterSlug),
-    [chapterSlug, courseData?.chapters]
+  const currentStep = useMemo(
+    () => projectData?.steps.find((ch) => ch.slug === stepSlug),
+    [stepSlug, projectData?.steps]
   );
 
   const navigateTo = useCallback(
     (index: number) => {
-      const lesson = allLessons[index];
-      const chapter = courseData?.chapters.find((ch) =>
-        ch.lessons.some((l) => l.slug === lesson?.slug)
+      const substep = allSubsteps[index];
+      const step = projectData?.steps.find((ch) =>
+        ch.substeps.some((l) => l.slug === substep?.slug)
       );
       router.push(
         localize(
-          lesson && chapter
-            ? `${paths.learn}/${courseSlug}/${chapter.slug}/${lesson.slug}`
-            : `${paths.course}/${courseSlug}`
+          substep && step
+            ? `${paths.learn}/${projectSlug}/${step.slug}/${substep.slug}`
+            : `${paths.project}/${projectSlug}`
         )
       );
     },
-    [allLessons, courseData?.chapters, courseSlug, localize, router]
+    [allSubsteps, projectData?.steps, projectSlug, localize, router]
   );
 
   const handleSaveProgress = useCallback(
     async (data: { answer: string | boolean[] }) => {
       try {
-        await saveProgress({ ...data, lesson: lessonSlug });
+        await saveProgress({ ...data, substep: substepSlug });
       } catch {
         enqueueSnackbar(t("errors.answer"), { variant: "error" });
       }
     },
-    [enqueueSnackbar, lessonSlug, saveProgress, t]
+    [enqueueSnackbar, substepSlug, saveProgress, t]
   );
 
   const handleSubmit = useCallback(
     async (data: { answer: string | boolean[] }) => {
       try {
-        await submit({ ...data, lesson: lessonSlug });
-        navigateTo(currentLessonIndex + 1);
+        await submit({ ...data, substep: substepSlug });
+        navigateTo(currentSubstepIndex + 1);
       } catch (err) {
         setError(((err as AxiosError).response?.data as { answer: string })?.answer);
         setLogs(((err as AxiosError).response?.data as { answer: string })?.answer[0].split("\n"));
       }
     },
-    [currentLessonIndex, lessonSlug, navigateTo, submit]
+    [currentSubstepIndex, substepSlug, navigateTo, submit]
   );
 
   const handleShowAnswer = useCallback(async () => {
     try {
-      await showAnswer({ lesson: lessonSlug });
+      await showAnswer({ substep: substepSlug });
     } catch {
       enqueueSnackbar(t("errors.answer"), { variant: "error" });
     }
-  }, [enqueueSnackbar, lessonSlug, showAnswer, t]);
+  }, [enqueueSnackbar, substepSlug, showAnswer, t]);
 
   const handleShowHint = useCallback(async () => {
     try {
-      await showHint({ lesson: lessonSlug });
+      await showHint({ substep: substepSlug });
     } catch {
       enqueueSnackbar(t("errors.hint"), { variant: "error" });
     }
-  }, [enqueueSnackbar, lessonSlug, showHint, t]);
+  }, [enqueueSnackbar, substepSlug, showHint, t]);
 
   const handleRunCode = useCallback(
     async (config: IConfigProp) => {
@@ -203,7 +203,7 @@ export function LearnView({ courseSlug, chapterSlug, lessonSlug }: LearnViewProp
   }
   if (isLoading) return <SplashScreen />;
 
-  const lessonType = currentLessonInfo?.type ?? LESSON_TYPE.READING;
+  const substepType = currentSubstepInfo?.type ?? LESSON_TYPE.READING;
 
   const Header = () => (
     <Box
@@ -217,27 +217,27 @@ export function LearnView({ courseSlug, chapterSlug, lessonSlug }: LearnViewProp
     >
       <CustomBreadcrumbs
         links={[
-          { name: courseData?.name, href: localize(`${paths.course}/${courseSlug}`) },
-          { name: currentChapter?.name },
-          { name: lessonData?.name },
+          { name: projectData?.name, href: localize(`${paths.project}/${projectSlug}`) },
+          { name: currentStep?.name },
+          { name: substepData?.name },
         ]}
       />
       <ArrowBasicButtons
-        disablePrev={currentLessonIndex <= 0}
-        disableNext={currentLessonIndex >= allLessons.length - 1}
-        onClickPrev={() => navigateTo(currentLessonIndex - 1)}
-        onClickNext={() => navigateTo(currentLessonIndex + 1)}
+        disablePrev={currentSubstepIndex <= 0}
+        disableNext={currentSubstepIndex >= allSubsteps.length - 1}
+        onClickPrev={() => navigateTo(currentSubstepIndex - 1)}
+        onClickNext={() => navigateTo(currentSubstepIndex + 1)}
       />
     </Box>
   );
 
   const Content = () => {
-    switch (lessonType) {
+    switch (substepType) {
       case LESSON_TYPE.READING:
         return (
           <ContentBox>
-            <ReadingLesson
-              lesson={lessonData as IReadingLessonProps}
+            <ReadingSubstep
+              substep={substepData as IReadingSubstepProps}
               onSubmit={() => handleSubmit({ answer: "" })}
               isLocked={isLocked}
             />
@@ -246,8 +246,8 @@ export function LearnView({ courseSlug, chapterSlug, lessonSlug }: LearnViewProp
       case LESSON_TYPE.VIDEO:
         return (
           <ContentBox>
-            <VideoLesson
-              lesson={lessonData as IVideoLessonProps}
+            <VideoSubstep
+              substep={substepData as IVideoSubstepProps}
               onSubmit={() => handleSubmit({ answer: "" })}
               isLocked={isLocked}
             />
@@ -256,8 +256,8 @@ export function LearnView({ courseSlug, chapterSlug, lessonSlug }: LearnViewProp
       case LESSON_TYPE.QUIZ:
         return (
           <ContentBox>
-            <QuizLesson
-              lesson={lessonData as IQuizLessonProps}
+            <QuizSubstep
+              substep={substepData as IQuizSubstepProps}
               onSubmit={(answer: boolean[]) => handleSubmit({ answer })}
               onShowAnswer={handleShowAnswer}
               onSaveProgress={(answer: boolean[]) => handleSaveProgress({ answer })}
@@ -269,8 +269,8 @@ export function LearnView({ courseSlug, chapterSlug, lessonSlug }: LearnViewProp
       case LESSON_TYPE.CODING:
         return (
           <ContentBox sx={{ borderRadius: 0, px: { xs: 0, md: 0 }, py: { xs: 0, md: 0 } }}>
-            <CodingLesson
-              lesson={lessonData as ICodingLessonProps}
+            <CodingSubstep
+              substep={substepData as ICodingSubstepProps}
               onRunCode={(config) => handleRunCode(config)}
               onSubmit={(answer: string) => handleSubmit({ answer })}
               onHint={handleShowHint}
@@ -297,7 +297,7 @@ export function LearnView({ courseSlug, chapterSlug, lessonSlug }: LearnViewProp
         <Content />
       </Container>
 
-      {isLocked && <UpgradeBanner slug={courseSlug} open />}
+      {isLocked && <UpgradeBanner slug={projectSlug} open />}
     </Box>
   );
 }

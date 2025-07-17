@@ -17,7 +17,7 @@ const namespaces = [
   "certificate",
   "contact",
   "cookies",
-  "course",
+  "project",
   "dashboard",
   "faq",
   "home",

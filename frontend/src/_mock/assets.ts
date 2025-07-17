@@ -532,7 +532,7 @@ export const _taskNames = [
 
 // ----------------------------------------------------------------------
 
-export const _courseNames = [
+export const _projectNames = [
   `Introduction to Python Programming`,
   `Digital Marketing Fundamentals`,
   `Data Science with R`,

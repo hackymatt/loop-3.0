@@ -23,24 +23,24 @@ class Urls:
     PASSWORD_RESET_CONFIRM = "auth/reset-password-confirm"
     REFRESH_TOKEN = "auth/refresh-token"
     ACCESS_TOKEN = "auth/access-token"
-    # COURSE
-    COURSE_LEVEL = "course-levels"
-    COURSE_TECHNOLOGY = "course-technologies"
-    COURSE_CATEGORY = "course-categories"
-    COURSE = "courses"
-    FEATURED_COURSE = "featured-courses"
+    # Project
+    Project_LEVEL = "project-levels"
+    Project_TECHNOLOGY = "project-technologies"
+    Project_CATEGORY = "project-categories"
+    Project = "projects"
+    FEATURED_Project = "featured-projects"
     FEATURED_TECHNOLOGIES = "featured-technologies"
     FEATURED_REVIEWS = "featured-reviews"
-    SIMILAR_COURSES = "similar-courses/<slug:slug>"
+    SIMILAR_ProjectS = "similar-projects/<slug:slug>"
     # LESSON
-    LESSON = "lesson/<slug:course_slug>/<slug:chapter_slug>/<slug:lesson_slug>"
-    LESSON_PROGRESS = "lesson/progress"
-    LESSON_SUBMIT = "lesson/submit"
-    LESSON_ANSWER = "lesson/answer"
-    LESSON_HINT = "lesson/hint"
+    LESSON = "substep/<slug:project_slug>/<slug:step_slug>/<slug:substep_slug>"
+    LESSON_PROGRESS = "substep/progress"
+    LESSON_SUBMIT = "substep/submit"
+    LESSON_ANSWER = "substep/answer"
+    LESSON_HINT = "substep/hint"
     # REVIEW
-    COURSE_REVIEW_SUMMARY = "reviews-summary/<slug:slug>"
-    COURSE_REVIEWS = "reviews/<slug:slug>"
+    Project_REVIEW_SUMMARY = "reviews-summary/<slug:slug>"
+    Project_REVIEWS = "reviews/<slug:slug>"
     REVIEW_SUBMIT = "review-submit"
     # BLOG
     POST_TOPIC = "post-topics"
@@ -75,7 +75,7 @@ class JoinType(TextChoices):
     GITHUB = "github"
 
 
-class LessonType(TextChoices):
+class SubstepType(TextChoices):
     READING = "reading"
     VIDEO = "video"
     QUIZ = "quiz"
@@ -87,7 +87,13 @@ class QuizType(TextChoices):
     MULTI = "multi"
 
 
-class CourseStatus:
+class ProjectStatus:
     NOT_STARTED = "not-started"
     IN_PROGRESS = "in-progress"
     COMPLETED = "completed"
+
+
+class ProjectDuration:
+    SHORT = "short"
+    MEDIUM = "medium"
+    LONG = "long"

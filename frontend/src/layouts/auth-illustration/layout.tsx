@@ -12,19 +12,14 @@ import Container from "@mui/material/Container";
 import { paths } from "src/routes/paths";
 import { RouterLink } from "src/routes/components";
 
-import { CONFIG } from "src/global-config";
-
 import { Logo } from "src/components/logo";
 
-import { langs } from "../langs-config";
 import { MainSection } from "../core/main-section";
 import { AuthIllustrationContent } from "./content";
 import { AuthIllustrationSection } from "./section";
 import { LayoutSection } from "../core/layout-section";
 import { HeaderSection } from "../core/header-section";
-import { ThemeButton } from "../components/theme-button";
 import { SettingsButton } from "../components/settings-button";
-import { LanguagePopover } from "../components/language-popover";
 
 import type { MainSectionProps } from "../core/main-section";
 import type { AuthIllustrationContentProps } from "./content";
@@ -80,14 +75,8 @@ export function AuthIllustrationLayout({
             Need help?
           </Link>
 
-          {/** @slot Language popover */}
-          {CONFIG.isLocal && <LanguagePopover data={langs} />}
-
-          {/** @slot Theme button */}
-          {CONFIG.isLocal && <ThemeButton />}
-
           {/** @slot Settings button */}
-          {CONFIG.isLocal && <SettingsButton />}
+          <SettingsButton />
         </Box>
       ),
     };

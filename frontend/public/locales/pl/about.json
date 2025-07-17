@@ -1,34 +1,34 @@
 {
   "meta": {
-    "title": "O nas – Platforma do Nauki Programowania Online",
-    "description": "loop to innowacyjna platforma do nauki programowania online. Oferujemy kursy dla początkujących oraz zaawansowanych. Dołącz do nas i ucz się programowania w najnowszych technologiach!"
+    "title": "O nas – Nauka przez praktyczne projekty",
+    "description": "loop to nowoczesna platforma do nauki programowania przez realizację praktycznych projektów. Buduj portfolio, ucz się technologii krok po kroku i rozwijaj się w IT – niezależnie od poziomu zaawansowania."
   },
   "hero": {
-    "title": "Interaktywne kursy online",
-    "subtitle": "to innowacyjna platforma edukacyjna, która oferuje kursy programowania prowadzone przez doświadczonych specjalistów. Ucz się w praktyczny sposób, zdobywaj certyfikaty i rozwijaj swoje umiejętności w dynamicznie rozwijającej się branży IT.",
-    "button": "Zobacz kursy"
+    "title": "Ucz się, tworząc projekty",
+    "subtitle": "to platforma edukacyjna, która uczy programowania poprzez budowanie praktycznych projektów. Każdy projekt to konkretny cel, realna technologia i szansa na rozwój Twoich umiejętności w praktyce.",
+    "button": "Zobacz projekty"
   },
   "mission": {
     "title": "Nasza misja",
-    "subtitle": "Naszym celem jest stworzenie platformy, która umożliwia efektywną naukę programowania w sposób dostępny dla każdego, niezależnie od poziomu zaawansowania, łącząc teorię z praktyką.",
+    "subtitle": "Chcemy umożliwić każdemu naukę programowania przez działanie. Tworzymy system ścieżek opartych na projektach, które rozwijają realne umiejętności krok po kroku.",
     "methods": [
       {
-        "name": "Interaktywne ćwiczenia",
-        "description": "Wideo, teksty oraz interaktywne ćwiczenia, w których uczestnicy piszą kod w edytorze sprawdzanym przez AI."
+        "name": "Nauka przez tworzenie",
+        "description": "Każdy projekt to rzeczywisty problem do rozwiązania – kodujesz od początku, rozwijasz swoje portfolio i zdobywasz doświadczenie."
       },
       {
-        "name": "Testy i quizy",
-        "description": "Narzędzia oceniające wiedzę i utrwalające materiał z natychmiastową informacją zwrotną."
+        "name": "Zależności między projektami",
+        "description": "Każdy projekt może mieć wymagania wstępne – dzięki temu uczysz się we właściwej kolejności i nie tracisz czasu na zbędną teorię."
       },
       {
         "name": "Dostępność na każdym poziomie",
-        "description": "Kursy zaprojektowane dla początkujących oraz zaawansowanych programistów, oferujące elastyczne podejście do nauki."
+        "description": "Projekty dla osób początkujących, średniozaawansowanych i zaawansowanych – wszystko podzielone na kroki z jasnymi instrukcjami."
       }
     ]
   },
   "coreValues": {
     "title": "Główne wartości",
-    "subtitle": "W naszych działaniach kierujemy się czterema kluczowymi wartościami, które definiują naszą misję i stanowią fundament naszych działań.",
+    "subtitle": "W loop kierujemy się czterema kluczowymi wartościami, które kształtują nasz sposób nauczania i wspierania społeczności.",
     "values": [
       {
         "name": "Dostępność",
@@ -37,17 +37,17 @@
       },
       {
         "name": "Praktyczność",
-        "description": "Skupiamy się na praktycznym podejściu do nauki, które pozwala zdobywać umiejętności nie tylko teoretyczne, ale i praktyczne.",
+        "description": "Skupiamy się na praktycznym podejściu do nauki – uczysz się poprzez kodowanie, a nie tylko czytanie.",
         "icon": "ic-web-programming.svg"
       },
       {
         "name": "Innowacyjność",
-        "description": "Stawiamy na nowoczesne metody nauczania, łącząc technologię z efektywnymi technikami edukacyjnymi.",
+        "description": "Stawiamy na nowoczesne metody nauczania i ciągle rozwijamy naszą platformę, by wspierać Cię jeszcze lepiej.",
         "icon": "ic-chip.svg"
       },
       {
         "name": "Wsparcie",
-        "description": "Zapewniamy wsparcie na każdym etapie nauki, pomagając uczestnikom rozwijać się i pokonywać trudności.",
+        "description": "Nie jesteś sam – możesz liczyć na wsparcie mentorów, społeczności i jasne instrukcje krok po kroku.",
         "icon": "ic-cooperate.svg"
       }
     ]

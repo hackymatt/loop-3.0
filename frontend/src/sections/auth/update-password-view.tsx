@@ -64,7 +64,7 @@ export function UpdatePasswordView({ token }: { token: string }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await updatePassword({ ...data, token });
-      router.push(localize(paths.login));
+      router.push(localize(paths.auth.login));
       reset();
     } catch (error) {
       handleFormError(error);
@@ -125,7 +125,7 @@ export function UpdatePasswordView({ token }: { token: string }) {
         {renderForm()}
       </Form>
 
-      <FormReturnLink href={localize(paths.login)} label={t("link")} />
+      <FormReturnLink href={localize(paths.auth.login)} label={t("link")} />
     </>
   );
 }

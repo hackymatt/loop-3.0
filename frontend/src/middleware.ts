@@ -22,11 +22,11 @@ const AUTHORIZED_PATHS = [
 
 const UNAUTHORIZED_PATHS = [
   paths.home,
-  paths.login,
-  paths.register,
-  paths.activate,
-  paths.resetPassword,
-  paths.updatePassword,
+  paths.auth.login,
+  paths.auth.register,
+  paths.auth.activate,
+  paths.auth.resetPassword,
+  paths.auth.updatePassword,
   paths.about,
 ];
 
@@ -58,7 +58,7 @@ export function middleware(req: NextRequest) {
   const redirectLocale = hasLocale ? `/${locale}` : "";
 
   if (!accessToken && AUTHORIZED_PATHS.includes(pathWithoutLocale)) {
-    return NextResponse.redirect(new URL(`${redirectLocale}${paths.login}`, origin));
+    return NextResponse.redirect(new URL(`${redirectLocale}${paths.auth.login}`, origin));
   }
 
   if (accessToken && UNAUTHORIZED_PATHS.includes(pathWithoutLocale)) {

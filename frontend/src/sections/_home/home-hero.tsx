@@ -79,7 +79,7 @@ export function HomeHero({ sx, ...other }: BoxProps) {
         size="large"
         variant="text"
         rel="noopener"
-        href={localize(paths.register)}
+        href={localize(paths.projects)}
         endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
         sx={{ px: 2, borderRadius: "inherit" }}
       >

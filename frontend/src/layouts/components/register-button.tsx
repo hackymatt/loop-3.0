@@ -60,7 +60,7 @@ export function RegisterButton({ slotProps, sx }: RegisterButtonProps) {
     >
       <Button
         variant="text"
-        href={localize(paths.register)}
+        href={localize(paths.auth.register)}
         onClick={() => trackEvent({ category: "auth", label: "register" })}
         {...slotProps?.button}
         sx={[

@@ -29,6 +29,7 @@ export async function getSimpleListData<T>(queryUrl: string, config?: AxiosReque
     const response = await Api.get<T[]>(queryUrl, config);
     ({ data } = response);
   } catch (error) {
+    console.log(error);
     if (
       (error as AxiosError).response &&
       ((error as AxiosError).response?.status === 400 ||

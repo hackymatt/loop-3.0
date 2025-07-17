@@ -1,14 +1,22 @@
+import type { ReactNode } from "react";
+import type { Language } from "src/locales/types";
+
 import { MainLayout } from "src/layouts/main";
+import { getData } from "src/layouts/main/data";
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
+  params: { locale: string };
 };
 
-export default function Layout({ children }: Props) {
+export default async function Layout({ children, params }: Props) {
+  const data = await getData(params.locale as Language);
+
   return (
     <MainLayout
+      data={data}
       slotProps={{
         header: {
           sx: { position: { md: "fixed" } },

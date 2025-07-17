@@ -2,11 +2,11 @@
   "meta": {
     "certificates": {
       "title": "Your Certificates – Programming Learning Achievement",
-      "description": "View your certificates for completing programming courses on the loop platform. Share your achievements with others!"
+      "description": "View your certificates for completing programming projects on the loop platform. Share your achievements with others!"
     },
     "certificate": {
-      "title": "Certificate for [studentName] – Completed [courseName]",
-      "description": "This certificate confirms that [studentName] has successfully completed the [courseName] course on the loop platform. Share your achievement!"
+      "title": "Certificate for [studentName] – Completed [projectName]",
+      "description": "This certificate confirms that [studentName] has successfully completed the [projectName] project on the loop platform. Share your achievement!"
     }
   },
   "title": "Certificates",

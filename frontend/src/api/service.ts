@@ -4,10 +4,8 @@ import https from "https";
 import { paths } from "src/routes/paths";
 
 import { CONFIG } from "src/global-config";
-import { LANGUAGE } from "src/consts/language";
 
 import { defaultUser } from "src/components/user/user-config";
-import { SETTINGS_STORAGE_KEY } from "src/components/settings";
 
 import { URLS } from "./urls";
 
@@ -22,14 +20,6 @@ export const createAxiosInstance = (endpoint: string) => {
           }),
         }
       : {}),
-  });
-
-  instance.interceptors.request.use((config) => {
-    const settingsRaw = localStorage.getItem(SETTINGS_STORAGE_KEY);
-    const settings = settingsRaw ? JSON.parse(settingsRaw) : null;
-    const currentLanguage = settings?.language || LANGUAGE.PL;
-    config.headers["Accept-Language"] = currentLanguage;
-    return config;
   });
 
   return instance;
@@ -78,7 +68,7 @@ Api.interceptors.response.use(
       } catch (err) {
         processQueue(err, false);
         document.cookie = `user=${JSON.stringify(defaultUser)}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
-        window.location.href = paths.login;
+        window.location.href = paths.auth.login;
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

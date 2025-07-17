@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ICourseLessonProp, ICourseChapterProp } from "src/types/course";
+import type { IProjectSubstepProp, IProjectStepProp } from "src/types/project";
 
 import { paths } from "src/routes/paths";
 
@@ -16,36 +16,36 @@ import { LearnView } from "src/sections/view/learn-view";
 export default function Page({
   params,
 }: {
-  params: { course: string; chapter: string; lesson: string };
+  params: { project: string; step: string; substep: string };
 }) {
   return (
-    <LearnView courseSlug={params.course} chapterSlug={params.chapter} lessonSlug={params.lesson} />
+    <LearnView projectSlug={params.project} stepSlug={params.step} substepSlug={params.substep} />
   );
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string; course: string; chapter: string; lesson: string };
+  params: { locale: string; project: string; step: string; substep: string };
 }): Promise<Metadata> {
   const translations = await import(`public/locales/${params.locale}/learn.json`);
 
   const path = params.locale === LANGUAGE.PL ? paths.learn : `/${LANGUAGE.EN}${paths.learn}`;
   try {
-    const res = await fetch(`${CONFIG.api}${URLS.COURSES}/${params.course}`, {
+    const res = await fetch(`${CONFIG.api}${URLS.PROJECTS}/${params.project}`, {
       headers: { "Content-Type": "application/json", "Accept-Language": params.locale },
     });
 
-    if (!res.ok) throw new Error("Failed to fetch course");
+    if (!res.ok) throw new Error("Failed to fetch project");
 
-    const course = await res.json();
+    const project = await res.json();
 
-    const { chapters } = course;
+    const { steps } = project;
 
-    const allLessons = chapters.flatMap((ch: ICourseChapterProp) => ch.lessons) ?? [];
-    const lesson = allLessons.find((l: ICourseLessonProp) => l.slug === params.lesson);
+    const allSubsteps = steps.flatMap((ch: IProjectStepProp) => ch.substeps) ?? [];
+    const substep = allSubsteps.find((l: IProjectSubstepProp) => l.slug === params.substep);
 
-    const { translated_name: name } = lesson;
+    const { translated_name: name } = substep;
 
     const title = translations.meta.title.replace("[name]", name);
     const description = translations.meta.description.replace("[name]", name);
@@ -53,13 +53,13 @@ export async function generateMetadata({
     return createMetadata({
       title,
       description,
-      path: `${path}/${params.course}/${params.chapter}/${params.lesson}`,
+      path: `${path}/${params.project}/${params.step}/${params.substep}`,
     });
   } catch {
     return createMetadata({
       title: translations.meta.title,
       description: translations.meta.description,
-      path: `${path}/${params.course}/${params.chapter}/${params.lesson}`,
+      path: `${path}/${params.project}/${params.step}/${params.substep}`,
     });
   }
 }

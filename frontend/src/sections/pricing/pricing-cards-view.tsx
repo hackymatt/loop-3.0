@@ -10,16 +10,14 @@ import Switch from "@mui/material/Switch";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
-import { usePlans } from "src/api/plan/plans";
-
 import { PricingCard } from "./pricing-card";
 
 // ----------------------------------------------------------------------
 
-export function PricingCardsView() {
-  const { t } = useTranslation("pricing");
+type PricingCardsViewProps = { plans: IPlanProps[] };
 
-  const { data: plans } = usePlans();
+export function PricingCardsView({ plans }: PricingCardsViewProps) {
+  const { t } = useTranslation("pricing");
 
   const [isYearly, setIsYearly] = useState(true);
 

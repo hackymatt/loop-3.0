@@ -3,16 +3,19 @@ export const paths = {
   /**
    * Auth
    */
-  login: "/auth/login",
-  register: "/auth/register",
-  activate: "/auth/activate",
-  resetPassword: "/auth/reset-password",
-  updatePassword: "/auth/update-password",
+  auth: {
+    login: "/auth/login",
+    register: "/auth/register",
+    activate: "/auth/activate",
+    resetPassword: "/auth/reset-password",
+    updatePassword: "/auth/update-password",
+  },
+
   /**
-   * Courses
+   * Projects
    */
-  courses: "/courses",
-  course: "/course",
+  projects: "/projects",
+  project: "/project",
   /**
    * Certificates
    */
@@ -96,8 +99,8 @@ export const paths = {
    */
   eLearning: {
     root: "/e-learning",
-    courses: "/e-learning/courses",
-    course: "/e-learning/courses/details",
+    projects: "/e-learning/projects",
+    project: "/e-learning/projects/details",
     posts: "/e-learning/posts",
     post: "/e-learning/posts/details",
     about: "/e-learning/about",

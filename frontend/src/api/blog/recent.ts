@@ -1,8 +1,8 @@
+import type { Language } from "src/locales/types";
 import type { GetQueryResponse } from "src/api/types";
 import type { IBlogRecentProps } from "src/types/blog";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
 
 import { getSimpleListData } from "src/api/utils";
 
@@ -24,12 +24,14 @@ type IBlog = {
   duration: number;
 };
 
-export const recentPostsQuery = () => {
+export const recentPostsQuery = (language: Language) => {
   const url = endpoint;
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IBlogRecentProps[]>> => {
-    const results = await getSimpleListData<IBlog>(queryUrl);
+    const results = await getSimpleListData<IBlog>(queryUrl, {
+      headers: { "Accept-Language": language },
+    });
     const modifiedResults: IBlogRecentProps[] = (results ?? []).map(
       ({ translated_name, topic, image, published_at, ...rest }: IBlog) => ({
         ...rest,
@@ -46,13 +48,4 @@ export const recentPostsQuery = () => {
   };
 
   return { url, queryFn, queryKey: compact([url]) };
-};
-
-export const useRecentPosts = (enabled: boolean = true) => {
-  const { queryKey, queryFn } = recentPostsQuery();
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return {
-    data: data?.results,
-    ...rest,
-  };
 };

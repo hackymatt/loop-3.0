@@ -16,7 +16,9 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   const translations = await import(`public/locales/${params.locale}/update-password.json`);
 
   const path =
-    params.locale === LANGUAGE.PL ? paths.updatePassword : `/${LANGUAGE.EN}${paths.updatePassword}`;
+    params.locale === LANGUAGE.PL
+      ? paths.auth.updatePassword
+      : `/${LANGUAGE.EN}${paths.auth.updatePassword}`;
 
   return createMetadata({
     title: translations.meta.title,

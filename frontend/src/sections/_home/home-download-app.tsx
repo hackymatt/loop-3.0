@@ -28,7 +28,7 @@ export function HomeDownloadApp({ sx, ...other }: BoxProps) {
       component="img"
       loading="lazy"
       alt="Mobile app"
-      src={`${CONFIG.assetsDir}/assets/images/course/download-app.webp`}
+      src={`${CONFIG.assetsDir}/assets/images/project/download-app.webp`}
       sx={{ width: 560 }}
     />
   );

@@ -1,6 +1,12 @@
 "use client";
 
 import type { Breakpoint } from "@mui/material/styles";
+import type {
+  IProjectLevelProp,
+  IProjectListProps,
+  IProjectCategoryProp,
+  IProjectTechnologyProp,
+} from "src/types/project";
 
 import Box from "@mui/material/Box";
 import { Toolbar, Container } from "@mui/material";
@@ -12,7 +18,6 @@ import { useUserContext } from "src/components/user";
 import { MegaMenuMobile, MegaMenuHorizontal } from "src/components/mega-menu";
 
 import { Footer } from "./footer";
-import { langs } from "../langs-config";
 import { useNavData } from "../nav-config-main";
 import { MainSection } from "../core/main-section";
 import { Searchbar } from "../components/searchbar";
@@ -20,11 +25,9 @@ import { MenuButton } from "../components/menu-button";
 import { LayoutSection } from "../core/layout-section";
 import { HeaderSection } from "../core/header-section";
 import { LoginButton } from "../components/login-button";
-import { ThemeButton } from "../components/theme-button";
 import { UpgradeButton } from "../components/upgrade-button";
 import { RegisterButton } from "../components/register-button";
 import { SettingsButton } from "../components/settings-button";
-import { LanguagePopover } from "../components/language-popover";
 import { NavAccountPopover } from "./nav/components/nav-account";
 
 import type { FooterProps } from "./footer";
@@ -38,6 +41,12 @@ import type { LayoutSectionProps } from "../core/layout-section";
 type LayoutBaseProps = Pick<LayoutSectionProps, "sx" | "children" | "cssVars">;
 
 export type MainLayoutProps = LayoutBaseProps & {
+  data: {
+    featuredProjects: IProjectListProps[];
+    projectLevels: IProjectLevelProp[];
+    projectTechnologies: IProjectTechnologyProp[];
+    projectCategories: IProjectCategoryProp[];
+  };
   layoutQuery?: Breakpoint;
   slotProps?: {
     header?: HeaderSectionProps;
@@ -50,6 +59,7 @@ export type MainLayoutProps = LayoutBaseProps & {
 };
 
 export function MainLayout({
+  data,
   sx,
   cssVars,
   children,
@@ -59,7 +69,7 @@ export function MainLayout({
   const user = useUserContext();
   const { isLoggedIn } = user.state;
 
-  const navData = useNavData();
+  const navData = useNavData(data);
 
   const renderHeader = () => {
     const headerSlots: HeaderSectionProps["slots"] = {
@@ -159,7 +169,7 @@ export function MainLayout({
               tags: {},
               moreLink: {},
               carousel: { sx: {}, options: {} },
-              masonry: { sx: {}, columns: 3, defaultColumns: 3 },
+              masonry: { sx: {}, columns: 4, defaultColumns: 4 },
             }}
             sx={(theme) => ({
               display: "none",
@@ -173,14 +183,8 @@ export function MainLayout({
           {/** @slot Searchbar */}
           {CONFIG.isLocal && <Searchbar />}
 
-          {/** @slot Language popover */}
-          <LanguagePopover data={langs} />
-
-          {/** @slot Theme button */}
-          {CONFIG.isLocal && <ThemeButton />}
-
           {/** @slot Settings button */}
-          {CONFIG.isLocal && <SettingsButton />}
+          <SettingsButton />
 
           {isLoggedIn ? (
             <>
@@ -213,7 +217,7 @@ export function MainLayout({
     );
   };
 
-  const renderFooter = () => <Footer layoutQuery={layoutQuery} />;
+  const renderFooter = () => <Footer data={data} layoutQuery={layoutQuery} />;
 
   const renderMain = () => <MainSection {...slotProps?.main}>{children}</MainSection>;
 

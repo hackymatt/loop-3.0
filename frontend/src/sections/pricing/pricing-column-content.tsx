@@ -119,7 +119,7 @@ export function PricingColumnContentMobile({
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        href={isLoggedIn ? redirect : localize(paths.register)}
+        href={isLoggedIn ? redirect : localize(paths.auth.register)}
         disabled={isCurrentPlan}
         onClick={() => {
           if (!isLoggedIn) {
@@ -196,7 +196,7 @@ export function PricingColumnContentDesktop({
           size="large"
           variant={isCurrentPlan ? "outlined" : "contained"}
           color={plan.popular ? "primary" : "inherit"}
-          href={isLoggedIn ? redirect : paths.register}
+          href={isLoggedIn ? redirect : paths.auth.register}
           disabled={isCurrentPlan}
           onClick={() => {
             if (!isLoggedIn) {

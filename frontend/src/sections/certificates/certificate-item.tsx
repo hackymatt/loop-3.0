@@ -34,7 +34,7 @@ export function CertificateItem({ certificate }: Props) {
         })}
       >
         <Certificate
-          courseName={certificate.courseName}
+          projectName={certificate.projectName}
           studentName={certificate.studentName}
           completedAt={certificate.completedAt}
         />

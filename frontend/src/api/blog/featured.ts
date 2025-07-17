@@ -1,8 +1,8 @@
+import type { Language } from "src/locales/types";
 import type { GetQueryResponse } from "src/api/types";
 import type { IBlogFeaturedPost } from "src/types/blog";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
 
 import { getSimpleListData } from "src/api/utils";
 
@@ -32,12 +32,14 @@ type IBlog = {
   duration: number;
 };
 
-export const featuredPostsQuery = () => {
+export const featuredPostsQuery = (language: Language) => {
   const url = endpoint;
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IBlogFeaturedPost[]>> => {
-    const results = await getSimpleListData<IBlog>(queryUrl);
+    const results = await getSimpleListData<IBlog>(queryUrl, {
+      headers: { "Accept-Language": language },
+    });
 
     const modifiedResults: IBlogFeaturedPost[] = results.map(
       ({
@@ -65,13 +67,4 @@ export const featuredPostsQuery = () => {
   };
 
   return { url, queryFn, queryKey: compact([url]) };
-};
-
-export const useFeaturedPosts = (enabled: boolean = true) => {
-  const { queryKey, queryFn } = featuredPostsQuery();
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return {
-    data: data?.results,
-    ...rest,
-  };
 };

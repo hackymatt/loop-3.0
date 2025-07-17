@@ -1,40 +1,54 @@
 {
   "meta": {
-    "title": "Kontakt – Skontaktuj się z nami",
-    "description": "Masz pytania? Skontaktuj się z zespołem platformy loop. Chętnie pomożemy w sprawie kursów, subskrypcji i wsparcia technicznego."
+    "title": "Kontakt – Skontaktuj się z zespołem loop",
+    "description": "Masz pytania dotyczące projektów, ścieżek nauki lub platformy? Skontaktuj się z nami – chętnie pomożemy!"
   },
   "phoneLabel": "Telefon",
   "emailLabel": "E-mail",
   "socialMedia": "Obserwuj nas",
-  "title": { "header": "Skontaktuj się z nami", "form": "Napisz do nas" },
+  "title": {
+    "header": "Skontaktuj się z nami",
+    "form": "Napisz wiadomość"
+  },
   "subtitle": {
-    "header": "Chętnie porozmawiamy o tym, jak możemy Ci pomóc.",
-    "form": "Zazwyczaj odpowiadamy w ciągu 24 godzin roboczych."
+    "header": "Jesteśmy tu, aby pomóc Ci rozwijać się w programowaniu.",
+    "form": "Odpowiadamy zazwyczaj w ciągu 24 godzin w dni robocze."
   },
   "button": "Wyślij wiadomość",
   "email": {
     "label": "E-mail",
-    "errors": { "required": "E-mail jest wymagany", "invalid": "Nieprawidłowy adres e-mail" }
+    "errors": {
+      "required": "Podaj adres e-mail",
+      "invalid": "Wprowadź poprawny adres e-mail"
+    }
   },
   "fullName": {
     "label": "Imię i nazwisko",
-    "errors": { "required": "Imię i nazwisko jest wymagane" }
+    "errors": {
+      "required": "Podaj imię i nazwisko"
+    }
   },
   "subject": {
     "label": "Temat",
-    "errors": { "required": "Temat jest wymagany" }
+    "errors": {
+      "required": "Wpisz temat wiadomości"
+    }
   },
   "message": {
     "label": "Wiadomość",
-    "errors": { "required": "Wiadomość jest wymagana" }
+    "errors": {
+      "required": "Treść wiadomości jest wymagana"
+    }
   },
   "termsAcceptance": {
     "label": {
       "accept": "Akceptuję",
       "terms": "regulamin",
       "and": "oraz",
-      "privacy": "politykę prywatności."
+      "privacy": "politykę prywatności"
     },
-    "errors": { "required": "To pole jest wymagane" }
+    "errors": {
+      "required": "Musisz zaakceptować regulamin i politykę prywatności"
+    }
   }
 }

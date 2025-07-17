@@ -1,50 +1,49 @@
 {
   "meta": {
-    "title": "Programowanie na wyciągniecie ręki z loop – Platforma do Nauki Programowania Online",
-    "description": "Ucz się programowania z loop – nowoczesną platformą edukacyjną online. Kursy dla początkujących i zaawansowanych z JavaScript, Python, SQL i nie tylko. Zacznij już dziś!"
+    "title": "Buduj projekty. Twórz portfolio. Programuj z loop",
+    "description": "Zamiast teorii – praktyczne projekty, które trafiają do Twojego portfolio. Nauka programowania z loop to kod, GitHub, własne decyzje i realne umiejętności. Zacznij za darmo!"
   },
-  "title": "Programowanie na wyciągniecie ręki z",
-  "subtitle": "Ucz się programowania szybciej z AI, interaktywnymi kursami i wsparciem mentorów.",
-  "button": "Rozpocznij naukę za darmo",
+  "title": "Buduj projekty. Twórz portfolio. Programuj z",
+  "subtitle": "Ucz się przez tworzenie prawdziwych aplikacji – krok po kroku, bez pustych teorii.",
+  "button": "Zbuduj swój pierwszy projekt",
   "sign-up": { "header": "Utwórz darmowe konto", "button": "Zacznij teraz" },
   "certificate": {
-    "student": "Jan Kowalski",
-    "course": "Wprowadzenie do programowania w Pythonie",
-    "header": "Certyfikat",
-    "title": "Chcesz zdobyć wiedzę i otrzymać certyfikat?",
-    "subtitle": "Zdobądź oficjalny certyfikat i pokaż swoje umiejętności!"
+    "student": "Patryk Devowski",
+    "project": "Twój pierwszy projekt w Pythonie: Generator haseł",
+    "header": "Certyfikat ukończenia",
+    "title": "Zbuduj projekt. Zdobądź certyfikat.",
+    "subtitle": "Udokumentuj swoje umiejętności certyfikatem opartym na realnym projekcie – nie na testach, tylko na kodzie, który naprawdę działa."
   },
   "pricing": {
     "header": "Plany cenowe",
-    "title": "Przejrzyste ceny",
-    "subtitle": "Wybierz spośród elastycznych opcji cenowych dostosowanych do Twoich potrzeb i budżetu – bez ukrytych opłat."
+    "title": "Przejrzyste i elastyczne plany",
+    "subtitle": "Darmowy plan daje dostęp do dowolnego jednego projektu, a plan premium otwiera pełen katalog wyzwań i wsparcie ekspertów – bez ukrytych opłat."
   },
   "technology": {
     "header": "Technologie",
-    "title": "Nowoczesne technologie",
-    "subtitle": "Odkryj zestaw nowoczesnych i potężnych technologii, które pomogą Ci rozwijać umiejętności i realizować projekty.",
+    "title": "Nowoczesne technologie w praktyce",
+    "subtitle": "Każdy projekt to szansa, by poznać prawdziwe narzędzia wykorzystywane przez programistów.",
     "button": "Zobacz wszystkie"
   },
   "testimonial": "Co mówią nasi uczniowie",
-  "course": {
-    "header": "Kursy",
-    "title": "Najlepsze kursy dla Ciebie",
-    "subtitle": "Odkryj starannie opracowane kursy, które pomogą Ci opanować nowe umiejętności i rozwijać karierę w branży technologicznej.",
-    "button": "Zobacz wszystkie"
+  "project": {
+    "header": "Projekty",
+    "subtitle": "Praktyczne projekty uczące przez działanie. Koduj i rozwijaj realne umiejętności.",
+    "button": "Zobacz wszystkie projekty"
   },
   "advertisement": {
-    "part1": "Zacznij teraz",
-    "part2": "twórz swoją przyszłość",
-    "part3": "w IT!",
+    "part1": "Zacznij już dziś,",
+    "part2": "buduj swoje umiejętności",
+    "part3": "i rozwijaj karierę w IT!",
     "button": "Wypróbuj za darmo"
   },
   "platform": {
-    "header": "Nauka z AI",
-    "title": "Inteligentna nauka z",
-    "subtitle": "Nowoczesne środowisko nauki wspierane przez AI. Oszczędzaj czas, ucz się efektywnie i rozwijaj swoje umiejętności w przejrzystym, intuicyjnym edytorze kodu."
+    "header": "Portfolio napędzane kodem",
+    "title": "Programowanie przez projekty z",
+    "subtitle": "Budujesz lokalnie, używasz własnego edytora i Gita – dokładnie tak, jak w prawdziwej pracy. Bez pustej teorii. Tylko praktyka, kod i projekty do portfolio."
   },
   "app": {
-    "title": "Pobierz aplikację",
-    "subtitle": "Nauka programowania jeszcze łatwiejsza dzięki naszej aplikacji!"
+    "title": "Korzystaj z platformy wszędzie",
+    "subtitle": "Ucz się i śledź postępy dzięki aplikacji webowej działającej na każdym urządzeniu."
   }
 }

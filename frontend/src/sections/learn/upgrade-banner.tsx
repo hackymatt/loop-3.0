@@ -23,8 +23,8 @@ export function UpgradeBanner({ slug, ...other }: Props) {
   const localize = useLocalizedPath();
   const router = useRouter();
 
-  const handleReturnToCourse = () => {
-    router.push(localize(`${paths.course}/${slug}`));
+  const handleReturnToProject = () => {
+    router.push(localize(`${paths.project}/${slug}`));
   };
 
   return (
@@ -123,7 +123,7 @@ export function UpgradeBanner({ slug, ...other }: Props) {
             }}
           />
 
-          <Button variant="text" color="inherit" onClick={handleReturnToCourse}>
+          <Button variant="text" color="inherit" onClick={handleReturnToProject}>
             {t("upgrade.button")}
           </Button>
         </Box>

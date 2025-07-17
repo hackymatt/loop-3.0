@@ -59,7 +59,7 @@ export function HomeCertificate({ sx, ...other }: BoxProps) {
           size="large"
           color="inherit"
           variant="outlined"
-          href={localize(paths.courses)}
+          href={localize(paths.projects)}
           endIcon={<Iconify width={16} icon="solar:alt-arrow-right-outline" />}
           sx={{ mt: 5, mb: { xs: 5, md: 0 } }}
         >
@@ -72,7 +72,7 @@ export function HomeCertificate({ sx, ...other }: BoxProps) {
   const renderCertificate = () => (
     <m.div variants={varFade("in")}>
       <Certificate
-        courseName={t("certificate.course")}
+        projectName={t("certificate.project")}
         studentName={isLoggedIn ? `${firstName} ${lastName}` : t("certificate.student")}
         sx={(theme) => ({
           height: 260,

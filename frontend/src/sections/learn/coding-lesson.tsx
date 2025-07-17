@@ -1,6 +1,6 @@
 import "./style.css";
 
-import type { IConfigProp, ICodingFileProp, ICodingLessonProps } from "src/types/lesson";
+import type { IConfigProp, ICodingFileProp, ICodingSubstepProps } from "src/types/substep";
 
 import Split from "react-split";
 import { useTranslation } from "react-i18next";
@@ -17,8 +17,8 @@ import { CodeEditor } from "src/components/code-editor";
 
 // ----------------------------------------------------------------------
 
-type CodingLessonProps = {
-  lesson: ICodingLessonProps;
+type CodingSubstepProps = {
+  substep: ICodingSubstepProps;
   onRunCode: (config: IConfigProp) => void;
   onSubmit: (answer: string) => void;
   onHint: () => void;
@@ -125,8 +125,8 @@ function Console({ entries }: { entries: ConsoleEntry[] }) {
 
 // ----------------------------------------------------------------------
 
-export const CodingLesson = React.memo(function CodingLesson({
-  lesson,
+export const CodingSubstep = React.memo(function CodingSubstep({
+  substep,
   onSubmit,
   onRunCode,
   onHint,
@@ -135,29 +135,29 @@ export const CodingLesson = React.memo(function CodingLesson({
   logs = [],
   isRunning = false,
   isLocked = false,
-}: CodingLessonProps) {
+}: CodingSubstepProps) {
   const { t } = useTranslation("learn");
 
   const mobileTabs = [t("coding.context"), t("coding.exercise")];
 
-  const [code, setCode] = useState<string>(lesson.file.code);
+  const [code, setCode] = useState<string>(substep.file.code);
   const [mobileTab, setMobileTab] = useState(mobileTabs[0]);
 
-  const allFiles = useMemo(() => [lesson.file, ...lesson.files], [lesson.file, lesson.files]);
-  const [file, setFile] = useState<ICodingFileProp>(lesson.file);
+  const allFiles = useMemo(() => [substep.file, ...substep.files], [substep.file, substep.files]);
+  const [file, setFile] = useState<ICodingFileProp>(substep.file);
 
   useEffect(() => {
-    if (lesson.answer) setCode(lesson.answer);
-  }, [lesson.answer]);
+    if (substep.answer) setCode(substep.answer);
+  }, [substep.answer]);
 
   const handleChangeCode = (value: string) => {
-    if (file === lesson.file) {
+    if (file === substep.file) {
       setCode(value);
     }
   };
 
   const handleRunCode = useCallback(() => {
-    const { file: defaultFile, files, command, timeout, technology } = lesson;
+    const { file: defaultFile, files, command, timeout, technology } = substep;
     onSaveProgress(code);
     onRunCode({
       files: [...files, { ...defaultFile, code }],
@@ -165,7 +165,7 @@ export const CodingLesson = React.memo(function CodingLesson({
       timeout,
       technology,
     });
-  }, [code, lesson, onRunCode, onSaveProgress]);
+  }, [code, substep, onRunCode, onSaveProgress]);
 
   const handleSubmit = useCallback(() => {
     onSaveProgress(code);
@@ -237,7 +237,7 @@ export const CodingLesson = React.memo(function CodingLesson({
         startIcon={<Iconify icon="solar:lightbulb-linear" />}
         sx={{ px: 2, whiteSpace: "nowrap" }}
       >
-        {t("coding.hint.button")} (-{lesson.penaltyPoints} XP)
+        {t("coding.hint.button")} (-{substep.penaltyPoints} XP)
       </Button>
     </Box>
   );
@@ -252,7 +252,7 @@ export const CodingLesson = React.memo(function CodingLesson({
         disabled={isLocked}
         sx={{ px: 2, whiteSpace: "nowrap" }}
       >
-        {t("coding.answer")} (-{lesson.totalPoints - lesson.penaltyPoints} XP)
+        {t("coding.answer")} (-{substep.totalPoints - substep.penaltyPoints} XP)
       </Button>
     </Box>
   );
@@ -285,7 +285,7 @@ export const CodingLesson = React.memo(function CodingLesson({
             ))}
           </>
         ) : (
-          <Markdown key={lesson.introduction} content={lesson.introduction} />
+          <Markdown key={substep.introduction} content={substep.introduction} />
         )}
       </Box>
     </Box>
@@ -308,10 +308,10 @@ export const CodingLesson = React.memo(function CodingLesson({
             ))}
           </>
         ) : (
-          <Markdown key={lesson.hint} content={lesson.hint || ""} />
+          <Markdown key={substep.hint} content={substep.hint || ""} />
         )}
 
-        {!lesson.answer && renderShowAnswerButton()}
+        {!substep.answer && renderShowAnswerButton()}
       </Box>
     </Box>
   );
@@ -321,7 +321,7 @@ export const CodingLesson = React.memo(function CodingLesson({
       <SectionHeader
         title={t("coding.instructions")}
         icon="solar:checklist-bold"
-        label={<Label color="warning">{lesson.totalPoints} XP</Label>}
+        label={<Label color="warning">{substep.totalPoints} XP</Label>}
       />
       <Box sx={{ px: 2 }}>
         {isLocked ? (
@@ -331,11 +331,11 @@ export const CodingLesson = React.memo(function CodingLesson({
             ))}
           </>
         ) : (
-          <Markdown key={lesson.instructions} content={lesson.instructions} />
+          <Markdown key={substep.instructions} content={substep.instructions} />
         )}
-        {!lesson.hint && renderHintButton()}
+        {!substep.hint && renderHintButton()}
       </Box>
-      {lesson.hint && renderHint()}
+      {substep.hint && renderHint()}
     </Box>
   );
 
@@ -416,7 +416,7 @@ export const CodingLesson = React.memo(function CodingLesson({
                     variant={f === file ? "contained" : "outlined"}
                     onClick={() => setFile(f)}
                     startIcon={
-                      f !== lesson.file && <Iconify icon="solar:lock-outline" width={16} />
+                      f !== substep.file && <Iconify icon="solar:lock-outline" width={16} />
                     }
                   >
                     {f.name}
@@ -427,10 +427,10 @@ export const CodingLesson = React.memo(function CodingLesson({
 
             <CodeEditor
               key={file.name}
-              technology={lesson.technology}
-              value={file === lesson.file ? code : file.code}
+              technology={substep.technology}
+              value={file === substep.file ? code : file.code}
               onChange={handleChangeCode}
-              readOnly={file !== lesson.file}
+              readOnly={file !== substep.file}
             />
           </Box>
         )}

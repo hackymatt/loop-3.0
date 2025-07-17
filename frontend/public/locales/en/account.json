@@ -86,7 +86,7 @@
     "button": "Cancel subscription",
     "cancel": "Cancel",
     "description": "Are you sure you want to cancel your subscription? This action cannot be undone.",
-    "sell": "Gain programming skills that will accelerate your career growth! Get access to all courses and certificates.",
+    "sell": "Gain programming skills that will accelerate your career growth! Get access to all projects and certificates.",
     "error": "Cancellation failed. Please try again."
   },
   "logout": { "title": "Logout", "error": "Logout failed. Please try again." },

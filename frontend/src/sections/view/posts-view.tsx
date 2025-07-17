@@ -62,9 +62,9 @@ export function PostsView() {
                   <Advertisement
                     title={t("title")}
                     description={t("subtitle")}
-                    imageUrl={_mock.image.course(6)}
+                    imageUrl={_mock.image.project(6)}
                     action={
-                      <Button variant="contained" color="primary" href={localize(paths.courses)}>
+                      <Button variant="contained" color="primary" href={localize(paths.projects)}>
                         {t("button")}
                       </Button>
                     }

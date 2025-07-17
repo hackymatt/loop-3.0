@@ -30,7 +30,7 @@ export const useReviewSubmit = () => {
       onSuccess: () => {
         queryClient.invalidateQueries([URLS.REVIEWS]);
         queryClient.invalidateQueries([URLS.REVIEWS_SUMMARY]);
-        queryClient.invalidateQueries([URLS.COURSES]);
+        queryClient.invalidateQueries([URLS.PROJECTS]);
         queryClient.invalidateQueries([URLS.FEATURED_REVIEWS]);
       },
     }

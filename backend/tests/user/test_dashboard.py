@@ -2,11 +2,11 @@ from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework import status
-from course.progress.models import CourseProgress
-from course.enrollment.models import CourseEnrollment
+from project.progress.models import ProjectProgress
+from project.enrollment.models import ProjectEnrollment
 from certificate.models import Certificate
 from const import Urls
-from ..factory import create_student, create_course
+from ..factory import create_student, create_project
 from ..helpers import login
 
 
@@ -18,25 +18,25 @@ class DashboardViewTest(TestCase):
         # Create user and student
         self.student, self.student_password = create_student()
 
-        # Create course
-        self.course = create_course()
+        # Create project
+        self.project = create_project()
 
-        # Create course enrollment
-        CourseEnrollment.objects.create(student=self.student, course=self.course)
+        # Create project enrollment
+        ProjectEnrollment.objects.create(student=self.student, project=self.project)
 
         # Create certificate
         Certificate.objects.create(
             student=self.student,
-            course=self.course,
+            project=self.project,
         )
 
     def test_dashboard_data_with_progress_today(self):
-        # Create course progress (completed lesson)
-        CourseProgress.objects.create(
+        # Create project progress (completed substep)
+        ProjectProgress.objects.create(
             student=self.student,
             completed_at=timezone.now(),
             points=10,
-            lesson=self.course.chapters.all()[0].lessons.all()[0],
+            substep=self.project.steps.all()[0].substeps.all()[0],
         )
 
         login(self, self.student.user.email, self.student_password)
@@ -50,19 +50,19 @@ class DashboardViewTest(TestCase):
         self.assertIn("daily_streak", data)
         self.assertEqual(data["daily_streak"], 1)
 
-        self.assertIn("courses", data)
-        self.assertEqual(len(data["courses"]), 1)
+        self.assertIn("projects", data)
+        self.assertEqual(len(data["projects"]), 1)
 
         self.assertIn("certificates", data)
         self.assertEqual(len(data["certificates"]), 1)
 
     def test_dashboard_data_with_progress_before(self):
-        # Create course progress (completed lesson)
-        CourseProgress.objects.create(
+        # Create project progress (completed substep)
+        ProjectProgress.objects.create(
             student=self.student,
             completed_at=timezone.now() - timezone.timedelta(days=10),
             points=10,
-            lesson=self.course.chapters.all()[0].lessons.all()[0],
+            substep=self.project.steps.all()[0].substeps.all()[0],
         )
 
         login(self, self.student.user.email, self.student_password)
@@ -76,8 +76,8 @@ class DashboardViewTest(TestCase):
         self.assertIn("daily_streak", data)
         self.assertEqual(data["daily_streak"], 0)
 
-        self.assertIn("courses", data)
-        self.assertEqual(len(data["courses"]), 1)
+        self.assertIn("projects", data)
+        self.assertEqual(len(data["projects"]), 1)
 
         self.assertIn("certificates", data)
         self.assertEqual(len(data["certificates"]), 1)
@@ -94,8 +94,8 @@ class DashboardViewTest(TestCase):
         self.assertIn("daily_streak", data)
         self.assertEqual(data["daily_streak"], 0)
 
-        self.assertIn("courses", data)
-        self.assertEqual(len(data["courses"]), 1)
+        self.assertIn("projects", data)
+        self.assertEqual(len(data["projects"]), 1)
 
         self.assertIn("certificates", data)
         self.assertEqual(len(data["certificates"]), 1)

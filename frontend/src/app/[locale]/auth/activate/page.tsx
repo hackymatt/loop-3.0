@@ -15,7 +15,8 @@ export default function Page() {
 export async function generateMetadata({ params }: { params: { locale: string } }) {
   const translations = await import(`public/locales/${params.locale}/activate.json`);
 
-  const path = params.locale === LANGUAGE.PL ? paths.activate : `/${LANGUAGE.EN}${paths.activate}`;
+  const path =
+    params.locale === LANGUAGE.PL ? paths.auth.activate : `/${LANGUAGE.EN}${paths.auth.activate}`;
 
   return createMetadata({
     title: translations.meta.title,

@@ -1,6 +1,6 @@
 export type ICertificateProps = {
   id: string;
-  courseName: string;
+  projectName: string;
   studentName: string;
   completedAt: string;
 };

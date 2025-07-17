@@ -71,7 +71,7 @@ export function CertificatesProgress({ certificates }: Props) {
 
       <Button
         component={RouterLink}
-        href={localize(paths.courses)}
+        href={localize(paths.projects)}
         color="inherit"
         size="large"
         variant="text"
@@ -98,7 +98,7 @@ export function CertificatesProgress({ certificates }: Props) {
         <Grid container spacing={2} sx={{ alignItems: "center", justifyContent: "center" }}>
           <Grid size={{ xs: 12, md: 8 }}>
             <Certificate
-              courseName="Introduction to Python Programming"
+              projectName="Introduction to Python Programming"
               studentName={studentName}
             />
           </Grid>

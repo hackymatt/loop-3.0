@@ -25,7 +25,7 @@ export function CertificateView({ id }: { id: string }) {
   return (
     <Container sx={{ py: { xs: 5, md: 10 } }}>
       <Certificate
-        courseName={certificate?.courseName || ""}
+        projectName={certificate?.projectName || ""}
         studentName={certificate?.studentName || ""}
         completedAt={certificate?.completedAt || ""}
         showButtons

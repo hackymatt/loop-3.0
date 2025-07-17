@@ -1,6 +1,6 @@
 import type { Variants } from "framer-motion";
 import type { BoxProps } from "@mui/material/Box";
-import type { ICourseTechnologyProp } from "src/types/course";
+import type { IProjectTechnologyProp } from "src/types/project";
 
 import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -27,7 +27,7 @@ import { varFade, MotionViewport } from "src/components/animate";
 const variants: Variants = varFade("inUp", { distance: 24 });
 
 type TechnologiesProps = {
-  technologies: ICourseTechnologyProp[];
+  technologies: IProjectTechnologyProp[];
 } & BoxProps;
 
 export function HomeFeatureTechnologies({ technologies, sx, ...other }: TechnologiesProps) {
@@ -67,7 +67,7 @@ export function HomeFeatureTechnologies({ technologies, sx, ...other }: Technolo
             <m.div variants={variants}>
               <Button
                 component={RouterLink}
-                href={localize(paths.courses)}
+                href={localize(paths.projects)}
                 color="inherit"
                 size="large"
                 variant="outlined"
@@ -102,7 +102,7 @@ export function HomeFeatureTechnologies({ technologies, sx, ...other }: Technolo
 // ----------------------------------------------------------------------
 
 type TechnologyItemProps = {
-  technology: ICourseTechnologyProp;
+  technology: IProjectTechnologyProp;
 };
 
 function TechnologyItem({ technology }: TechnologyItemProps) {
@@ -110,7 +110,7 @@ function TechnologyItem({ technology }: TechnologyItemProps) {
 
   return (
     <m.div>
-      <Link href={localize(`${paths.courses}?technologies=${technology.slug}`)}>
+      <Link href={localize(`${paths.projects}?technologies=${technology.slug}`)}>
         <Paper
           variant="outlined"
           sx={(theme) => ({

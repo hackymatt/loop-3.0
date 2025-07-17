@@ -1,4 +1,4 @@
-import type { IConfigProp } from "src/types/lesson";
+import type { IConfigProp } from "src/types/substep";
 
 import { useRef, useState } from "react";
 

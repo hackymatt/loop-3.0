@@ -1,12 +1,12 @@
 {
   "meta": {
     "title": "About Us – Online Programming Learning Platform",
-    "description": "loop is an innovative online programming learning platform offering courses for beginners and advanced learners. Join us and learn programming with the latest technologies!"
+    "description": "loop is an innovative online programming learning platform offering projects for beginners and advanced learners. Join us and learn programming with the latest technologies!"
   },
   "hero": {
-    "title": "Interactive online courses",
-    "subtitle": "is an innovative educational platform offering programming courses led by experienced professionals. Learn through hands-on practice, earn certificates, and develop your skills in the rapidly growing IT industry.",
-    "button": "Explore courses"
+    "title": "Interactive online projects",
+    "subtitle": "is an innovative educational platform offering programming projects led by experienced professionals. Learn through hands-on practice, earn certificates, and develop your skills in the rapidly growing IT industry.",
+    "button": "Explore projects"
   },
   "mission": {
     "title": "Our mission",
@@ -22,7 +22,7 @@
       },
       {
         "name": "Accessible for all levels",
-        "description": "Courses designed for both beginners and advanced programmers, offering a flexible learning experience."
+        "description": "Projects designed for both beginners and advanced programmers, offering a flexible learning experience."
       }
     ]
   },

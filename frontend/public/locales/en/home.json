@@ -1,50 +1,53 @@
 {
   "meta": {
-    "title": "Programming at Your Fingertips with loop – Online Coding Courses",
-    "description": "Learn to code with loop – a modern online learning platform. Courses for beginners and advanced users in JavaScript, Python, SQL and more. Start your coding journey today!"
+    "title": "Learn Programming by Building Projects",
+    "description": "No theory – practical projects that go straight to your portfolio. Learning programming with loop means coding, GitHub, your own decisions, and real skills. Start for free!"
   },
-  "title": "Programming at your fingertips with",
-  "subtitle": "Learn programming faster with AI, interactive courses, and mentor support.",
-  "button": "Start learning for free",
-  "sign-up": { "header": "Create your free account", "button": "Get started" },
+  "title": "Build Projects. Create Your Portfolio. Code with",
+  "subtitle": "Learn by creating real applications – step by step, without empty theory.",
+  "button": "Build Your First Project",
+  "sign-up": {
+    "header": "Create a Free Account",
+    "button": "Start Now"
+  },
   "certificate": {
-    "student": "John Doe",
-    "course": "Introduction to Python Programming",
-    "header": "Certification",
-    "title": "Looking for a certificate?",
-    "subtitle": "Get your official certificate and showcase your skills!"
+    "student": "Patryk Devowski",
+    "project": "Your First Python Project: Password Generator",
+    "header": "Certificate of Completion",
+    "title": "Build a Project. Earn a Certificate.",
+    "subtitle": "Document your skills with a certificate based on a real project – no tests, just working code."
   },
   "pricing": {
     "header": "Pricing Plans",
-    "title": "Transparent Pricing",
-    "subtitle": "Choose from flexible pricing options tailored to your needs and budget – with no hidden fees."
+    "title": "Clear and Flexible Plans",
+    "subtitle": "The free plan gives access to any one project, while the premium plan unlocks the full challenge catalog and expert support – no hidden fees."
   },
   "technology": {
     "header": "Technologies",
-    "title": "Cutting-edge technologies",
-    "subtitle": "Explore a selection of modern and powerful technologies to enhance your development skills and projects.",
-    "button": "View all"
+    "title": "Modern Technologies",
+    "subtitle": "Discover a set of modern and powerful technologies that will help you develop skills and complete projects.",
+    "button": "See All"
   },
-  "testimonial": "What our students say",
-  "course": {
-    "header": "Courses",
-    "title": "Top courses for You",
-    "subtitle": "Discover expertly designed courses tailored to help you master new skills and advance your career in technology.",
-    "button": "View all"
+  "testimonial": "What Our Students Say",
+  "project": {
+    "header": "Projects",
+    "title": "Top Projects for You",
+    "subtitle": "Explore carefully crafted projects designed to help you master new skills and advance your career in tech.",
+    "button": "See All"
   },
   "advertisement": {
-    "part1": "Start now",
-    "part2": "build your future",
-    "part3": "in IT!",
-    "button": "Try for free"
+    "part1": "Start today,",
+    "part2": "build your skills",
+    "part3": "and grow your IT career!",
+    "button": "Try for Free"
   },
   "platform": {
-    "header": "Learning with AI",
-    "title": "Intelligent learning with",
-    "subtitle": "A modern learning environment powered by AI. Save time, learn efficiently, and enhance your skills in a clear, intuitive code editor."
+    "header": "Portfolio Powered by Code",
+    "title": "Project-Based Programming with",
+    "subtitle": "Build locally, use your own editor and Git – just like in a real job. No empty theory. Only practice, code, and portfolio projects."
   },
   "app": {
-    "title": "Download the app",
-    "subtitle": "Learning programming made even easier with our app!"
+    "title": "Use the Platform Everywhere",
+    "subtitle": "Learn and track your progress with a web app that works on any device."
   }
 }
