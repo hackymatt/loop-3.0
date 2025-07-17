@@ -1,5 +1,7 @@
 "use client";
 
+import type { IBlogProps, IBlogRecentProps, IBlogFeaturedPost } from "src/types/blog";
+
 import { useTranslation } from "react-i18next";
 
 import Box from "@mui/material/Box";
@@ -16,31 +18,31 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { fDate } from "src/utils/format-time";
 
-import { usePost } from "src/api/blog/post";
-import { useRecentPosts } from "src/api/blog/recent";
 import { DEFAULT_AVATAR_URL } from "src/consts/avatar";
-import { useFeaturedPosts } from "src/api/blog/featured";
 
 import { Image } from "src/components/image";
 import { Iconify } from "src/components/iconify";
 import { Markdown } from "src/components/markdown";
-import { SplashScreen } from "src/components/loading-screen";
 import { CustomBreadcrumbs } from "src/components/custom-breadcrumbs";
 
 import { PostTags } from "../blog/post-tags";
 import { LatestPosts } from "../posts/latest-posts";
-import { NotFoundView } from "../error/not-found-view";
 import { PrevNextButton } from "../blog/post-prev-and-next";
 
 // ----------------------------------------------------------------------
+type PostViewProps = {
+  data: {
+    post: IBlogProps;
+    featuredPosts: IBlogFeaturedPost[];
+    recentPosts: IBlogRecentProps[];
+  };
+};
 
-export function PostView({ slug }: { slug: string }) {
+export function PostView({ data }: PostViewProps) {
   const { t } = useTranslation("navigation");
   const localize = useLocalizedPath();
 
-  const { data: post, isError, isLoading } = usePost(slug);
-  const { data: featuredPosts } = useFeaturedPosts();
-  const { data: recentPosts } = useRecentPosts();
+  const { post, featuredPosts, recentPosts } = data;
 
   const renderHead = () => (
     <Box sx={{ textAlign: "center", mt: { xs: 5, md: 10 } }}>
@@ -165,14 +167,6 @@ export function PostView({ slug }: { slug: string }) {
       )}
     </Box>
   );
-
-  if (isError) {
-    return <NotFoundView />;
-  }
-
-  if (isLoading) {
-    return <SplashScreen />;
-  }
 
   return (
     <>

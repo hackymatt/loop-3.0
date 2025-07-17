@@ -1,4 +1,5 @@
 import type { BoxProps } from "@mui/material/Box";
+import type { IReviewSummaryProps } from "src/types/review";
 
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,8 +10,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 import { fShortenNumber } from "src/utils/format-number";
 
-import { useReviewsSummary } from "src/api/review/summary";
-
 import { Iconify } from "src/components/iconify";
 
 // ----------------------------------------------------------------------
@@ -18,15 +17,13 @@ import { Iconify } from "src/components/iconify";
 const RATINGS = Array.from({ length: 5 }, (_, i) => 5 - i);
 
 type ReviewProgressProps = {
-  slug: string;
+  reviewsSummary: IReviewSummaryProps[];
 } & BoxProps;
 
 // ----------------------------------------------------------------------
 
-export function ReviewProgress({ slug, sx, ...other }: ReviewProgressProps) {
+export function ReviewProgress({ reviewsSummary, sx, ...other }: ReviewProgressProps) {
   const { t: locale } = useTranslation("locale");
-
-  const { data: reviewsSummary } = useReviewsSummary(slug);
 
   const ratings = useMemo(
     () =>

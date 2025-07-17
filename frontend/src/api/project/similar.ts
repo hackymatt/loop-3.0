@@ -1,8 +1,8 @@
+import type { Language } from "src/locales/types";
 import type { GetQueryResponse } from "src/api/types";
 import type { LevelType, IProjectListProps } from "src/types/project";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
 
 import { getSimpleListData } from "src/api/utils";
 
@@ -37,7 +37,7 @@ type IProject = {
   translated_description: string;
   level: ILevel;
   category: ICategory;
-  technology: ITechnology;
+  technologies: ITechnology[];
   instructors: IInstructor[];
   duration: number;
   substeps_count: number;
@@ -46,19 +46,21 @@ type IProject = {
   students_count: number;
 };
 
-export const similarProjectsQuery = (slug: string) => {
+export const similarProjectsQuery = (language: Language, slug: string) => {
   const url = endpoint;
   const queryUrl = `${url}/${slug}`;
 
   const queryFn = async (): Promise<GetQueryResponse<IProjectListProps[]>> => {
-    const results = await getSimpleListData<IProject>(queryUrl);
+    const results = await getSimpleListData<IProject>(queryUrl, {
+      headers: { "Accept-Language": language },
+    });
     const modifiedResults: IProjectListProps[] = (results ?? []).map(
       ({
         translated_name,
         translated_description,
         level,
         category,
-        technology,
+        technologies,
         instructors,
         duration,
         substeps_count,
@@ -78,10 +80,10 @@ export const similarProjectsQuery = (slug: string) => {
           slug: category.slug,
           name: category.translated_name,
         },
-        technology: {
+        technologies: technologies.map((technology: ITechnology) => ({
           slug: technology.slug,
           name: technology.name,
-        },
+        })),
         teachers: instructors.map(({ full_name, image, ...restInstructor }) => ({
           ...restInstructor,
           name: full_name,
@@ -99,13 +101,4 @@ export const similarProjectsQuery = (slug: string) => {
   };
 
   return { url, queryFn, queryKey: compact([url, slug]) };
-};
-
-export const useSimilarProjects = (slug: string, enabled: boolean = true) => {
-  const { queryKey, queryFn } = similarProjectsQuery(slug);
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return {
-    data: data?.results,
-    ...rest,
-  };
 };

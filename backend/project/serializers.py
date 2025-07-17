@@ -71,6 +71,7 @@ class BaseProjectSerializer(serializers.ModelSerializer):
 
     def get_translated_name(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
+        print("Getting translation for:", obj.slug, "in language:", lang)
         return obj.get_translation(lang).name
 
     def get_translated_description(self, obj):

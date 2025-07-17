@@ -1,8 +1,8 @@
 import type { IBlogProps } from "src/types/blog";
+import type { Language } from "src/locales/types";
 import type { GetQueryResponse } from "src/api/types";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
 
 import { getData } from "src/api/utils";
 
@@ -47,12 +47,14 @@ type IBlog = {
   next: INav | null;
 };
 
-export const postQuery = (slug: string) => {
+export const postQuery = (language: Language, slug: string) => {
   const url = endpoint;
   const queryUrl = `${url}/${slug}`;
 
   const queryFn = async (): Promise<GetQueryResponse<IBlogProps>> => {
-    const { data } = await getData<IBlog>(queryUrl);
+    const { data } = await getData<IBlog>(queryUrl, {
+      headers: { "Accept-Language": language },
+    });
     const {
       translated_name,
       translated_description,
@@ -102,10 +104,4 @@ export const postQuery = (slug: string) => {
   };
 
   return { url, queryFn, queryKey: compact([url, slug]) };
-};
-
-export const usePost = (slug: string, enabled: boolean = true) => {
-  const { queryKey, queryFn } = postQuery(slug);
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return { data: data?.results, ...rest };
 };

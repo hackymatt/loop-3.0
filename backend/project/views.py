@@ -34,6 +34,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
                     "blog_prerequisites",
                     queryset=Blog.objects.prefetch_related("translations"),
                 ),
+                Prefetch(
+                    "similar",
+                    queryset=Project.objects.prefetch_related("translations"),
+                ),
             )
             .annotate(
                 substeps_count=Count("steps__substeps", distinct=True),
@@ -88,15 +92,7 @@ class SimilarProjectsView(views.APIView):
     def get(self, request, slug):
         project = get_object_or_404(Project, slug=slug, active=True)
 
-        similar_projects = (
-            Project.objects.filter(
-                Q(category=project.category)
-                | Q(technology=project.technology)
-                | Q(level=project.level)
-            )
-            .exclude(id=project.id)
-            .distinct()[:3]
-        )
+        similar_projects = project.similar.all().exclude(id=project.id).distinct()[:3]
 
         serializer = ProjectListSerializer(
             similar_projects, many=True, context={"request": request}

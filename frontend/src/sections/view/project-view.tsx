@@ -1,7 +1,7 @@
 "use client";
 
-import type { IReviewItemProp } from "src/types/review";
-import type { LevelType, IProjectProps } from "src/types/project";
+import type { IReviewItemProp, IReviewSummaryProps } from "src/types/review";
+import type { LevelType, IProjectProps, IProjectListProps } from "src/types/project";
 
 import { useState, useEffect } from "react";
 import { useBoolean, useSetState } from "minimal-shared/hooks";
@@ -9,8 +9,6 @@ import { useBoolean, useSetState } from "minimal-shared/hooks";
 import Grid from "@mui/material/Grid2";
 import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
-
-import { useSimilarProjects } from "src/api/project/similar";
 
 import { ReviewList } from "../review/review-list";
 import { ReviewSummary } from "../review/review-summary";
@@ -30,6 +28,8 @@ type ProjectViewProps = {
   slug: string;
   data: {
     project: IProjectProps;
+    similarProjects: IProjectListProps[];
+    reviewsSummary: IReviewSummaryProps[];
     reviews: IReviewItemProp[];
     reviewsCount: number;
     reviewsPageSize: number;
@@ -41,8 +41,7 @@ export function ProjectView({ slug, data }: ProjectViewProps) {
     page: "1",
   });
 
-  const { project, reviews, reviewsCount, reviewsPageSize } = data;
-  const { data: similarProjects } = useSimilarProjects(slug);
+  const { project, similarProjects, reviewsSummary, reviews, reviewsCount, reviewsPageSize } = data;
 
   const [showCongratulations, setShowCongratulations] = useState<boolean>(false);
 
@@ -55,7 +54,7 @@ export function ProjectView({ slug, data }: ProjectViewProps) {
   const renderReview = () => (
     <>
       <ReviewSummary
-        slug={slug}
+        reviewsSummary={reviewsSummary}
         isCompleted={(project.progress || 0) === 100}
         ratingNumber={project.ratingNumber || 0}
         reviewNumber={project.totalReviews || 0}

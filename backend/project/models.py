@@ -40,6 +40,9 @@ class Project(BaseModel):
     blog_prerequisites = models.ManyToManyField(
         Blog, related_name="dependent_blogs", blank=True, symmetrical=False
     )
+    similar = models.ManyToManyField(
+        "self", related_name="similar_projects", blank=True, symmetrical=False
+    )
     active = models.BooleanField(default=False)
 
     class Meta:

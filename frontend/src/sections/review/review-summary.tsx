@@ -1,4 +1,5 @@
 import type { BoxProps } from "@mui/material/Box";
+import type { IReviewSummaryProps } from "src/types/review";
 
 import { useTranslation } from "react-i18next";
 
@@ -23,7 +24,7 @@ import { ReviewProgress } from "./review-progress";
 // ----------------------------------------------------------------------
 
 type Props = BoxProps & {
-  slug: string;
+  reviewsSummary: IReviewSummaryProps[];
   isCompleted: boolean;
   reviewNumber: number;
   ratingNumber: number;
@@ -32,7 +33,7 @@ type Props = BoxProps & {
 
 export function ReviewSummary({
   sx,
-  slug,
+  reviewsSummary,
   isCompleted,
   reviewNumber,
   ratingNumber,
@@ -105,7 +106,7 @@ export function ReviewSummary({
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>
-            <ReviewProgress slug={slug} />
+            <ReviewProgress reviewsSummary={reviewsSummary} />
           </Grid>
         </Grid>
       </Container>
