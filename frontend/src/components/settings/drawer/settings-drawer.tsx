@@ -3,6 +3,7 @@
 import type { Language } from "src/locales/types";
 
 import { useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { hasKeys, varAlpha } from "minimal-shared/utils";
 
@@ -31,6 +32,8 @@ import type { SettingsDrawerProps } from "../types";
 // ----------------------------------------------------------------------
 
 export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
+  const { t } = useTranslation("settings");
+
   const settings = useSettingsContext();
   const pathname = usePathname();
   const queryClient = useQueryClient();
@@ -89,10 +92,10 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
       }}
     >
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
-        Settings
+        {t("title")}
       </Typography>
 
-      <Tooltip title="Reset all">
+      <Tooltip title={t("reset")}>
         <IconButton onClick={handleReset}>
           <Badge color="error" variant="dot" invisible={!settings.canReset}>
             <Iconify icon="solar:restart-bold" />
@@ -100,7 +103,7 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
         </IconButton>
       </Tooltip>
 
-      <Tooltip title="Close">
+      <Tooltip title={t("close")}>
         <IconButton onClick={settings.onCloseDrawer}>
           <Iconify icon="mingcute:close-line" />
         </IconButton>
@@ -110,7 +113,7 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
 
   const renderMode = () => (
     <BaseOption
-      label="Dark mode"
+      label={t("mode")}
       icon="moon"
       selected={settings.state.colorScheme === "dark"}
       onChangeOption={() => {
@@ -121,7 +124,7 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
   );
 
   const renderLanguage = () => (
-    <LargeBlock title="Language" sx={{ gap: 2.5 }}>
+    <LargeBlock title={t("language")} sx={{ gap: 2.5 }}>
       <LanguageOptions
         options={langs}
         value={settings.state.language}
@@ -143,7 +146,7 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
             ...theme.mixins.paperStyles(theme, {
               color: varAlpha(theme.vars.palette.background.defaultChannel, 0.9),
             }),
-            width: 360,
+            width: 320,
           }),
           ...(Array.isArray(sx) ? sx : [sx]),
         ],

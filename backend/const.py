@@ -22,16 +22,15 @@ class Urls:
     PASSWORD_RESET = "auth/reset-password"
     PASSWORD_RESET_CONFIRM = "auth/reset-password-confirm"
     REFRESH_TOKEN = "auth/refresh-token"
-    ACCESS_TOKEN = "auth/access-token"
     # Project
-    Project_LEVEL = "project-levels"
-    Project_TECHNOLOGY = "project-technologies"
-    Project_CATEGORY = "project-categories"
-    Project = "projects"
-    FEATURED_Project = "featured-projects"
+    PROJECT_LEVEL = "project-levels"
+    PROJECT_TECHNOLOGY = "project-technologies"
+    PROJECT_CATEGORY = "project-categories"
+    PROJECT = "projects"
+    FEATURED_PROJECT = "featured-projects"
     FEATURED_TECHNOLOGIES = "featured-technologies"
     FEATURED_REVIEWS = "featured-reviews"
-    SIMILAR_ProjectS = "similar-projects/<slug:slug>"
+    SIMILAR_PROJECTS = "similar-projects/<slug:slug>"
     # LESSON
     LESSON = "substep/<slug:project_slug>/<slug:step_slug>/<slug:substep_slug>"
     LESSON_PROGRESS = "substep/progress"
@@ -39,8 +38,8 @@ class Urls:
     LESSON_ANSWER = "substep/answer"
     LESSON_HINT = "substep/hint"
     # REVIEW
-    Project_REVIEW_SUMMARY = "reviews-summary/<slug:slug>"
-    Project_REVIEWS = "reviews/<slug:slug>"
+    PROJECT_REVIEW_SUMMARY = "reviews-summary/<slug:slug>"
+    PROJECT_REVIEWS = "reviews/<slug:slug>"
     REVIEW_SUBMIT = "review-submit"
     # BLOG
     POST_TOPIC = "post-topics"

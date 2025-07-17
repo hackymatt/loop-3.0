@@ -18,7 +18,7 @@ from ...factory import (
 class TechnologyViewTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = f"/{Urls.API}/{Urls.Project_TECHNOLOGY}"
+        self.url = f"/{Urls.API}/{Urls.PROJECT_TECHNOLOGY}"
 
         # Create admin and regular user
         self.admin, self.admin_password = create_admin()

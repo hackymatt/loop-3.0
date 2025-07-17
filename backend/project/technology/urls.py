@@ -5,7 +5,7 @@ from const import Urls
 
 router = Router(trailing_slash=False)
 router.register(
-    Urls.Project_TECHNOLOGY, TechnologyViewSet, basename="project-technologies"
+    Urls.PROJECT_TECHNOLOGY, TechnologyViewSet, basename="project-technologies"
 )
 
 urlpatterns = [

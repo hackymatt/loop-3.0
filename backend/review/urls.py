@@ -9,12 +9,12 @@ from const import Urls
 
 urlpatterns = [
     path(
-        Urls.Project_REVIEW_SUMMARY,
+        Urls.PROJECT_REVIEW_SUMMARY,
         ReviewSummaryViewSet.as_view({"get": "list"}),
         name="reviews-summary",
     ),
     path(
-        Urls.Project_REVIEWS,
+        Urls.PROJECT_REVIEWS,
         ReviewViewSet.as_view({"get": "list"}),
         name="project-reviews",
     ),

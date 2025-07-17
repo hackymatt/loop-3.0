@@ -1,5 +1,13 @@
 "use client";
 
+import type {
+  IBlogTagProp,
+  IBlogTopicProp,
+  IBlogListProps,
+  IBlogRecentProps,
+  IBlogFeaturedPost,
+} from "src/types/blog";
+
 import { useTranslation } from "react-i18next";
 
 import Grid from "@mui/material/Grid2";
@@ -12,11 +20,6 @@ import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { _mock } from "src/_mock";
-import { usePosts } from "src/api/blog/posts";
-import { usePostTags } from "src/api/blog/tag/tags";
-import { useRecentPosts } from "src/api/blog/recent";
-import { useFeaturedPosts } from "src/api/blog/featured";
-import { usePostTopics } from "src/api/blog/topic/topics";
 
 import { Posts } from "../posts/posts";
 import { Advertisement } from "../advertisement";
@@ -24,18 +27,26 @@ import { PostSidebar } from "../blog/post-sidebar";
 import { FeaturedPost } from "../posts/featured-post";
 
 // ----------------------------------------------------------------------
+type PostsViewProps = {
+  data: {
+    postTopics: IBlogTopicProp[];
+    postTags: IBlogTagProp[];
+    featuredPosts: IBlogFeaturedPost[];
+    recentPosts: IBlogRecentProps[];
+    posts: IBlogListProps[];
+    postsCount: number;
+    postsPageSize: number;
+  };
+};
 
-export function PostsView() {
+export function PostsView({ data }: PostsViewProps) {
   const { t } = useTranslation("advertisement");
   const localize = useLocalizedPath();
 
   const { handleChange, query } = useQueryParams();
 
-  const { data: postTopics } = usePostTopics();
-  const { data: postTags } = usePostTags();
-  const { data: featuredPosts } = useFeaturedPosts();
-  const { data: recentPosts } = useRecentPosts();
-  const { data: posts, count, pageSize } = usePosts(query);
+  const { postTopics, postTags, featuredPosts, recentPosts, posts, postsCount, postsPageSize } =
+    data;
 
   return (
     <>
@@ -45,8 +56,8 @@ export function PostsView() {
           <Grid size={{ xs: 12, md: 8 }}>
             <Posts
               posts={posts || []}
-              recordsCount={count || 0}
-              pagesCount={pageSize || 0}
+              recordsCount={postsCount || 0}
+              pagesCount={postsPageSize || 0}
               page={Number(query.page) || 1}
               onPageChange={(selectedPage: number) => handleChange("page", String(selectedPage))}
             />

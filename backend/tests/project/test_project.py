@@ -186,7 +186,7 @@ class ProjectViewSetTest(TestCase):
 class FeaturedProjectsViewTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = f"/{Urls.API}/{Urls.FEATURED_Project}"
+        self.url = f"/{Urls.API}/{Urls.FEATURED_PROJECT}"
 
         self.student_1, _ = create_student()
         self.student_2, _ = create_student()
@@ -262,7 +262,7 @@ class FeaturedProjectsViewTest(TestCase):
 class SimilarProjectsViewTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = f"/{Urls.API}/{Urls.SIMILAR_ProjectS}"
+        self.url = f"/{Urls.API}/{Urls.SIMILAR_PROJECTS}"
 
         # Create a base project
         self.base_project = create_project()

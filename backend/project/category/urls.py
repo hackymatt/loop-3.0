@@ -4,7 +4,7 @@ from .views import CategoryViewSet
 from const import Urls
 
 router = Router(trailing_slash=False)
-router.register(Urls.Project_CATEGORY, CategoryViewSet, basename="project-categories")
+router.register(Urls.PROJECT_CATEGORY, CategoryViewSet, basename="project-categories")
 
 urlpatterns = [
     path("", include(router.urls)),

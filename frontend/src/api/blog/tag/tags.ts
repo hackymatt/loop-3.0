@@ -1,8 +1,8 @@
+import type { Language } from "src/locales/types";
 import type { IBlogTagProp } from "src/types/blog";
 import type { QueryType, ListQueryResponse } from "src/api/types";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
 
 import { URLS } from "src/api/urls";
 import { getListData, formatQueryParams } from "src/api/utils";
@@ -14,13 +14,15 @@ type IBlogTag = {
   translated_name: string;
 };
 
-export const postTagsQuery = (query?: QueryType) => {
+export const postTagsQuery = (language: Language, query?: QueryType) => {
   const url = endpoint;
   const urlParams = formatQueryParams(query);
   const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<ListQueryResponse<IBlogTagProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IBlogTag>(queryUrl);
+    const { results, records_count, pages_count } = await getListData<IBlogTag>(queryUrl, {
+      headers: { "Accept-Language": language },
+    });
     const modifiedResults: IBlogTagProp[] = (results ?? []).map(
       ({ translated_name, ...rest }: IBlogTag) => ({
         ...rest,
@@ -31,10 +33,4 @@ export const postTagsQuery = (query?: QueryType) => {
   };
 
   return { url, queryFn, queryKey: compact([url, urlParams]) };
-};
-
-export const usePostTags = (query?: QueryType, enabled: boolean = true) => {
-  const { queryKey, queryFn } = postTagsQuery(query);
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return { data: data?.results, count: data?.count, ...rest };
 };

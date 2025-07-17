@@ -10,7 +10,7 @@ from ...factory import create_admin, create_student, create_level
 class LevelViewTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = f"/{Urls.API}/{Urls.Project_LEVEL}"
+        self.url = f"/{Urls.API}/{Urls.PROJECT_LEVEL}"
 
         # Create admin and regular user
         self.admin, self.admin_password = create_admin()

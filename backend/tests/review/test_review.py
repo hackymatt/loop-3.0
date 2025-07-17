@@ -10,7 +10,7 @@ from ..helpers import login
 class ReviewSummaryViewSetTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = f"/{Urls.API}/{Urls.Project_REVIEW_SUMMARY}"
+        self.url = f"/{Urls.API}/{Urls.PROJECT_REVIEW_SUMMARY}"
         # Set up test data
         self.student_1, _ = create_student()
         self.student_2, _ = create_student()
@@ -45,7 +45,7 @@ class ReviewSummaryViewSetTest(TestCase):
 
 class ReviewViewSetTest(TestCase):
     def setUp(self):
-        self.url = f"/{Urls.API}/{Urls.Project_REVIEWS}"
+        self.url = f"/{Urls.API}/{Urls.PROJECT_REVIEWS}"
         # Set up test data
         self.student_1, _ = create_student()
         self.student_2, _ = create_student()
