@@ -17,12 +17,17 @@ class SubscriptionSerializer(serializers.Serializer):
 
 class UserSubscription(serializers.ModelSerializer):
     type = serializers.CharField(source="plan.slug")
+    license = serializers.SerializerMethodField()
     interval = serializers.SerializerMethodField()
     valid_to = serializers.DateTimeField(source="end_date")
 
     class Meta:
         model = PlanSubscription
-        fields = ["type", "interval", "valid_to"]
+        fields = ["type", "license", "interval", "valid_to"]
+
+    def get_license(self, obj):
+        lang = self.context.get("request").LANGUAGE_CODE
+        return obj.plan.get_translation(lang).license
 
     def get_interval(self, obj):
         if not obj.end_date:

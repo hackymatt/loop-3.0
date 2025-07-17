@@ -14,7 +14,8 @@
     "button": "See all certificates",
     "lack": "You do not have any certificates yet. Complete the project to earn your first one!",
     "start": "See all projects",
-    "blocked": "Improve your chances of getting hired with industry-recognized certifications. Unlock your certificates now."
+    "blocked": "Improve your chances of getting hired with industry-recognized certifications. Unlock your certificates now.",
+    "project": "Your First Python Project: Password Generator"
   },
   "profile": { "greeting": "Hey", "points": "Total XP", "streak": "Daily Streak", "days": "days" }
 }

@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -13,6 +14,7 @@ type ILogin = {
 
 type IPlan = {
   type: "free" | "basic" | "premium";
+  license: string;
   interval: "monthly" | "yearly" | null;
   valid_to: string | null;
 };
@@ -31,9 +33,11 @@ type ILoginReturn = {
   status: number;
 };
 
-export const useLoginGoogle = () =>
+export const useLoginGoogle = (language: Language) =>
   useMutation<ILoginReturn, AxiosError, ILogin>(async (variables) => {
-    const result = await Api.post(endpoint, variables);
+    const result = await Api.post(endpoint, variables, {
+      headers: { "Accept-Language": language },
+    });
     return {
       status: result.status,
       data: result.data,

@@ -1,19 +1,20 @@
 "use client";
 
+import type { IDashboardProps } from "src/types/user";
+
 import Grid from "@mui/material/Grid2";
 import { Box, Container } from "@mui/material";
-
-import { useDashboard } from "src/api/me/dashboard";
 
 import { ProfileSummary } from "../dashboard/profile-summary";
 import { ProjectsProgress } from "../dashboard/projects-progress";
 import { CertificatesProgress } from "../dashboard/certificates-progress";
 
 // ----------------------------------------------------------------------
+type DashboardProps = {
+  data: IDashboardProps;
+};
 
-export function DashboardView() {
-  const { data: dashboard } = useDashboard();
-
+export function DashboardView({ data }: DashboardProps) {
   const renderContent = () => (
     <Box
       sx={{
@@ -32,9 +33,9 @@ export function DashboardView() {
           mb: 1,
         }}
       >
-        <ProjectsProgress projects={dashboard?.projects || []} />
+        <ProjectsProgress projects={data.projects || []} />
 
-        <CertificatesProgress certificates={dashboard?.certificates || []} />
+        <CertificatesProgress certificates={data.certificates || []} />
       </Box>
     </Box>
   );
@@ -45,10 +46,7 @@ export function DashboardView() {
         py: 5,
       }}
     >
-      <ProfileSummary
-        totalPoints={dashboard?.totalPoints || 0}
-        dailyStreak={dashboard?.dailyStreak || 0}
-      />
+      <ProfileSummary totalPoints={data.totalPoints || 0} dailyStreak={data.dailyStreak || 0} />
     </Box>
   );
 

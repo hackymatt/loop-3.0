@@ -33,7 +33,7 @@ class LoginResponseSerializer(serializers.ModelSerializer):
             return None
 
         subscription = get_subscription(obj)
-        return UserSubscription(subscription).data
+        return UserSubscription(subscription, context={"request": self.context.get("request")}).data
 
     def get_image(self, obj):
         request = self.context.get("request")

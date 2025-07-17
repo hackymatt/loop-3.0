@@ -3,6 +3,7 @@ import type { GetQueryResponse } from "src/api/types";
 import type { LevelType, IProjectProps } from "src/types/project";
 
 import { compact } from "lodash-es";
+import { cookies } from "next/headers";
 
 import { getData } from "src/api/utils";
 
@@ -87,7 +88,7 @@ export const projectQuery = (language: Language, slug: string) => {
 
   const queryFn = async (): Promise<GetQueryResponse<IProjectProps>> => {
     const { data } = await getData<IProject>(queryUrl, {
-      headers: { "Accept-Language": language },
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
     const {
       translated_name,

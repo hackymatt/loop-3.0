@@ -26,9 +26,7 @@ class SubstepSerializer(serializers.ModelSerializer):
 
         progress = self.get_progress(instance, user)
         data["progress"] = progress
-        data["earned_points"] = (
-            self.get_points(instance, user) if progress == 100 else None
-        )
+        data["earned_points"] = instance.points
 
         return data
 
@@ -38,15 +36,6 @@ class SubstepSerializer(serializers.ModelSerializer):
         ).exists()
 
         return 100 if is_completed else 0
-
-    def get_points(self, obj, user):
-        return (
-            ProjectProgress.objects.filter(
-                student__user=user, substep=obj, completed_at__isnull=False
-            )
-            .first()
-            .points
-        )
 
 
 class SubstepBaseSerializer(serializers.ModelSerializer):

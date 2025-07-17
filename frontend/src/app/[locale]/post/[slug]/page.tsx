@@ -5,8 +5,6 @@ import { paths } from "src/routes/paths";
 
 import { createMetadata } from "src/utils/create-metadata";
 
-import { URLS } from "src/api/urls";
-import { CONFIG } from "src/global-config";
 import { postQuery } from "src/api/blog/post";
 import { LANGUAGE } from "src/consts/language";
 import { recentPostsQuery } from "src/api/blog/recent";
@@ -56,24 +54,14 @@ export default async function Page({ params }: PageProps) {
   return <PostView data={data} />;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string; slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const translations = await import(`public/locales/${params.locale}/blog.json`);
 
   const path = params.locale === LANGUAGE.PL ? paths.posts : `/${LANGUAGE.EN}${paths.posts}`;
   try {
-    const res = await fetch(`${CONFIG.api}${URLS.POSTS}/${params.slug}`, {
-      headers: { "Content-Type": "application/json", "Accept-Language": params.locale },
-    });
+    const post = (await queries.post(params.locale, params.slug).queryFn()).results;
 
-    if (!res.ok) throw new Error("Failed to fetch post");
-
-    const post = await res.json();
-
-    const { translated_name: name, image: heroUrl } = post;
+    const { name, heroUrl } = post;
 
     const title = translations.meta.post.title.replace("[name]", name);
     const description = translations.meta.post.description.replace("[name]", name);

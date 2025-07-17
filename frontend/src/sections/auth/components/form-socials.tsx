@@ -21,12 +21,14 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
 import { CONFIG } from "src/global-config";
+import { LANGUAGE } from "src/consts/language";
 import { useLoginGithub } from "src/api/auth/github-login";
 import { useLoginGoogle } from "src/api/auth/google-login";
 import { useLoginFacebook } from "src/api/auth/facebook-login";
 import { GithubIcon, GoogleIcon, FacebookIcon } from "src/assets/icons";
 
 import { useUserContext } from "src/components/user";
+import { useSettingsContext } from "src/components/settings";
 
 // ----------------------------------------------------------------------
 
@@ -53,11 +55,14 @@ export function FormSocials({ methods, sx, ...other }: FormSocialsProps) {
 function GoogleSignIn({ methods }: { methods: UseFormReturn<any> }) {
   const router = useRouter();
   const user = useUserContext();
+  const {
+    state: { language },
+  } = useSettingsContext();
   const { redirect } = user.state;
 
   const localize = useLocalizedPath();
 
-  const { mutateAsync: googleLogin } = useLoginGoogle();
+  const { mutateAsync: googleLogin } = useLoginGoogle(language || LANGUAGE.PL);
 
   const handleFormError = useFormErrorHandler(methods);
 
@@ -102,11 +107,14 @@ function GoogleSignIn({ methods }: { methods: UseFormReturn<any> }) {
 function GithubSignIn({ methods }: { methods: UseFormReturn<any> }) {
   const router = useRouter();
   const user = useUserContext();
+  const {
+    state: { language },
+  } = useSettingsContext();
   const { redirect } = user.state;
 
   const localize = useLocalizedPath();
 
-  const { mutateAsync: githubLogin } = useLoginGithub();
+  const { mutateAsync: githubLogin } = useLoginGithub(language || LANGUAGE.PL);
 
   const handleFormError = useFormErrorHandler(methods);
 
@@ -151,11 +159,14 @@ function GithubSignIn({ methods }: { methods: UseFormReturn<any> }) {
 function FacebookSignIn({ methods }: { methods: UseFormReturn<any> }) {
   const router = useRouter();
   const user = useUserContext();
+  const {
+    state: { language },
+  } = useSettingsContext();
   const { redirect } = user.state;
 
   const localize = useLocalizedPath();
 
-  const { mutateAsync: facebookLogin } = useLoginFacebook();
+  const { mutateAsync: facebookLogin } = useLoginFacebook(language || LANGUAGE.PL);
 
   const handleFormError = useFormErrorHandler(methods);
 

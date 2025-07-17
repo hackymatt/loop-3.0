@@ -1,9 +1,10 @@
+import type { Language } from "src/locales/types";
 import type { LevelType } from "src/types/project";
 import type { GetQueryResponse } from "src/api/types";
 import type { IDashboardProps } from "src/types/user";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
+import { cookies } from "next/headers";
 
 import { getData } from "src/api/utils";
 
@@ -38,7 +39,7 @@ type IProject = {
   translated_description: string;
   level: ILevel;
   category: ICategory;
-  technology: ITechnology;
+  technologies: ITechnology[];
   instructors: IInstructor[];
   duration: number;
   substeps_count: number;
@@ -62,12 +63,14 @@ type IDashboard = {
   certificates: ICertificate[];
 };
 
-export const dashboardQuery = () => {
+export const dashboardQuery = (language: Language) => {
   const url = endpoint;
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IDashboardProps>> => {
-    const { data } = await getData<IDashboard>(queryUrl);
+    const { data } = await getData<IDashboard>(queryUrl, {
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
+    });
 
     const { total_points, daily_streak, projects, certificates } = data;
 
@@ -80,7 +83,7 @@ export const dashboardQuery = () => {
           translated_description,
           level,
           category,
-          technology,
+          technologies,
           instructors,
           duration,
           substeps_count,
@@ -101,10 +104,10 @@ export const dashboardQuery = () => {
             slug: category.slug,
             name: category.translated_name,
           },
-          technology: {
+          technologies: technologies.map((technology: ITechnology) => ({
             slug: technology.slug,
             name: technology.name,
-          },
+          })),
           teachers: instructors.map(({ full_name, image, ...restInstructor }) => ({
             ...restInstructor,
             name: full_name,
@@ -134,11 +137,11 @@ export const dashboardQuery = () => {
   return { url, queryFn, queryKey: compact([url]) };
 };
 
-export const useDashboard = (enabled: boolean = true) => {
-  const { queryKey, queryFn } = dashboardQuery();
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return {
-    data: data?.results,
-    ...rest,
-  };
-};
+// export const useDashboard = (enabled: boolean = true) => {
+//   const { queryKey, queryFn } = dashboardQuery();
+//   const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
+//   return {
+//     data: data?.results,
+//     ...rest,
+//   };
+// };

@@ -40,4 +40,4 @@ class SubscribeView(APIView):
 
         subscription = subscribe(student=student, plan=plan, end_date=end_date)
 
-        return Response(UserSubscription(subscription).data, status=status.HTTP_200_OK)
+        return Response(UserSubscription(subscription, context={"request": self.context.get("request")}).data, status=status.HTTP_200_OK)

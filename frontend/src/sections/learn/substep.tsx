@@ -1,4 +1,4 @@
-import type { IReadingSubstepProps } from "src/types/substep";
+import type { ISubstepProps } from "src/types/substep";
 
 import React from "react";
 import { m } from "framer-motion";
@@ -13,19 +13,19 @@ import { Markdown } from "src/components/markdown";
 
 // ----------------------------------------------------------------------
 
-type ReadingSubstepProps = {
-  substep: IReadingSubstepProps;
+type SubstepProps = {
+  substep: ISubstepProps;
   onSubmit: () => void;
   isLocked?: boolean;
 };
 
 // ----------------------------------------------------------------------
 
-export const ReadingSubstep = React.memo(function ReadingSubstep({
+export const Substep = React.memo(function Substep({
   substep,
   onSubmit,
   isLocked = false,
-}: ReadingSubstepProps) {
+}: SubstepProps) {
   const { t } = useTranslation("learn");
 
   const renderHeader = () => (

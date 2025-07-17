@@ -49,6 +49,7 @@ export async function getData<T>(
     const response = await Api.get<T>(queryUrl, config);
     return { data: response.data };
   } catch (error) {
+    console.log(error);
     const axiosError = error as AxiosError;
 
     const fallbackData = axiosError.response?.data as T;

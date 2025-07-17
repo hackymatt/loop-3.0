@@ -97,10 +97,7 @@ export function CertificatesProgress({ certificates }: Props) {
       <Box sx={{ p: { xs: 0, md: 5 } }}>
         <Grid container spacing={2} sx={{ alignItems: "center", justifyContent: "center" }}>
           <Grid size={{ xs: 12, md: 8 }}>
-            <Certificate
-              projectName="Introduction to Python Programming"
-              studentName={studentName}
-            />
+            <Certificate projectName={t("certificates.project")} studentName={studentName} />
           </Grid>
 
           <Grid

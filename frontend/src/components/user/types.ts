@@ -13,7 +13,12 @@ export type UserState = {
   joinType: JoinType;
   isActive: boolean;
   isLoggedIn: boolean;
-  plan: { type: PlanType; interval: PlanInterval | null; valid_to: DatePickerFormat | null };
+  plan: {
+    type: PlanType;
+    license: string;
+    interval: PlanInterval | null;
+    valid_to: DatePickerFormat | null;
+  };
   redirect: string | null;
 };
 

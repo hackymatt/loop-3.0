@@ -16,6 +16,6 @@ export const defaultUser: UserState = {
   joinType: JOIN_TYPE.EMAIL,
   isActive: false,
   isLoggedIn: false,
-  plan: { type: PLAN_TYPE.FREE, interval: null, valid_to: null },
+  plan: { type: PLAN_TYPE.FREE, license: "", interval: null, valid_to: null },
   redirect: null,
 };

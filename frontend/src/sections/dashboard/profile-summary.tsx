@@ -11,8 +11,6 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { fNumber } from "src/utils/format-number";
 
-import { usePlan } from "src/api/plan/plan";
-import { PLAN_TYPE } from "src/consts/plan";
 import { DEFAULT_AVATAR_URL } from "src/consts/avatar";
 
 import { Label } from "src/components/label";
@@ -70,9 +68,7 @@ export function ProfileSummary({ totalPoints, dailyStreak }: Props) {
   const localize = useLocalizedPath();
 
   const user = useUserContext();
-  const { firstName, email, avatarUrl, plan: userPlan } = user.state;
-
-  const { data: plan } = usePlan(userPlan.type || PLAN_TYPE.FREE);
+  const { firstName, email, avatarUrl, plan } = user.state;
 
   const renderPlan = () => (
     <Link
@@ -95,7 +91,7 @@ export function ProfileSummary({ totalPoints, dailyStreak }: Props) {
         })}
       >
         <Label color="error" sx={{ textTransform: "uppercase" }}>
-          {plan?.license || PLAN_TYPE.FREE}
+          {plan.license}
         </Label>
       </Card>
     </Link>
