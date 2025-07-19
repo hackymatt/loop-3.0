@@ -113,9 +113,12 @@ export function ProjectDetailsStepItem({
             </>
           ) : null}
 
-          <Box sx={{ flexGrow: 1 }} />
-
-          {!completed && renderButton()}
+          {!completed && (
+            <>
+              <Box sx={{ flexGrow: 1 }} />
+              {renderButton()}
+            </>
+          )}
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", width: 1, gap: 1 }}>
