@@ -63,7 +63,7 @@ type IProjectBaseProps = {
   teachers: IProjectTeacherProp[];
   totalHours: number;
   // calculated
-  totalSubsteps: number;
+  totalStages: number;
   ratingNumber: number | null;
   totalReviews: number;
   totalStudents: number;

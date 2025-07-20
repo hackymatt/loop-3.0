@@ -59,25 +59,25 @@ export function HomeFeaturedProjects({ projects, sx, ...other }: ProjectsProps) 
           </Grid>
         </Grid>
 
-        <Box
-          sx={{
-            columnGap: 4,
-            display: "grid",
-            py: { xs: 5, md: 10 },
-            rowGap: { xs: 4, md: 5 },
-            gridTemplateColumns: {
-              xs: "repeat(1, 1fr)",
-              sm: "repeat(2, 1fr)",
-              md: "repeat(3, 1fr)",
-            },
-          }}
-        >
-          <m.div variants={variants}>
+        <m.div variants={variants}>
+          <Box
+            sx={{
+              columnGap: 4,
+              display: "grid",
+              py: { xs: 5, md: 10 },
+              rowGap: { xs: 4, md: 5 },
+              gridTemplateColumns: {
+                xs: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+              },
+            }}
+          >
             {projects.map((project) => (
               <ProjectItem key={project.slug} project={project} />
             ))}
-          </m.div>
-        </Box>
+          </Box>
+        </m.div>
 
         <m.div variants={variants}>
           <Box sx={{ textAlign: "center" }}>

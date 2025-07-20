@@ -96,7 +96,7 @@ export function ProjectView({ slug, data }: ProjectViewProps) {
         totalExercises={project.totalExercises || 0}
         totalVideos={project.totalVideos || 0}
         totalQuizzes={project.totalQuizzes || 0}
-        totalSubsteps={project.totalSubsteps || 0}
+        totalStages={project.totalStages || 0}
         totalStudents={project.totalStudents || 0}
         steps={project.steps || []}
         progress={project.progress || 0}

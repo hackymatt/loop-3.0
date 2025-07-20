@@ -45,7 +45,7 @@ class BaseProjectSerializer(serializers.ModelSerializer):
     technologies = TechnologySerializer(source="technology", many=True, read_only=True)
     instructors = InstructorSerializer(many=True, read_only=True)
 
-    steps_count = serializers.IntegerField(read_only=True)
+    stages_count = serializers.IntegerField(read_only=True)
     average_rating = serializers.FloatField(read_only=True)
     ratings_count = serializers.IntegerField(read_only=True)
     students_count = serializers.IntegerField(read_only=True)
@@ -63,7 +63,7 @@ class BaseProjectSerializer(serializers.ModelSerializer):
             "technologies",
             "instructors",
             "duration",
-            "steps_count",
+            "stages_count",
             "average_rating",
             "ratings_count",
             "students_count",

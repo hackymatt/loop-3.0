@@ -40,7 +40,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 ),
             )
             .annotate(
-                steps_count=Count("stages__steps", distinct=True),
+                stages_count=Count("stages__steps", distinct=True),
                 average_rating=Avg("reviews__rating"),
                 ratings_count=Count("reviews", distinct=True),
                 students_count=Count("enrollments", distinct=True),
@@ -76,12 +76,26 @@ class FeaturedProjectsView(views.APIView):
 
         # Merge all projects, deduplicate by ID
         all_projects = list(best_rated) + list(most_enrolled) + list(newest)
-        unique_projects = list({project.id: project for project in all_projects}.values())[
-            :6
-        ]
+        unique_ids = list({project.id: project for project in all_projects}.keys())[:6]
+
+        # Fetch again with annotation
+        unique_projects = (
+            Project.objects.filter(id__in=unique_ids)
+            .annotate(
+                stages_count=Count("stages__steps", distinct=True),
+                average_rating=Avg("reviews__rating"),
+                ratings_count=Count("reviews", distinct=True),
+                students_count=Count("enrollments", distinct=True),
+                points=Sum("stages__steps__points"),
+            )
+        )
+
+        # Aby zachować pierwotną kolejność (bo .filter(...) nie gwarantuje jej), możesz posortować ręcznie:
+        id_to_project = {project.id: project for project in unique_projects}
+        sorted_projects = [id_to_project[pid] for pid in unique_ids if pid in id_to_project]
 
         serializer = ProjectListSerializer(
-            unique_projects, many=True, context={"request": request}
+            sorted_projects, many=True, context={"request": request}
         )
         return Response(serializer.data)
 

@@ -40,7 +40,7 @@ export function ProjectItem({ project, isVertical }: Props) {
   const student = t("student", { returnObjects: true }) as string[];
   const review = t("review", { returnObjects: true }) as string[];
   const hour = t("hour", { returnObjects: true }) as string[];
-  const substep = t("substep", { returnObjects: true }) as string[];
+  const stage = t("stage", { returnObjects: true }) as string[];
 
   const languagePluralize = usePluralize();
 
@@ -84,7 +84,7 @@ export function ProjectItem({ project, isVertical }: Props) {
 
       <Box sx={{ gap: 1, display: "flex", alignItems: "center" }}>
         <Iconify icon="solar:documents-minimalistic-outline" />
-        {project.totalSubsteps} {languagePluralize(substep, project.totalSubsteps)}
+        {project.totalStages} {languagePluralize(stage, project.totalStages)}
       </Box>
     </Box>
   );
@@ -149,7 +149,7 @@ export function ProjectItem({ project, isVertical }: Props) {
 
       <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
 
-      {project.technologies.slice(0, 3).map((technology) => (
+      {project.technologies.slice(0, 1).map((technology) => (
         <Box key={technology.slug} sx={{ gap: 0.5, display: "flex", alignItems: "center" }}>
           <Iconify icon={getTechnologyIcon(technology.slug)} />
           {technology.name}

@@ -50,7 +50,7 @@ type Props = BoxProps &
     | "totalQuizzes"
     | "totalExercises"
     | "totalVideos"
-    | "totalSubsteps"
+    | "totalStages"
     | "totalStudents"
     | "steps"
     | "progress"
@@ -72,7 +72,7 @@ export function ProjectDetailsHero({
   totalQuizzes,
   totalExercises,
   totalVideos,
-  totalSubsteps,
+  totalStages,
   totalStudents,
   steps,
   progress,
@@ -192,10 +192,10 @@ export function ProjectDetailsHero({
         </div>
       ) : null}
 
-      {totalSubsteps ? (
+      {totalStages ? (
         <div>
           <Iconify icon="solar:documents-minimalistic-outline" />
-          {totalSubsteps} {languagePluralize(substep, totalSubsteps)}
+          {totalStages} {languagePluralize(substep, totalStages)}
         </div>
       ) : null}
 

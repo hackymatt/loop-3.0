@@ -63,7 +63,7 @@ type IProject = {
   category: ICategory;
   technologies: ITechnology[];
   instructors: IInstructor[];
-  substeps_count: number;
+  stages_count: number;
   duration: number;
   chat_url: string | null;
   video_url: string | null;
@@ -98,7 +98,7 @@ export const projectQuery = (language: Language, slug: string) => {
       category,
       technologies,
       instructors,
-      substeps_count,
+      stages_count,
       duration,
       chat_url,
       video_url,
@@ -140,7 +140,7 @@ export const projectQuery = (language: Language, slug: string) => {
         name: full_name,
         avatarUrl: image,
       })),
-      totalSubsteps: substeps_count,
+      totalStages: stages_count,
       totalReading: reading_count,
       totalVideos: video_count,
       totalQuizzes: quiz_count,

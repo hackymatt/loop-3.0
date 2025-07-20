@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Substep [name] – continue learning",
-    "description": "Continue your learning journey and gain more practical skills with the [name] substep. Finish it and enhance your programming abilities."
+    "title": "Step [name] – continue learning",
+    "description": "Continue your learning journey and gain more practical skills with the [name] step. Finish it and enhance your programming abilities."
   },
   "errors": {
     "progress": "An error occurred. Please try again",

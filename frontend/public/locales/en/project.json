@@ -28,7 +28,7 @@
   "student": ["student"],
   "review": ["review"],
   "hour": ["hour"],
-  "substep": ["substep"],
+  "step": ["step"],
   "video": ["video"],
   "article": ["article"],
   "exercise": ["exercise"],
@@ -63,6 +63,6 @@
     "continue": "Continue",
     "show": "Show",
     "hide": "Hide",
-    "substep": "substeps"
+    "step": "steps"
   }
 }

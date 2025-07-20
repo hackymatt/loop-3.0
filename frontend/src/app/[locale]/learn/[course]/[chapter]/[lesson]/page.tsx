@@ -12,22 +12,17 @@ import { LANGUAGE } from "src/consts/language";
 import { LearnView } from "src/sections/view/learn-view";
 
 // ----------------------------------------------------------------------
+type PageProps = {
+  params: { locale: string; project: string; stage: string; step: string };
+};
 
-export default function Page({
-  params,
-}: {
-  params: { project: string; step: string; substep: string };
-}) {
+export default function Page({ params }: PageProps) {
   return (
-    <LearnView projectSlug={params.project} stepSlug={params.step} substepSlug={params.substep} />
+    <LearnView projectSlug={params.project} stepSlug={params.stage} substepSlug={params.step} />
   );
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string; project: string; step: string; substep: string };
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const translations = await import(`public/locales/${params.locale}/learn.json`);
 
   const path = params.locale === LANGUAGE.PL ? paths.learn : `/${LANGUAGE.EN}${paths.learn}`;
@@ -43,7 +38,7 @@ export async function generateMetadata({
     const { steps } = project;
 
     const allSubsteps = steps.flatMap((ch: IProjectStepProp) => ch.substeps) ?? [];
-    const substep = allSubsteps.find((l: IProjectSubstepProp) => l.slug === params.substep);
+    const substep = allSubsteps.find((l: IProjectSubstepProp) => l.slug === params.step);
 
     const { translated_name: name } = substep;
 
@@ -53,13 +48,13 @@ export async function generateMetadata({
     return createMetadata({
       title,
       description,
-      path: `${path}/${params.project}/${params.step}/${params.substep}`,
+      path: `${path}/${params.project}/${params.stage}/${params.step}`,
     });
   } catch {
     return createMetadata({
       title: translations.meta.title,
       description: translations.meta.description,
-      path: `${path}/${params.project}/${params.step}/${params.substep}`,
+      path: `${path}/${params.project}/${params.stage}/${params.step}`,
     });
   }
 }

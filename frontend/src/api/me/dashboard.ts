@@ -42,7 +42,7 @@ type IProject = {
   technologies: ITechnology[];
   instructors: IInstructor[];
   duration: number;
-  substeps_count: number;
+  stages_count: number;
   average_rating: number | null;
   ratings_count: number;
   students_count: number;
@@ -86,7 +86,7 @@ export const dashboardQuery = (language: Language) => {
           technologies,
           instructors,
           duration,
-          substeps_count,
+          stages_count,
           average_rating,
           ratings_count,
           students_count,
@@ -114,7 +114,7 @@ export const dashboardQuery = (language: Language) => {
             avatarUrl: image,
           })),
           totalHours: duration / 60,
-          totalSubsteps: substeps_count,
+          totalStages: stages_count,
           ratingNumber: average_rating,
           totalReviews: ratings_count,
           totalStudents: students_count,

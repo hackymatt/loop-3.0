@@ -57,7 +57,7 @@
   "student": ["uczestnik", "uczestników", "uczestników"],
   "review": ["recenzja", "recenzje", "recenzji"],
   "hour": ["godzina", "godziny", "godzin"],
-  "substep": ["etap", "etapy", "etapów"],
+  "stage": ["etap", "etapy", "etapów"],
   "video": ["nagranie", "nagrania", "nagrań"],
   "article": ["artykuł", "artykuły", "artykułów"],
   "exercise": ["ćwiczenie", "ćwiczenia", "ćwiczeń"],
@@ -101,6 +101,6 @@
     "continue": "Kontynuuj",
     "show": "Pokaż",
     "hide": "Ukryj",
-    "substep": "etapy"
+    "stage": "etapy"
   }
 }

@@ -85,7 +85,7 @@ export const _projects = Array.from({ length: 12 }, (_, index) => ({
   totalHours: 100,
   totalPoints: 3459,
   steps: CHAPTERS,
-  totalSubsteps: LESSONS.length,
+  totalStages: LESSONS.length,
   totalReading: 1,
   totalQuizzes: 4,
   totalExercises: 10,
