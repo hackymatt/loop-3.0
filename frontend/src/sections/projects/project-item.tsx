@@ -152,7 +152,7 @@ export function ProjectItem({ project, isVertical, isHome }: Props) {
         {project.level.name}
       </Box>
 
-      <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
+      <Divider orientation="vertical" sx={{ height: 20, alignSelf: "flex-start" }} />
 
       {project.technologies.map((technology) => (
         <Box key={technology.slug} sx={{ gap: 0.5, display: "flex", alignItems: "center" }}>
@@ -163,14 +163,14 @@ export function ProjectItem({ project, isVertical, isHome }: Props) {
 
       {project.totalReviews ? (
         <>
-          <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
+          <Divider orientation="vertical" sx={{ height: 20, alignSelf: "flex-start" }} />
           <Box sx={{ gap: 0.5, display: "flex", alignItems: "center" }}>
             <Iconify icon="eva:star-fill" sx={{ color: "warning.main" }} />
             {Number.isInteger(project.ratingNumber)
               ? `${project.ratingNumber}.0`
               : project.ratingNumber}
           </Box>
-          <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
+          <Divider orientation="vertical" sx={{ height: 20, alignSelf: "flex-start" }} />
           <Box>
             {fShortenNumber(project.totalReviews, {
               code: locale("code"),
@@ -183,7 +183,7 @@ export function ProjectItem({ project, isVertical, isHome }: Props) {
 
       {project.totalStudents ? (
         <>
-          <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
+          <Divider orientation="vertical" sx={{ height: 20, alignSelf: "flex-start" }} />
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {fShortenNumber(project.totalStudents, {
               code: locale("code"),

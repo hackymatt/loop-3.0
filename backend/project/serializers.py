@@ -118,9 +118,9 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
     quiz_count = serializers.IntegerField(read_only=True)
     coding_count = serializers.IntegerField(read_only=True)
 
-    stages = StageSerializer(many=True, read_only=True)
-    project_prerequisites = ProjectPrerequisiteSerializer(many=True, read_only=True)
-    blog_prerequisites = BlogPrerequisiteSerializer(many=True, read_only=True)
+    stages = serializers.SerializerMethodField()
+    project_prerequisites = serializers.SerializerMethodField()
+    blog_prerequisites = serializers.SerializerMethodField()
 
     class Meta(BaseProjectSerializer.Meta):
         fields = BaseProjectSerializer.Meta.fields + [
@@ -140,6 +140,21 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
     def get_translated_overview(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.get_translation(lang).overview
+    
+    def get_stages(self, obj):
+        return StageSerializer(
+            obj.stages.all().filter(active=True), many=True, context=self.context
+        ).data
+    
+    def get_project_prerequisites(self, obj):
+        return ProjectPrerequisiteSerializer(
+            obj.project_prerequisites.all().filter(active=True), many=True, context=self.context
+        ).data
+    
+    def get_blog_prerequisites(self, obj):
+        return BlogPrerequisiteSerializer(
+            obj.blog_prerequisites.all().filter(active=True), many=True, context=self.context
+        ).data
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
