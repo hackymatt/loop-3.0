@@ -18,16 +18,16 @@ import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
 
 import { Certificate } from "../certificates";
-import { findNextSubstep } from "./find-next-substep";
+import { findNextStep } from "./find-next-step";
 
 // ----------------------------------------------------------------------
 
-type Props = CardProps & Pick<IProjectProps, "slug" | "name" | "steps" | "progress">;
+type Props = CardProps & Pick<IProjectProps, "slug" | "name" | "stages" | "progress">;
 export function ProjectCertificateDetailsInfo({
   sx,
   slug,
   name,
-  steps,
+  stages,
   progress,
   ...other
 }: Props) {
@@ -42,9 +42,9 @@ export function ProjectCertificateDetailsInfo({
 
   const started = (progress || 0) > 0;
   const completed = (progress || 0) === 100;
-  const next = findNextSubstep(steps);
+  const next = findNextStep(stages);
   const redirect = localize(
-    `${paths.learn}/${slug}/${next.step?.slug || steps[0].slug}/${next.substep?.slug || steps[0].substeps[0].slug}`
+    `${paths.learn}/${slug}/${next.step?.slug || stages[0].slug}/${next.step?.slug || stages[0].steps[0].slug}`
   );
 
   return (

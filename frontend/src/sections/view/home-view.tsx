@@ -68,7 +68,7 @@ export function HomeView({ data }: HomeViewProps) {
 
       <HomeCertificate />
 
-      {!!featuredProjects?.length && <HomeFeaturedProjects projects={featuredProjects} />}
+      {!!featuredProjects?.length && <HomeFeaturedProjects projects={featuredProjects} isHome />}
 
       {!!featuredTechnologies?.length && (
         <HomeFeatureTechnologies technologies={featuredTechnologies} />

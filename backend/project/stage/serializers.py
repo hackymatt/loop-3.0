@@ -24,7 +24,7 @@ class StageSerializer(serializers.ModelSerializer):
 
     def get_steps(self, obj):
         return StepSerializer(
-            obj.steps.all().order_by("stepstep__order"),
+            obj.steps.all().order_by("stagestep__order"),
             many=True,
             context=self.context,
         ).data

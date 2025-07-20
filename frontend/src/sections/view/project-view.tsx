@@ -93,12 +93,9 @@ export function ProjectView({ slug, data }: ProjectViewProps) {
         description={project.description || ""}
         ratingNumber={project.ratingNumber || 0}
         totalReviews={project.totalReviews || 0}
-        totalExercises={project.totalExercises || 0}
-        totalVideos={project.totalVideos || 0}
-        totalQuizzes={project.totalQuizzes || 0}
         totalStages={project.totalStages || 0}
         totalStudents={project.totalStudents || 0}
-        steps={project.steps || []}
+        stages={project.stages || []}
         progress={project.progress || 0}
       />
 
@@ -121,7 +118,7 @@ export function ProjectView({ slug, data }: ProjectViewProps) {
             <ProjectCertificateDetailsInfo
               slug={slug}
               name={project.name || ""}
-              steps={project.steps || []}
+              stages={project.stages || []}
               progress={project.progress || 0}
               sx={{ mb: 3 }}
             />

@@ -29,9 +29,10 @@ import { Iconify } from "src/components/iconify";
 type Props = {
   project: IProjectListProps;
   isVertical?: boolean;
+  isHome?: boolean;
 };
 
-export function ProjectItem({ project, isVertical }: Props) {
+export function ProjectItem({ project, isVertical, isHome }: Props) {
   const { t: locale } = useTranslation("locale");
   const { t } = useTranslation("project");
   const localize = useLocalizedPath();
@@ -140,6 +141,10 @@ export function ProjectItem({ project, isVertical }: Props) {
         flexWrap: "wrap",
         alignItems: "center",
         typography: "body2",
+        ...(isHome && {
+          alignItems: "flex-start",
+          minHeight: 56,
+        }),
       }}
     >
       <Box sx={{ gap: 0.5, display: "flex", alignItems: "center" }}>
@@ -149,7 +154,7 @@ export function ProjectItem({ project, isVertical }: Props) {
 
       <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
 
-      {project.technologies.slice(0, 1).map((technology) => (
+      {project.technologies.map((technology) => (
         <Box key={technology.slug} sx={{ gap: 0.5, display: "flex", alignItems: "center" }}>
           <Iconify icon={getTechnologyIcon(technology.slug)} />
           {technology.name}

@@ -95,12 +95,12 @@
   "overview": "Opis projektu",
   "similar": "Podobne projekty",
   "viewAll": "Zobacz wszystkie",
-  "steps": {
+  "stages": {
     "title": "Etapy projektu",
     "start": "Rozpocznij",
     "continue": "Kontynuuj",
     "show": "Pokaż",
     "hide": "Ukryj",
-    "stage": "etapy"
+    "step": "kroki"
   }
 }

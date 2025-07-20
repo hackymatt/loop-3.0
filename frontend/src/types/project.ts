@@ -1,5 +1,4 @@
 import type { LEVEL_TYPE } from "src/consts/level";
-import type { LESSON_TYPE } from "src/consts/substep";
 
 import type { IInstructorProps } from "./user";
 
@@ -34,22 +33,18 @@ export type IProjectDurationProp = {
 
 export type IProjectTeacherProp = IInstructorProps;
 
-export type IProjectSubstepType = (typeof LESSON_TYPE)[keyof typeof LESSON_TYPE];
-
-export type IProjectSubstepProp = {
-  slug: string;
-  name: string;
-  type: IProjectSubstepType;
-  totalPoints: number;
-  progress: number | null;
-  earnedPoints: number | null;
-};
-
 export type IProjectStepProp = {
   slug: string;
   name: string;
+  totalPoints: number;
+  progress: number | null;
+};
+
+export type IProjectStageProp = {
+  slug: string;
+  name: string;
   description: string;
-  substeps: IProjectSubstepProp[];
+  steps: IProjectStepProp[];
   progress: number | null;
 };
 
@@ -76,13 +71,9 @@ export type IProjectListProps = IProjectBaseProps;
 
 export type IProjectProps = IProjectBaseProps & {
   overview: string;
-  steps: IProjectStepProp[];
+  stages: IProjectStageProp[];
   prerequisites: IPrerequisite[];
   totalPoints: number;
-  totalReading: number;
-  totalVideos: number;
-  totalQuizzes: number;
-  totalExercises: number;
   chatUrl: string | null;
   videoUrl: string | null;
   reviewed: boolean | null;

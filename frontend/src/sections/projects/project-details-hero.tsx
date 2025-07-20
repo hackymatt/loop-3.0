@@ -27,8 +27,8 @@ import { useUserContext } from "src/components/user";
 import { AnimateBorder } from "src/components/animate";
 import { CustomBreadcrumbs } from "src/components/custom-breadcrumbs";
 
+import { findNextStep } from "./find-next-step";
 import { SignUpView } from "../auth/sign-up-view";
-import { findNextSubstep } from "./find-next-substep";
 import { FormHead } from "../auth/components/form-head";
 
 // ----------------------------------------------------------------------
@@ -47,12 +47,9 @@ type Props = BoxProps &
     | "description"
     | "ratingNumber"
     | "totalReviews"
-    | "totalQuizzes"
-    | "totalExercises"
-    | "totalVideos"
     | "totalStages"
     | "totalStudents"
-    | "steps"
+    | "stages"
     | "progress"
   >;
 
@@ -69,12 +66,9 @@ export function ProjectDetailsHero({
   description,
   ratingNumber,
   totalReviews,
-  totalQuizzes,
-  totalExercises,
-  totalVideos,
   totalStages,
   totalStudents,
-  steps,
+  stages,
   progress,
   ...other
 }: Props) {
@@ -91,16 +85,13 @@ export function ProjectDetailsHero({
   const student = t("student", { returnObjects: true }) as string[];
   const review = t("review", { returnObjects: true }) as string[];
   const hour = t("hour", { returnObjects: true }) as string[];
-  const substep = t("substep", { returnObjects: true }) as string[];
-  const video = t("video", { returnObjects: true }) as string[];
-  const exercise = t("exercise", { returnObjects: true }) as string[];
-  const quiz = t("quiz", { returnObjects: true }) as string[];
+  const stage = t("stage", { returnObjects: true }) as string[];
 
   const started = (progress || 0) > 0;
   const completed = (progress || 0) === 100;
-  const next = findNextSubstep(steps);
+  const next = findNextStep(stages);
   const redirect = localize(
-    `${paths.learn}/${slug}/${next.step?.slug || steps[0].slug}/${next.substep?.slug || steps[0].substeps[0].slug}`
+    `${paths.learn}/${slug}/${next.step?.slug || stages[0].slug}/${next.step?.slug || stages[0].steps[0].slug}`
   );
 
   const languagePluralize = usePluralize();
@@ -195,28 +186,7 @@ export function ProjectDetailsHero({
       {totalStages ? (
         <div>
           <Iconify icon="solar:documents-minimalistic-outline" />
-          {totalStages} {languagePluralize(substep, totalStages)}
-        </div>
-      ) : null}
-
-      {totalVideos ? (
-        <div>
-          <Iconify icon="solar:video-frame-outline" />
-          {`${totalVideos} ${languagePluralize(video, totalVideos)}`}
-        </div>
-      ) : null}
-
-      {totalExercises ? (
-        <div>
-          <Iconify icon="solar:code-outline" />
-          {`${totalExercises} ${languagePluralize(exercise, totalExercises)}`}
-        </div>
-      ) : null}
-
-      {totalQuizzes ? (
-        <div>
-          <Iconify icon="solar:question-circle-outline" />
-          {`${totalQuizzes} ${languagePluralize(quiz, totalQuizzes)}`}
+          {totalStages} {languagePluralize(stage, totalStages)}
         </div>
       ) : null}
     </Box>

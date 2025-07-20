@@ -26,9 +26,10 @@ const variants: Variants = varFade("inUp", { distance: 24 });
 
 type ProjectsProps = {
   projects: IProjectListProps[];
+  isHome?: boolean;
 } & BoxProps;
 
-export function HomeFeaturedProjects({ projects, sx, ...other }: ProjectsProps) {
+export function HomeFeaturedProjects({ projects, isHome, sx, ...other }: ProjectsProps) {
   const { t } = useTranslation("home");
   const localize = useLocalizedPath();
 
@@ -74,7 +75,7 @@ export function HomeFeaturedProjects({ projects, sx, ...other }: ProjectsProps) 
             }}
           >
             {projects.map((project) => (
-              <ProjectItem key={project.slug} project={project} />
+              <ProjectItem key={project.slug} project={project} isHome />
             ))}
           </Box>
         </m.div>

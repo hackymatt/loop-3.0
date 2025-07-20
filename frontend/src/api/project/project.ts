@@ -32,20 +32,18 @@ type IInstructor = {
   role: string;
 };
 
-type ISubstep = {
-  slug: string;
-  translated_name: string;
-  points: number;
-  type: "reading" | "video" | "quiz" | "coding";
-  progress?: number;
-  earned_points?: number | null;
-};
-
 type IStep = {
   slug: string;
   translated_name: string;
+  points: number;
+  progress?: number;
+};
+
+type IStage = {
+  slug: string;
+  translated_name: string;
   translated_description: string;
-  substeps: ISubstep[];
+  steps: IStep[];
   progress?: number;
 };
 
@@ -68,14 +66,10 @@ type IProject = {
   chat_url: string | null;
   video_url: string | null;
   points: number;
-  reading_count: number;
-  video_count: number;
-  quiz_count: number;
-  coding_count: number;
   average_rating: number | null;
   ratings_count: number;
   students_count: number;
-  steps: IStep[];
+  stages: IStage[];
   project_prerequisites: IPrerequisite[];
   blog_prerequisites: IPrerequisite[];
   progress?: number;
@@ -103,14 +97,10 @@ export const projectQuery = (language: Language, slug: string) => {
       chat_url,
       video_url,
       points,
-      reading_count,
-      video_count,
-      quiz_count,
-      coding_count,
       average_rating,
       ratings_count,
       students_count,
-      steps,
+      stages,
       project_prerequisites,
       blog_prerequisites,
       progress,
@@ -141,10 +131,6 @@ export const projectQuery = (language: Language, slug: string) => {
         avatarUrl: image,
       })),
       totalStages: stages_count,
-      totalReading: reading_count,
-      totalVideos: video_count,
-      totalQuizzes: quiz_count,
-      totalExercises: coding_count,
       totalHours: duration / 60,
       chatUrl: chat_url,
       videoUrl: video_url,
@@ -152,33 +138,31 @@ export const projectQuery = (language: Language, slug: string) => {
       ratingNumber: average_rating,
       totalReviews: ratings_count,
       totalStudents: students_count,
-      steps: steps.map(
+      stages: stages.map(
         ({
-          translated_name: stepName,
-          translated_description: stepDescription,
-          substeps,
-          progress: stepProgress,
-          ...restStep
+          translated_name: stageName,
+          translated_description: stageDescription,
+          steps,
+          progress: stageProgress,
+          ...restStage
         }) => ({
-          ...restStep,
-          name: stepName,
-          description: stepDescription,
-          substeps: substeps.map(
+          ...restStage,
+          name: stageName,
+          description: stageDescription,
+          steps: steps.map(
             ({
-              translated_name: substepName,
-              points: substepPoints,
-              progress: substepProgress,
-              earned_points,
-              ...restSubstep
+              translated_name: stepName,
+              points: stepPoints,
+              progress: stepProgress,
+              ...restStep
             }) => ({
-              ...restSubstep,
-              name: substepName,
-              totalPoints: substepPoints,
-              progress: substepProgress ?? null,
-              earnedPoints: earned_points ?? null,
+              ...restStep,
+              name: stepName,
+              totalPoints: stepPoints,
+              progress: stepProgress ?? null,
             })
           ),
-          progress: stepProgress ?? null,
+          progress: stageProgress ?? null,
         })
       ),
       prerequisites: [

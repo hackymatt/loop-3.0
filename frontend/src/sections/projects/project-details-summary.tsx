@@ -6,7 +6,9 @@ import { useTranslation } from "react-i18next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-import { ProjectDetailsStepList } from "./project-details-step-list";
+import { Markdown } from "src/components/markdown";
+
+import { ProjectDetailsStageList } from "./project-details-stage-list";
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +23,7 @@ export function ProjectDetailsSummary({ project, sx, ...other }: Props) {
         {t("overview")}
       </Typography>
 
-      <Typography>{project.overview}</Typography>
+      <Markdown content={project.overview} />
     </div>
   );
 
@@ -35,7 +37,7 @@ export function ProjectDetailsSummary({ project, sx, ...other }: Props) {
     >
       {renderOverview()}
 
-      <ProjectDetailsStepList project={project} />
+      <ProjectDetailsStageList project={project} />
     </Box>
   );
 }
