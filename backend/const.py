@@ -32,11 +32,11 @@ class Urls:
     FEATURED_REVIEWS = "featured-reviews"
     SIMILAR_PROJECTS = "similar-projects/<slug:slug>"
     # LESSON
-    LESSON = "substep/<slug:project_slug>/<slug:step_slug>/<slug:substep_slug>"
-    LESSON_PROGRESS = "substep/progress"
-    LESSON_SUBMIT = "substep/submit"
-    LESSON_ANSWER = "substep/answer"
-    LESSON_HINT = "substep/hint"
+    LESSON = "step/<slug:project_slug>/<slug:stage_slug>/<slug:step_slug>"
+    LESSON_PROGRESS = "step/progress"
+    LESSON_SUBMIT = "step/submit"
+    LESSON_ANSWER = "step/answer"
+    LESSON_HINT = "step/hint"
     # REVIEW
     PROJECT_REVIEW_SUMMARY = "reviews-summary/<slug:slug>"
     PROJECT_REVIEWS = "reviews/<slug:slug>"
@@ -74,7 +74,7 @@ class JoinType(TextChoices):
     GITHUB = "github"
 
 
-class SubstepType(TextChoices):
+class StepType(TextChoices):
     READING = "reading"
     VIDEO = "video"
     QUIZ = "quiz"

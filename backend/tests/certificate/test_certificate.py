@@ -2,15 +2,15 @@ from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework import status
-from const import Urls, SubstepType
+from const import Urls, StepType
 from certificate.models import Certificate
 from project.progress.models import ProjectProgress
 from ..factory import (
     create_student,
     create_certificate,
     create_project,
+    create_stage,
     create_step,
-    create_substep,
 )
 from ..helpers import login
 
@@ -53,48 +53,48 @@ class ProjectCompletionSignalTestCase(TestCase):
         self.student, self.student_password = create_student()
 
         self.project = create_project()
-        self.project.steps.clear()
-        step = create_step()
-        step.substeps.clear()
+        self.project.stages.clear()
+        stage = create_stage()
+        stage.steps.clear()
 
-        self.substep1, _ = create_substep(SubstepType.READING)
-        self.substep2, _ = create_substep(SubstepType.VIDEO)
-        self.substep3, _ = create_substep(SubstepType.QUIZ)
-        self.substep4, _ = create_substep(SubstepType.CODING)
-        step.substeps.add(self.substep1)
-        step.substeps.add(self.substep2)
-        step.substeps.add(self.substep3)
-        step.substeps.add(self.substep4)
-        step.save()
+        self.step1, _ = create_step(StepType.READING)
+        self.step2, _ = create_step(StepType.VIDEO)
+        self.step3, _ = create_step(StepType.QUIZ)
+        self.step4, _ = create_step(StepType.CODING)
+        stage.steps.add(self.step1)
+        stage.steps.add(self.step2)
+        stage.steps.add(self.step3)
+        stage.steps.add(self.step4)
+        stage.save()
 
-        self.project.steps.add(step)
+        self.project.stages.add(stage)
         self.project.save()
 
-    def test_certificate_created_after_all_substeps_completed(self):
+    def test_certificate_created_after_all_steps_completed(self):
         # Initially no certificate
         self.assertFalse(Certificate.objects.exists())
 
-        # Complete the first substep
+        # Complete the first step
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep1, completed_at=timezone.now()
+            student=self.student, step=self.step1, completed_at=timezone.now()
         )
         self.assertFalse(Certificate.objects.exists())  # Still incomplete
 
-        # Complete the second substep
+        # Complete the second step
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep2, completed_at=timezone.now()
+            student=self.student, step=self.step2, completed_at=timezone.now()
         )
         self.assertFalse(Certificate.objects.exists())  # Still incomplete
 
-        # Complete the third substep
+        # Complete the third step
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep3, completed_at=timezone.now()
+            student=self.student, step=self.step3, completed_at=timezone.now()
         )
         self.assertFalse(Certificate.objects.exists())  # Still incomplete
 
-        # Complete the fourth substep
+        # Complete the fourth step
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep4, completed_at=timezone.now()
+            student=self.student, step=self.step4, completed_at=timezone.now()
         )
         self.assertTrue(
             Certificate.objects.filter(
@@ -102,10 +102,10 @@ class ProjectCompletionSignalTestCase(TestCase):
             ).exists()
         )
 
-    def test_certificate_not_created_if_not_all_substeps_completed(self):
+    def test_certificate_not_created_if_not_all_steps_completed(self):
         # Mark only one as completed
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep1, completed_at=timezone.now()
+            student=self.student, step=self.step1, completed_at=timezone.now()
         )
         self.assertFalse(
             Certificate.objects.filter(
@@ -114,18 +114,18 @@ class ProjectCompletionSignalTestCase(TestCase):
         )
 
     def test_certificate_not_duplicated(self):
-        # Complete all substeps
+        # Complete all steps
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep1, completed_at=timezone.now()
+            student=self.student, step=self.step1, completed_at=timezone.now()
         )
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep2, completed_at=timezone.now()
+            student=self.student, step=self.step2, completed_at=timezone.now()
         )
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep3, completed_at=timezone.now()
+            student=self.student, step=self.step3, completed_at=timezone.now()
         )
         ProjectProgress.objects.create(
-            student=self.student, substep=self.substep4, completed_at=timezone.now()
+            student=self.student, step=self.step4, completed_at=timezone.now()
         )
 
         # There should be only one certificate
@@ -137,7 +137,7 @@ class ProjectCompletionSignalTestCase(TestCase):
         )
 
         # Trigger signal again by updating progress
-        progress = ProjectProgress.objects.get(student=self.student, substep=self.substep1)
+        progress = ProjectProgress.objects.get(student=self.student, step=self.step1)
         progress.save()
 
         self.assertEqual(

@@ -62,24 +62,24 @@ class ProjectFilter(django_filters.FilterSet):
 
         # policz ile lekcji ma projekt
         queryset = queryset.annotate(
-            total_substeps=Count("steps__substeps", distinct=True)
+            total_steps=Count("stages__steps", distinct=True)
         )
 
         # subquery, który liczy ukończone lekcje w danym kursie
-        completed_substeps_subquery = (
+        completed_steps_subquery = (
             ProjectProgress.objects.filter(
                 student__user=user,
-                substep__stepsubstep__step__projectstep__project=OuterRef("pk"),
+                step__stagestep__stage__projectstage__project=OuterRef("pk"),
                 completed_at__isnull=False,
             )
-            .values("substep__stepsubstep__step__projectstep__project")
-            .annotate(count=Count("substep", distinct=True))
+            .values("step__stagestep__stage__projectstage__project")
+            .annotate(count=Count("step", distinct=True))
             .values("count")[:1]
         )
 
         queryset = queryset.annotate(
-            completed_substeps=Coalesce(
-                Subquery(completed_substeps_subquery, output_field=IntegerField()), 0
+            completed_steps=Coalesce(
+                Subquery(completed_steps_subquery, output_field=IntegerField()), 0
             )
         )
 
@@ -87,11 +87,11 @@ class ProjectFilter(django_filters.FilterSet):
         queryset = queryset.annotate(
             user_progress=Coalesce(
                 Case(
-                    When(total_substeps=0, then=Value(0.0)),
+                    When(total_steps=0, then=Value(0.0)),
                     default=Cast(
                         100.0
-                        * F("completed_substeps")
-                        / Cast(F("total_substeps"), FloatField()),
+                        * F("completed_steps")
+                        / Cast(F("total_steps"), FloatField()),
                         FloatField(),
                     ),
                     output_field=FloatField(),

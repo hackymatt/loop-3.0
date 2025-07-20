@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Substep, SubstepTranslation
+from .models import Step, StepTranslation
 
-admin.site.register(Substep)
-admin.site.register(SubstepTranslation)
+admin.site.register(Step)
+admin.site.register(StepTranslation)

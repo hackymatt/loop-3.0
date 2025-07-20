@@ -31,12 +31,12 @@ class DashboardViewTest(TestCase):
         )
 
     def test_dashboard_data_with_progress_today(self):
-        # Create project progress (completed substep)
+        # Create project progress (completed step)
         ProjectProgress.objects.create(
             student=self.student,
             completed_at=timezone.now(),
             points=10,
-            substep=self.project.steps.all()[0].substeps.all()[0],
+            step=self.project.steps.all()[0].steps.all()[0],
         )
 
         login(self, self.student.user.email, self.student_password)
@@ -57,12 +57,12 @@ class DashboardViewTest(TestCase):
         self.assertEqual(len(data["certificates"]), 1)
 
     def test_dashboard_data_with_progress_before(self):
-        # Create project progress (completed substep)
+        # Create project progress (completed step)
         ProjectProgress.objects.create(
             student=self.student,
             completed_at=timezone.now() - timezone.timedelta(days=10),
             points=10,
-            substep=self.project.steps.all()[0].substeps.all()[0],
+            step=self.project.steps.all()[0].steps.all()[0],
         )
 
         login(self, self.student.user.email, self.student_password)

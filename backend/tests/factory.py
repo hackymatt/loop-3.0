@@ -3,7 +3,7 @@
 # from django.utils import timezone
 # from django.contrib.auth import get_user_model
 # from user.utils import get_unique_username
-# from const import UserType, Language, SubstepType, QuizType
+# from const import UserType, Language, StepType, QuizType
 
 # from user.type.admin_user.models import Admin
 # from user.type.instructor_user.models import Instructor
@@ -17,19 +17,19 @@
 # from project.level.models import Level, LevelTranslation
 # from project.technology.models import Technology
 # from project.step.models import Step, StepTranslation
-# from project.substep.models import (
-#     Substep,
-#     QuizSubstep,
-#     QuizSubstepTranslation,
+# from project.step.models import (
+#     Step,
+#     QuizStep,
+#     QuizStepTranslation,
 #     QuizQuestion,
 #     QuizQuestionOption,
-#     ReadingSubstep,
-#     ReadingSubstepTranslation,
-#     VideoSubstep,
-#     VideoSubstepTranslation,
+#     ReadingStep,
+#     ReadingStepTranslation,
+#     VideoStep,
+#     VideoStepTranslation,
 #     File,
-#     CodingSubstep,
-#     CodingSubstepTranslation,
+#     CodingStep,
+#     CodingStepTranslation,
 # )
 # from project.models import Project, ProjectTranslation
 
@@ -212,44 +212,44 @@
 #     return file
 
 
-# def create_substep(substep_type=None):
+# def create_step(step_type=None):
 #     slug = _generate_random_slug()
 #     points = _generate_random_number(50, 100)
 
-#     if not substep_type:
-#         substep_type = random.choice(
-#             [SubstepType.READING, SubstepType.VIDEO, SubstepType.QUIZ, SubstepType.CODING]
+#     if not step_type:
+#         step_type = random.choice(
+#             [StepType.READING, StepType.VIDEO, StepType.QUIZ, StepType.CODING]
 #         )
 
-#     substep = Substep.objects.create(
-#         slug=slug, points=points, type=substep_type, active=True
+#     step = Step.objects.create(
+#         slug=slug, points=points, type=step_type, active=True
 #     )
-#     specific_substep, translations = None, {}
+#     specific_step, translations = None, {}
 
-#     if substep_type == SubstepType.READING:
-#         specific_substep = ReadingSubstep.objects.create(substep=substep)
+#     if step_type == StepType.READING:
+#         specific_step = ReadingStep.objects.create(step=step)
 #         _create_translations(
-#             ReadingSubstepTranslation,
-#             specific_substep,
+#             ReadingStepTranslation,
+#             specific_step,
 #             languages,
 #             ["name", "text"],
-#             "substep",
+#             "step",
 #         )
-#     elif substep_type == SubstepType.VIDEO:
+#     elif step_type == StepType.VIDEO:
 #         video_url = _generate_random_url()
-#         specific_substep = VideoSubstep.objects.create(substep=substep, video_url=video_url)
+#         specific_step = VideoStep.objects.create(step=step, video_url=video_url)
 #         _create_translations(
-#             VideoSubstepTranslation, specific_substep, languages, ["name"], "substep"
+#             VideoStepTranslation, specific_step, languages, ["name"], "step"
 #         )
-#     elif substep_type == SubstepType.QUIZ:
+#     elif step_type == StepType.QUIZ:
 #         quiz_type = random.choice([QuizType.SINGLE, QuizType.MULTI])
-#         specific_substep = QuizSubstep.objects.create(substep=substep, quiz_type=quiz_type)
+#         specific_step = QuizStep.objects.create(step=step, quiz_type=quiz_type)
 #         translations = _create_translations(
-#             QuizSubstepTranslation,
-#             specific_substep,
+#             QuizStepTranslation,
+#             specific_step,
 #             languages,
 #             ["name"],
-#             "substep",
+#             "step",
 #         )
 #         for language in languages:
 #             translation = translations[language]
@@ -262,7 +262,7 @@
 #                     question=question, text=text, is_correct=is_correct
 #                 )
 
-#     elif substep_type == SubstepType.CODING:
+#     elif step_type == StepType.CODING:
 #         file = create_file()
 #         test_file = create_file()
 #         files = [create_file() for _ in range(_generate_random_number(1, 5))]
@@ -271,8 +271,8 @@
 #         timeout = _generate_random_number()
 #         penalty_points = _generate_random_number(0, 50)
 #         technology = create_technology()
-#         specific_substep = CodingSubstep.objects.create(
-#             substep=substep,
+#         specific_step = CodingStep.objects.create(
+#             step=step,
 #             technology=technology,
 #             file=file,
 #             command=command,
@@ -281,23 +281,23 @@
 #             timeout=timeout,
 #             penalty_points=penalty_points,
 #         )
-#         specific_substep.files.add(*files)
+#         specific_step.files.add(*files)
 #         _create_translations(
-#             CodingSubstepTranslation,
-#             specific_substep,
+#             CodingStepTranslation,
+#             specific_step,
 #             languages,
 #             ["name", "introduction", "instructions", "hint"],
-#             "substep",
+#             "step",
 #         )
 
-#     return substep, specific_substep
+#     return step, specific_step
 
 
 # def create_step():
 #     slug = _generate_random_slug()
-#     substeps = [create_substep()[0] for _ in range(_generate_random_number(10, 15))]
+#     steps = [create_step()[0] for _ in range(_generate_random_number(10, 15))]
 #     step = Step.objects.create(slug=slug, active=True)
-#     step.substeps.add(*substeps)
+#     step.steps.add(*steps)
 
 #     _create_translations(
 #         StepTranslation, step, languages, ["name", "description"], "step"

@@ -1,18 +1,18 @@
 from rest_framework import serializers
-from .models import Step
-from ..substep.serializers import SubstepSerializer
+from .models import Stage
+from ..step.serializers import StepSerializer
 from ..progress.models import ProjectProgress
 from const import UserType
 
 
-class StepSerializer(serializers.ModelSerializer):
+class StageSerializer(serializers.ModelSerializer):
     translated_name = serializers.SerializerMethodField()  # Used for output
     translated_description = serializers.SerializerMethodField()  # Used for output
-    substeps = serializers.SerializerMethodField()
+    steps = serializers.SerializerMethodField()
 
     class Meta:
-        model = Step
-        fields = ["slug", "translated_name", "translated_description", "substeps"]
+        model = Stage
+        fields = ["slug", "translated_name", "translated_description", "steps"]
 
     def get_translated_name(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
@@ -22,9 +22,9 @@ class StepSerializer(serializers.ModelSerializer):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.get_translation(lang).description
 
-    def get_substeps(self, obj):
-        return SubstepSerializer(
-            obj.substeps.all().order_by("stepsubstep__order"),
+    def get_steps(self, obj):
+        return StepSerializer(
+            obj.steps.all().order_by("stepstep__order"),
             many=True,
             context=self.context,
         ).data
@@ -41,17 +41,17 @@ class StepSerializer(serializers.ModelSerializer):
         return data
 
     def get_progress(self, obj, user):
-        substep_ids = obj.substeps.values_list("id", flat=True)
-        total = len(substep_ids)
+        step_ids = obj.steps.values_list("id", flat=True)
+        total = len(step_ids)
 
         if total == 0:
             return 0
 
         completed = (
             ProjectProgress.objects.filter(
-                student__user=user, substep_id__in=substep_ids, completed_at__isnull=False
+                student__user=user, step_id__in=step_ids, completed_at__isnull=False
             )
-            .values("substep_id")
+            .values("step_id")
             .distinct()
             .count()
         )

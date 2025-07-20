@@ -3,19 +3,19 @@ from django.dispatch import receiver
 from certificate.models import Certificate
 from ..models import Project
 from .models import ProjectProgress
-from ..substep.models import Substep
+from ..step.models import Step
 
 
 @receiver(post_save, sender=ProjectProgress)
 def create_certificate_on_project_completion(sender, instance, **kwargs):
     student = instance.student
-    substep = instance.substep
+    step = instance.step
 
     if instance.completed_at is None:
         return
 
-    # Find all projects that contain this substep through steps
-    projects = Project.objects.filter(steps__substeps=substep).distinct()
+    # Find all projects that contain this step through stages
+    projects = Project.objects.filter(stages__steps=step).distinct()
 
     for project in projects:
         already_certified = Certificate.objects.filter(
@@ -24,18 +24,18 @@ def create_certificate_on_project_completion(sender, instance, **kwargs):
         if already_certified:
             continue
 
-        # All substeps in the project (via steps)
-        project_substeps = Substep.objects.filter(
-            stepsubstep__step__in=project.steps.all(), active=True
+        # All steps in the project (via stages)
+        project_steps = Step.objects.filter(
+            stagestep__stage__in=project.stages.all(), active=True
         ).count()
 
-        # Substeps completed by the student for this project
-        completed_substeps = Substep.objects.filter(
-            stepsubstep__step__in=project.steps.all(),
+        # Steps completed by the student for this project
+        completed_steps = Step.objects.filter(
+            stagestep__stage__in=project.stages.all(),
             projectprogress__student=student,
         ).count()
 
-        if project_substeps != completed_substeps:
+        if project_steps != completed_steps:
             continue
 
         Certificate.objects.create(student=student, project=project)

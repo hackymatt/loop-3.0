@@ -1,7 +1,7 @@
 from rest_framework import viewsets, views
 from rest_framework.response import Response
 from .models import Project
-from .step.models import Step
+from .stage.models import Stage
 from blog.models import Blog
 from .serializers import ProjectListSerializer, ProjectRetrieveSerializer
 from .filters import ProjectFilter
@@ -21,9 +21,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 "instructors",
                 "translations",
                 Prefetch(
-                    "steps",
-                    queryset=Step.objects.prefetch_related("substeps").order_by(
-                        "projectstep__order"
+                    "stages",
+                    queryset=Stage.objects.prefetch_related("steps").order_by(
+                        "projectstage__order"
                     ),
                 ),
                 Prefetch(
@@ -40,11 +40,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 ),
             )
             .annotate(
-                substeps_count=Count("steps__substeps", distinct=True),
+                steps_count=Count("stages__steps", distinct=True),
                 average_rating=Avg("reviews__rating"),
                 ratings_count=Count("reviews", distinct=True),
                 students_count=Count("enrollments", distinct=True),
-                points=Sum("steps__substeps__points"),
+                points=Sum("stages__steps__points"),
             )
             .order_by("slug")
         )

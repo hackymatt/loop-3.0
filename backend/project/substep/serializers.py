@@ -1,15 +1,15 @@
 from rest_framework import serializers
 from django.utils.translation import gettext as _
-from .models import Substep
+from .models import Step
 from ..progress.models import ProjectProgress
 from const import UserType
 
 
-class SubstepSerializer(serializers.ModelSerializer):
+class StepSerializer(serializers.ModelSerializer):
     translated_name = serializers.SerializerMethodField()  # Used for output
 
     class Meta:
-        model = Substep
+        model = Step
         fields = ["slug", "translated_name", "points"]
 
     def get_translated_name(self, obj):
@@ -32,18 +32,18 @@ class SubstepSerializer(serializers.ModelSerializer):
 
     def get_progress(self, obj, user):
         is_completed = ProjectProgress.objects.filter(
-            student__user=user, substep=obj, completed_at__isnull=False
+            student__user=user, step=obj, completed_at__isnull=False
         ).exists()
 
         return 100 if is_completed else 0
 
 
-class SubstepBaseSerializer(serializers.ModelSerializer):
-    points = serializers.CharField(source="substep.points")
+class StepBaseSerializer(serializers.ModelSerializer):
+    points = serializers.CharField(source="step.points")
     name = serializers.SerializerMethodField()
 
     class Meta:
-        model = Substep
+        model = Step
         fields = ["points", "name"]
 
     def get_name(self, obj):
@@ -51,11 +51,11 @@ class SubstepBaseSerializer(serializers.ModelSerializer):
         return obj.get_translation(lang).name
 
 
-class SubstepDetailsSerializer(SubstepBaseSerializer):
+class StepDetailsSerializer(StepBaseSerializer):
     text = serializers.SerializerMethodField()
 
-    class Meta(SubstepBaseSerializer.Meta):
-        fields = SubstepBaseSerializer.Meta.fields + ["text"]
+    class Meta(StepBaseSerializer.Meta):
+        fields = StepBaseSerializer.Meta.fields + ["text"]
 
     def get_text(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE

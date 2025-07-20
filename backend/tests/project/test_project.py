@@ -31,7 +31,7 @@ class ProjectViewSetTest(TestCase):
         self.project_3 = create_project()
         self.project_3.steps.clear()
         step = create_step()
-        step.substeps.clear()
+        step.steps.clear()
         step.save()
         self.project_3.steps.add(step)
         self.project_3.save()
@@ -39,7 +39,7 @@ class ProjectViewSetTest(TestCase):
         ProjectProgress.objects.create(
             student=self.student_1,
             completed_at=timezone.now(),
-            substep=self.project_1.steps.all()[0].substeps.all()[0],
+            step=self.project_1.steps.all()[0].steps.all()[0],
         )
 
         self.review_1 = Review.objects.create(
@@ -87,8 +87,8 @@ class ProjectViewSetTest(TestCase):
             float(
                 (
                     1
-                    / self.project_1.steps.aggregate(total_substeps=Count("substeps"))[
-                        "total_substeps"
+                    / self.project_1.steps.aggregate(total_steps=Count("steps"))[
+                        "total_steps"
                     ]
                     or 0
                 )
@@ -130,8 +130,8 @@ class ProjectViewSetTest(TestCase):
             float(
                 (
                     1
-                    / self.project_1.steps.aggregate(total_substeps=Count("substeps"))[
-                        "total_substeps"
+                    / self.project_1.steps.aggregate(total_steps=Count("steps"))[
+                        "total_steps"
                     ]
                     or 0
                 )

@@ -3,14 +3,14 @@ from core.base_model import BaseModel
 from const import Language
 
 
-class Substep(BaseModel):
+class Step(BaseModel):
     slug = models.SlugField(unique=True)
     points = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=False)
 
     class Meta:
-        db_table = "project_substep"
-        verbose_name_plural = "Substeps"
+        db_table = "project_step"
+        verbose_name_plural = "Steps"
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -19,9 +19,9 @@ class Substep(BaseModel):
         return self.slug  # pragma: no cover
 
 
-class SubstepTranslation(BaseModel):
-    substep = models.ForeignKey(
-        "Substep", on_delete=models.CASCADE, related_name="translations"
+class StepTranslation(BaseModel):
+    step = models.ForeignKey(
+        "Step", on_delete=models.CASCADE, related_name="translations"
     )
     language = models.CharField(
         max_length=max(len(choice[0]) for choice in Language.choices),
@@ -31,8 +31,8 @@ class SubstepTranslation(BaseModel):
     text = models.TextField()
 
     class Meta:
-        db_table = "project_substep_translation"
-        verbose_name_plural = "Substep translations"
+        db_table = "project_step_translation"
+        verbose_name_plural = "Step translations"
 
     def __str__(self):
-        return f"{self.substep.slug} ({self.language})"  # pragma: no cover
+        return f"{self.step.slug} ({self.language})"  # pragma: no cover

@@ -1,18 +1,18 @@
 from django.db import models
 from core.base_model import BaseModel
 from const import Language
-from ..substep.models import Substep
+from ..step.models import Step
 
 
-class Step(BaseModel):
+class Stage(BaseModel):
     slug = models.SlugField(unique=True)
-    substeps = models.ManyToManyField(
-        Substep, through="StepSubstep", related_name="substeps"
+    steps = models.ManyToManyField(
+        Step, through="StageStep", related_name="steps"
     )
     active = models.BooleanField(default=False)
 
     class Meta:
-        db_table = "project_step"
+        db_table = "project_stage"
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -21,9 +21,9 @@ class Step(BaseModel):
         return self.slug  # pragma: no cover
 
 
-class StepTranslation(BaseModel):
-    step = models.ForeignKey(
-        Step, on_delete=models.CASCADE, related_name="translations"
+class StageTranslation(BaseModel):
+    stage = models.ForeignKey(
+        Stage, on_delete=models.CASCADE, related_name="translations"
     )
     language = models.CharField(
         max_length=max(len(choice[0]) for choice in Language.choices),
@@ -33,23 +33,23 @@ class StepTranslation(BaseModel):
     description = models.TextField()
 
     class Meta:
-        db_table = "project_step_translation"
-        unique_together = ("step", "language")
-        verbose_name_plural = "Step translations"
+        db_table = "project_stage_translation"
+        unique_together = ("stage", "language")
+        verbose_name_plural = "Stage translations"
 
     def __str__(self):
         return f"{self.name} ({self.language})"  # pragma: no cover
 
 
-class StepSubstep(models.Model):
-    step = models.ForeignKey("step.Step", on_delete=models.CASCADE)
-    substep = models.ForeignKey(Substep, on_delete=models.CASCADE)
+class StageStep(models.Model):
+    stage = models.ForeignKey("stage.Stage", on_delete=models.CASCADE)
+    step = models.ForeignKey(Step, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
-        db_table = "step_substep_mapping"
-        unique_together = ("step", "substep")
+        db_table = "stage_step_mapping"
+        unique_together = ("stage", "step")
         ordering = ["order"]
 
     def __str__(self):
-        return f"Step: {self.step.slug} | Substep: {self.substep.slug} | Order: {self.order}"  # pragma: no cover
+        return f"Stage: {self.stage.slug} | Step: {self.step.slug} | Order: {self.order}"  # pragma: no cover

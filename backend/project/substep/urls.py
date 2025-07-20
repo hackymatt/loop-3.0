@@ -1,9 +1,9 @@
 # from .views import (
-#     SubstepViewSet,
-#     SubstepProgressAPIView,
-#     SubstepSubmitAPIView,
-#     SubstepAnswerAPIView,
-#     SubstepHintAPIView,
+#     StepViewSet,
+#     StepProgressAPIView,
+#     StepSubmitAPIView,
+#     StepAnswerAPIView,
+#     StepHintAPIView,
 # )
 # from django.urls import path
 # from const import Urls
@@ -11,28 +11,28 @@
 # urlpatterns = [
 #     path(
 #         Urls.LESSON,
-#         SubstepViewSet.as_view({"get": "retrieve"}),
-#         name="substep",
+#         StepViewSet.as_view({"get": "retrieve"}),
+#         name="step",
 #     ),
 #     path(
 #         Urls.LESSON_PROGRESS,
-#         SubstepProgressAPIView.as_view(),
-#         name="substep-progress",
+#         StepProgressAPIView.as_view(),
+#         name="step-progress",
 #     ),
 #     path(
 #         Urls.LESSON_SUBMIT,
-#         SubstepSubmitAPIView.as_view(),
-#         name="substep-submit",
+#         StepSubmitAPIView.as_view(),
+#         name="step-submit",
 #     ),
 #     path(
 #         Urls.LESSON_ANSWER,
-#         SubstepAnswerAPIView.as_view(),
-#         name="substep-answer",
+#         StepAnswerAPIView.as_view(),
+#         name="step-answer",
 #     ),
 #     path(
 #         Urls.LESSON_HINT,
-#         SubstepHintAPIView.as_view(),
-#         name="substep-hint",
+#         StepHintAPIView.as_view(),
+#         name="step-hint",
 #     ),
 # ]
 

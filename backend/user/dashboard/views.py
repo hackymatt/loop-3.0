@@ -22,9 +22,9 @@ class DashboardView(APIView):
             student__user=user, completed_at__isnull=False
         )
 
-        total_points = project_progress.aggregate(Sum("substep__points"))["substep__points__sum"] or 0
+        total_points = project_progress.aggregate(Sum("step__points"))["step__points__sum"] or 0
 
-        # Get all unique dates of substep completion
+        # Get all unique dates of step completion
         completed_dates = project_progress.values_list("completed_at", flat=True)
         completed_dates = set(date.date() for date in completed_dates)
 

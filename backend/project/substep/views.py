@@ -5,18 +5,18 @@
 # from rest_framework.permissions import IsAuthenticated
 # from django.shortcuts import get_object_or_404
 # from django.utils import timezone
-# from .models import Substep, ReadingSubstep, VideoSubstep, QuizSubstep, CodingSubstep
+# from .models import Step, ReadingStep, VideoStep, QuizStep, CodingStep
 # from .serializers import (
-#     ReadingSubstepBaseSerializer,
-#     ReadingSubstepSerializer,
-#     VideoSubstepBaseSerializer,
-#     VideoSubstepSerializer,
-#     QuizSubstepBaseSerializer,
-#     QuizSubstepSerializer,
-#     CodingSubstepBaseSerializer,
-#     CodingSubstepSerializer,
-#     QuizSubstepSubmitSerializer,
-#     CodingSubstepSubmitSerializer,
+#     ReadingStepBaseSerializer,
+#     ReadingStepSerializer,
+#     VideoStepBaseSerializer,
+#     VideoStepSerializer,
+#     QuizStepBaseSerializer,
+#     QuizStepSerializer,
+#     CodingStepBaseSerializer,
+#     CodingStepSerializer,
+#     QuizStepSubmitSerializer,
+#     CodingStepSubmitSerializer,
 # )
 # from ..enrollment.models import ProjectEnrollment, ProjectStepEnrollment
 # from ..progress.models import ProjectProgress
@@ -25,41 +25,41 @@
 # from plan.subscription.utils import get_subscription
 # from plan.utils import is_default_plan
 # from user.type.student_user.models import Student
-# from const import SubstepType
+# from const import StepType
 
 
-# def get_answer(substep, language):
+# def get_answer(step, language):
 #     specific_model = {
-#         SubstepType.QUIZ: QuizSubstep,
-#         SubstepType.CODING: CodingSubstep,
-#     }.get(substep.type)
+#         StepType.QUIZ: QuizStep,
+#         StepType.CODING: CodingStep,
+#     }.get(step.type)
 
-#     if substep.type == SubstepType.QUIZ:
+#     if step.type == StepType.QUIZ:
 #         question = (
-#             specific_model.objects.get(substep=substep).get_translation(language).question
+#             specific_model.objects.get(step=step).get_translation(language).question
 #         )
 #         answer = [option.is_correct for option in question.options.all()]
-#     elif substep.type == SubstepType.CODING:
-#         answer = specific_model.objects.get(substep=substep).file.solution
+#     elif step.type == StepType.CODING:
+#         answer = specific_model.objects.get(step=step).file.solution
 #     else:
 #         answer = None
 
 #     return answer
 
 
-# class SubstepViewSet(RetrieveModelMixin, GenericViewSet):
-#     queryset = Substep.objects.select_related("reading", "video", "quiz", "coding")
+# class StepViewSet(RetrieveModelMixin, GenericViewSet):
+#     queryset = Step.objects.select_related("reading", "video", "quiz", "coding")
 #     permission_classes = [IsAuthenticated]
 
 #     def retrieve(self, request, *args, **kwargs):
 #         project_slug = kwargs.get("project_slug")
 #         step_slug = kwargs.get("step_slug")
-#         substep_slug = kwargs.get("substep_slug")
+#         step_slug = kwargs.get("step_slug")
 
 #         student = Student.objects.get(user=request.user)
 #         project = get_object_or_404(Project, slug=project_slug, active=True)
 #         step = get_object_or_404(Step, slug=step_slug, active=True)
-#         substep = get_object_or_404(Substep, slug=substep_slug, active=True)
+#         step = get_object_or_404(Step, slug=step_slug, active=True)
 
 #         if not project.steps.filter(id=step.id).exists():
 #             return Response(
@@ -67,37 +67,37 @@
 #                 status=status.HTTP_404_NOT_FOUND,
 #             )
 
-#         if not step.substeps.filter(id=substep.id).exists():
+#         if not step.steps.filter(id=step.id).exists():
 #             return Response(
-#                 {"root": "Substep not found in this project step."},
+#                 {"root": "Step not found in this project step."},
 #                 status=status.HTTP_404_NOT_FOUND,
 #             )
 
 #         ProjectEnrollment.objects.get_or_create(student=student, project=project)
 
-#         substep_model_map = {
-#             SubstepType.READING: ReadingSubstep,
-#             SubstepType.VIDEO: VideoSubstep,
-#             SubstepType.QUIZ: QuizSubstep,
-#             SubstepType.CODING: CodingSubstep,
+#         step_model_map = {
+#             StepType.READING: ReadingStep,
+#             StepType.VIDEO: VideoStep,
+#             StepType.QUIZ: QuizStep,
+#             StepType.CODING: CodingStep,
 #         }
 
 #         serializer_map = {
-#             SubstepType.READING: ReadingSubstepSerializer,
-#             SubstepType.VIDEO: VideoSubstepSerializer,
-#             SubstepType.QUIZ: QuizSubstepSerializer,
-#             SubstepType.CODING: CodingSubstepSerializer,
+#             StepType.READING: ReadingStepSerializer,
+#             StepType.VIDEO: VideoStepSerializer,
+#             StepType.QUIZ: QuizStepSerializer,
+#             StepType.CODING: CodingStepSerializer,
 #         }
 
 #         base_serializer_map = {
-#             SubstepType.READING: ReadingSubstepBaseSerializer,
-#             SubstepType.VIDEO: VideoSubstepBaseSerializer,
-#             SubstepType.QUIZ: QuizSubstepBaseSerializer,
-#             SubstepType.CODING: CodingSubstepBaseSerializer,
+#             StepType.READING: ReadingStepBaseSerializer,
+#             StepType.VIDEO: VideoStepBaseSerializer,
+#             StepType.QUIZ: QuizStepBaseSerializer,
+#             StepType.CODING: CodingStepBaseSerializer,
 #         }
 
-#         specific_model = substep_model_map.get(substep.type)
-#         specific_substep = specific_model.objects.get(substep=substep)
+#         specific_model = step_model_map.get(step.type)
+#         specific_step = specific_model.objects.get(step=step)
 
 #         # Plan check: limit access for free users
 #         if is_default_plan(get_subscription(student.user).plan):
@@ -106,9 +106,9 @@
 #                 .exclude(step=step)
 #                 .exists()
 #             ):
-#                 base_serializer_class = base_serializer_map.get(substep.type)
+#                 base_serializer_class = base_serializer_map.get(step.type)
 #                 serializer = base_serializer_class(
-#                     specific_substep, context={"request": request}
+#                     specific_step, context={"request": request}
 #                 )
 #                 return Response(serializer.data, status=status.HTTP_403_FORBIDDEN)
 
@@ -116,24 +116,24 @@
 #         ProjectStepEnrollment.objects.get_or_create(
 #             student=student, project=project, step=step
 #         )
-#         answer = get_answer(substep, request.LANGUAGE_CODE)
+#         answer = get_answer(step, request.LANGUAGE_CODE)
 #         ProjectProgress.objects.get_or_create(
 #             student=student,
-#             substep=substep,
-#             defaults={"points": substep.points, "answer": answer},
+#             step=step,
+#             defaults={"points": step.points, "answer": answer},
 #         )
 
-#         serializer_class = serializer_map.get(substep.type)
-#         serializer = serializer_class(specific_substep, context={"request": request})
+#         serializer_class = serializer_map.get(step.type)
+#         serializer = serializer_class(specific_step, context={"request": request})
 #         return Response(serializer.data)
 
 
-# class SubstepProgressAPIView(views.APIView):
+# class StepProgressAPIView(views.APIView):
 #     permission_classes = [IsAuthenticated]
 
 #     def post(self, request, *args, **kwargs):
-#         substep_slug = request.data.pop("substep")
-#         substep = get_object_or_404(Substep, slug=substep_slug, active=True)
+#         step_slug = request.data.pop("step")
+#         step = get_object_or_404(Step, slug=step_slug, active=True)
 
 #         answer = request.data.get("answer")
 
@@ -141,36 +141,36 @@
 #         student = Student.objects.get(user=request.user)
 #         ProjectProgress.objects.update_or_create(
 #             student=student,
-#             substep=substep,
+#             step=step,
 #             defaults={"answer": answer},
 #         )
 
 #         return Response({}, status=status.HTTP_200_OK)
 
 
-# class SubstepSubmitAPIView(views.APIView):
+# class StepSubmitAPIView(views.APIView):
 #     permission_classes = [IsAuthenticated]
 
 #     def post(self, request, *args, **kwargs):
-#         substep_slug = request.data.pop("substep")
-#         substep = get_object_or_404(Substep, slug=substep_slug, active=True)
+#         step_slug = request.data.pop("step")
+#         step = get_object_or_404(Step, slug=step_slug, active=True)
 
 #         specific_model = {
-#             SubstepType.QUIZ: QuizSubstep,
-#             SubstepType.CODING: CodingSubstep,
-#         }.get(substep.type)
+#             StepType.QUIZ: QuizStep,
+#             StepType.CODING: CodingStep,
+#         }.get(step.type)
 
 #         serializer_class = {
-#             SubstepType.QUIZ: QuizSubstepSubmitSerializer,
-#             SubstepType.CODING: CodingSubstepSubmitSerializer,
-#         }.get(substep.type)
+#             StepType.QUIZ: QuizStepSubmitSerializer,
+#             StepType.CODING: CodingStepSubmitSerializer,
+#         }.get(step.type)
 
 #         answer = None
 #         if serializer_class:
-#             specific_substep = specific_model.objects.get(substep=substep)
+#             specific_step = specific_model.objects.get(step=step)
 #             serializer = serializer_class(
 #                 data=request.data,
-#                 context={"substep": specific_substep, "request": request},
+#                 context={"step": specific_step, "request": request},
 #             )
 #             if not serializer.is_valid():
 #                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -181,47 +181,47 @@
 #         student = Student.objects.get(user=request.user)
 #         ProjectProgress.objects.update_or_create(
 #             student=student,
-#             substep=substep,
+#             step=step,
 #             defaults={"answer": answer, "completed_at": timezone.now()},
 #         )
 
 #         return Response({}, status=status.HTTP_200_OK)
 
 
-# class SubstepAnswerAPIView(views.APIView):
+# class StepAnswerAPIView(views.APIView):
 #     permission_classes = [IsAuthenticated]
 
 #     def post(self, request, *args, **kwargs):
-#         substep_slug = request.data.pop("substep")
-#         substep = get_object_or_404(Substep, slug=substep_slug, active=True)
+#         step_slug = request.data.pop("step")
+#         step = get_object_or_404(Step, slug=step_slug, active=True)
 
-#         answer = get_answer(substep, request.LANGUAGE_CODE)
+#         answer = get_answer(step, request.LANGUAGE_CODE)
 
 #         student = Student.objects.get(user=request.user)
 #         ProjectProgress.objects.update_or_create(
 #             student=student,
-#             substep=substep,
+#             step=step,
 #             defaults={"answer": answer, "completed_at": timezone.now(), "points": 0},
 #         )
 
 #         return Response({"answer": answer}, status=status.HTTP_200_OK)
 
 
-# class SubstepHintAPIView(views.APIView):
+# class StepHintAPIView(views.APIView):
 #     permission_classes = [IsAuthenticated]
 
 #     def post(self, request, *args, **kwargs):
-#         substep_slug = request.data.pop("substep")
-#         substep = get_object_or_404(Substep, slug=substep_slug, active=True)
+#         step_slug = request.data.pop("step")
+#         step = get_object_or_404(Step, slug=step_slug, active=True)
 
 #         specific_model = {
-#             SubstepType.CODING: CodingSubstep,
-#         }.get(substep.type)
+#             StepType.CODING: CodingStep,
+#         }.get(step.type)
 
-#         if substep.type == SubstepType.CODING:
-#             specific_substep = specific_model.objects.get(substep=substep)
-#             hint = specific_substep.get_translation(request.LANGUAGE_CODE).hint
-#             penalty_points = specific_substep.penalty_points
+#         if step.type == StepType.CODING:
+#             specific_step = specific_model.objects.get(step=step)
+#             hint = specific_step.get_translation(request.LANGUAGE_CODE).hint
+#             penalty_points = specific_step.penalty_points
 #         else:
 #             hint = None
 #             penalty_points = 0
@@ -229,8 +229,8 @@
 #         student = Student.objects.get(user=request.user)
 #         ProjectProgress.objects.update_or_create(
 #             student=student,
-#             substep=substep,
-#             defaults={"hint_used": True, "points": substep.points - penalty_points},
+#             step=step,
+#             defaults={"hint_used": True, "points": step.points - penalty_points},
 #         )
 
 #         return Response({"hint": hint}, status=status.HTTP_200_OK)

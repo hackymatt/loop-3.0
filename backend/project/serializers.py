@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Project
-from .step.serializers import StepSerializer
+from .stage.serializers import StageSerializer
 from .level.serializers import LevelSerializer
 from .category.serializers import CategorySerializer
 from .technology.serializers import TechnologySerializer
@@ -45,7 +45,7 @@ class BaseProjectSerializer(serializers.ModelSerializer):
     technologies = TechnologySerializer(source="technology", many=True, read_only=True)
     instructors = InstructorSerializer(many=True, read_only=True)
 
-    substeps_count = serializers.IntegerField(read_only=True)
+    steps_count = serializers.IntegerField(read_only=True)
     average_rating = serializers.FloatField(read_only=True)
     ratings_count = serializers.IntegerField(read_only=True)
     students_count = serializers.IntegerField(read_only=True)
@@ -63,7 +63,7 @@ class BaseProjectSerializer(serializers.ModelSerializer):
             "technologies",
             "instructors",
             "duration",
-            "substeps_count",
+            "steps_count",
             "average_rating",
             "ratings_count",
             "students_count",
@@ -89,17 +89,17 @@ class BaseProjectSerializer(serializers.ModelSerializer):
         return data
 
     def get_progress(self, obj, user):
-        # You could prefetch ProjectProgress for all substeps if needed
-        substep_ids = []
-        for step in obj.steps.all():
-            substep_ids.extend(step.substeps.values_list("id", flat=True))
+        # You could prefetch ProjectProgress for all steps if needed
+        step_ids = []
+        for stage in obj.stages.all():
+            step_ids.extend(stage.steps.values_list("id", flat=True))
 
-        total = len(substep_ids)
+        total = len(step_ids)
         if total == 0:
             return 0
 
         completed = ProjectProgress.objects.filter(
-            student__user=user, substep_id__in=substep_ids, completed_at__isnull=False
+            student__user=user, step_id__in=step_ids, completed_at__isnull=False
         ).count()
 
         return float((completed / total) * 100)
@@ -118,7 +118,7 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
     quiz_count = serializers.IntegerField(read_only=True)
     coding_count = serializers.IntegerField(read_only=True)
 
-    steps = StepSerializer(many=True, read_only=True)
+    stages = StageSerializer(many=True, read_only=True)
     project_prerequisites = ProjectPrerequisiteSerializer(many=True, read_only=True)
     blog_prerequisites = BlogPrerequisiteSerializer(many=True, read_only=True)
 
@@ -132,7 +132,7 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
             "video_count",
             "quiz_count",
             "coding_count",
-            "steps",
+            "stages",
             "project_prerequisites",
             "blog_prerequisites",
         ]

@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from core.base_model import BaseModel
 from const import Language
-from .step.models import Step
+from .stage.models import Stage
 from .level.models import Level
 from .category.models import Category
 from .technology.models import Technology
@@ -25,8 +25,8 @@ class Project(BaseModel):
     level = models.ForeignKey(Level, on_delete=models.PROTECT)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     technology = models.ManyToManyField(Technology, related_name="projects", db_table="project_to_technology")
-    steps = models.ManyToManyField(
-        Step, through="ProjectStep", related_name="projects"
+    stages = models.ManyToManyField(
+        Stage, through="ProjectStage", related_name="projects"
     )
     instructors = models.ManyToManyField(Instructor, related_name="projects")
     duration = models.PositiveIntegerField()
@@ -76,15 +76,15 @@ class ProjectTranslation(BaseModel):
         return f"{self.name} ({self.language})"  # pragma: no cover
 
 
-class ProjectStep(models.Model):
+class ProjectStage(models.Model):
     project = models.ForeignKey("project.Project", on_delete=models.CASCADE)
-    step = models.ForeignKey(Step, on_delete=models.CASCADE)
+    stage = models.ForeignKey(Stage, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
-        db_table = "project_step_mapping"
-        unique_together = ("project", "step")
+        db_table = "project_stage_mapping"
+        unique_together = ("project", "stage")
         ordering = ["order"]
 
     def __str__(self):
-        return f"Project: {self.project.slug} | Step: {self.step.slug} | Order: {self.order}"  # pragma: no cover
+        return f"Project: {self.project.slug} | Stage: {self.stage.slug} | Order: {self.order}"  # pragma: no cover
