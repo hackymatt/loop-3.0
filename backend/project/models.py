@@ -29,7 +29,6 @@ class Project(BaseModel):
         Stage, through="ProjectStage", related_name="projects"
     )
     instructors = models.ManyToManyField(Instructor, related_name="projects")
-    duration = models.PositiveIntegerField()
     chat_url = models.URLField()
     video_url = models.FileField(
         upload_to=project_directory_path, blank=True, null=True, max_length=500

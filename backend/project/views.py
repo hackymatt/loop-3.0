@@ -45,6 +45,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 ratings_count=Count("reviews", distinct=True),
                 students_count=Count("enrollments", distinct=True),
                 points=Sum("stages__steps__points", filter=Q(stages__steps__active=True)),
+                duration=Sum("stages__steps__duration", filter=Q(stages__steps__active=True)),
             ).filter(active=True)
             .order_by("slug")
         )
@@ -87,6 +88,7 @@ class FeaturedProjectsView(views.APIView):
                 ratings_count=Count("reviews", distinct=True),
                 students_count=Count("enrollments", distinct=True),
                 points=Sum("stages__steps__points", filter=Q(stages__steps__active=True)),
+                duration=Sum("stages__steps__duration", filter=Q(stages__steps__active=True)),
             ).filter(active=True)
         )
 

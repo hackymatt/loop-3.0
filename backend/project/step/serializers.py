@@ -1,7 +1,3 @@
-import math
-import re
-import markdown
-from bs4 import BeautifulSoup
 from rest_framework import serializers
 from django.utils.translation import gettext as _
 from .models import Step
@@ -46,7 +42,6 @@ class StepSerializer(serializers.ModelSerializer):
 class StepBaseSerializer(serializers.ModelSerializer):
     points = serializers.CharField()
     name = serializers.SerializerMethodField()
-    duration = serializers.SerializerMethodField()
 
     class Meta:
         model = Step
@@ -56,18 +51,6 @@ class StepBaseSerializer(serializers.ModelSerializer):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.get_translation(lang).name
 
-    def _get_text(self, obj):  # Internal method to avoid name conflict
-        lang = self.context.get("request").LANGUAGE_CODE
-        return obj.get_translation(lang).text
-
-    def get_duration(self, obj):
-        content = self._get_text(obj)
-        html = markdown.markdown(content)
-        soup = BeautifulSoup(html, features="html.parser")
-        plain_text = soup.get_text()
-        words = re.findall(r"\w+", plain_text)
-        return math.ceil(len(words) / CONFIG["words_per_minute"])
-
 
 class StepDetailsSerializer(StepBaseSerializer):
     text = serializers.SerializerMethodField()
@@ -76,6 +59,7 @@ class StepDetailsSerializer(StepBaseSerializer):
         fields = StepBaseSerializer.Meta.fields + ["text"]
 
     def get_text(self, obj):
-        return self._get_text(obj)
+        lang = self.context.get("request").LANGUAGE_CODE
+        return obj.get_translation(lang).text
 
 

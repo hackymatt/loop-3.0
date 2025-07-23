@@ -6,6 +6,7 @@ from const import Language
 class Step(BaseModel):
     slug = models.SlugField(unique=True)
     points = models.PositiveIntegerField(default=0)
+    duration = models.PositiveIntegerField()
     active = models.BooleanField(default=False)
 
     class Meta:
