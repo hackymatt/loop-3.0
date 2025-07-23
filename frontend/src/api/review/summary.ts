@@ -2,7 +2,6 @@ import type { GetQueryResponse } from "src/api/types";
 import type { IReviewSummaryProps } from "src/types/review";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
 
 import { getSimpleListData } from "src/api/utils";
 
@@ -25,13 +24,4 @@ export const reviewsSummaryQuery = (slug: string) => {
   };
 
   return { url, queryFn, queryKey: compact([url, slug]) };
-};
-
-export const useReviewsSummary = (slug: string, enabled: boolean = true) => {
-  const { queryKey, queryFn } = reviewsSummaryQuery(slug);
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return {
-    data: data?.results,
-    ...rest,
-  };
 };

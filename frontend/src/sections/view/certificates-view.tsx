@@ -1,5 +1,7 @@
 "use client";
 
+import type { ICertificateProps } from "src/types/certificate";
+
 import { useTranslation } from "react-i18next";
 import { useBoolean } from "minimal-shared/hooks";
 
@@ -9,26 +11,25 @@ import Typography from "@mui/material/Typography";
 
 import { useQueryParams } from "src/hooks/use-query-params";
 
-import { useCertificates } from "src/api/certificate/certificates";
-
 import { Iconify } from "src/components/iconify";
-import { SplashScreen } from "src/components/loading-screen";
 
 import { CertificateList } from "../certificates/certificate-list";
 
 // ----------------------------------------------------------------------
+type CertificatesProps = {
+  data: {
+    certificates: ICertificateProps[];
+    certificatesCount: number;
+    certificatesPageSize: number;
+  };
+};
 
-export function CertificatesView() {
+export function CertificatesView(data: CertificatesProps) {
   const { t } = useTranslation("certificate");
 
   const { handleChange, query } = useQueryParams();
 
-  const {
-    data: certificates,
-    count,
-    pageSize,
-    isLoading: isLoadingCertificates,
-  } = useCertificates(query);
+  const { certificates, certificatesCount, certificatesPageSize } = data.data;
 
   const openMobile = useBoolean();
 
@@ -51,17 +52,13 @@ export function CertificatesView() {
     <Box sx={{ gap: 4, display: "flex", flexDirection: "column" }}>
       <CertificateList
         certificates={certificates ?? []}
-        recordsCount={count || 0}
-        pagesCount={pageSize || 0}
+        recordsCount={certificatesCount || 0}
+        pagesCount={certificatesPageSize || 0}
         page={Number(query.page) || 1}
         onPageChange={(selectedPage: number) => handleChange("page", String(selectedPage))}
       />
     </Box>
   );
-
-  if (isLoadingCertificates) {
-    return <SplashScreen />;
-  }
 
   return (
     <Container>

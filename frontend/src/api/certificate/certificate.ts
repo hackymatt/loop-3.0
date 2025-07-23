@@ -1,8 +1,9 @@
+import type { Language } from "src/locales/types";
 import type { GetQueryResponse } from "src/api/types";
 import type { ICertificateProps } from "src/types/certificate";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
+import { cookies } from "next/headers";
 
 import { getData } from "src/api/utils";
 
@@ -17,12 +18,14 @@ type ICertificate = {
   completed_at: string;
 };
 
-export const certificateQuery = (id: string) => {
+export const certificateQuery = (language: Language, id: string) => {
   const url = endpoint;
   const queryUrl = `${url}/${id}`;
 
   const queryFn = async (): Promise<GetQueryResponse<ICertificateProps>> => {
-    const { data } = await getData<ICertificate>(queryUrl);
+    const { data } = await getData<ICertificate>(queryUrl, {
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
+    });
     const { student_name, project_name, completed_at, ...rest }: ICertificate = data;
 
     const modifiedResult: ICertificateProps = {
@@ -35,10 +38,4 @@ export const certificateQuery = (id: string) => {
   };
 
   return { url, queryFn, queryKey: compact([url, id]) };
-};
-
-export const useCertificate = (id: string, enabled: boolean = true) => {
-  const { queryKey, queryFn } = certificateQuery(id);
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return { data: data?.results, ...rest };
 };

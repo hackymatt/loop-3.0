@@ -136,12 +136,3 @@ export const dashboardQuery = (language: Language) => {
 
   return { url, queryFn, queryKey: compact([url]) };
 };
-
-// export const useDashboard = (enabled: boolean = true) => {
-//   const { queryKey, queryFn } = dashboardQuery();
-//   const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-//   return {
-//     data: data?.results,
-//     ...rest,
-//   };
-// };

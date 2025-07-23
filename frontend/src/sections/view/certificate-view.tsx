@@ -1,26 +1,20 @@
 "use client";
 
+import type { ICertificateProps } from "src/types/certificate";
+
 import Container from "@mui/material/Container";
 
-import { useCertificate } from "src/api/certificate/certificate";
-
-import { SplashScreen } from "src/components/loading-screen";
-
 import { Certificate } from "../certificates";
-import { NotFoundView } from "../error/not-found-view";
 
 // ----------------------------------------------------------------------
+type CertificateProps = {
+  data: {
+    certificate: ICertificateProps;
+  };
+};
 
-export function CertificateView({ id }: { id: string }) {
-  const { data: certificate, isError, isLoading } = useCertificate(id);
-
-  if (isError) {
-    return <NotFoundView />;
-  }
-
-  if (isLoading) {
-    return <SplashScreen />;
-  }
+export function CertificateView({ data }: CertificateProps) {
+  const { certificate } = data;
 
   return (
     <Container sx={{ py: { xs: 5, md: 10 } }}>

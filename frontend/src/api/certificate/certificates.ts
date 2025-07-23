@@ -1,8 +1,9 @@
+import type { Language } from "src/locales/types";
 import type { ICertificateProps } from "src/types/certificate";
 import type { QueryType, ListQueryResponse } from "src/api/types";
 
 import { compact } from "lodash-es";
-import { useQuery } from "@tanstack/react-query";
+import { cookies } from "next/headers";
 
 import { getListData, formatQueryParams } from "src/api/utils";
 
@@ -16,13 +17,15 @@ type ICertificate = {
   project_name: string;
   completed_at: string;
 };
-export const certificatesQuery = (query?: QueryType) => {
+export const certificatesQuery = (language: Language, query?: QueryType) => {
   const url = endpoint;
   const urlParams = formatQueryParams(query);
   const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<ListQueryResponse<ICertificateProps[]>> => {
-    const { results, records_count, pages_count } = await getListData<ICertificate>(queryUrl);
+    const { results, records_count, pages_count } = await getListData<ICertificate>(queryUrl, {
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
+    });
     const modifiedResults: ICertificateProps[] = (results ?? []).map(
       ({ student_name, project_name, completed_at, ...rest }: ICertificate) => ({
         ...rest,
@@ -35,15 +38,4 @@ export const certificatesQuery = (query?: QueryType) => {
   };
 
   return { url, queryFn, queryKey: compact([url, urlParams]) };
-};
-
-export const useCertificates = (query?: QueryType, enabled: boolean = true) => {
-  const { queryKey, queryFn } = certificatesQuery(query);
-  const { data, ...rest } = useQuery({ queryKey, queryFn, enabled });
-  return {
-    data: data?.results,
-    count: data?.count,
-    pageSize: data?.pagesCount,
-    ...rest,
-  };
 };

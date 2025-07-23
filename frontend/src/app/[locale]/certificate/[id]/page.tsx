@@ -1,40 +1,59 @@
 import type { Metadata } from "next";
+import type { Language } from "src/locales/types";
 
 import { paths } from "src/routes/paths";
 
 import { createMetadata } from "src/utils/create-metadata";
 
-import { URLS } from "src/api/urls";
-import { CONFIG } from "src/global-config";
 import { LANGUAGE } from "src/consts/language";
+import { certificateQuery } from "src/api/certificate/certificate";
 
+import { NotFoundView } from "src/sections/error/not-found-view";
 import { CertificateView } from "src/sections/view/certificate-view";
 
 // ----------------------------------------------------------------------
-export default function Page({ params }: { params: { id: string } }) {
-  return <CertificateView id={params.id} />;
+type PageProps = {
+  params: { locale: Language; id: string };
+};
+
+const queries = {
+  certificate: (lang: Language, id: string) => certificateQuery(lang, id),
+};
+
+async function getData(language: Language, id: string) {
+  try {
+    const certificatePromise = queries.certificate(language, id).queryFn();
+
+    const [certificate] = await Promise.all([certificatePromise]);
+
+    return {
+      certificate: certificate.results,
+    };
+  } catch {
+    return null;
+  }
+}
+export default async function Page({ params }: PageProps) {
+  const data = await getData(params.locale, params.id);
+
+  console.log(data);
+
+  if (!data) {
+    return <NotFoundView />;
+  }
+  return <CertificateView data={data} />;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string; id: string };
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const translations = await import(`public/locales/${params.locale}/certificate.json`);
 
   const path =
     params.locale === LANGUAGE.PL ? paths.certificate : `/${LANGUAGE.EN}${paths.certificate}`;
 
   try {
-    const res = await fetch(`${CONFIG.api}${URLS.CERTIFICATES}/${params.id}`, {
-      headers: { "Content-Type": "application/json", "Accept-Language": params.locale },
-    });
+    const certificate = (await queries.certificate(params.locale, params.id).queryFn()).results;
 
-    if (!res.ok) throw new Error("Failed to fetch certificate");
-
-    const certificate = await res.json();
-
-    const { student_name: studentName, project_name: projectName } = certificate;
+    const { studentName, projectName } = certificate;
 
     const title = translations.meta.certificate.title
       .replace("[studentName]", studentName)
