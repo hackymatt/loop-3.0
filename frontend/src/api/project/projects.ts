@@ -3,6 +3,7 @@ import type { QueryType, ListQueryResponse } from "src/api/types";
 import type { LevelType, IProjectListProps } from "src/types/project";
 
 import { compact } from "lodash-es";
+import { cookies } from "next/headers";
 
 import { getListData, formatQueryParams } from "src/api/utils";
 
@@ -54,7 +55,7 @@ export const projectsQuery = (language: Language, query?: QueryType) => {
 
   const queryFn = async (): Promise<ListQueryResponse<IProjectListProps[]>> => {
     const { results, records_count, pages_count } = await getListData<IProject>(queryUrl, {
-      headers: { "Accept-Language": language },
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
     const modifiedResults: IProjectListProps[] = (results ?? []).map(
       ({

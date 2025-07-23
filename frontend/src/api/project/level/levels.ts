@@ -7,7 +7,7 @@ import { compact } from "lodash-es";
 import { URLS } from "src/api/urls";
 import { getListData, formatQueryParams } from "src/api/utils";
 
-const endpoint = URLS.COURSE_LEVELS;
+const endpoint = URLS.PROJECT_LEVELS;
 
 type IProjectLevel = {
   slug: string;

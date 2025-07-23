@@ -7,7 +7,7 @@ import { compact } from "lodash-es";
 import { URLS } from "src/api/urls";
 import { getListData, formatQueryParams } from "src/api/utils";
 
-const endpoint = URLS.COURSE_TECHNOLOGIES;
+const endpoint = URLS.PROJECT_TECHNOLOGIES;
 
 type IProjectTechnology = {
   slug: string;

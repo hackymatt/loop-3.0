@@ -1,11 +1,11 @@
 "use client";
 
 import type { ReactNode } from "react";
-import type { AxiosError } from "axios";
 import type { BoxProps } from "@mui/material";
-import type { ISubstepProps } from "src/types/substep";
+import type { IStepProps } from "src/types/step";
+import type { IProjectProps } from "src/types/project";
 
-import React, { useMemo, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 
 import { Box, Container } from "@mui/material";
 
@@ -14,22 +14,17 @@ import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
-import { useProject } from "src/api/project/project";
-import { useSubstep } from "src/api/project/substep/substep";
-import { useSubstepSubmit } from "src/api/project/substep/submit";
-
-import { SplashScreen } from "src/components/loading-screen";
 import { CustomBreadcrumbs } from "src/components/custom-breadcrumbs";
 
-import { Substep } from "../learn/substep";
-import { NotFoundView } from "../error/not-found-view";
+import { Step } from "../learn/step";
 import { UpgradeBanner } from "../learn/upgrade-banner";
 import { ArrowBasicButtons } from "../learn/arrow-buttons/arrow-buttons";
 
 interface LearnViewProps {
+  data: { project: IProjectProps; step: IStepProps; isLocked: boolean };
   projectSlug: string;
+  stageSlug: string;
   stepSlug: string;
-  substepSlug: string;
 }
 
 const ContentBox = ({ children, sx }: { children: ReactNode; sx?: BoxProps["sx"] }) => (
@@ -45,7 +40,6 @@ const ContentBox = ({ children, sx }: { children: ReactNode; sx?: BoxProps["sx"]
         display: "flex",
         flexDirection: "column",
         gap: 3,
-        height: "80vh",
       },
       ...(Array.isArray(sx) ? sx : [sx]),
     ]}
@@ -54,74 +48,39 @@ const ContentBox = ({ children, sx }: { children: ReactNode; sx?: BoxProps["sx"]
   </Box>
 );
 
-export function LearnView({ projectSlug, stepSlug, substepSlug }: LearnViewProps) {
+export function LearnView({ data, projectSlug, stageSlug, stepSlug }: LearnViewProps) {
   const localize = useLocalizedPath();
   const router = useRouter();
 
-  const {
-    data: projectData,
-    isLoading: isLoadingProject,
-    isError: isErrorProject,
-  } = useProject("pl", projectSlug);
-  const {
-    data: substepData,
-    isLoading: isLoadingSubstep,
-    isError: isErrorSubstep,
-    error: substepError,
-  } = useSubstep(projectSlug, stepSlug, substepSlug);
+  const { project, step, isLocked } = data;
 
-  const { mutateAsync: submit } = useSubstepSubmit();
-
-  const isLoading = isLoadingProject || isLoadingSubstep;
-  const isError = isErrorProject || isErrorSubstep;
-  const isLocked = (substepError as AxiosError)?.status === 403;
-
-  const allSubsteps = useMemo(
-    () => projectData?.steps.flatMap((ch) => ch.substeps) ?? [],
-    [projectData?.steps]
+  const allSteps = useMemo(
+    () => project?.stages.flatMap((stage) => stage.steps) ?? [],
+    [project?.stages]
   );
-  const currentSubstepIndex = useMemo(
-    () => allSubsteps.findIndex((l) => l.slug === substepSlug),
-    [allSubsteps, substepSlug]
+  const currentStepIndex = useMemo(
+    () => allSteps.findIndex((s) => s.slug === stepSlug),
+    [allSteps, stepSlug]
   );
-  const currentStep = useMemo(
-    () => projectData?.steps.find((ch) => ch.slug === stepSlug),
-    [stepSlug, projectData?.steps]
+  const currentStage = useMemo(
+    () => project?.stages.find((stage) => stage.slug === stageSlug),
+    [stageSlug, project?.stages]
   );
 
   const navigateTo = useCallback(
     (index: number) => {
-      const substep = allSubsteps[index];
-      const step = projectData?.steps.find((ch) =>
-        ch.substeps.some((l) => l.slug === substep?.slug)
-      );
+      const s = allSteps[index];
+      const stage = project?.stages.find((ch) => ch.steps.some((l) => l.slug === s?.slug));
       router.push(
         localize(
-          substep && step
-            ? `${paths.learn}/${projectSlug}/${step.slug}/${substep.slug}`
+          s && stage
+            ? `${paths.learn}/${projectSlug}/${stage.slug}/${s.slug}`
             : `${paths.project}/${projectSlug}`
         )
       );
     },
-    [allSubsteps, projectData?.steps, projectSlug, localize, router]
+    [allSteps, project?.stages, router, localize, projectSlug]
   );
-
-  const handleSubmit = useCallback(
-    async (data: { answer: string | boolean[] }) => {
-      try {
-        await submit({ ...data, substep: substepSlug });
-        navigateTo(currentSubstepIndex + 1);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    [currentSubstepIndex, substepSlug, navigateTo, submit]
-  );
-
-  if (isError && !isLocked) {
-    return <NotFoundView />;
-  }
-  if (isLoading) return <SplashScreen />;
 
   const Header = () => (
     <Box
@@ -135,27 +94,23 @@ export function LearnView({ projectSlug, stepSlug, substepSlug }: LearnViewProps
     >
       <CustomBreadcrumbs
         links={[
-          { name: projectData?.name, href: localize(`${paths.project}/${projectSlug}`) },
-          { name: currentStep?.name },
-          { name: substepData?.name },
+          { name: project?.name, href: localize(`${paths.project}/${projectSlug}`) },
+          { name: currentStage?.name },
+          { name: step?.name },
         ]}
       />
       <ArrowBasicButtons
-        disablePrev={currentSubstepIndex <= 0}
-        disableNext={currentSubstepIndex >= allSubsteps.length - 1}
-        onClickPrev={() => navigateTo(currentSubstepIndex - 1)}
-        onClickNext={() => navigateTo(currentSubstepIndex + 1)}
+        disablePrev={currentStepIndex <= 0}
+        disableNext={currentStepIndex >= allSteps.length - 1}
+        onClickPrev={() => navigateTo(currentStepIndex - 1)}
+        onClickNext={() => navigateTo(currentStepIndex + 1)}
       />
     </Box>
   );
 
   const Content = () => (
     <ContentBox>
-      <Substep
-        substep={substepData as ISubstepProps}
-        onSubmit={() => handleSubmit({ answer: "" })}
-        isLocked={isLocked}
-      />
+      <Step step={step} onSubmit={() => {}} isLocked={isLocked} />
     </ContentBox>
   );
 

@@ -14,18 +14,14 @@ export const URLS = {
   ACCESS_TOKEN: "/auth/access-token",
   // CONTACT
   CONTACT: "/contact",
-  // COURSE
+  // PROJECT
   PROJECTS: "/projects",
-  COURSE_CATEGORIES: "/project-categories",
-  COURSE_LEVELS: "/project-levels",
-  COURSE_TECHNOLOGIES: "/project-technologies",
+  PROJECT_CATEGORIES: "/project-categories",
+  PROJECT_LEVELS: "/project-levels",
+  PROJECT_TECHNOLOGIES: "/project-technologies",
   SIMILAR_PROJECTS: "/similar-projects",
-  // LESSON
-  LESSON: "/substep",
-  LESSON_PROGRESS: "/substep/progress",
-  LESSON_SUBMIT: "/substep/submit",
-  LESSON_ANSWER: "/substep/answer",
-  LESSON_HINT: "/substep/hint",
+  // STEP
+  STEP: "/step",
   // REVIEWS
   REVIEWS: "/reviews",
   REVIEWS_SUMMARY: "/reviews-summary",

@@ -65,7 +65,7 @@ class ProjectFilter(django_filters.FilterSet):
             total_steps=Count("stages__steps", distinct=True)
         )
 
-        # subquery, który liczy ukończone lekcje w danym kursie
+        # subquery, który liczy ukończone kroki w danym projekcie
         completed_steps_subquery = (
             ProjectProgress.objects.filter(
                 student__user=user,

@@ -74,10 +74,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       image: coverUrl,
     });
   } catch {
+    const notFoundTranslations = await import(`public/locales/${params.locale}/404.json`);
+
     return createMetadata({
-      title: translations.meta.post.title,
-      description: translations.meta.post.description,
-      path: `${path}/${params.slug}`,
+      title: notFoundTranslations.meta.title,
+      description: notFoundTranslations.meta.description,
+      path,
     });
   }
 }

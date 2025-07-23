@@ -91,18 +91,23 @@ export function ProjectProgressItem({ project }: Props) {
 
       <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
 
-      <Box sx={{ gap: 0.5, display: "flex", alignItems: "center", minWidth: 0 }}>
-        <Iconify icon={getTechnologyIcon(project.technology.slug)} />
+      {project.technologies.map((technology) => (
         <Box
-          sx={{
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
+          key={technology.slug}
+          sx={{ gap: 0.5, display: "flex", alignItems: "center", minWidth: 0 }}
         >
-          {project.technology.name}
+          <Iconify icon={getTechnologyIcon(technology.slug)} />
+          <Box
+            sx={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {technology.name}
+          </Box>
         </Box>
-      </Box>
+      ))}
     </Box>
   );
 

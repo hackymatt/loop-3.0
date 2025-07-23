@@ -3,36 +3,7 @@
     "title": "Step [name] – continue learning",
     "description": "Continue your learning journey and gain more practical skills with the [name] step. Finish it and enhance your programming abilities."
   },
-  "errors": {
-    "progress": "An error occurred. Please try again",
-    "answer": "An error occurred. Please try again",
-    "hint": "An error occurred. Please try again"
-  },
-  "reading": { "estimatedTime": "Estimated time", "submit": "Got it!" },
-  "video": { "submit": "Got it!" },
-  "quiz": {
-    "type": { "label": "Question type", "single": "Single choice", "multi": "Multiple choice" },
-    "submit": "Check!",
-    "answer": "Show answer"
-  },
-  "coding": {
-    "introduction": "Introduction",
-    "instructions": "Instructions",
-    "editor": {
-      "label": "Code editor",
-      "runCode": { "start": "Run code", "stop": "Stop code" },
-      "submit": "Check!"
-    },
-    "hint": { "button": "Take hint", "label": "Hint" },
-    "answer": "Show answer",
-    "console": "Console",
-    "context": "Context",
-    "exercise": "Exercise",
-    "logs": {
-      "open": "Connection to the server has been established.",
-      "close": "Connection to the server has been closed."
-    }
-  },
+  "estimatedTime": "Estimated time",
   "upgrade": {
     "title": "Unlock full access!",
     "description": "Get all steps, more points, and additional materials!",

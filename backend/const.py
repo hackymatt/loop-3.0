@@ -31,12 +31,8 @@ class Urls:
     FEATURED_TECHNOLOGIES = "featured-technologies"
     FEATURED_REVIEWS = "featured-reviews"
     SIMILAR_PROJECTS = "similar-projects/<slug:slug>"
-    # LESSON
-    LESSON = "step/<slug:project_slug>/<slug:stage_slug>/<slug:step_slug>"
-    LESSON_PROGRESS = "step/progress"
-    LESSON_SUBMIT = "step/submit"
-    LESSON_ANSWER = "step/answer"
-    LESSON_HINT = "step/hint"
+    # STEP
+    STEP = "step/<slug:project_slug>/<slug:stage_slug>/<slug:step_slug>"
     # REVIEW
     PROJECT_REVIEW_SUMMARY = "reviews-summary/<slug:slug>"
     PROJECT_REVIEWS = "reviews/<slug:slug>"
@@ -72,18 +68,6 @@ class JoinType(TextChoices):
     GOOGLE = "google"
     FACEBOOK = "facebook"
     GITHUB = "github"
-
-
-class StepType(TextChoices):
-    READING = "reading"
-    VIDEO = "video"
-    QUIZ = "quiz"
-    CODING = "coding"
-
-
-class QuizType(TextChoices):
-    SINGLE = "single"
-    MULTI = "multi"
 
 
 class ProjectStatus:
