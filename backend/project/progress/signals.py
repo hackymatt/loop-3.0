@@ -11,9 +11,6 @@ def create_certificate_on_project_completion(sender, instance, **kwargs):
     student = instance.student
     step = instance.step
 
-    if instance.completed_at is None:
-        return
-
     # Find all projects that contain this step through stages
     projects = Project.objects.filter(stages__steps=step).distinct()
 

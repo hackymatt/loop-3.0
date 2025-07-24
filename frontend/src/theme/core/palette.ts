@@ -1,5 +1,4 @@
 import type { ColorSystemOptions } from "@mui/material/styles";
-import type { Channels, PaletteColor } from "@mui/material/styles/createPalette";
 
 import { varAlpha, createPaletteChannel } from "minimal-shared/utils";
 

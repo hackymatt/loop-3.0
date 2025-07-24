@@ -219,7 +219,7 @@ def create_stage():
     return stage
 
 
-def create_project():
+def create_project(with_prerequisites=False):
     slug = _generate_random_slug()
     technologies = [create_technology() for _ in range(_generate_random_number(1, 5))]
     level = create_level()
@@ -227,6 +227,11 @@ def create_project():
     chat_url = _generate_random_url()
     stages = [create_stage() for _ in range(_generate_random_number(5, 10))]
     instructors = [create_instructor()[0] for _ in range(_generate_random_number(1, 3))]
+    if with_prerequisites:
+        blog_prerequisites = [
+            create_blog() for _ in range(_generate_random_number(1, 2))
+        ]
+        project_prerequisites = [create_project()]
 
     project = Project.objects.create(
         slug=slug,
@@ -238,6 +243,9 @@ def create_project():
     project.technology.add(*technologies)
     project.instructors.add(*instructors)
     project.stages.add(*stages)
+    if with_prerequisites:
+        project.blog_prerequisites.add(*blog_prerequisites)
+        project.project_prerequisites.add(*project_prerequisites)
 
     _create_translations(
         ProjectTranslation,

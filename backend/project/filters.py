@@ -48,10 +48,8 @@ class ProjectFilter(django_filters.FilterSet):
             return queryset.filter(duration__lt=120)
         elif value == ProjectDuration.MEDIUM:
             return queryset.filter(duration__gte=120, duration__lt=300)
-        elif value == ProjectDuration.LONG:
+        else:
             return queryset.filter(duration__gte=300)
-
-        return queryset
 
     def filter_by_status(self, queryset, name, value):
         user = self.request.user

@@ -7,9 +7,9 @@ from review.models import Review
 from project.models import Project
 from project.enrollment.models import ProjectEnrollment
 from project.progress.models import ProjectProgress
-from ..factory import create_student, create_project, create_stage
+from ..factory import create_student, create_project, create_stage, create_step
 from ..helpers import login
-from const import Urls, Language, ProjectStatus
+from const import Urls, Language, ProjectStatus, ProjectDuration
 
 
 class ProjectViewSetTest(TestCase):
@@ -20,7 +20,7 @@ class ProjectViewSetTest(TestCase):
         self.student_1, self.student_1_password = create_student()
         self.student_2, _ = create_student()
 
-        self.project_1 = create_project()
+        self.project_1 = create_project(True)
         project_prerequisites = [create_project() for _ in range(3)]
         self.project_1.project_prerequisites.add(*project_prerequisites)
 
@@ -67,7 +67,7 @@ class ProjectViewSetTest(TestCase):
     def test_list_projects_unauthorized(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 6)
+        self.assertEqual(len(response.data["results"]), 7)
         self.assertEqual(
             response.data["results"][0]["translated_name"],
             self.project_1.get_translation("en").name,
@@ -77,7 +77,7 @@ class ProjectViewSetTest(TestCase):
         login(self, self.student_1.user.email, self.student_1_password)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 6)
+        self.assertEqual(len(response.data["results"]), 7)
         self.assertEqual(
             response.data["results"][0]["translated_name"],
             self.project_1.get_translation("en").name,
@@ -158,14 +158,14 @@ class ProjectViewSetTest(TestCase):
         response = self.client.get(f"{self.url}?status={ProjectStatus.NOT_STARTED}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 6)
+        self.assertEqual(len(response.data["results"]), 7)
 
     def test_filter_projects_by_status_authorized(self):
         login(self, self.student_1.user.email, self.student_1_password)
         response = self.client.get(f"{self.url}?status={ProjectStatus.NOT_STARTED}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 5)
+        self.assertEqual(len(response.data["results"]), 6)
 
         response = self.client.get(f"{self.url}?status={ProjectStatus.IN_PROGRESS}")
 
@@ -180,7 +180,65 @@ class ProjectViewSetTest(TestCase):
         response = self.client.get(f"{self.url}?status=invalid")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 6)
+        self.assertEqual(len(response.data["results"]), 7)
+
+    def test_filter_projects_by_duration(self):
+        # Krótki projekt < 120
+        short_project = create_project()
+        short_project.stages.clear()
+        stage = create_stage()
+        step = create_step()
+        step.duration = 60
+        step.save()
+        stage.steps.clear()
+        stage.steps.add(*[step])
+        short_project.stages.add(*[stage])
+
+        # Średni projekt 120–299
+        medium_project = create_project()
+        medium_project.stages.clear()
+        stage = create_stage()
+        step = create_step()
+        step.duration = 180
+        step.save()
+        stage.steps.clear()
+        stage.steps.add(*[step])
+        medium_project.stages.add(*[stage])
+
+        # Długi projekt >= 300
+        long_project = create_project()
+        long_project.stages.clear()
+        stage = create_stage()
+        step = create_step()
+        step.duration = 360
+        step.save()
+        stage.steps.clear()
+        stage.steps.add(*[step])
+        long_project.stages.add(*[stage])
+
+        # SHORT
+        response = self.client.get(f"{self.url}?duration={ProjectDuration.SHORT}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        returned_slugs = [p["slug"] for p in response.data["results"]]
+        self.assertIn(short_project.slug, returned_slugs)
+        self.assertNotIn(medium_project.slug, returned_slugs)
+        self.assertNotIn(long_project.slug, returned_slugs)
+
+        # MEDIUM
+        response = self.client.get(f"{self.url}?duration={ProjectDuration.MEDIUM}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        returned_slugs = [p["slug"] for p in response.data["results"]]
+        self.assertIn(medium_project.slug, returned_slugs)
+        self.assertNotIn(short_project.slug, returned_slugs)
+        self.assertNotIn(long_project.slug, returned_slugs)
+
+        # LONG
+        response = self.client.get(f"{self.url}?duration={ProjectDuration.LONG}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        returned_slugs = [p["slug"] for p in response.data["results"]]
+        self.assertIn(long_project.slug, returned_slugs)
+        self.assertNotIn(short_project.slug, returned_slugs)
+        self.assertNotIn(medium_project.slug, returned_slugs)
 
 
 class FeaturedProjectsViewTest(TestCase):
