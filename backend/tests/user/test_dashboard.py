@@ -32,11 +32,11 @@ class DashboardViewTest(TestCase):
 
     def test_dashboard_data_with_progress_today(self):
         # Create project progress (completed step)
+        step = self.project.stages.all()[0].steps.all()[0]
         ProjectProgress.objects.create(
             student=self.student,
             completed_at=timezone.now(),
-            points=10,
-            step=self.project.steps.all()[0].steps.all()[0],
+            step=step,
         )
 
         login(self, self.student.user.email, self.student_password)
@@ -45,7 +45,7 @@ class DashboardViewTest(TestCase):
 
         data = response.json()
         self.assertIn("total_points", data)
-        self.assertEqual(data["total_points"], 10)
+        self.assertEqual(data["total_points"], step.points)
 
         self.assertIn("daily_streak", data)
         self.assertEqual(data["daily_streak"], 1)
@@ -58,11 +58,11 @@ class DashboardViewTest(TestCase):
 
     def test_dashboard_data_with_progress_before(self):
         # Create project progress (completed step)
+        step = self.project.stages.all()[0].steps.all()[0]
         ProjectProgress.objects.create(
             student=self.student,
             completed_at=timezone.now() - timezone.timedelta(days=10),
-            points=10,
-            step=self.project.steps.all()[0].steps.all()[0],
+            step=step,
         )
 
         login(self, self.student.user.email, self.student_password)
@@ -71,7 +71,7 @@ class DashboardViewTest(TestCase):
 
         data = response.json()
         self.assertIn("total_points", data)
-        self.assertEqual(data["total_points"], 10)
+        self.assertEqual(data["total_points"], step.points)
 
         self.assertIn("daily_streak", data)
         self.assertEqual(data["daily_streak"], 0)

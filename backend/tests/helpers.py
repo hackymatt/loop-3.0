@@ -50,6 +50,8 @@ def _get_jwt_token_from_login(self, email, password):
         raise Exception("No access token found in the cookies")
 
 
-def login(self, email, password):
+def login(self, email, password, language="en"):
     token = _get_jwt_token_from_login(self, email, password)
-    self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
+    self.client.credentials(
+        HTTP_AUTHORIZATION=f"Bearer {token}", HTTP_ACCEPT_LANGUAGE=language
+    )

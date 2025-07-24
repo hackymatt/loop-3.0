@@ -70,6 +70,19 @@ class Migration(migrations.Migration):
                 ("monthly_price", models.DecimalField(decimal_places=2, max_digits=6)),
                 ("yearly_price", models.DecimalField(decimal_places=2, max_digits=6)),
                 (
+                    "currency",
+                    models.CharField(
+                        choices=[
+                            ("PLN", "Pln"),
+                            ("EUR", "Eur"),
+                            ("USD", "Usd"),
+                            ("GBP", "Gbp"),
+                        ],
+                        default="PLN",
+                        max_length=3,
+                    ),
+                ),
+                (
                     "plan",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,

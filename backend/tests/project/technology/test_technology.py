@@ -87,8 +87,14 @@ class FeaturedTechnologiesViewTest(TestCase):
     def setUp(self):
         self.url = f"/{Urls.API}/{Urls.FEATURED_TECHNOLOGIES}"
         # Create projects for Python
+        self.technology_1 = create_technology()
+        self.technology_2 = create_technology()
         self.project_1 = create_project()
         self.project_2 = create_project()
+        self.project_1.technology.clear()
+        self.project_1.technology.add(self.technology_1)
+        self.project_2.technology.clear()
+        self.project_2.technology.add(self.technology_2)
 
         self.student_1, _ = create_student()
         self.student_2, _ = create_student()
@@ -117,18 +123,34 @@ class FeaturedTechnologiesViewTest(TestCase):
         self.assertIsInstance(response.data, list)
 
         # Check the number of technologies returned (should be 2 here)
-        self.assertEqual(len(response.data), 2)
+        technologies_qs = self.project_1.technology.all().union(
+            self.project_2.technology.all()
+        )
+        technologies_count = len(list(technologies_qs))
+        self.assertEqual(len(response.data), technologies_count)
 
         # Check the technology names and slugs
-        self.assertEqual(response.data[0]["slug"], self.project_1.technology.slug)
-        self.assertEqual(response.data[0]["name"], self.project_1.technology.name)
+        self.assertIn(
+            response.data[0]["slug"],
+            [technology.slug for technology in self.project_1.technology.all()],
+        )
+        self.assertIn(
+            response.data[0]["name"],
+            [technology.name for technology in self.project_1.technology.all()],
+        )
 
-        self.assertEqual(response.data[1]["slug"], self.project_2.technology.slug)
-        self.assertEqual(response.data[1]["name"], self.project_2.technology.name)
+        self.assertIn(
+            response.data[1]["slug"],
+            [technology.slug for technology in self.project_2.technology.all()],
+        )
+        self.assertIn(
+            response.data[1]["name"],
+            [technology.name for technology in self.project_2.technology.all()],
+        )
 
     def test_featured_technologies_order_by_enrollments_and_rating(self):
         # Ensure that technologies are ordered by total enrollments and average rating
         response = self.client.get(self.url)
         # First technology should be Python due to higher enrollments and average rating
-        self.assertEqual(response.data[0]["slug"], self.project_1.technology.slug)
-        self.assertEqual(response.data[1]["slug"], self.project_2.technology.slug)
+        self.assertEqual(response.data[0]["slug"], self.technology_1.slug)
+        self.assertEqual(response.data[1]["slug"], self.technology_2.slug)

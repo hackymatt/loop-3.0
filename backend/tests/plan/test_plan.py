@@ -39,8 +39,14 @@ class PlanListViewTest(TestCase):
         plan = next((p for p in response.data if p["slug"] == self.plan_1.slug), None)
         self.assertIsNotNone(plan)
 
-        self.assertEqual(plan["price"]["monthly"], float(self.plan_1.monthly_price))
-        self.assertEqual(plan["price"]["yearly"], float(self.plan_1.yearly_price))
+        self.assertEqual(
+            plan["price"]["monthly"],
+            float(self.plan_1.get_translation("en").monthly_price),
+        )
+        self.assertEqual(
+            plan["price"]["yearly"],
+            float(self.plan_1.get_translation("en").yearly_price),
+        )
         self.assertEqual(plan["license"], self.plan_1.get_translation("en").license)
         self.assertEqual(plan["popular"], self.plan_1.popular)
         self.assertEqual(plan["premium"], self.plan_1.premium)

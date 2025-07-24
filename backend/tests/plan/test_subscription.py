@@ -7,7 +7,7 @@ from plan.utils import get_default_plan
 from plan.subscription.utils import get_subscription
 from ..factory import create_plan, create_plan_option, create_student
 from ..helpers import login
-from const import Urls
+from const import Urls, Currency
 from datetime import timedelta
 from django.utils import timezone
 import random
@@ -43,6 +43,7 @@ class SubscribeViewTest(TestCase):
             "user": {"first_name": "New first name", "last_name": "New last name"},
             "plan": self.plan_1.slug,
             "interval": "yearly",
+            "currency": Currency.PLN,
         }
 
         response = self.client.post(self.url, payload, format="json")
@@ -66,6 +67,7 @@ class SubscribeViewTest(TestCase):
             "user": {"first_name": "New first name", "last_name": "New last name"},
             "plan": self.plan_1.slug,
             "interval": "monthly",
+            "currency": Currency.PLN,
         }
 
         response = self.client.post(self.url, payload, format="json")
@@ -85,6 +87,7 @@ class SubscribeViewTest(TestCase):
             "user": {"first_name": "New first name", "last_name": "New last name"},
             "plan": get_default_plan().slug,
             "interval": "monthly",
+            "currency": Currency.PLN,
         }
 
         response = self.client.post(self.url, payload, format="json")
@@ -99,6 +102,7 @@ class SubscribeViewTest(TestCase):
             "user": {"first_name": "Test", "last_name": "User"},
             "plan": "nonexistent",
             "interval": "monthly",
+            "currency": Currency.PLN,
         }
 
         response = self.client.post(self.url, payload, format="json")

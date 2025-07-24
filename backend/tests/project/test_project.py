@@ -7,7 +7,7 @@ from review.models import Review
 from project.models import Project
 from project.enrollment.models import ProjectEnrollment
 from project.progress.models import ProjectProgress
-from ..factory import create_student, create_project, create_step
+from ..factory import create_student, create_project, create_stage
 from ..helpers import login
 from const import Urls, Language, ProjectStatus
 
@@ -15,7 +15,7 @@ from const import Urls, Language, ProjectStatus
 class ProjectViewSetTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = f"/{Urls.API}/{Urls.Project}"
+        self.url = f"/{Urls.API}/{Urls.PROJECT}"
 
         self.student_1, self.student_1_password = create_student()
         self.student_2, _ = create_student()
@@ -25,21 +25,21 @@ class ProjectViewSetTest(TestCase):
         self.project_1.project_prerequisites.add(*project_prerequisites)
 
         self.project_2 = create_project()
-        self.project_2.steps.clear()
+        self.project_2.stages.clear()
         self.project_2.save()
 
         self.project_3 = create_project()
-        self.project_3.steps.clear()
-        step = create_step()
-        step.steps.clear()
-        step.save()
-        self.project_3.steps.add(step)
+        self.project_3.stages.clear()
+        stage = create_stage()
+        stage.steps.clear()
+        stage.save()
+        self.project_3.stages.add(stage)
         self.project_3.save()
 
         ProjectProgress.objects.create(
             student=self.student_1,
             completed_at=timezone.now(),
-            step=self.project_1.steps.all()[0].steps.all()[0],
+            step=self.project_1.stages.all()[0].steps.all()[0],
         )
 
         self.review_1 = Review.objects.create(
@@ -87,7 +87,7 @@ class ProjectViewSetTest(TestCase):
             float(
                 (
                     1
-                    / self.project_1.steps.aggregate(total_steps=Count("steps"))[
+                    / self.project_1.stages.aggregate(total_steps=Count("steps"))[
                         "total_steps"
                     ]
                     or 0
@@ -130,7 +130,7 @@ class ProjectViewSetTest(TestCase):
             float(
                 (
                     1
-                    / self.project_1.steps.aggregate(total_steps=Count("steps"))[
+                    / self.project_1.stages.aggregate(total_steps=Count("steps"))[
                         "total_steps"
                     ]
                     or 0
@@ -141,7 +141,7 @@ class ProjectViewSetTest(TestCase):
 
     def test_filter_projects_by_technology(self):
         response = self.client.get(
-            f"{self.url}?technologies={self.project_1.technology.slug}"
+            f"{self.url}?technologies={self.project_1.technology.all()[0].slug}"
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["results"][0]["slug"], self.project_1.slug)
@@ -281,16 +281,10 @@ class SimilarProjectsViewTest(TestCase):
 
         # Create similar projects (matching at least one attribute)
         self.similar_1 = create_project()
-        self.similar_1.category = self.base_project.category
-        self.similar_1.save()
-
         self.similar_2 = create_project()
-        self.similar_2.technology = self.base_project.technology
-        self.similar_2.save()
-
         self.similar_3 = create_project()
-        self.similar_3.level = self.base_project.level
-        self.similar_3.save()
+
+        self.base_project.similar.set([self.similar_1, self.similar_2, self.similar_3])
 
         # Project that should not be returned
         self.unrelated = create_project()
@@ -305,16 +299,9 @@ class SimilarProjectsViewTest(TestCase):
         response = self.client.get(
             self.url.replace("<slug:slug>", self.base_project.slug)
         )
-        returned_slugs = {project["slug"] for project in response.data}
-
-        # All returned projects should match at least one attribute
-        for project_slug in returned_slugs:
-            project = Project.objects.get(slug=project_slug)
-            self.assertTrue(
-                project.category == self.base_project.category
-                or project.technology == self.base_project.technology
-                or project.level == self.base_project.level
-            )
+        returned_slugs = [project["slug"] for project in response.data]
+        similar = [project.slug for project in self.base_project.similar.all()]
+        self.assertEqual(similar, returned_slugs)
 
         # The unrelated project should not be in the results
         self.assertNotIn(self.unrelated.slug, returned_slugs)

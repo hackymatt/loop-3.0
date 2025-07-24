@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework import status
-from const import Urls, StepType
+from const import Urls
 from certificate.models import Certificate
 from project.progress.models import ProjectProgress
 from ..factory import (
@@ -57,10 +57,10 @@ class ProjectCompletionSignalTestCase(TestCase):
         stage = create_stage()
         stage.steps.clear()
 
-        self.step1, _ = create_step(StepType.READING)
-        self.step2, _ = create_step(StepType.VIDEO)
-        self.step3, _ = create_step(StepType.QUIZ)
-        self.step4, _ = create_step(StepType.CODING)
+        self.step1 = create_step()
+        self.step2 = create_step()
+        self.step3 = create_step()
+        self.step4 = create_step()
         stage.steps.add(self.step1)
         stage.steps.add(self.step2)
         stage.steps.add(self.step3)

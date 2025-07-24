@@ -2,14 +2,23 @@
 
 from django.db import migrations
 from global_config import CONFIG
-from plan.models import Plan
+from plan.models import Plan, PlanTranslation
+from const import Language
 
 
 def generate_plan(apps, schema_editor):
     slug = CONFIG["default_plan"]
 
     if not Plan.objects.filter(slug=slug).exists():
-        Plan.objects.create(slug=slug)
+        plan = Plan.objects.create(slug=slug)
+        for language in Language:
+            PlanTranslation.objects.create(
+                plan=plan,
+                language=language,
+                license="",
+                monthly_price=0,
+                yearly_price=0,
+            )
 
 
 def delete_plan(apps, schema_editor):
