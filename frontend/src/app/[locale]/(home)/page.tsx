@@ -17,6 +17,9 @@ import { featuredTechnologiesQuery } from "src/api/project/technology/featured";
 import { HomeView } from "src/sections/view/home-view";
 
 // ----------------------------------------------------------------------
+type PageProps = {
+  params: { locale: Language };
+};
 
 const queries = {
   featuredProjects: featuredProjectsQuery,
@@ -46,12 +49,12 @@ async function getData(language: Language) {
   };
 }
 
-export default async function Page({ params }: { params: { locale: Language } }) {
+export default async function Page({ params }: PageProps) {
   const data = await getData(params.locale);
   return <HomeView data={data} />;
 }
 
-export async function generateMetadata({ params }: { params: { locale: Language } }) {
+export async function generateMetadata({ params }: PageProps) {
   const translations = await import(`public/locales/${params.locale}/home.json`);
   const path = params.locale === LANGUAGE.PL ? "" : `/${LANGUAGE.EN}`;
 

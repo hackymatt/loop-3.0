@@ -1,4 +1,5 @@
 import type { PlanType } from "src/types/plan";
+import type { Language } from "src/locales/types";
 import type { DialogProps } from "@mui/material/Dialog";
 
 import { useForm } from "react-hook-form";
@@ -23,15 +24,16 @@ import { useUserContext } from "src/components/user";
 
 type Props = DialogProps & {
   onClose: () => void;
+  language: Language;
 };
 
-export function CancelSubscriptionForm({ onClose, ...other }: Props) {
+export function CancelSubscriptionForm({ onClose, language, ...other }: Props) {
   const { t } = useTranslation("account");
 
-  const { mutateAsync: subscribe } = useSubscribe();
+  const { mutateAsync: subscribe } = useSubscribe(language);
 
   const user = useUserContext();
-  const { firstName, lastName } = user.state;
+  const { firstName, lastName, plan } = user.state;
 
   const methods = useForm();
 
@@ -47,6 +49,7 @@ export function CancelSubscriptionForm({ onClose, ...other }: Props) {
       const { data: response } = await subscribe({
         plan: PLAN_TYPE.FREE,
         interval: null,
+        currency: plan.currency,
         user: { first_name: firstName || "", last_name: lastName || "" },
       });
       const { type, ...rest } = response;

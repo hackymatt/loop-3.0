@@ -81,7 +81,6 @@ export function ReviewSummary({
                   <Typography variant="body2">
                     {fShortenNumber(reviewNumber, {
                       code: locale("code"),
-                      currency: locale("currency"),
                     })}{" "}
                     {languagePluralize(review, reviewNumber)}
                   </Typography>

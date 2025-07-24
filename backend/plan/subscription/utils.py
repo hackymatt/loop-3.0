@@ -10,12 +10,12 @@ def get_subscription(user):
     ).first()
 
 
-def subscribe(student, plan, end_date):
+def subscribe(student, plan, end_date, currency):
     current_plan = get_subscription(student.user)
     current_plan.end_date = timezone.now()
     current_plan.save()
     return PlanSubscription.objects.create(
-        student=student, plan=plan, end_date=end_date
+        student=student, plan=plan, end_date=end_date, currency=currency
     )
 
 

@@ -17,6 +17,8 @@ type IPlan = {
   license: string;
   interval: "monthly" | "yearly" | null;
   valid_to: string | null;
+  price: number | null;
+  currency: string;
 };
 
 type ILoginReturn = {

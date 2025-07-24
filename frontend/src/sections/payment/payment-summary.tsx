@@ -34,7 +34,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
 
   const { query, handleChange } = useQueryParams();
 
-  const { license, price: priceObj } = plan;
+  const { license, price: priceObj, currency } = plan;
 
   const isYearly = (query?.yearly ?? "false") === "true";
   const price = isYearly ? priceObj.yearly / 12 : priceObj.monthly;
@@ -70,7 +70,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
           <Chip
             label={fCurrency(priceObj.monthly * 12 - priceObj.yearly, {
               code: locale("code"),
-              currency: locale("currency"),
+              currency,
             })}
             size="small"
             color="primary"
@@ -100,7 +100,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   const renderPrices = () => (
     <Box sx={{ gap: 1, display: "flex", justifyContent: "flex-end" }}>
       <Box component="span" sx={{ typography: "h2" }}>
-        {fCurrency(price, { code: locale("code"), currency: locale("currency") })}
+        {fCurrency(price, { code: locale("code"), currency })}
       </Box>
 
       <Typography component="span" sx={{ mb: 1, alignSelf: "center", color: "text.secondary" }}>
@@ -117,7 +117,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
       <Box component="span">
         {fCurrency(isYearly ? priceObj.yearly : priceObj.monthly, {
           code: locale("code"),
-          currency: locale("currency"),
+          currency,
         })}
       </Box>
     </Box>

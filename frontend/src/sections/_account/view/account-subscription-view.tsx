@@ -1,5 +1,7 @@
 "use client";
 
+import type { Language } from "src/locales/types";
+
 import { useTranslation } from "react-i18next";
 import { useBoolean } from "minimal-shared/hooks";
 
@@ -12,7 +14,6 @@ import { getPlanIcon } from "src/utils/plan-icon";
 import { fCurrency } from "src/utils/format-number";
 
 import { CONFIG } from "src/global-config";
-import { usePlan } from "src/api/plan/plan";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
 
@@ -21,9 +22,12 @@ import { useUserContext } from "src/components/user";
 import { CancelSubscriptionForm } from "./cancel-subscription-form";
 
 // ----------------------------------------------------------------------
+type AccountSubscriptionViewProps = {
+  language: Language;
+};
 
 const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${name}`;
-export function AccountSubscriptionView() {
+export function AccountSubscriptionView({ language }: AccountSubscriptionViewProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
@@ -32,8 +36,6 @@ export function AccountSubscriptionView() {
   const user = useUserContext();
   const { plan: userPlan } = user.state;
   const isYearly = userPlan.interval === PLAN_INTERVAL.YEARLY;
-
-  const { data: plan } = usePlan(userPlan.type || PLAN_TYPE.FREE);
 
   const isFreePlan = userPlan.type === PLAN_TYPE.FREE;
 
@@ -64,13 +66,13 @@ export function AccountSubscriptionView() {
           <Box>
             <Box
               component="img"
-              alt={plan?.license}
-              src={iconPath(getPlanIcon(plan?.slug || PLAN_TYPE.FREE))}
+              alt={userPlan.license}
+              src={iconPath(getPlanIcon(userPlan.type || PLAN_TYPE.FREE))}
               sx={{ width: 80, height: 80 }}
             />
 
             <Typography variant="h4" sx={{ mt: 1 }}>
-              {plan?.license}
+              {userPlan.license}
             </Typography>
           </Box>
 
@@ -113,9 +115,9 @@ export function AccountSubscriptionView() {
             >
               {t("subscription.renewal")}
               <Typography variant="body2" fontWeight="bold">
-                {fCurrency(999, {
+                {fCurrency(userPlan.price, {
                   code: locale("code"),
-                  currency: locale("currency"),
+                  currency: userPlan.currency,
                 })}
               </Typography>
               {t("subscription.on")}
@@ -160,6 +162,7 @@ export function AccountSubscriptionView() {
       <CancelSubscriptionForm
         open={cancelSubscriptionFormOpen.value}
         onClose={cancelSubscriptionFormOpen.onFalse}
+        language={language}
       />
     </>
   );

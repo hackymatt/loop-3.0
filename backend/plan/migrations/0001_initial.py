@@ -29,8 +29,6 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(unique=True)),
                 ('popular', models.BooleanField(default=False)),
                 ('premium', models.BooleanField(default=False)),
-                ('monthly_price', models.DecimalField(decimal_places=2, max_digits=6)),
-                ('yearly_price', models.DecimalField(decimal_places=2, max_digits=6)),
             ],
             options={
                 'db_table': 'plan',
@@ -42,6 +40,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], max_length=2)),
                 ('license', models.CharField(max_length=100)),
+                ('monthly_price', models.DecimalField(decimal_places=2, max_digits=6)),
+                ('yearly_price', models.DecimalField(decimal_places=2, max_digits=6)),
                 ('plan', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='translations', to='plan.plan')),
             ],
             options={

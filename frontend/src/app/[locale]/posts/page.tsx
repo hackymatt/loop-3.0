@@ -74,7 +74,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   return <PostsView data={data} />;
 }
 
-export async function generateMetadata({ params }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: PageProps) {
   const translations = await import(`public/locales/${params.locale}/blog.json`);
 
   const path = params.locale === LANGUAGE.PL ? paths.posts : `/${LANGUAGE.EN}${paths.posts}`;

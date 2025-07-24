@@ -1,6 +1,6 @@
 import type { JoinType, UserType } from "src/types/user";
-import type { PlanType, PlanInterval } from "src/types/plan";
 import type { DatePickerFormat } from "src/utils/format-time";
+import type { PlanType, PlanInterval, CurrencyType } from "src/types/plan";
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +18,8 @@ export type UserState = {
     license: string;
     interval: PlanInterval | null;
     valid_to: DatePickerFormat | null;
+    price: number | null;
+    currency: CurrencyType;
   };
   redirect: string | null;
 };

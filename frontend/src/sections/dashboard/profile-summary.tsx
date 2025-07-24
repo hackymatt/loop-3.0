@@ -137,7 +137,6 @@ export function ProfileSummary({ totalPoints, dailyStreak }: Props) {
         label={t("profile.points")}
         value={fNumber(totalPoints, {
           code: locale("code"),
-          currency: locale("currency"),
         })}
         color="primary"
       />

@@ -12,6 +12,7 @@ class SubscriptionSerializer(serializers.Serializer):
     interval = serializers.ChoiceField(
         choices=["monthly", "yearly"], required=True, allow_null=True
     )
+    currency = serializers.CharField(required=True)
     user = UserSerializer(required=True)
 
 
@@ -20,10 +21,11 @@ class UserSubscription(serializers.ModelSerializer):
     license = serializers.SerializerMethodField()
     interval = serializers.SerializerMethodField()
     valid_to = serializers.DateTimeField(source="end_date")
+    price = serializers.SerializerMethodField()
 
     class Meta:
         model = PlanSubscription
-        fields = ["type", "license", "interval", "valid_to"]
+        fields = ["type", "license", "interval", "valid_to", "price", "currency"]
 
     def get_license(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
@@ -34,3 +36,9 @@ class UserSubscription(serializers.ModelSerializer):
             return None
         delta_days = (obj.end_date - obj.start_date).days
         return "yearly" if delta_days > 31 else "monthly"
+    
+    def get_price(self, obj):
+        interval = self.get_interval(obj)
+        lang = self.context.get("request").LANGUAGE_CODE
+        translation = obj.plan.get_translation(lang)
+        return translation.yearly_price if interval == "yearly" else translation.monthly_price

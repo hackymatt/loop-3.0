@@ -8,3 +8,10 @@ export const PLAN_INTERVAL = {
   MONTHLY: "monthly",
   YEARLY: "yearly",
 } as const;
+
+export const CURRENCY = {
+  PLN: "PLN",
+  EUR: "EUR",
+  USD: "USD",
+  GBP: "GBP",
+};

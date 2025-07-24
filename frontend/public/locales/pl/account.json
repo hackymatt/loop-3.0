@@ -87,14 +87,14 @@
     "button": "Zapisz ustawienia"
   },
   "subscription": {
-    "title": "Twój plan",
+    "title": "Subskrypcja",
     "label": "Obecny pakiet",
     "billing": {
       "label": "Okres rozliczenia",
       "monthly": "Miesięcznie",
       "yearly": "Rocznie"
     },
-    "renewal": "Odnowienie",
+    "renewal": "Odnowienie na kwotę",
     "on": "nastąpi",
     "button": "Anuluj subskrypcję",
     "cancel": "Anuluj",

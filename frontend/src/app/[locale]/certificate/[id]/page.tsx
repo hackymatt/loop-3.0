@@ -36,8 +36,6 @@ async function getData(language: Language, id: string) {
 export default async function Page({ params }: PageProps) {
   const data = await getData(params.locale, params.id);
 
-  console.log(data);
-
   if (!data) {
     return <NotFoundView />;
   }

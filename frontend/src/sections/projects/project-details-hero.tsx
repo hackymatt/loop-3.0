@@ -130,7 +130,7 @@ export function ProjectDetailsHero({
           </Box>
           <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
           <Box>
-            {fShortenNumber(totalReviews, { code: locale("code"), currency: locale("currency") })}{" "}
+            {fShortenNumber(totalReviews, { code: locale("code") })}{" "}
             {languagePluralize(review, totalReviews)}
           </Box>
           <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
@@ -139,7 +139,7 @@ export function ProjectDetailsHero({
 
       {totalStudents ? (
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          {fShortenNumber(totalStudents, { code: locale("code"), currency: locale("currency") })}
+          {fShortenNumber(totalStudents, { code: locale("code") })}
           <Box component="span" sx={{ ml: 0.5 }}>
             {languagePluralize(student, totalStudents)}
           </Box>

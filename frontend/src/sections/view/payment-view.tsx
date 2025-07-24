@@ -1,7 +1,8 @@
 "use client";
 
-import type { PlanType } from "src/types/plan";
 import type { BoxProps } from "@mui/material/Box";
+import type { Language } from "src/locales/types";
+import type { PlanType, IPlanProps } from "src/types/plan";
 
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
@@ -22,23 +23,23 @@ import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
-import { usePlan } from "src/api/plan/plan";
 import { PLAN_TYPE } from "src/consts/plan";
 import { useSubscribe } from "src/api/plan/subscribe";
 
 import { useUserContext } from "src/components/user";
 import { Form, Field } from "src/components/hook-form";
-import { SplashScreen } from "src/components/loading-screen";
 
-import { NotFoundView } from "src/sections/error/not-found-view";
-
-import { PaymentForm } from "../payment-form";
-import { PaymentSummary } from "../payment-summary";
-import { usePaymentSchema, useCustomerSchema, usePaymentMethods } from "../schema";
+import { PaymentForm } from "../payment/payment-form";
+import { PaymentSummary } from "../payment/payment-summary";
+import { usePaymentSchema, useCustomerSchema, usePaymentMethods } from "../payment/schema";
 
 // ----------------------------------------------------------------------
+type PaymentViewProps = {
+  data: { plan: IPlanProps };
+  language: Language;
+};
 
-export function PaymentView() {
+export function PaymentView({ data, language }: PaymentViewProps) {
   const { query } = useQueryParams();
   const router = useRouter();
   const localize = useLocalizedPath();
@@ -49,10 +50,11 @@ export function PaymentView() {
   const user = useUserContext();
   const { email, firstName, lastName } = user.state;
 
-  const { data: plan, isLoading, isError } = usePlan(query.plan);
-  const { mutateAsync: subscribe } = useSubscribe();
+  const { plan } = data;
 
-  const isFreePlan = (plan?.slug || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
+  const { mutateAsync: subscribe } = useSubscribe(language);
+
+  const isFreePlan = (plan.slug || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
 
   const PaymentSchema = zod.object({
     summary: usePaymentSchema(),
@@ -98,12 +100,14 @@ export function PaymentView() {
 
   const handleFormError = useFormErrorHandler(methods);
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (newData) => {
     try {
       const { data: response } = await subscribe({
         plan: query.plan,
-        interval: query.plan === PLAN_TYPE.FREE ? null : query.yearly ? "yearly" : "monthly",
-        user: { first_name: data.customer.firstName, last_name: data.customer.lastName },
+        interval:
+          query.plan === PLAN_TYPE.FREE ? null : query.yearly === "true" ? "yearly" : "monthly",
+        currency: plan.currency,
+        user: { first_name: newData.customer.firstName, last_name: newData.customer.lastName },
       });
       const { type, ...rest } = response;
       user.setField("plan", { ...rest, type: type as PlanType });
@@ -112,14 +116,6 @@ export function PaymentView() {
       handleFormError(error);
     }
   });
-
-  if (isError) {
-    return <NotFoundView />;
-  }
-
-  if (isLoading) {
-    return <SplashScreen />;
-  }
 
   const renderAccountDetails = () => (
     <>

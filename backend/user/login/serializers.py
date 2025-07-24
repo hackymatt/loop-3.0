@@ -5,12 +5,6 @@ from plan.subscription.serializers import UserSubscription
 from const import UserType
 
 
-class UserPlanSerializer(serializers.Serializer):
-    type = serializers.CharField()
-    interval = serializers.CharField(allow_null=True)
-    valid_to = serializers.DateTimeField(allow_null=True)
-
-
 class LoginResponseSerializer(serializers.ModelSerializer):
     plan = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()

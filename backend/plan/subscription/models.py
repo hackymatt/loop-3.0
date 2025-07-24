@@ -2,6 +2,7 @@ from django.db import models
 from user.type.student_user.models import Student
 from plan.models import Plan
 from global_config import CONFIG
+from const import Currency
 
 
 def get_dummy_student():
@@ -16,6 +17,9 @@ class PlanSubscription(models.Model):
         Student, on_delete=models.CASCADE, related_name="subscriptions"
     )
     plan = models.ForeignKey(Plan, on_delete=models.PROTECT)
+    currency = models.CharField(
+        max_length=3, choices=Currency.choices, default=Currency.PLN
+    )
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
 

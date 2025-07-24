@@ -9,7 +9,7 @@ def generate_plan(apps, schema_editor):
     slug = CONFIG["default_plan"]
 
     if not Plan.objects.filter(slug=slug).exists():
-        Plan.objects.create(slug=slug, monthly_price=0, yearly_price=0)
+        Plan.objects.create(slug=slug)
 
 
 def delete_plan(apps, schema_editor):

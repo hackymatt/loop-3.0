@@ -71,7 +71,7 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
       }}
     >
       <Typography component="span" variant="h3">
-        {fCurrency(plan.price, { code: locale("code"), currency: locale("currency") })}
+        {fCurrency(plan.price, { code: locale("code"), currency: plan.currency })}
       </Typography>
 
       <Typography component="span" variant="subtitle2">

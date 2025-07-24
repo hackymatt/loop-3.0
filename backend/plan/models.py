@@ -1,5 +1,5 @@
 from django.db import models
-from const import Language
+from const import Language, Currency
 from global_config import CONFIG
 
 
@@ -7,8 +7,6 @@ class Plan(models.Model):
     slug = models.SlugField(unique=True)
     popular = models.BooleanField(default=False)
     premium = models.BooleanField(default=False)
-    monthly_price = models.DecimalField(max_digits=6, decimal_places=2)
-    yearly_price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -34,6 +32,11 @@ class PlanTranslation(models.Model):
         choices=Language.choices,
     )
     license = models.CharField(max_length=100)
+    monthly_price = models.DecimalField(max_digits=6, decimal_places=2)
+    yearly_price = models.DecimalField(max_digits=6, decimal_places=2)
+    currency = models.CharField(
+        max_length=3, choices=Currency.choices, default=Currency.PLN
+    )
 
     class Meta:
         unique_together = ("plan", "language")
@@ -82,10 +85,12 @@ class PlanOption(models.Model):
         Option, related_name="plan_options", on_delete=models.CASCADE
     )
     disabled = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
         unique_together = ("plan", "option")
         db_table = "plan_option"
+        ordering = ["order"]
 
     def __str__(self):
-        return f"{self.plan.slug} - {self.option.slug} (disabled: {self.disabled})"  # pragma: no cover
+        return f"{self.plan.slug} - {self.option.slug} (disabled: {self.disabled}) | Order: {self.order}"  # pragma: no cover

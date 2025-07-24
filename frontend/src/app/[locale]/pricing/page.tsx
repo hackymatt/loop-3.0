@@ -11,6 +11,9 @@ import { plansQuery } from "src/api/plan/plans";
 import { PricingView } from "src/sections/view/pricing-view";
 
 // ----------------------------------------------------------------------
+type PageProps = {
+  params: { locale: Language };
+};
 
 const queries = {
   plans: plansQuery,
@@ -30,12 +33,12 @@ async function getData(language: Language) {
   };
 }
 
-export default async function Page({ params }: { params: { locale: Language } }) {
+export default async function Page({ params }: PageProps) {
   const data = await getData(params.locale);
   return <PricingView data={data} />;
 }
 
-export async function generateMetadata({ params }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: PageProps) {
   const translations = await import(`public/locales/${params.locale}/pricing.json`);
 
   const path = params.locale === LANGUAGE.PL ? paths.pricing : `/${LANGUAGE.EN}${paths.pricing}`;

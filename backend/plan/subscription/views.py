@@ -5,7 +5,7 @@ from .serializers import SubscriptionSerializer, UserSubscription
 from .utils import subscribe
 from ..models import Plan
 from user.type.student_user.models import Student
-from plan.models import Plan
+from plan.models import Plan, PlanTranslation
 from plan.utils import is_default_plan
 from django.shortcuts import get_object_or_404
 from dateutil.relativedelta import relativedelta
@@ -20,7 +20,9 @@ class SubscribeView(APIView):
         user_data = serializer.validated_data.get("user")
         plan_slug = serializer.validated_data.get("plan")
         interval = serializer.validated_data.get("interval")
+        currency = serializer.validated_data.get("currency") 
         is_yearly = interval == "yearly"
+        
 
         user = request.user
         user.first_name = user_data["first_name"]
@@ -38,6 +40,6 @@ class SubscribeView(APIView):
             else:
                 end_date = timezone.now() + relativedelta(months=1)
 
-        subscription = subscribe(student=student, plan=plan, end_date=end_date)
+        subscription = subscribe(student=student, plan=plan, end_date=end_date, currency=currency)
 
-        return Response(UserSubscription(subscription, context={"request": self.context.get("request")}).data, status=status.HTTP_200_OK)
+        return Response(UserSubscription(subscription, context={"request": request}).data, status=status.HTTP_200_OK)

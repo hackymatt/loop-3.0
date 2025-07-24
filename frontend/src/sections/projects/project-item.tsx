@@ -174,7 +174,6 @@ export function ProjectItem({ project, isVertical, isHome }: Props) {
           <Box>
             {fShortenNumber(project.totalReviews, {
               code: locale("code"),
-              currency: locale("currency"),
             })}{" "}
             {languagePluralize(review, project.totalReviews)}
           </Box>
@@ -187,7 +186,6 @@ export function ProjectItem({ project, isVertical, isHome }: Props) {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {fShortenNumber(project.totalStudents, {
               code: locale("code"),
-              currency: locale("currency"),
             })}
             <Box component="span" sx={{ ml: 0.5 }}>
               {languagePluralize(student, project.totalStudents)}

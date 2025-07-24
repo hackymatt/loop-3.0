@@ -14,6 +14,9 @@ import { featuredReviewsQuery } from "src/api/review/featured";
 import { AboutView } from "src/sections/view/about-view";
 
 // ----------------------------------------------------------------------
+type PageProps = {
+  params: { locale: Language };
+};
 
 const queries = {
   featuredReviews: (lang: Language) => featuredReviewsQuery(lang),
@@ -37,12 +40,12 @@ async function getData(language: Language) {
   };
 }
 
-export default async function Page({ params }: { params: { locale: string } }) {
+export default async function Page({ params }: PageProps) {
   const data = await getData(params.locale as Language);
   return <AboutView data={data} />;
 }
 
-export async function generateMetadata({ params }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: PageProps) {
   const translations = await import(`public/locales/${params.locale}/about.json`);
 
   const path = params.locale === LANGUAGE.PL ? paths.about : `/${LANGUAGE.EN}${paths.about}`;
