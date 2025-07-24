@@ -6,7 +6,7 @@ import { MDXEditor } from "@mdxeditor/editor";
 
 import { useTheme } from "@mui/material/styles";
 
-import { plugins } from "../markdown-editor/pluggins";
+import { plugins } from "./pluggins";
 
 // ----------------------------------------------------------------------
 

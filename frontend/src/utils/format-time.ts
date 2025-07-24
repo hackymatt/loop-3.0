@@ -54,25 +54,6 @@ const isValidDate = (date: DatePickerFormat) =>
 
 // ----------------------------------------------------------------------
 
-export function today(template?: string): string {
-  return dayjs(new Date()).startOf("day").format(template);
-}
-
-// ----------------------------------------------------------------------
-
-/**
- * @output 17 Apr 2022 12:00 am
- */
-export function fDateTime(date: DatePickerFormat, template?: string): string {
-  if (!isValidDate(date)) {
-    return "Invalid date";
-  }
-
-  return dayjs(date).format(template ?? formatPatterns.dateTime);
-}
-
-// ----------------------------------------------------------------------
-
 /**
  * @output 17 Apr 2022
  */
@@ -87,19 +68,6 @@ export function fDate(date: DatePickerFormat, template?: string): string {
 // ----------------------------------------------------------------------
 
 /**
- * @output 12:00 am
- */
-export function fTime(date: DatePickerFormat, template?: string): string {
-  if (!isValidDate(date)) {
-    return "Invalid date";
-  }
-
-  return dayjs(date).format(template ?? formatPatterns.time);
-}
-
-// ----------------------------------------------------------------------
-
-/**
  * @output 1713250100
  */
 export function fTimestamp(date: DatePickerFormat): number | "Invalid date" {
@@ -108,48 +76,6 @@ export function fTimestamp(date: DatePickerFormat): number | "Invalid date" {
   }
 
   return dayjs(date).valueOf();
-}
-
-// ----------------------------------------------------------------------
-
-/**
- * @output a few seconds, 2 years
- */
-export function fToNow(date: DatePickerFormat): string {
-  if (!isValidDate(date)) {
-    return "Invalid date";
-  }
-
-  return dayjs(date).toNow(true);
-}
-
-// ----------------------------------------------------------------------
-
-/**
- * @output boolean
- */
-export function fIsBetween(
-  inputDate: DatePickerFormat,
-  startDate: DatePickerFormat,
-  endDate: DatePickerFormat
-): boolean {
-  if (!isValidDate(inputDate) || !isValidDate(startDate) || !isValidDate(endDate)) {
-    return false;
-  }
-
-  const formattedInputDate = fTimestamp(inputDate);
-  const formattedStartDate = fTimestamp(startDate);
-  const formattedEndDate = fTimestamp(endDate);
-
-  if (
-    formattedInputDate === "Invalid date" ||
-    formattedStartDate === "Invalid date" ||
-    formattedEndDate === "Invalid date"
-  ) {
-    return false;
-  }
-
-  return formattedInputDate >= formattedStartDate && formattedInputDate <= formattedEndDate;
 }
 
 // ----------------------------------------------------------------------

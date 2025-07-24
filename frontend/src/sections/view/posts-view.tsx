@@ -19,7 +19,7 @@ import { paths } from "src/routes/paths";
 import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
-import { _mock } from "src/_mock";
+import { CONFIG } from "src/global-config";
 
 import { Posts } from "../posts/posts";
 import { Advertisement } from "../advertisement";
@@ -73,7 +73,7 @@ export function PostsView({ data }: PostsViewProps) {
                   <Advertisement
                     title={t("title")}
                     description={t("subtitle")}
-                    imageUrl={_mock.image.project(6)}
+                    imageUrl={`${CONFIG.assetsDir}/assets/images/project/project-7.webp`}
                     action={
                       <Button variant="contained" color="primary" href={localize(paths.projects)}>
                         {t("button")}

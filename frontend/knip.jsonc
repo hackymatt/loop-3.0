@@ -12,11 +12,6 @@
   },
   "project": ["src/**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}"],
   "ignoreExportsUsedInFile": true,
-  "ignoreDependencies": [
-    "@fontsource.+",
-    "@svgr/webpack",
-    "@typescript-eslint/parser",
-    "eslint-import-resolver-typescript",
-  ],
+  "ignoreDependencies": ["@fontsource.+", "@svgr/webpack"],
   "ignore": [],
 }

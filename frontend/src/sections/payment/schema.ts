@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
-export type PaymentSchemaType = zod.infer<ReturnType<typeof usePaymentSchema>>;
-
 export const usePaymentSchema = () => {
   const { t } = useTranslation("account");
   return zod.object({

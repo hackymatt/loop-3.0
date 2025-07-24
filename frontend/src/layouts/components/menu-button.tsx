@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 
 export type MenuButtonProps = IconButtonProps;
 
-export function MenuButton({ sx, ...other }: IconButtonProps) {
+export function MenuButton({ sx, ...other }: MenuButtonProps) {
   return (
     <IconButton color="inherit" sx={sx} {...other}>
       <SvgIcon>

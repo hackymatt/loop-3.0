@@ -14,15 +14,6 @@ import type { ThemeColorScheme } from "../types";
  * @to {@link file://./../extend-theme-types.d.ts}
  */
 
-// Keys for the palette colors
-export type PaletteColorKey = "primary" | "secondary" | "info" | "success" | "warning" | "error";
-
-// Palette color without additional channels
-export type PaletteColorNoChannels = Omit<PaletteColor, "lighterChannel" | "darkerChannel">;
-
-// Palette color with additional channels
-export type PaletteColorWithChannels = PaletteColor & Channels;
-
 // Extended common colors
 export type CommonColorsExtend = {
   whiteChannel: string;
