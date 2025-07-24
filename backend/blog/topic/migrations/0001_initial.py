@@ -5,40 +5,66 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Topic',
+            name="Topic",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('slug', models.SlugField(unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("slug", models.SlugField(unique=True)),
             ],
             options={
-                'verbose_name_plural': 'Topics',
-                'db_table': 'blog_topic',
+                "verbose_name_plural": "Topics",
+                "db_table": "blog_topic",
             },
         ),
         migrations.CreateModel(
-            name='TopicTranslation',
+            name="TopicTranslation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], max_length=2)),
-                ('name', models.CharField()),
-                ('topic', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='translations', to='topic.topic')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "En"), ("pl", "Pl")], max_length=2
+                    ),
+                ),
+                ("name", models.CharField()),
+                (
+                    "topic",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="translations",
+                        to="topic.topic",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Topic translations',
-                'db_table': 'blog_topic_translation',
-                'unique_together': {('topic', 'language')},
+                "verbose_name_plural": "Topic translations",
+                "db_table": "blog_topic_translation",
+                "unique_together": {("topic", "language")},
             },
         ),
     ]

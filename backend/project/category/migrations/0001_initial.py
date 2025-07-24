@@ -5,40 +5,66 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('slug', models.SlugField(unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("slug", models.SlugField(unique=True)),
             ],
             options={
-                'verbose_name_plural': 'Categories',
-                'db_table': 'project_category',
+                "verbose_name_plural": "Categories",
+                "db_table": "project_category",
             },
         ),
         migrations.CreateModel(
-            name='CategoryTranslation',
+            name="CategoryTranslation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], max_length=2)),
-                ('name', models.CharField()),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='translations', to='category.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "En"), ("pl", "Pl")], max_length=2
+                    ),
+                ),
+                ("name", models.CharField()),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="translations",
+                        to="category.category",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Category translations',
-                'db_table': 'project_category_translation',
-                'unique_together': {('category', 'language')},
+                "verbose_name_plural": "Category translations",
+                "db_table": "project_category_translation",
+                "unique_together": {("category", "language")},
             },
         ),
     ]

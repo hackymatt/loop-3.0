@@ -4,20 +4,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('subscription', '0001_initial'),
+        ("subscription", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='plansubscription',
-            name='currency',
-            field=models.CharField(choices=[('PLN', 'Pln'), ('EUR', 'Eur'), ('USD', 'Usd'), ('GBP', 'Gbp')], default='PLN', max_length=3),
+            model_name="plansubscription",
+            name="currency",
+            field=models.CharField(
+                choices=[
+                    ("PLN", "Pln"),
+                    ("EUR", "Eur"),
+                    ("USD", "Usd"),
+                    ("GBP", "Gbp"),
+                ],
+                default="PLN",
+                max_length=3,
+            ),
         ),
         migrations.AddField(
-            model_name='plansubscription',
-            name='price',
+            model_name="plansubscription",
+            name="price",
             field=models.DecimalField(decimal_places=2, default=0, max_digits=6),
             preserve_default=False,
         ),

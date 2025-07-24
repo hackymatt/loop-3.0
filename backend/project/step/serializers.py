@@ -61,5 +61,3 @@ class StepDetailsSerializer(StepBaseSerializer):
     def get_text(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.get_translation(lang).text
-
-

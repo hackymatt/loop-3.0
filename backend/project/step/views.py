@@ -5,10 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from .models import Step
-from .serializers import (
-    StepBaseSerializer,
-    StepDetailsSerializer
-)
+from .serializers import StepBaseSerializer, StepDetailsSerializer
 from ..enrollment.models import ProjectEnrollment
 from ..progress.models import ProjectProgress
 from ..models import Project
@@ -46,8 +43,6 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-
-
         # Plan check: limit access for free users
         if is_default_plan(get_subscription(student.user).plan):
             if (
@@ -55,9 +50,7 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
                 .exclude(project=project)
                 .exists()
             ):
-                serializer = StepBaseSerializer(
-                    step, context={"request": request}
-                )
+                serializer = StepBaseSerializer(step, context={"request": request})
                 return Response(serializer.data, status=status.HTTP_403_FORBIDDEN)
 
         # Allow full access
@@ -70,8 +63,3 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
 
         serializer = StepDetailsSerializer(step, context={"request": request})
         return Response(serializer.data)
-
-
-
-
-

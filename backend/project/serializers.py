@@ -21,7 +21,8 @@ class ProjectPrerequisiteSerializer(serializers.ModelSerializer):
     def get_translated_name(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.get_translation(lang).name
-    
+
+
 class BlogPrerequisiteSerializer(serializers.ModelSerializer):
     translated_name = serializers.SerializerMethodField()
 
@@ -141,20 +142,24 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
     def get_translated_overview(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.get_translation(lang).overview
-    
+
     def get_stages(self, obj):
         return StageSerializer(
             obj.stages.all().filter(active=True), many=True, context=self.context
         ).data
-    
+
     def get_project_prerequisites(self, obj):
         return ProjectPrerequisiteSerializer(
-            obj.project_prerequisites.all().filter(active=True), many=True, context=self.context
+            obj.project_prerequisites.all().filter(active=True),
+            many=True,
+            context=self.context,
         ).data
-    
+
     def get_blog_prerequisites(self, obj):
         return BlogPrerequisiteSerializer(
-            obj.blog_prerequisites.all().filter(active=True), many=True, context=self.context
+            obj.blog_prerequisites.all().filter(active=True),
+            many=True,
+            context=self.context,
         ).data
 
     def to_representation(self, instance):

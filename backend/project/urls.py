@@ -16,6 +16,8 @@ router.register(Urls.PROJECT, ProjectViewSet, basename="projects")
 urlpatterns = [
     path("", include(project_urlpatterns)),
     path("", include(router.urls)),
-    path(Urls.FEATURED_PROJECT, FeaturedProjectsView.as_view(), name="featured-projects"),
+    path(
+        Urls.FEATURED_PROJECT, FeaturedProjectsView.as_view(), name="featured-projects"
+    ),
     path(Urls.SIMILAR_PROJECTS, SimilarProjectsView.as_view(), name="similar-projects"),
 ]

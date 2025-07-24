@@ -5,24 +5,31 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('certificate', '0001_initial'),
-        ('project', '0001_initial'),
-        ('student_user', '0001_initial'),
+        ("certificate", "0001_initial"),
+        ("project", "0001_initial"),
+        ("student_user", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='certificate',
-            name='project',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='certificates', to='project.project'),
+            model_name="certificate",
+            name="project",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="certificates",
+                to="project.project",
+            ),
         ),
         migrations.AddField(
-            model_name='certificate',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='certificates', to='student_user.student'),
+            model_name="certificate",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="certificates",
+                to="student_user.student",
+            ),
         ),
     ]

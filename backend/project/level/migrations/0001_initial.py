@@ -5,40 +5,66 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Level',
+            name="Level",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('slug', models.SlugField(unique=True)),
-                ('order', models.PositiveIntegerField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("slug", models.SlugField(unique=True)),
+                ("order", models.PositiveIntegerField(default=0)),
             ],
             options={
-                'verbose_name_plural': 'Levels',
-                'db_table': 'project_level',
+                "verbose_name_plural": "Levels",
+                "db_table": "project_level",
             },
         ),
         migrations.CreateModel(
-            name='LevelTranslation',
+            name="LevelTranslation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], max_length=2)),
-                ('name', models.CharField()),
-                ('level', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='translations', to='level.level')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "En"), ("pl", "Pl")], max_length=2
+                    ),
+                ),
+                ("name", models.CharField()),
+                (
+                    "level",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="translations",
+                        to="level.level",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'project_level_translation',
-                'unique_together': {('level', 'language')},
+                "db_table": "project_level_translation",
+                "unique_together": {("level", "language")},
             },
         ),
     ]

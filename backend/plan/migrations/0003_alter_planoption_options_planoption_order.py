@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('plan', '0002_create_default_plan'),
+        ("plan", "0002_create_default_plan"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='planoption',
-            options={'ordering': ['order']},
+            name="planoption",
+            options={"ordering": ["order"]},
         ),
         migrations.AddField(
-            model_name='planoption',
-            name='order',
+            model_name="planoption",
+            name="order",
             field=models.PositiveIntegerField(default=0),
         ),
     ]

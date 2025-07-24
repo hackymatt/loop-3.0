@@ -7,30 +7,64 @@ import review.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('project', '0001_initial'),
-        ('student_user', '0001_initial'),
+        ("project", "0001_initial"),
+        ("student_user", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Review',
+            name="Review",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('rating', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('comment', models.TextField(blank=True, null=True)),
-                ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], max_length=2)),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='project.project')),
-                ('student', models.ForeignKey(on_delete=models.SET(review.models.get_dummy_student), related_name='reviews', to='student_user.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "rating",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                ("comment", models.TextField(blank=True, null=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "En"), ("pl", "Pl")], max_length=2
+                    ),
+                ),
+                (
+                    "project",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="reviews",
+                        to="project.project",
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=models.SET(review.models.get_dummy_student),
+                        related_name="reviews",
+                        to="student_user.student",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'review',
-                'unique_together': {('student', 'project')},
+                "db_table": "review",
+                "unique_together": {("student", "project")},
             },
         ),
     ]

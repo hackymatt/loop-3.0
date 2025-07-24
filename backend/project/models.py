@@ -10,6 +10,7 @@ from .technology.models import Technology
 from blog.models import Blog
 from user.type.instructor_user.models import Instructor
 
+
 def project_directory_path(instance, filename):  # pragma: no cover
     """
     Generate a unique filename for the project's video.
@@ -24,7 +25,9 @@ class Project(BaseModel):
     slug = models.SlugField(unique=True)
     level = models.ForeignKey(Level, on_delete=models.PROTECT)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    technology = models.ManyToManyField(Technology, related_name="projects", db_table="project_to_technology")
+    technology = models.ManyToManyField(
+        Technology, related_name="projects", db_table="project_to_technology"
+    )
     stages = models.ManyToManyField(
         Stage, through="ProjectStage", related_name="projects"
     )

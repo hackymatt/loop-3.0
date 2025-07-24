@@ -20,9 +20,8 @@ class SubscribeView(APIView):
         user_data = serializer.validated_data.get("user")
         plan_slug = serializer.validated_data.get("plan")
         interval = serializer.validated_data.get("interval")
-        currency = serializer.validated_data.get("currency") 
+        currency = serializer.validated_data.get("currency")
         is_yearly = interval == "yearly"
-        
 
         user = request.user
         user.first_name = user_data["first_name"]
@@ -40,6 +39,11 @@ class SubscribeView(APIView):
             else:
                 end_date = timezone.now() + relativedelta(months=1)
 
-        subscription = subscribe(student=student, plan=plan, end_date=end_date, currency=currency)
+        subscription = subscribe(
+            student=student, plan=plan, end_date=end_date, currency=currency
+        )
 
-        return Response(UserSubscription(subscription, context={"request": request}).data, status=status.HTTP_200_OK)
+        return Response(
+            UserSubscription(subscription, context={"request": request}).data,
+            status=status.HTTP_200_OK,
+        )

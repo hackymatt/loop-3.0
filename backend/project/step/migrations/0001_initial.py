@@ -5,42 +5,68 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Step',
+            name="Step",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('slug', models.SlugField(unique=True)),
-                ('points', models.PositiveIntegerField(default=0)),
-                ('active', models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("slug", models.SlugField(unique=True)),
+                ("points", models.PositiveIntegerField(default=0)),
+                ("active", models.BooleanField(default=False)),
             ],
             options={
-                'verbose_name_plural': 'Steps',
-                'db_table': 'project_step',
+                "verbose_name_plural": "Steps",
+                "db_table": "project_step",
             },
         ),
         migrations.CreateModel(
-            name='StepTranslation',
+            name="StepTranslation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], max_length=2)),
-                ('name', models.CharField(max_length=255)),
-                ('text', models.TextField()),
-                ('step', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='translations', to='step.step')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "En"), ("pl", "Pl")], max_length=2
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("text", models.TextField()),
+                (
+                    "step",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="translations",
+                        to="step.step",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Step translations',
-                'db_table': 'project_step_translation',
+                "verbose_name_plural": "Step translations",
+                "db_table": "project_step_translation",
             },
         ),
     ]

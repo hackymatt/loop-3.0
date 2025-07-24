@@ -18,7 +18,9 @@ class Review(BaseModel):
     student = models.ForeignKey(
         Student, on_delete=models.SET(get_dummy_student), related_name="reviews"
     )
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="reviews")
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="reviews"
+    )
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )

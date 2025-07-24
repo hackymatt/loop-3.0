@@ -23,9 +23,8 @@ def delete_plan(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('plan', '0001_initial'),
+        ("plan", "0001_initial"),
     ]
 
     operations = [migrations.RunPython(generate_plan, reverse_code=delete_plan)]

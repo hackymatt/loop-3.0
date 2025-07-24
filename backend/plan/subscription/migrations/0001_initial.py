@@ -5,23 +5,42 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('plan', '0002_create_default_plan'),
-        ('student_user', '0001_initial'),
+        ("plan", "0002_create_default_plan"),
+        ("student_user", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PlanSubscription',
+            name="PlanSubscription",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('start_date', models.DateTimeField(auto_now_add=True)),
-                ('end_date', models.DateTimeField(blank=True, null=True)),
-                ('plan', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='plan.plan')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='subscriptions', to='student_user.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("start_date", models.DateTimeField(auto_now_add=True)),
+                ("end_date", models.DateTimeField(blank=True, null=True)),
+                (
+                    "plan",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT, to="plan.plan"
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="subscriptions",
+                        to="student_user.student",
+                    ),
+                ),
             ],
         ),
     ]

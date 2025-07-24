@@ -6,9 +6,7 @@ from ..step.models import Step
 
 class Stage(BaseModel):
     slug = models.SlugField(unique=True)
-    steps = models.ManyToManyField(
-        Step, through="StageStep", related_name="steps"
-    )
+    steps = models.ManyToManyField(Step, through="StageStep", related_name="steps")
     active = models.BooleanField(default=False)
 
     class Meta:

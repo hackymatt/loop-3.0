@@ -42,7 +42,7 @@ class ProjectFilter(django_filters.FilterSet):
         return queryset.annotate(avg_rating=Avg("reviews__rating")).filter(
             avg_rating__gte=value
         )
-    
+
     def filter_by_duration(self, queryset, name, value):
         if value == ProjectDuration.SHORT:
             return queryset.filter(duration__lt=120)
@@ -53,7 +53,6 @@ class ProjectFilter(django_filters.FilterSet):
 
         return queryset
 
-
     def filter_by_status(self, queryset, name, value):
         user = self.request.user
 
@@ -61,9 +60,7 @@ class ProjectFilter(django_filters.FilterSet):
             return queryset
 
         # policz ile lekcji ma projekt
-        queryset = queryset.annotate(
-            total_steps=Count("stages__steps", distinct=True)
-        )
+        queryset = queryset.annotate(total_steps=Count("stages__steps", distinct=True))
 
         # subquery, który liczy ukończone kroki w danym projekcie
         completed_steps_subquery = (

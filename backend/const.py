@@ -81,6 +81,7 @@ class ProjectDuration:
     MEDIUM = "medium"
     LONG = "long"
 
+
 class Currency(TextChoices):
     PLN = "PLN"
     EUR = "EUR"

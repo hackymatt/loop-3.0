@@ -36,9 +36,13 @@ class UserSubscription(serializers.ModelSerializer):
             return None
         delta_days = (obj.end_date - obj.start_date).days
         return "yearly" if delta_days > 31 else "monthly"
-    
+
     def get_price(self, obj):
         interval = self.get_interval(obj)
         lang = self.context.get("request").LANGUAGE_CODE
         translation = obj.plan.get_translation(lang)
-        return translation.yearly_price if interval == "yearly" else translation.monthly_price
+        return (
+            translation.yearly_price
+            if interval == "yearly"
+            else translation.monthly_price
+        )

@@ -198,14 +198,26 @@ class FeaturedProjectsViewTest(TestCase):
             self.projects.append(project)
 
         # Ratings
-        Review.objects.create(project=self.projects[3], rating=5, student=self.student_1)
-        Review.objects.create(project=self.projects[2], rating=4, student=self.student_1)
-        Review.objects.create(project=self.projects[2], rating=2, student=self.student_2)
+        Review.objects.create(
+            project=self.projects[3], rating=5, student=self.student_1
+        )
+        Review.objects.create(
+            project=self.projects[2], rating=4, student=self.student_1
+        )
+        Review.objects.create(
+            project=self.projects[2], rating=2, student=self.student_2
+        )
 
         # Enrollments
-        ProjectEnrollment.objects.create(project=self.projects[2], student=self.student_1)
-        ProjectEnrollment.objects.create(project=self.projects[2], student=self.student_2)
-        ProjectEnrollment.objects.create(project=self.projects[3], student=self.student_1)
+        ProjectEnrollment.objects.create(
+            project=self.projects[2], student=self.student_1
+        )
+        ProjectEnrollment.objects.create(
+            project=self.projects[2], student=self.student_2
+        )
+        ProjectEnrollment.objects.create(
+            project=self.projects[3], student=self.student_1
+        )
 
     def test_view_returns_success(self):
         response = self.client.get(self.url)

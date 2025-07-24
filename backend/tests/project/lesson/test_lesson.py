@@ -28,14 +28,10 @@ class StepViewSetTestCase(TestCase):
         self.project = create_project()
         self.step = self.project.steps.all()[0]
 
-        self.reading_step, self.reading_specific_step = create_step(
-            StepType.READING
-        )
+        self.reading_step, self.reading_specific_step = create_step(StepType.READING)
         self.video_step, self.video_specific_step = create_step(StepType.VIDEO)
         self.quiz_step, self.quiz_specific_step = create_step(StepType.QUIZ)
-        self.coding_step, self.coding_specific_step = create_step(
-            StepType.CODING
-        )
+        self.coding_step, self.coding_specific_step = create_step(StepType.CODING)
         self.step.steps.add(self.reading_step)
         self.step.steps.add(self.video_step)
         self.step.steps.add(self.quiz_step)
@@ -271,9 +267,7 @@ class StepViewSetTestCase(TestCase):
 
         self.assertEqual(
             response.data["answer"],
-            ProjectProgress.objects.filter(
-                student=self.student, step=self.coding_step
-            )
+            ProjectProgress.objects.filter(student=self.student, step=self.coding_step)
             .first()
             .answer,
         )
@@ -370,13 +364,9 @@ class StepProgressAPIViewTestCase(TestCase):
         step = self.project.steps.all()[0]
         self.step = step.steps.all()[0]
 
-        self.reading_step, self.reading_specific_step = create_step(
-            StepType.READING
-        )
+        self.reading_step, self.reading_specific_step = create_step(StepType.READING)
         self.quiz_step, self.quiz_specific_step = create_step(StepType.QUIZ)
-        self.coding_step, self.coding_specific_step = create_step(
-            StepType.CODING
-        )
+        self.coding_step, self.coding_specific_step = create_step(StepType.CODING)
         step.steps.add(self.quiz_step)
         step.steps.add(self.coding_step)
         step.save()
@@ -419,13 +409,9 @@ class StepSubmitAPIViewTestCase(TestCase):
         step = self.project.steps.all()[0]
         self.step = step.steps.all()[0]
 
-        self.reading_step, self.reading_specific_step = create_step(
-            StepType.READING
-        )
+        self.reading_step, self.reading_specific_step = create_step(StepType.READING)
         self.quiz_step, self.quiz_specific_step = create_step(StepType.QUIZ)
-        self.coding_step, self.coding_specific_step = create_step(
-            StepType.CODING
-        )
+        self.coding_step, self.coding_specific_step = create_step(StepType.CODING)
         step.steps.add(self.quiz_step)
         step.steps.add(self.coding_step)
         step.save()
@@ -552,13 +538,9 @@ class StepAnswerAPIViewTestCase(TestCase):
         step = self.project.steps.all()[0]
         self.step = step.steps.all()[0]
 
-        self.reading_step, self.reading_specific_step = create_step(
-            StepType.READING
-        )
+        self.reading_step, self.reading_specific_step = create_step(StepType.READING)
         self.quiz_step, self.quiz_specific_step = create_step(StepType.QUIZ)
-        self.coding_step, self.coding_specific_step = create_step(
-            StepType.CODING
-        )
+        self.coding_step, self.coding_specific_step = create_step(StepType.CODING)
         step.steps.add(self.quiz_step)
         step.steps.add(self.coding_step)
         step.save()
@@ -627,12 +609,8 @@ class StepHintAPIViewTest(TestCase):
         step = self.project.steps.all()[0]
         self.step = step.steps.all()[0]
 
-        self.reading_step, self.reading_specific_step = create_step(
-            StepType.READING
-        )
-        self.coding_step, self.coding_specific_step = create_step(
-            StepType.CODING
-        )
+        self.reading_step, self.reading_specific_step = create_step(StepType.READING)
+        self.coding_step, self.coding_specific_step = create_step(StepType.CODING)
         step.steps.add(self.coding_step)
         step.save()
 

@@ -6,28 +6,35 @@ import project.enrollment.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('project', '0001_initial'),
-        ('enrollment', '0001_initial'),
-        ('student_user', '0001_initial'),
+        ("project", "0001_initial"),
+        ("enrollment", "0001_initial"),
+        ("student_user", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='projectenrollment',
-            name='project',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='project.project'),
+            model_name="projectenrollment",
+            name="project",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="enrollments",
+                to="project.project",
+            ),
         ),
         migrations.AddField(
-            model_name='projectenrollment',
-            name='student',
-            field=models.ForeignKey(on_delete=models.SET(project.enrollment.models.get_dummy_student), related_name='enrollments', to='student_user.student'),
+            model_name="projectenrollment",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=models.SET(project.enrollment.models.get_dummy_student),
+                related_name="enrollments",
+                to="student_user.student",
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='projectenrollment',
-            unique_together={('student', 'project')},
+            name="projectenrollment",
+            unique_together={("student", "project")},
         ),
     ]

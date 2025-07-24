@@ -23,7 +23,7 @@ class PlanSerializer(serializers.Serializer):
             "monthly": float(translation.monthly_price),
             "yearly": float(translation.yearly_price),
         }
-    
+
     def get_currency(self, obj: Plan):
         lang = self.context.get("request").LANGUAGE_CODE
         translation = obj.get_translation(lang)

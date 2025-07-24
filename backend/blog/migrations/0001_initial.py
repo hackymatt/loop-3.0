@@ -6,51 +6,97 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('tag', '0001_initial'),
-        ('topic', '0001_initial'),
-        ('instructor_user', '0001_initial'),
+        ("tag", "0001_initial"),
+        ("topic", "0001_initial"),
+        ("instructor_user", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Blog',
+            name="Blog",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('slug', models.SlugField(unique=True)),
-                ('image', models.ImageField(max_length=500, upload_to=blog.models.blog_directory_path)),
-                ('published_at', models.DateField()),
-                ('visits', models.PositiveIntegerField(default=0)),
-                ('active', models.BooleanField(default=False)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='blogs', to='instructor_user.instructor')),
-                ('tags', models.ManyToManyField(related_name='blogs', to='tag.tag')),
-                ('topic', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='blogs', to='topic.topic')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("slug", models.SlugField(unique=True)),
+                (
+                    "image",
+                    models.ImageField(
+                        max_length=500, upload_to=blog.models.blog_directory_path
+                    ),
+                ),
+                ("published_at", models.DateField()),
+                ("visits", models.PositiveIntegerField(default=0)),
+                ("active", models.BooleanField(default=False)),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="blogs",
+                        to="instructor_user.instructor",
+                    ),
+                ),
+                ("tags", models.ManyToManyField(related_name="blogs", to="tag.tag")),
+                (
+                    "topic",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="blogs",
+                        to="topic.topic",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'blog',
+                "db_table": "blog",
             },
         ),
         migrations.CreateModel(
-            name='BlogTranslation',
+            name="BlogTranslation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], max_length=2)),
-                ('name', models.CharField(max_length=255)),
-                ('description', models.TextField()),
-                ('content', models.TextField()),
-                ('blog', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='translations', to='blog.blog')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "En"), ("pl", "Pl")], max_length=2
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("description", models.TextField()),
+                ("content", models.TextField()),
+                (
+                    "blog",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="translations",
+                        to="blog.blog",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Blog translations',
-                'db_table': 'blog_translation',
-                'unique_together': {('blog', 'language')},
+                "verbose_name_plural": "Blog translations",
+                "db_table": "blog_translation",
+                "unique_together": {("blog", "language")},
             },
         ),
     ]

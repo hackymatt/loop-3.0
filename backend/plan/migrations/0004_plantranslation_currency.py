@@ -4,15 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('plan', '0003_alter_planoption_options_planoption_order'),
+        ("plan", "0003_alter_planoption_options_planoption_order"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='plantranslation',
-            name='currency',
-            field=models.CharField(choices=[('PLN', 'Pln'), ('EUR', 'Eur'), ('USD', 'Usd'), ('GBP', 'Gbp')], default='PLN', max_length=3),
+            model_name="plantranslation",
+            name="currency",
+            field=models.CharField(
+                choices=[
+                    ("PLN", "Pln"),
+                    ("EUR", "Eur"),
+                    ("USD", "Usd"),
+                    ("GBP", "Gbp"),
+                ],
+                default="PLN",
+                max_length=3,
+            ),
         ),
     ]
