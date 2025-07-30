@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "title": "Learn Programming by Building Projects",
+    "description": "No theory – practical projects that go straight to your portfolio. Learning programming with loop means coding, GitHub, your own decisions, and real skills. Start for free!"
+  },
+  "title": "Build Projects. Create Your Portfolio. Code with",
+  "subtitle": "Learn by creating real applications – step by step, without empty theory.",
+  "button": "Build Your First Project",
+  "sign-up": {
+    "header": "Create a Free Account",
+    "button": "Start Now"
+  },
+  "certificate": {
+    "student": "Patrick Devowski",
+    "project": "Your First Python Project: Password Generator",
+    "header": "Certificate of Completion",
+    "title": "Build a Project. Earn a Certificate.",
+    "subtitle": "Document your skills with a certificate based on a real project – no tests, just working code."
+  },
+  "pricing": {
+    "header": "Pricing Plans",
+    "title": "Clear and Flexible Plans",
+    "subtitle": "The free plan gives access to any one project, while the premium plan unlocks the full challenge catalog and expert support – no hidden fees."
+  },
+  "technology": {
+    "header": "Technologies",
+    "title": "Modern Technologies",
+    "subtitle": "Discover a set of modern and powerful technologies that will help you develop skills and complete projects.",
+    "button": "See All"
+  },
+  "testimonial": "What Our Students Say",
+  "project": {
+    "header": "Projects",
+    "title": "Top Projects for You",
+    "subtitle": "Explore carefully crafted projects designed to help you master new skills and advance your career in tech.",
+    "button": "See All"
+  },
+  "advertisement": {
+    "part1": "Start today,",
+    "part2": "build your skills",
+    "part3": "and grow your IT career!",
+    "button": "Try for Free"
+  },
+  "platform": {
+    "header": "Portfolio Powered by Code",
+    "title": "Project-Based Programming with",
+    "subtitle": "Build locally, use your own editor and Git – just like in a real job. No empty theory. Only practice, code, and portfolio projects."
+  },
+  "app": {
+    "title": "Use the Platform Everywhere",
+    "subtitle": "Learn and track your progress with a web app that works on any device."
+  }
+}

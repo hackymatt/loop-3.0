@@ -1,0 +1,7 @@
+apiVersion: v2
+appVersion: latest
+
+name: backend
+type: application
+description: A Helm chart for backend
+version: 1.0.0

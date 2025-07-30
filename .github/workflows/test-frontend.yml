@@ -1,0 +1,23 @@
+name: Frontend Testing Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  test-frontend:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install --legacy-peer-deps
+
+      - name: Run tests
+        run: |
+          cd frontend
+          npm run test:coverage

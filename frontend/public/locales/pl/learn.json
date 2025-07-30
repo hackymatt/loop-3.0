@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "title": "Krok [name] - kontynuuj projekt",
+    "description": "Kontynuuj pracę nad swoim projektem i rozwijaj praktyczne umiejętności dzięki krokowi [name]. Zakończ go i poszerz swoje kompetencje programistyczne."
+  },
+  "estimatedTime": "Szacowany czas",
+  "upgrade": {
+    "title": "Odblokuj pełny dostęp!",
+    "description": "Uzyskaj dostęp do wszystkich projektów, więcej punktów i dodatkowych materiałów!",
+    "banner": {
+      "title": "Jesteś na darmowym planie i masz dostęp tylko do jednego projektu.",
+      "description": "Aby kontynuować pracę i odblokować kolejne projekty — przejdź na wyższy plan!"
+    },
+    "button": "Wróć do projektu"
+  }
+}

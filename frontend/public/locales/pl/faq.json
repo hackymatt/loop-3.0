@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "title": "Pomoc",
+    "description": "Masz pytania lub potrzebujesz pomocy? Sprawdź najczęściej zadawane pytania lub skontaktuj się z naszym zespołem wsparcia. Jesteśmy tutaj, aby Ci pomóc!"
+  },
+  "title": "Najczęściej zadawane pytania",
+  "moreQuestions": {
+    "title": "Masz dodatkowe pytania?",
+    "subtitle": "Opisz swój przypadek, aby otrzymać jak najbardziej precyzyjną pomoc.",
+    "button": "Skontaktuj się z nami"
+  },
+  "header": "Witaj w pomocy",
+  "faq": [
+    {
+      "id": "account",
+      "title": "Konto",
+      "icon": "solar:user-id-bold",
+      "content": [
+        {
+          "question": "Jak założyć konto?",
+          "answer": "Aby założyć konto, kliknij przycisk 'Wypróbuj za darmo' na stronie głównej. Możesz się zarejestrować za pomocą adresu e-mail lub skorzystać z logowania przez Google, Facebooka lub GitHuba."
+        },
+        {
+          "question": "Czy muszę aktywować konto po rejestracji?",
+          "answer": "Tak, jeśli rejestrujesz się za pomocą adresu e-mail, otrzymasz wiadomość z linkiem aktywacyjnym. Kliknij go, aby aktywować konto i uzyskać dostęp do platformy."
+        },
+        {
+          "question": "Jakie są wymagania dotyczące hasła?",
+          "answer": "Hasło musi mieć co najmniej 8 znaków, w tym jedną dużą literę, jedną małą literę oraz jeden znak specjalny (np. !, @, #)."
+        },
+        {
+          "question": "Jak mogę zmienić swoje hasło?",
+          "answer": "Jeśli logujesz się za pomocą e-maila i hasła, możesz zmienić hasło w sekcji 'Ustawienia konta' → 'Zarządzaj kontem'."
+        },
+        {
+          "question": "Zapomniałem hasła – co robić?",
+          "answer": "Na stronie logowania kliknij 'Zapomniałeś hasła?'. Wpisz swój adres e-mail, a otrzymasz wiadomość z linkiem do zresetowania hasła."
+        },
+        {
+          "question": "Jak zmienić swoje dane osobowe?",
+          "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Dane osobowe', aby edytować imię, nazwisko lub inne dane profilu."
+        },
+        {
+          "question": "Gdzie mogę sprawdzić lub zmienić swój plan?",
+          "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Subskrypcja', aby zobaczyć swój aktualny plan oraz zmienić go na inny."
+        },
+        {
+          "question": "Jak usunąć konto?",
+          "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Zarządzaj kontem'. Znajdziesz tam opcję usunięcia konta."
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "title": "Kursy",
+      "icon": "solar:tag-price-bold",
+      "content": [
+        {
+          "question": "Jak działają kursy na platformie?",
+          "answer": "Kursy składają się z interaktywnych lekcji, które możesz realizować we własnym tempie. Nie są to zajęcia na żywo – uczysz się, kiedy chcesz."
+        },
+        {
+          "question": "Czy muszę instalować dodatkowe oprogramowanie?",
+          "answer": "Nie. Wszystko odbywa się w przeglądarce. Wystarczy komputer lub tablet z dostępem do internetu."
+        },
+        {
+          "question": "Czy mogę przerywać kurs i wrócić później?",
+          "answer": "Tak. Twój postęp jest zapisywany automatycznie, więc możesz wrócić do kursu w dowolnym momencie."
+        },
+        {
+          "question": "Czy kursy zawierają zadania praktyczne?",
+          "answer": "Tak. Każdy kurs zawiera interaktywne ćwiczenia i zadania do wykonania bezpośrednio w przeglądarce."
+        },
+        {
+          "question": "Czy otrzymam certyfikat po ukończeniu kursu?",
+          "answer": "Tak. Po ukończeniu kursu na planie Podstawowym lub Premium otrzymasz certyfikat, który możesz pobrać lub udostępnić."
+        },
+        {
+          "question": "Czy dostęp do kursów jest czasowo ograniczony?",
+          "answer": "Nie. Po wykupieniu dostępu masz nielimitowany czasowo dostęp do materiałów w ramach danego planu."
+        },
+        {
+          "question": "Czy mogę korzystać z kursów na telefonie?",
+          "answer": "Tak, nasza platforma działa również na urządzeniach mobilnych. Dla najlepszego doświadczenia zalecamy korzystanie z tabletu lub komputera."
+        }
+      ]
+    },
+    {
+      "id": "certificates",
+      "title": "Certyfikaty",
+      "icon": "solar:diploma-bold",
+      "content": [
+        {
+          "question": "Czy otrzymam certyfikat po ukończeniu kursu?",
+          "answer": "Tak, po ukończeniu kursu na planie Podstawowym lub Premium otrzymasz imienny certyfikat ukończenia w formacie PDF lub PNG."
+        },
+        {
+          "question": "Czy certyfikat jest dostępny od razu po ukończeniu kursu?",
+          "answer": "Tak, certyfikat generowany jest automatycznie po ukończeniu wszystkich lekcji. Można go pobrać bezpośrednio z platformy."
+        },
+        {
+          "question": "Jak wygląda certyfikat?",
+          "answer": "Certyfikat zawiera Twoje imię i nazwisko, tytuł kursu, datę ukończenia oraz podpis naszej szkoły programowania loop. Można go dodać do CV lub profilu LinkedIn."
+        },
+        {
+          "question": "Czy mogę uzyskać certyfikat, jeśli korzystam z darmowego planu?",
+          "answer": "Nie. Certyfikaty dostępne są tylko dla użytkowników z aktywnym planem Podstawowym lub Premium."
+        },
+        {
+          "question": "Czy certyfikat ma unikalny numer identyfikacyjny?",
+          "answer": "Tak, każdy certyfikat posiada unikalny numer ID, który umożliwia jego weryfikację."
+        },
+        {
+          "question": "Czy certyfikaty są uznawane przez pracodawców?",
+          "answer": "Certyfikaty świadczą o ukończeniu kursu i zdobyciu praktycznych umiejętności. Wiele osób dołącza je do swojego portfolio lub profilu na LinkedIn jako potwierdzenie nauki."
+        }
+      ]
+    },
+    {
+      "id": "points",
+      "title": "Punkty",
+      "icon": "solar:medal-star-bold",
+      "content": [
+        {
+          "question": "Jak zdobywam punkty na platformie?",
+          "answer": "Punkty zdobywasz za rozwiązywanie quizów, wykonywanie zadań w kursach oraz ukończenie rozdziałów i kursów."
+        },
+        {
+          "question": "Do czego służą punkty?",
+          "answer": "Punkty pokazują Twój postęp i zaangażowanie w naukę."
+        },
+        {
+          "question": "Czy punkty mają wpływ na certyfikat?",
+          "answer": "Nie. Certyfikat otrzymujesz po ukończeniu całego kursu, niezależnie od liczby zdobytych punktów. Punkty są jednak dowodem aktywnej nauki."
+        },
+        {
+          "question": "Czy mogę stracić zdobyte punkty?",
+          "answer": "Nie, punkty zdobyte w trakcie nauki pozostają na Twoim koncie i nie wygasają."
+        },
+        {
+          "question": "Gdzie mogę sprawdzić swoje punkty?",
+          "answer": "Twoja aktualna liczba punktów jest widoczna w Twoim panelu."
+        }
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Płatności",
+      "icon": "solar:wallet-bold",
+      "content": [
+        {
+          "question": "Jakie metody płatności są dostępne?",
+          "answer": "Obsługujemy płatności kartą płatniczą (Visa, Mastercard, itp.), a także Google Pay i Apple Pay. Wszystkie płatności są realizowane za pośrednictwem Stripe – globalnego i bezpiecznego operatora płatności."
+        },
+        {
+          "question": "Czy płatność jest jednorazowa czy cykliczna?",
+          "answer": "Nasze plany działają w modelu subskrypcyjnym – opłata odnawia się automatycznie co miesiąc lub rok, chyba że anulujesz subskrypcję wcześniej."
+        },
+        {
+          "question": "Czy mogę zapłacić przez Google Pay lub Apple Pay?",
+          "answer": "Tak, Stripe obsługuje zarówno Google Pay, jak i Apple Pay – możesz ich użyć podczas płatności na naszej platformie."
+        },
+        {
+          "question": "Czy otrzymam fakturę za subskrypcję?",
+          "answer": "Tak, po każdej płatności otrzymasz fakturę, którą możesz pobrać z ustawień konta, w zakładce 'Płatności'."
+        },
+        {
+          "question": "Jak mogę anulować subskrypcję?",
+          "answer": "Możesz anulować subskrypcję w dowolnym momencie w ustawieniach konta, w sekcji 'Subskrypcja'. Po anulowaniu dostęp do kursów pozostanie aktywny do końca bieżącego okresu rozliczeniowego."
+        },
+        {
+          "question": "Czy moje dane płatnicze są bezpieczne?",
+          "answer": "Tak, korzystamy z Stripe – jednej z najbezpieczniejszych platform płatniczych na świecie. Dane Twojej karty nie są przechowywane na naszych serwerach."
+        },
+        {
+          "question": "Czy oferujecie darmowy okres próbny?",
+          "answer": "Każdy użytkownik może rozpocząć naukę za darmo dzięki darmowemu planowi, który daje dostęp do jednego rozdziału każdego kursu. To świetna okazja, by przetestować platformę przed przejściem na płatny plan."
+        },
+        {
+          "question": "Co zrobić, jeśli moja płatność została odrzucona?",
+          "answer": "Upewnij się, że karta jest aktywna i posiada środki. Możesz także spróbować użyć innej metody płatności (np. Google Pay). W razie dalszych problemów skontaktuj się z naszym wsparciem technicznym."
+        }
+      ]
+    }
+  ]
+}

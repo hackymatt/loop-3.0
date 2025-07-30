@@ -1,0 +1,11 @@
+{% extends "base.html" %} 
+
+{% block title %}Nowa wiadomość{% endblock %} 
+
+{% block content %}Otrzymano nową wiadomość ze
+strony<br /><br />
+<div><b>Imię i nazwisko:</b> {{full_name}}</div>
+<div><b>Email:</b> {{email}}</div>
+<div><b>Tytuł:</b> {{subject}}</div>
+<div><b>Wiadomość:</b> {{message}}</div>
+{% endblock %}

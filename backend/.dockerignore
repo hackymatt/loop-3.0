@@ -1,0 +1,47 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folders
+venv/
+env/
+.env/
+
+# Django settings or environment files
+*.env
+*.local
+*.dev
+*.prod
+*.staging
+
+# Logs
+*.log
+
+# Database files
+*.sqlite3
+
+# Test and coverage files
+coverage/
+*.tox/
+*.nox/
+*.coverage
+*.hypothesis/
+*.pytest_cache/
+
+# Static and media files
+static/
+media/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+
+# IDE and editor configurations
+.vscode/
+.idea/
+
+# Docker-specific files
+Dockerfile
+.dockerignore

@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "title": "Twój Panel – Projekty, Certyfikaty i Postępy",
+    "description": "Zarządzaj swoją nauką programowania. Śledź ukończone projekty, zdobyte certyfikaty, punkty i dzienny streak. Buduj swoje portfolio krok po kroku."
+  },
+  "projects": {
+    "title": "Twoje projekty",
+    "button": "Zobacz wszystkie projekty",
+    "lack": "Nie rozpocząłeś jeszcze żadnego projektu. Wybierz pierwszy i zacznij działać!",
+    "start": "Rozpocznij nowy projekt"
+  },
+  "certificates": {
+    "title": "Twoje certyfikaty",
+    "button": "Zobacz wszystkie certyfikaty",
+    "lack": "Nie masz jeszcze żadnych certyfikatów. Ukończ projekt lub ścieżkę, aby zdobyć swój pierwszy!",
+    "start": "Zobacz dostępne ścieżki",
+    "blocked": "Zwiększ swoje szanse na rynku pracy dzięki certyfikatom potwierdzającym praktyczne umiejętności. Odblokuj je, kończąc projekty.",
+    "project": "Twój pierwszy projekt w Pythonie: Generator haseł"
+  },
+  "profile": {
+    "greeting": "Cześć",
+    "points": "Punkty XP",
+    "streak": "Seria dni nauki",
+    "days": "dni"
+  }
+}

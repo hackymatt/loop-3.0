@@ -1,0 +1,574 @@
+{
+  "meta": {
+    "title": "Terms of Service",
+    "description": "Read our Terms of Service to understand the rules for using the platform, payment conditions, and the rights and responsibilities of users."
+  },
+  "title": "Terms of Service",
+  "content": [
+    {
+      "header": "§1 Basic Definitions",
+      "content": [
+        {
+          "value": "1. Website — the website located at the address of this website, through which the Seller provides services electronically."
+        },
+        {
+          "value": "2. Seller — the owner of the website — loop Mateusz Szczepek, NIP: 6861677925, REGON: 529269876, email: [link].",
+          "link": {
+            "url": "mailto:info@loop.edu.pl",
+            "text": "info@loop.edu.pl"
+          }
+        },
+        {
+          "value": "3. Seller's Address — whenever the Regulations refer to the Seller's address, it means the email address (section [link]).",
+          "link": {
+            "path": "contact",
+            "text": "contact"
+          }
+        },
+        {
+          "value": "4. Customer — a natural person with full legal capacity, and in cases specified by generally applicable regulations, also a natural person with limited legal capacity, a legal person, or an organizational unit without legal personality, granted legal capacity by law, who has entered into or intends to enter into a service contract."
+        },
+        {
+          "value": "5. Consumer — Art. 221 of the Civil Code: a natural person entering into a legal transaction with the Seller that is not directly related to their business or professional activity."
+        },
+        {
+          "value": "6. Service Agreement — an agreement regarding a service posted on the Website entered into or to be entered into between the Customer and the Seller through the Website."
+        },
+        {
+          "value": "7. Service — a service purchased by the Customer through the Website."
+        },
+        {
+          "value": "8. Order — the Customer's declaration of intent made through the Website regarding the activation of a subscription or trial access, including the payment method and Customer's data."
+        },
+        {
+          "value": "9. Subscription Form — an electronic service, a form on an electronic medium available on the Website, enabling the submission and fulfillment of the Order."
+        },
+        {
+          "value": "10. Subscription Activation Time — the time from the moment of purchasing the subscription or activating trial access, after which the Customer receives immediate access to the Website's resources, usually after payment confirmation."
+        },
+        {
+          "value": "11. Business Day — any day from Monday to Friday, excluding public holidays."
+        },
+        {
+          "value": "12. Prices — the prices of services on the Website are fixed at a given time and are not affected by any pricing algorithms, regardless of how the Customer accesses the page, the browsers used, or factors such as gender, age, etc."
+        },
+        {
+          "value": "13. Consumer Rights Act, the Act — the Act of May 30, 2014, on Consumer Rights (Journal of Laws of 2014, item 827, as amended)."
+        },
+        {
+          "value": "14. GDPR — Regulation (EU) 2016/679 of the European Council (of April 27, 2016)."
+        }
+      ]
+    },
+    {
+      "header": "§2 General Provisions",
+      "content": [
+        {
+          "value": "1. The Seller declares that it complies with all required principles of personal data protection as provided, among others, by the Personal Data Protection Act, in accordance with the GDPR. The Customer consents to the collection, storage and processing of personal data by the Seller solely for purposes directly related to the performance of the ordered service on the Website. Detailed terms for the collection, processing, and protection of personal data by the Seller are set out in the [link] on the Website.",
+          "link": {
+            "path": "privacyPolicy",
+            "text": "Privacy Policy"
+          }
+        },
+        {
+          "value": "2. The Seller declares that its services conform to the Agreement in aspects such as description, type, quality, and functionality, and in the case of subscription-based digital services, also compatibility, interoperability, and availability of updates; as well as fitness for any particular purpose communicated by the Customer no later than at the time of contract conclusion and accepted by the Seller."
+        },
+        {
+          "value": "3. The Seller declares that, following the entry into force throughout Europe of the regulations on reviews (transposition of Directive (EU) 2019/2161 into national law), traders publishing customer reviews must inform whether, and by what means, they ensure that published reviews originate from consumers who have used the service. The measures taken for this purpose must be specifically listed."
+        },
+        {
+          "value": "4. We declare that the reviews posted on our site originate from real customers who have purchased and used our services. Reviews were submitted in response to a request sent after confirming that the service was delivered. We undertake all necessary efforts to ensure the authenticity of reviews and to remove any inauthentic entries."
+        },
+        {
+          "value": "5. Mandatory legal bases for the above provisions: [subsections]",
+          "subsections": [
+            {
+              "value": "• Directive (EU) 2019/2161 of the European Parliament and of the Council of 27 November 2019 amending Council Directive 93/13/EEC and Directives 98/6/EC, 2005/29/EC and 2011/83/EU as regards the better enforcement and modernisation of Union consumer protection rules (OJ L 328, 18.12.2019, pp. 7–28)."
+            },
+            {
+              "value": "• Misleading online reviews — consumer experiences based on a study by PBS Sp. z o.o. commissioned by UOKiK, available at https://uokik.gov.pl/aktualnosci.php?news_id=17411."
+            },
+            {
+              "value": "• Directive 2005/29/EC of the European Parliament and of the Council of 11 May 2005 concerning unfair business-to-consumer commercial practices in the internal market and amending Council Directives 84/450/EEC, 97/7/EC, 98/27/EC and 2002/65/EC and Regulation (EC) No 2006/2004 (OJ L 149, 11.06.2005, pp. 22–39, as amended)."
+            },
+            {
+              "value": "• Commission Notice — Guidelines on the implementation and interpretation of Directive 2005/29/EC concerning unfair business-to-consumer commercial practices in the internal market (OJ C 526, 29.12.2021, pp. 1–129)."
+            },
+            {
+              "value": "• Directive 2011/83/EU of the European Parliament and of the Council of 25 October 2011 on consumer rights, amending Council Directives 93/13/EEC and 1999/44/EC and repealing Council Directives 85/577/EEC and 97/7/EC (OJ L 304, 22.11.2011, pp. 64–88, as amended)."
+            }
+          ]
+        },
+        {
+          "value": "6. Subscription activation on the Website is effected by completing the subscription form and accepting these Regulations. Concluding the subscription agreement incurs the obligation to pay the recurring fee (monthly or annual) in accordance with the payment option chosen by the Customer."
+        },
+        {
+          "value": "7. The Data Controller implements appropriate technical and organizational measures to protect personal data commensurate with the risks and categories of data processed. In particular, data are protected against unauthorized disclosure, access, processing, loss, alteration, damage, or destruction. Detailed safeguards are specified in the Data Protection Policy (security policy, personal data protection regulations, IT system management instructions)."
+        },
+        {
+          "value": "8. The Data Controller’s contact details can be found in the [link] section of the Website.",
+          "link": {
+            "path": "contact",
+            "text": "Contact"
+          }
+        },
+        {
+          "value": "9. Every data subject is entitled to the following rights: [subsections]",
+          "subsections": [
+            {
+              "value": "• To access and verify the lawfulness of the processing of personal data for which the Seller maintains a customer database;"
+            },
+            {
+              "value": "• To ascertain the identity and contact details of the Data Controller (and, if applicable, the Data Protection Officer);"
+            },
+            {
+              "value": "• To obtain information on the purposes, scope, methods, and duration of data processing;"
+            },
+            {
+              "value": "• To receive the personal data concerning them in a commonly understandable form;"
+            },
+            {
+              "value": "• To know the source of their data, unless confidentiality obligations apply;"
+            },
+            {
+              "value": "• To request completion, update, correction, temporarily suspend, or erase their personal data if inaccurate, outdated, unlawfully collected, or no longer necessary for the processing purpose."
+            }
+          ]
+        },
+        {
+          "value": "10. Pursuant to item 9, the Customer has the right to access, correct, and request deletion of their personal data. The Data Controller shall promptly comply with such requests, unless otherwise provided by applicable law."
+        },
+        {
+          "value": "11. By activating a subscription, the Customer consents to the processing of personal data necessary for managing recurring payments via Stripe and for communications related to the subscription."
+        },
+        {
+          "value": "12. The Customer may opt in to receive marketing and commercial communications from the Seller by subscribing to the NEWSLETTER."
+        },
+        {
+          "value": "13. Customers using the Seller’s services via the Website are obliged to comply with these Regulations to the extent necessary for performance of the subscription and in accordance with applicable law and principles of social coexistence."
+        },
+        {
+          "value": "14. The Seller declares that the services available and provided on the Website conform to their descriptions and contain no legal defects. Services fully correspond to the features described on the Website."
+        },
+        {
+          "value": "15. The Seller provides services throughout Poland and to Consumers in Europe, and, upon prior agreement, to Customers in other countries."
+        },
+        {
+          "value": "16. Information on the services available on the Website constitutes an invitation to enter into a contract within the meaning of Article 71 of the Polish Civil Code of 23 April 1964."
+        },
+        {
+          "value": "17. All prices of services displayed on the Website are in Polish złoty (PLN) and include VAT and other legally imposed charges."
+        },
+        {
+          "value": "18. A sole proprietor who is not acting within the scope of their business activity may withdraw from the subscription agreement within 14 calendar days of its conclusion."
+        },
+        {
+          "value": "19. Consumer protection provisions, except for Article 558 §1 sentence 2 of the Civil Code, apply to a natural person concluding a contract directly related to their business activity, where the contract’s content shows it is not of a professional nature for that person."
+        },
+        {
+          "value": "20. The determination of whether an activity is professional shall be based on the National Official Register of Business Activity (CEiDG), specifically the PKD codes entered therein."
+        },
+        {
+          "value": "21. Sole proprietors obtain the following rights: [subsections]",
+          "subsections": [
+            {
+              "value": "• To protection against unfair contract terms;"
+            },
+            {
+              "value": "• To statutory warranty for defects;"
+            },
+            {
+              "value": "• To reproject claims against a previous seller in relation to consumer complaints;"
+            },
+            {
+              "value": "• To withdraw from a distance contract within 14 days."
+            }
+          ]
+        },
+        {
+          "value": "22. Consumer protection provisions in Articles 385¹–³ of the Civil Code on unfair contractual terms apply to natural persons concluding contracts related to their business activity when the contract is not professional in nature."
+        },
+        {
+          "value": "23. Article 385⁵ of the Civil Code on abusive clauses applies to sole proprietors as of 1 January 2021."
+        },
+        {
+          "value": "24. After the above changes, sole proprietors still cannot use consumer protection institutions such as local Consumer Ombudsmen or UOKiK."
+        }
+      ]
+    },
+    {
+      "header": "§3 Terms of Service",
+      "content": [
+        {
+          "value": "1. The Website provides services electronically. The condition for entering into a subscription agreement is completing the subscription form to conclude the service agreement. Joining the agreement is voluntary."
+        },
+        {
+          "value": "2. The service agreement is concluded electronically by allowing the Customer to complete the subscription form on the Website. The agreement is entered into for an indefinite period, with automatic renewal for each billing cycle (monthly or annual), and terminates upon the Customer’s notice. The Customer may cancel the subscription no later than 3 days before the end of the current billing cycle."
+        },
+        {
+          "value": "3. The service referred to in item 1 is provided under two plans: [subsections]",
+          "subsections": [
+            {
+              "value": "a. Free Plan, which does not involve any fees."
+            },
+            {
+              "value": "b. Paid Plan, available upon payment of the recurring fee."
+            }
+          ]
+        },
+        {
+          "value": "4. Orders (subscription activations) may be placed electronically 24 hours a day, 7 days a week. The activation process is available at all times."
+        },
+        {
+          "value": "5. By completing the subscription activation, the Customer ticks the option “I consent to the processing of my personal data provided in the form for the purpose and to the extent necessary for the provision of the service and for no other purpose”—this consent is required to conclude the agreement. Providing personal data is necessary to complete the subscription activation process. Failure to provide personal data will be considered a withdrawal from concluding the agreement."
+        },
+        {
+          "value": "6. In accordance with Article 8(2) of the GDPR, the controller takes appropriate measures to verify that a parent or guardian of a child under 16 has given consent to the processing of the child’s personal data."
+        },
+        {
+          "value": "7. The Customer bears all costs related to Internet access and data transmission in accordance with the rates set by the Internet service provider with whom the Customer has a contract."
+        },
+        {
+          "value": "8. The subscription renews automatically for the next billing cycle (monthly or annual) unless the Customer cancels it no later than 3 days before the end of the current cycle. Cancellation may be made via the user panel."
+        }
+      ]
+    },
+    {
+      "header": "§4 Terms of Agreement",
+      "content": [
+        {
+          "value": "1. To conclude a valid and binding service agreement, the Customer selects the services offered on the Website, specifying the number of services to be ordered and, if applicable, the specifications of the ordered services. The Customer then completes the order form, providing data necessary for the Seller to fulfill the order, such as the number of services, delivery location, and preferred payment method, based on the information available on the Website and in these Regulations."
+        },
+        {
+          "value": "2. A condition for order fulfillment is the provision by the Customer/Business of complete, true, and accurate data enabling verification of the Customer/Business and the service recipient. The Website confirms receipt of the order by sending an email to the address provided during the ordering process, containing a description of the order. In case of incomplete, incorrect, or inconsistent data, the Website will contact the Customer/Business to correct the errors."
+        },
+        {
+          "value": "3. Registering a Customer Account on the Website is necessary to receive the service and is free of charge."
+        },
+        {
+          "value": "4. If the service ordered requires individual customization, the Customer must provide, together with the order form, the content necessary to perform the service (e.g., text, graphics, dimensions) in accordance with the technical requirements specified in the service description. The Customer may also choose an appropriate service specification from the variants offered by the Seller."
+        },
+        {
+          "value": "5. Upon receiving the order, the Seller immediately sends the Customer a confirmation email to the provided address, which also serves as confirmation of the conclusion of the service agreement."
+        },
+        {
+          "value": "6. Discounts from different promotions may only be combined if expressly permitted in the promotion’s terms. If no provision for combining discounts exists, the Customer may use only one discount (one promotion) per order."
+        }
+      ]
+    },
+    {
+      "header": "§5 Order Fulfillment",
+      "content": [
+        {
+          "value": "1. Order fulfillment for projects is fully automatic and instantaneous. After payment is completed, the Customer immediately gains access to the purchased educational materials. In case of any issues accessing a project, the Customer should promptly contact the support team."
+        },
+        {
+          "value": "2. The order fulfillment time is specified in the product description. Access is usually lifetime but may vary depending on promotions or project-specific conditions."
+        },
+        {
+          "value": "3. In case of order fulfillment issues, such as lack of access to a project or other technical problems, the Customer will be informed without delay, and the issue will be resolved as quickly as possible."
+        }
+      ]
+    },
+    {
+      "header": "§6 Delivery",
+      "content": [
+        {
+          "value": "1. Delivery in the context of this agreement refers to the provision of the educational service, including access to training materials, online broadcasts, or other project-related content."
+        },
+        {
+          "value": "2. The service will be made available to the Customer immediately after payment is made, in accordance with the project description and the terms of the order."
+        },
+        {
+          "value": "3. The service is always provided in its full scope and in accordance with the description, ensuring access to all educational materials in the form presented in the offer."
+        },
+        {
+          "value": "4. The Customer is informed about any additional costs related to the service (e.g., access to additional materials, certificates) that may arise during the order process."
+        }
+      ]
+    },
+    {
+      "header": "§7 Payment Methods",
+      "content": [
+        {
+          "value": "1. The Seller allows payment for the ordered service as a prepayment, made through the Stripe payment system."
+        },
+        {
+          "value": "2. Electronic payment by debit or credit card via the Stripe payment gateway."
+        },
+        {
+          "value": "3. The Seller documents the sale of the service in accordance with the Customer's request."
+        }
+      ]
+    },
+    {
+      "header": "§8 Warranty",
+      "content": [
+        {
+          "value": "1. In the case of claims related to the service, the Seller is responsible for the compliance of the service with the contract, in accordance with applicable law."
+        },
+        {
+          "value": "2. The Seller must respond promptly to the Consumer's claim, but no later than 14 calendar days from its receipt. Failure to address the claim within the specified period is deemed as acceptance by the Seller and recognition of the claim as justified."
+        },
+        {
+          "value": "3. In case of a service defect, the Customer has the right to file a complaint. Complaints should be submitted electronically to the Seller's email address or in writing to the Seller's postal address. If the consumer has difficulties in formulating a complaint, they can submit it using the template provided as Attachment No. 2 to this Agreement. This is for convenience only, and using this template is not a requirement for the effectiveness of the complaint."
+        },
+        {
+          "value": "4. The Seller is responsible for non-compliance of the service with the contract if identified within two years of the service's execution."
+        },
+        {
+          "value": "5. The Seller covers the costs associated with removing the defects of the service or re-executing it."
+        }
+      ]
+    },
+    {
+      "header": "§9 Withdrawal",
+      "content": [
+        {
+          "value": "1. In accordance with the law, a Customer who is a Consumer, pursuant to Article 27 of the Act of May 30, 2014 (Journal of Laws 2014, item 827, as amended) on Consumer Rights, has the right to withdraw from a distance contract without providing a reason."
+        },
+        {
+          "value": "2. According to Article 38, point 13 of the Consumer Rights Act – \"on the provision of digital content not stored on a tangible medium, where the performance of the service started with the explicit consent of the consumer before the withdrawal period and after the entrepreneur informed the consumer of the loss of the right to withdraw from the contract.\" – in such a case, the right to withdraw does not apply."
+        },
+        {
+          "value": "3. The right to withdraw from the contract is available within 14 calendar days from the conclusion of the contract."
+        },
+        {
+          "value": "4. When the Consumer withdraws from the contract, the contract is considered non-concluded, and the Consumer is released from any obligations. The mutual services provided should be returned in an unchanged condition, unless a change was necessary within the scope of ordinary management. The return should occur immediately, no later than fourteen days."
+        },
+        {
+          "value": "5. A Consumer may withdraw from the contract by submitting a statement using the form attached as Annex No. 1 to this Agreement, sent electronically or by post to the Seller's address, at the Consumer's discretion. Annex No. 1 is only a help for withdrawing from the contract and is not required for the effectiveness of the withdrawal. The Consumer may, but is not obligated to, use it. For effective withdrawal, a written statement to the Seller's address is sufficient."
+        },
+        {
+          "value": "6. To meet the deadline specified in point 2, it is sufficient to send a statement of withdrawal before its expiration."
+        },
+        {
+          "value": "7. The Seller will promptly confirm receipt of the withdrawal statement and inform the Consumer of the further procedure, including how to return costs and provide answers to any questions."
+        },
+        {
+          "value": "8. The Seller will promptly, within no more than 14 calendar days from receiving the Consumer's withdrawal statement, return all received payments, including any costs associated with the service. The Seller will return payments using the same payment method the Consumer used unless the Consumer explicitly agrees to another method of refund that does not incur any costs."
+        },
+        {
+          "value": "9. The Consumer bears only the direct costs of withdrawing from the contract."
+        },
+        {
+          "value": "10. The right to withdraw from the contract does not apply to the Customer in relation to contracts specified in Article 38 of the Consumer Rights Act, including in the case of: [subsections]",
+          "subsections": [
+            {
+              "value": "• Provision of services where the entrepreneur has fully performed the service with the explicit consent of the Consumer, who was informed before the service began that after the performance, the right to withdraw from the contract would be lost."
+            },
+            {
+              "value": "• Where the service includes digital elements that cannot be undone once performed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "header": "§10 Complaint Procedure",
+      "content": [
+        {
+          "value": "1. For a proper complaint submission, the Customer should provide their details, such as: name and surname or company name, address of residence or company address, email address, the subject of the complaint, the order number (if possible), the time period related to the complaint, and the circumstances justifying the complaint (a description of the issue) or any service features that are missing but were promised by the Seller or presented to the Customer."
+        },
+        {
+          "value": "2. If the Customer is a Consumer, in the case of the first complaint, the customer may expect a re-performance of the service or a refund. For a digital service, the Consumer can also request removal of defects in the digital service, and if the defect removal is ineffective, they may request a price reduction or withdraw from the contract. When assessing excessive costs, the value of the service free of defects, the nature and significance of the identified defect, and the inconvenience for the Customer caused by other forms of satisfaction will be taken into account."
+        },
+        {
+          "value": "3. Unless otherwise provided by separate provisions, the entrepreneur is required to respond to the Consumer's complaint within 14 days of receiving it. If the entrepreneur does not respond within this period, the complaint is considered accepted. The entrepreneur must provide the response in writing or another durable medium (e.g., USB drive or CD/DVD)."
+        },
+        {
+          "value": "4. If the claim is not addressed within the prescribed period, it is considered accepted by the Seller. A claim regarding withdrawal from the contract, if not addressed within the deadline, is not considered the same as accepting a complaint."
+        }
+      ]
+    },
+    {
+      "header": "§11 Liability",
+      "content": [
+        {
+          "value": "1. By posting and sharing content, the Customer voluntarily disseminates it. The Seller is not the content provider and does not endorse it, acting only as the host of the ICT resources. The Customer represents that: [subsections]",
+          "subsections": [
+            {
+              "value": "• They hold all necessary rights (economic copyrights, industrial property rights or related rights) to use and share the content they post."
+            },
+            {
+              "value": "• Any personal data, likenesses, or information concerning third parties that they post or share is lawful, voluntary, and made with the consent of the rights-holders."
+            },
+            {
+              "value": "• They consent to other Customers and the Seller viewing any information, data, images, or other content they publish, and grant the Seller a royalty-free license to use such content."
+            },
+            {
+              "value": "• They agree that their works may be adapted, modified, or interpreted under the Copyright and Related Rights Act."
+            }
+          ]
+        },
+        {
+          "value": "2. The Customer is not permitted to: [subsections]",
+          "subsections": [
+            {
+              "value": "• Post personal data of third parties or distribute third-party likenesses without required consent."
+            },
+            {
+              "value": "• Publish advertising or promotional content inconsistent with the Service’s purpose."
+            }
+          ]
+        },
+        {
+          "value": "3. Upon receiving a notice from a third party or public authority, the Seller reserves the right to modify or remove Customer content if it violates these Regulations or applicable law. The Seller does not monitor content in real time."
+        }
+      ]
+    },
+    {
+      "header": "§12 Out-of-Court Complaint and Redress Procedures",
+      "content": [
+        {
+          "value": "1. Information on out-of-court complaint handling and redress procedures, and how to access them, is available at the offices and websites of municipal Consumer Ombudsmen, consumer protection NGOs, Provincial Trade Inspection authorities, and at the following UOKiK addresses: www.uokik.gov.pl/spory_konsumenckie.php, www.uokik.gov.pl/wazne_adresy.php, www.uokik.gov.pl/sprawy_indywidualne.php."
+        },
+        {
+          "value": "2. A Consumer may, among other options: [subsections]",
+          "subsections": [
+            {
+              "value": "• Request the Provincial Trade Inspector to initiate mediation."
+            },
+            {
+              "value": "• Apply to the Permanent Consumer Court at the Provincial Trade Inspectorate for dispute resolution (see www.uokik.gov.pl/wazne_adresy.php)."
+            },
+            {
+              "value": "• Seek free legal assistance, e.g. from the Federation of Consumers (www.federacjakonsumentow.org.pl)."
+            }
+          ]
+        },
+        {
+          "value": "3. For cross-border disputes, the European Consumer Centres Network can assist. Addresses: www.konsument.gov.pl."
+        },
+        {
+          "value": "4. Consumers may use the EU’s online dispute resolution (ODR) platform per Regulation (EU) 524/2013 at http://ec.europa.eu/consumers/odr/."
+        },
+        {
+          "value": "5. Using out-of-court procedures is voluntary and requires both parties’ consent."
+        }
+      ]
+    },
+    {
+      "header": "§13 Provisions for Business Customers",
+      "content": [
+        {
+          "value": "1. The provisions of this §13 apply only to Customers who are not Consumers (i.e., professional transactions)."
+        },
+        {
+          "value": "2. The Seller may withdraw from the contract with a non-Consumer Customer within 14 calendar days of conclusion, without reason and without liability on the part of the Customer."
+        },
+        {
+          "value": "3. The Seller may terminate an electronic service agreement with a non-Consumer service recipient immediately, without cause, by sending notice to the Customer."
+        },
+        {
+          "value": "4. The Seller may restrict available payment methods and require full or partial prepayment, regardless of payment method selected or contract conclusion."
+        },
+        {
+          "value": "5. Risk of accidental loss or damage to goods passes to a non-Consumer Customer upon delivery to the carrier, and the Seller is not liable from that moment until receipt by the Customer."
+        },
+        {
+          "value": "6. A non-Consumer Customer must inspect deliveries promptly and, if loss or damage is found, take all necessary steps to hold the carrier liable."
+        },
+        {
+          "value": "7. Under Art. 558 §1 of the Civil Code, warranty liability for goods is excluded for non-Consumer Customers."
+        },
+        {
+          "value": "8. Seller’s liability per claim and in aggregate is limited to the amount paid, for foreseeable damages only; no liability for lost profits."
+        },
+        {
+          "value": "9. Disputes with non-Consumer Customers will be decided by the court competent for the Seller’s registered office."
+        }
+      ]
+    },
+    {
+      "header": "§14 Final Provisions",
+      "content": [
+        {
+          "value": "1. The Website honors all Customer rights under applicable law."
+        },
+        {
+          "value": "2. If mandatory consumer protection laws provide more favorable rights than these Regulations, the legal provisions prevail."
+        },
+        {
+          "value": "3. All content on the Website (graphics, text, layout, logos) is protected by copyright and is the Seller’s exclusive property. Unauthorized use may incur civil and criminal liability."
+        },
+        {
+          "value": "4. As Data Controller, the Seller informs you that: [subsections]",
+          "subsections": [
+            {
+              "value": "• Providing data is voluntary but necessary to process the order;"
+            },
+            {
+              "value": "• Data subjects have rights of access, correction, erasure (right to be forgotten), restriction, portability, and withdrawal of consent without affecting lawfulness of prior processing; data may be disclosed to competent authorities if required by law;"
+            },
+            {
+              "value": "• Legal basis for processing is Art. 6(1)(a) of the GDPR;"
+            },
+            {
+              "value": "• Personal data will be stored for the time necessary to fulfill and process the order, but no longer than 3 years (2 years for warranty claims, plus 1 year for other claims or exceptional circumstances);"
+            },
+            {
+              "value": "• Data subjects may lodge a complaint with the UODO if they believe their rights under the GDPR are infringed."
+            }
+          ]
+        },
+        {
+          "value": "5. Your data will be processed automatically, including profiling."
+        },
+        {
+          "value": "6. Amended Regulations bind Customers if Art. 384 of the Civil Code notice requirements are met."
+        },
+        {
+          "value": "7. The Seller may amend the Regulations for reasons such as: [subsections]",
+          "subsections": [
+            {
+              "value": "• Changes in law;"
+            },
+            {
+              "value": "• Changes in payment or delivery methods;"
+            },
+            {
+              "value": "• Exchange rate fluctuations;"
+            },
+            {
+              "value": "• Changes in electronic service delivery;"
+            },
+            {
+              "value": "• Changes to Seller’s contact details."
+            }
+          ]
+        },
+        {
+          "value": "8. Changes do not affect existing orders (governed by the Regulations in force at order time). The Seller will post notice at least 30 days before changes; Customers who do not accept may terminate immediately within 30 days of notice."
+        },
+        {
+          "value": "9. Disputes under these Regulations with Consumer Customers may be brought before a Polish common court chosen by the Customer."
+        },
+        {
+          "value": "10. Annexes constitute an integral part of these Regulations."
+        },
+        {
+          "value": "11. The service agreement is concluded in Polish, consistent with these Regulations."
+        },
+        {
+          "value": "12. Customers may access these Regulations at any time via the Website link and download or print them; commercial use is protected by LEGATO Law Firm."
+        },
+        {
+          "value": "13. These Regulations enter into force on 1 September 2024."
+        }
+      ]
+    },
+    {
+      "header": "Copyright Notice for the Sales Terms of Service",
+      "content": [
+        {
+          "value": "The owner of all material copyrights to the template of these Sales Terms of Service is LEGATO Law Office, which has granted this service a non-exclusive and non-transferable right to use this Sales Terms of Service for purposes related to its own commercial activities on the Internet and extends legal protection to the aforementioned document for the duration of the agreement. Copying and distributing the template of these Sales Terms of Service without the consent of LEGATO Law Office is prohibited and may result in both criminal and civil liability. Online sellers can learn more about the possibility of using the Sales Terms of Service template on the website [link]",
+          "link": {
+            "url": "https://www.kancelaria-legato.pl/",
+            "text": "https://www.kancelaria-legato.pl/"
+          }
+        }
+      ]
+    }
+  ]
+}

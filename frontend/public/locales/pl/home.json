@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "title": "Buduj projekty. Twórz portfolio. Programuj z loop",
+    "description": "Zamiast teorii – praktyczne projekty, które trafiają do Twojego portfolio. Nauka programowania z loop to kod, GitHub, własne decyzje i realne umiejętności. Zacznij za darmo!"
+  },
+  "title": "Buduj projekty. Twórz portfolio. Programuj z",
+  "subtitle": "Ucz się przez tworzenie prawdziwych aplikacji – krok po kroku, bez pustych teorii.",
+  "button": "Zbuduj swój pierwszy projekt",
+  "sign-up": { "header": "Utwórz darmowe konto", "button": "Zacznij teraz" },
+  "certificate": {
+    "student": "Patryk Devowski",
+    "project": "Twój pierwszy projekt w Pythonie: Generator haseł",
+    "header": "Certyfikat ukończenia",
+    "title": "Zbuduj projekt. Zdobądź certyfikat.",
+    "subtitle": "Udokumentuj swoje umiejętności certyfikatem opartym na realnym projekcie – nie na testach, tylko na kodzie, który naprawdę działa."
+  },
+  "pricing": {
+    "header": "Plany cenowe",
+    "title": "Przejrzyste i elastyczne plany",
+    "subtitle": "Darmowy plan daje dostęp do dowolnego jednego projektu, a plan premium otwiera pełen katalog wyzwań i wsparcie ekspertów – bez ukrytych opłat."
+  },
+  "technology": {
+    "header": "Technologie",
+    "title": "Nowoczesne technologie w praktyce",
+    "subtitle": "Każdy projekt to szansa, by poznać prawdziwe narzędzia wykorzystywane przez programistów.",
+    "button": "Zobacz wszystkie"
+  },
+  "testimonial": "Co mówią nasi uczniowie",
+  "project": {
+    "header": "Projekty",
+    "subtitle": "Praktyczne projekty uczące przez działanie. Koduj i rozwijaj realne umiejętności.",
+    "button": "Zobacz wszystkie projekty"
+  },
+  "advertisement": {
+    "part1": "Zacznij już dziś,",
+    "part2": "buduj swoje umiejętności",
+    "part3": "i rozwijaj karierę w IT!",
+    "button": "Wypróbuj za darmo"
+  },
+  "platform": {
+    "header": "Portfolio napędzane kodem",
+    "title": "Programowanie przez projekty z",
+    "subtitle": "Budujesz lokalnie, używasz własnego edytora i Gita – dokładnie tak, jak w prawdziwej pracy. Bez pustej teorii. Tylko praktyka, kod i projekty do portfolio."
+  },
+  "app": {
+    "title": "Korzystaj z platformy wszędzie",
+    "subtitle": "Ucz się i śledź postępy dzięki aplikacji webowej działającej na każdym urządzeniu."
+  }
+}

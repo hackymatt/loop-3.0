@@ -1,0 +1,80 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  lint-backend:
+    uses: ./.github/workflows/lint-backend.yml
+
+  lint-frontend:
+    uses: ./.github/workflows/lint-frontend.yml
+
+  test-backend:
+    uses: ./.github/workflows/test-backend.yml
+    needs: lint-backend
+    secrets:
+      LOCAL: ${{ secrets.LOCAL }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+      NOREPLY_EMAIL: ${{ secrets.NOREPLY_EMAIL }}
+      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      DUMMY_STUDENT_EMAIL: ${{ secrets.DUMMY_STUDENT_EMAIL }}
+      DUMMY_STUDENT_PASSWORD: ${{ secrets.DUMMY_STUDENT_PASSWORD }}
+
+  test-frontend:
+    uses: ./.github/workflows/test-frontend.yml
+    needs: lint-frontend
+
+  build-and-push-backend:
+    uses: ./.github/workflows/build.yml
+    needs: test-backend
+    with:
+      service: backend
+      context: ./backend
+      file: ./backend/Dockerfile
+      image_name: loopedupl/backend
+      tag: ${{ github.run_id }}.dev
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-and-push-frontend:
+    uses: ./.github/workflows/build.yml
+    needs: test-frontend
+    with:
+      service: frontend
+      context: ./frontend
+      file: ./frontend/Dockerfile.dev
+      image_name: loopedupl/frontend
+      tag: ${{ github.run_id }}.dev
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-and-push-nginx:
+    uses: ./.github/workflows/build.yml
+    needs: [build-and-push-backend, build-and-push-frontend]
+    with:
+      service: nginx
+      context: ./nginx
+      file: ./nginx/Dockerfile.dev
+      image_name: loopedupl/nginx
+      tag: ${{ github.run_id }}.dev
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  deploy-to-dev:
+    uses: ./.github/workflows/deploy.yml
+    needs: build-and-push-nginx
+    with:
+      environment: dev
+      tag_value: ${{ github.run_id }}.dev
+    secrets:
+      kube_config_data: ${{ secrets.KUBE_CONFIG_DEV }}

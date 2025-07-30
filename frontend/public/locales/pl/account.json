@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "personal": {
+      "title": "Twój profil – Zaktualizuj dane",
+      "description": "Dostosuj swój profil na platformie loop. Edytuj imię, nazwisko oraz zdjęcie, aby inni uczestnicy ścieżek rozpoznali Cię w projektach i społeczności."
+    },
+    "manage": {
+      "title": "Ustawienia konta – Zmień hasło lub usuń konto",
+      "description": "Zadbaj o bezpieczeństwo swojego konta na platformie loop. Zmieniaj hasło, zarządzaj danymi lub usuń konto, jeśli kończysz swoją ścieżkę."
+    },
+    "subscription": {
+      "title": "Subskrypcja – Zarządzaj dostępem do projektów",
+      "description": "Sprawdź aktywną subskrypcję i zarządzaj planem. Zyskaj pełen dostęp do projektów, ścieżek i certyfikatów rozwoju na platformie loop."
+    }
+  },
+  "email": {
+    "label": "Email",
+    "errors": {
+      "required": "Email jest wymagany",
+      "invalid": "Podany email jest nieprawidłowy"
+    }
+  },
+  "firstName": {
+    "label": "Imię",
+    "errors": { "required": "Imię jest wymagane" }
+  },
+  "lastName": {
+    "label": "Nazwisko",
+    "errors": { "required": "Nazwisko jest wymagane" }
+  },
+  "password": {
+    "label": "Hasło",
+    "placeholder": "Wpisz hasło",
+    "errors": {
+      "required": "Hasło jest wymagane",
+      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
+      "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
+      "number": "Hasło musi zawierać co najmniej jedną cyfrę",
+      "specialCharacter": "Hasło musi zawierać co najmniej jeden znak specjalny"
+    }
+  },
+  "oldPassword": {
+    "label": "Aktualne hasło",
+    "placeholder": "Wpisz obecne hasło",
+    "errors": {
+      "required": "To pole jest wymagane",
+      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
+      "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
+      "number": "Hasło musi zawierać co najmniej jedną cyfrę",
+      "specialCharacter": "Hasło musi zawierać co najmniej jeden znak specjalny"
+    }
+  },
+  "newPassword": {
+    "label": "Nowe hasło",
+    "placeholder": "Wpisz nowe hasło",
+    "errors": {
+      "required": "To pole jest wymagane",
+      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
+      "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
+      "number": "Hasło musi zawierać co najmniej jedną cyfrę",
+      "specialCharacter": "Hasło musi zawierać co najmniej jeden znak specjalny",
+      "same": "Nowe hasło musi być inne niż obecne"
+    }
+  },
+  "termsAcceptance": {
+    "label": {
+      "accept": "Akceptuję",
+      "terms": "regulamin",
+      "and": "oraz",
+      "privacy": "politykę prywatności"
+    },
+    "errors": { "required": "To pole jest wymagane" }
+  },
+  "dataProcessingConsent": {
+    "label": "Wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji usługi edukacyjnej na platformie loop.",
+    "errors": { "required": "To pole jest wymagane" }
+  },
+  "personal": {
+    "title": "Dane osobowe",
+    "button": "Zapisz zmiany"
+  },
+  "manage": {
+    "title": "Zarządzaj kontem",
+    "button": "Zapisz ustawienia"
+  },
+  "subscription": {
+    "title": "Subskrypcja",
+    "label": "Obecny pakiet",
+    "billing": {
+      "label": "Okres rozliczenia",
+      "monthly": "Miesięcznie",
+      "yearly": "Rocznie"
+    },
+    "renewal": "Odnowienie na kwotę",
+    "on": "nastąpi",
+    "button": "Anuluj subskrypcję",
+    "cancel": "Anuluj",
+    "description": "Czy na pewno chcesz anulować subskrypcję? Stracisz dostęp do aktywnych projektów i ścieżek rozwoju.",
+    "sell": "Zbuduj swoje portfolio, ucz się z projektami i zdobądź certyfikaty. Wybierz plan i rozwijaj się razem z loop.",
+    "error": "Coś poszło nie tak. Spróbuj ponownie."
+  },
+  "logout": {
+    "title": "Wyloguj się",
+    "error": "Wylogowanie nie powiodło się. Spróbuj ponownie."
+  },
+  "photo": {
+    "change": "Zmień zdjęcie profilowe",
+    "error": "Wystąpił błąd podczas zmiany zdjęcia"
+  },
+  "delete": {
+    "text": "Wszystkie dane, w tym Twoje postępy, projekty i historia certyfikatów zostaną trwale usunięte. Jeśli chcesz jedynie anulować subskrypcję, zrób to w sekcji powyżej.",
+    "button": "Usuń konto",
+    "cancel": "Anuluj",
+    "description": "Czy na pewno chcesz usunąć swoje konto? Tego kroku nie można cofnąć."
+  }
+}

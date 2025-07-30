@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "O nas – Nauka przez praktyczne projekty",
+    "description": "loop to nowoczesna platforma do nauki programowania przez realizację praktycznych projektów. Buduj portfolio, ucz się technologii krok po kroku i rozwijaj się w IT – niezależnie od poziomu zaawansowania."
+  },
+  "hero": {
+    "title": "Ucz się, tworząc projekty",
+    "subtitle": "to platforma edukacyjna, która uczy programowania poprzez budowanie praktycznych projektów. Każdy projekt to konkretny cel, realna technologia i szansa na rozwój Twoich umiejętności w praktyce.",
+    "button": "Zobacz projekty"
+  },
+  "mission": {
+    "title": "Nasza misja",
+    "subtitle": "Chcemy umożliwić każdemu naukę programowania przez działanie. Tworzymy system ścieżek opartych na projektach, które rozwijają realne umiejętności krok po kroku.",
+    "methods": [
+      {
+        "name": "Nauka przez tworzenie",
+        "description": "Każdy projekt to rzeczywisty problem do rozwiązania – kodujesz od początku, rozwijasz swoje portfolio i zdobywasz doświadczenie."
+      },
+      {
+        "name": "Zależności między projektami",
+        "description": "Każdy projekt może mieć wymagania wstępne – dzięki temu uczysz się we właściwej kolejności i nie tracisz czasu na zbędną teorię."
+      },
+      {
+        "name": "Dostępność na każdym poziomie",
+        "description": "Projekty dla osób początkujących, średniozaawansowanych i zaawansowanych – wszystko podzielone na kroki z jasnymi instrukcjami."
+      }
+    ]
+  },
+  "coreValues": {
+    "title": "Główne wartości",
+    "subtitle": "W loop kierujemy się czterema kluczowymi wartościami, które kształtują nasz sposób nauczania i wspierania społeczności.",
+    "values": [
+      {
+        "name": "Dostępność",
+        "description": "Wierzymy, że nauka programowania powinna być dostępna dla każdego, niezależnie od doświadczenia czy tła zawodowego.",
+        "icon": "ic-popularity.svg"
+      },
+      {
+        "name": "Praktyczność",
+        "description": "Skupiamy się na praktycznym podejściu do nauki – uczysz się poprzez kodowanie, a nie tylko czytanie.",
+        "icon": "ic-web-programming.svg"
+      },
+      {
+        "name": "Innowacyjność",
+        "description": "Stawiamy na nowoczesne metody nauczania i ciągle rozwijamy naszą platformę, by wspierać Cię jeszcze lepiej.",
+        "icon": "ic-chip.svg"
+      },
+      {
+        "name": "Wsparcie",
+        "description": "Nie jesteś sam – możesz liczyć na wsparcie mentorów, społeczności i jasne instrukcje krok po kroku.",
+        "icon": "ic-cooperate.svg"
+      }
+    ]
+  }
+}

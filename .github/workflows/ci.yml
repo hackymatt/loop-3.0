@@ -1,0 +1,55 @@
+name: Continuous Improvement
+
+on:
+  pull_request:
+    branches: [develop]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - name: Detect changes using paths-filter
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          token: ${{ secrets.PAT_FOR_FILTER }}
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+
+  lint-backend:
+    uses: ./.github/workflows/lint-backend.yml
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true'
+
+  lint-frontend:
+    uses: ./.github/workflows/lint-frontend.yml
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true'
+
+  test-backend:
+    uses: ./.github/workflows/test-backend.yml
+    needs: lint-backend
+    if: needs.detect-changes.outputs.backend == 'true'
+    secrets:
+      LOCAL: ${{ secrets.LOCAL }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+      NOREPLY_EMAIL: ${{ secrets.NOREPLY_EMAIL }}
+      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      DUMMY_STUDENT_EMAIL: ${{ secrets.DUMMY_STUDENT_EMAIL }}
+      DUMMY_STUDENT_PASSWORD: ${{ secrets.DUMMY_STUDENT_PASSWORD }}
+
+  test-frontend:
+    uses: ./.github/workflows/test-frontend.yml
+    needs: lint-frontend
+    if: needs.detect-changes.outputs.frontend == 'true'

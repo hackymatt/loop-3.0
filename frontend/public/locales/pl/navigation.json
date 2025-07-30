@@ -1,0 +1,33 @@
+{
+  "home": "Strona główna",
+  "projects": "Projekty",
+  "pricing": "Plany cenowe",
+  "blog": "Blog",
+  "about": "O nas",
+  "contact": "Kontakt",
+  "login": "Zaloguj się",
+  "register": "Wypróbuj za darmo",
+  "help": "Potrzebujesz pomocy?",
+  "support": "Pomoc",
+  "more": "Zobacz wszystkie projekty",
+  "tags": "Popularne projekty",
+  "levels": "Poziomy",
+  "technologies": "Technologie",
+  "categories": "Kategorie",
+  "duration": {
+    "label": "Czas realizacji",
+    "short": "Do 2 godzin",
+    "medium": "Od 2 do 5 godzin",
+    "long": "Powyżej 5 godzin"
+  },
+  "socialMedia": "Obserwuj nas",
+  "apps": "Zainstaluj aplikację",
+  "allRightsReserved": "Wszelkie prawa zastrzeżone.",
+  "privacyPolicy": "Polityka prywatności",
+  "termsOfService": "Regulamin",
+  "dashboard": "Dashboard",
+  "accountSettings": "Ustawienia konta",
+  "logout": "Wyloguj",
+  "upgrade": "Zmień plan",
+  "certificates": "Certyfikaty"
+}

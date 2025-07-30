@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "projects": {
+      "title": "Nasze projekty - Zacznij rozwijać swoje umiejętności z nami",
+      "description": "Oferujemy różnorodne projekty programistyczne, które pomogą Ci zdobyć praktyczne doświadczenie w nowoczesnych technologiach. Dołącz i rozwijaj swoje kompetencje w IT!"
+    },
+    "project": {
+      "title": "Projekt [name] - rozpocznij realizację już teraz",
+      "description": "Zdobądź praktyczne doświadczenie w [technologyName], realizując projekt [name]. Dołącz do nas i rozwijaj swoją karierę w IT!"
+    }
+  },
+  "title": "Projekty",
+  "filter": {
+    "level": "Poziom trudności",
+    "technology": "Technologia",
+    "category": "Kategoria",
+    "duration": {
+      "title": "Czas realizacji",
+      "options": [
+        {
+          "slug": "short",
+          "name": "Do 2 godzin"
+        },
+        {
+          "slug": "medium",
+          "name": "Od 2 do 5 godzin"
+        },
+        {
+          "slug": "long",
+          "name": "Powyżej 5 godzin"
+        }
+      ]
+    },
+    "rating": {
+      "title": "Ocena",
+      "more": "i wyżej"
+    },
+    "status": {
+      "title": "Status",
+      "options": [
+        {
+          "slug": "not-started",
+          "name": "Nie rozpoczęte"
+        },
+        {
+          "slug": "in-progress",
+          "name": "W trakcie"
+        },
+        {
+          "slug": "completed",
+          "name": "Zakończone"
+        }
+      ]
+    }
+  },
+  "instructor": ["mentor", "mentorów", "mentorów"],
+  "student": ["uczestnik", "uczestników", "uczestników"],
+  "review": ["recenzja", "recenzje", "recenzji"],
+  "hour": ["godzina", "godziny", "godzin"],
+  "stage": ["etap", "etapy", "etapów"],
+  "video": ["nagranie", "nagrania", "nagrań"],
+  "article": ["artykuł", "artykuły", "artykułów"],
+  "exercise": ["ćwiczenie", "ćwiczenia", "ćwiczeń"],
+  "quiz": ["test", "testy", "testów"],
+  "sign-up": {
+    "header": "Utwórz darmowe konto",
+    "button": "Rozpocznij projekt za darmo"
+  },
+  "start": "Rozpocznij projekt za darmo",
+  "continue": "Kontynuuj projekt",
+  "access": "Dożywotni dostęp",
+  "certificate": {
+    "title": "Certyfikat ukończenia projektu",
+    "subtitle": "Dodaj to poświadczenie do swojego profilu LinkedIn, CV lub życiorysu. Podziel się nim w mediach społecznościowych oraz podczas oceny wyników pracy."
+  },
+  "chat": {
+    "title": "Chat",
+    "subtitle": "Dołącz do czatu projektowego, aby uzyskać wsparcie i wymieniać się doświadczeniami z innymi uczestnikami.",
+    "button": "Dołącz do czatu"
+  },
+  "preview": "Podgląd projektu",
+  "prerequisites": {
+    "title": "Wymagania wstępne",
+    "none": "Brak wymagań wstępnych."
+  },
+  "instructors": "Mentorzy",
+  "reviews": {
+    "label": "Recenzje",
+    "button": "Napisz opinię"
+  },
+  "included": {
+    "start": "Dostępne w planie",
+    "plans": "Podstawowym oraz Premium"
+  },
+  "overview": "Opis projektu",
+  "similar": "Podobne projekty",
+  "viewAll": "Zobacz wszystkie",
+  "stages": {
+    "title": "Etapy projektu",
+    "start": "Rozpocznij",
+    "continue": "Kontynuuj",
+    "show": "Pokaż",
+    "hide": "Ukryj",
+    "step": "kroki"
+  }
+}

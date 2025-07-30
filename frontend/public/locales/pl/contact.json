@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Kontakt – Skontaktuj się z zespołem loop",
+    "description": "Masz pytania dotyczące projektów, ścieżek nauki lub platformy? Skontaktuj się z nami – chętnie pomożemy!"
+  },
+  "phoneLabel": "Telefon",
+  "emailLabel": "E-mail",
+  "socialMedia": "Obserwuj nas",
+  "title": {
+    "header": "Skontaktuj się z nami",
+    "form": "Napisz wiadomość"
+  },
+  "subtitle": {
+    "header": "Jesteśmy tu, aby pomóc Ci rozwijać się w programowaniu.",
+    "form": "Odpowiadamy zazwyczaj w ciągu 24 godzin w dni robocze."
+  },
+  "button": "Wyślij wiadomość",
+  "email": {
+    "label": "E-mail",
+    "errors": {
+      "required": "Podaj adres e-mail",
+      "invalid": "Wprowadź poprawny adres e-mail"
+    }
+  },
+  "fullName": {
+    "label": "Imię i nazwisko",
+    "errors": {
+      "required": "Podaj imię i nazwisko"
+    }
+  },
+  "subject": {
+    "label": "Temat",
+    "errors": {
+      "required": "Wpisz temat wiadomości"
+    }
+  },
+  "message": {
+    "label": "Wiadomość",
+    "errors": {
+      "required": "Treść wiadomości jest wymagana"
+    }
+  },
+  "termsAcceptance": {
+    "label": {
+      "accept": "Akceptuję",
+      "terms": "regulamin",
+      "and": "oraz",
+      "privacy": "politykę prywatności"
+    },
+    "errors": {
+      "required": "Musisz zaakceptować regulamin i politykę prywatności"
+    }
+  }
+}

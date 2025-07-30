@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "title": "Payments – Fast and Secure",
+    "description": "Complete your project payment quickly and securely. Choose your preferred method and start learning programming without delays."
+  },
+  "title": "Let's finish powering you up!",
+  "subtitle": "{plan} plan is right for you.",
+  "summary": {
+    "label": "Summary",
+    "plan": "Plan",
+    "yearly": { "save": "Save", "part1": "with annual", "part2": "billing" },
+    "total": "Total billed",
+    "button": { "free": "Subscribe", "other": "Pay and subscribe" },
+    "info": "By confirming your subscription, you allow loop to charge you for future payments in accordance with their terms. You can always cancel your subscription.",
+    "stripe": { "managed": "Powered by", "terms": "Terms", "privacy": "Privacy" }
+  },
+  "customer": { "label": "Account details" },
+  "paymentMethods": {
+    "label": "Payment methods",
+    "card": { "label": "Card", "description": "We support Mastercard and Visa." },
+    "applepay": {
+      "label": "Apple Pay",
+      "description": "Another step will appear after submitting your order to complete your purchase details."
+    },
+    "googlepay": {
+      "label": "Google Pay",
+      "description": "Another step will appear after submitting your order to complete your purchase details."
+    }
+  },
+  "card": {
+    "number": {
+      "label": "Card number",
+      "errors": {
+        "required": "Card number is required",
+        "invalid": "Your card number is incomplete."
+      }
+    },
+    "holder": {
+      "label": "Card holder",
+      "placeholder": "John Doe",
+      "errors": { "required": "Card holder is required" }
+    },
+    "expiration": {
+      "label": "Expiration date",
+      "errors": {
+        "required": "Expiration date is required",
+        "invalid": "Your card's expiration date is in the past."
+      }
+    },
+    "security": {
+      "label": "CVC",
+      "errors": {
+        "required": "CVC is required",
+        "invalid": "Your card's security code is incomplete."
+      }
+    }
+  }
+}

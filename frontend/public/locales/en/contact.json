@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "Contact – Get in Touch with Us",
+    "description": "Have questions? Reach out to the loop platform team. We’re here to help with projects, subscriptions, and technical support."
+  },
+  "phoneLabel": "Phone",
+  "emailLabel": "Email",
+  "socialMedia": "Follow us",
+  "title": { "header": "Get in touch", "form": "Drop us a line" },
+  "subtitle": {
+    "header": "We'd love to talk about how we can help you.",
+    "form": "We normally respond within 24 business hours."
+  },
+  "button": "Send message",
+  "email": {
+    "label": "Email",
+    "errors": { "required": "Email is required", "invalid": "Email is invalid" }
+  },
+  "fullName": {
+    "label": "Full name",
+    "errors": { "required": "Full name is required" }
+  },
+  "subject": {
+    "label": "Subject",
+    "errors": { "required": "Subject is required" }
+  },
+  "message": {
+    "label": "Message",
+    "errors": { "required": "Message is required" }
+  },
+  "termsAcceptance": {
+    "label": {
+      "accept": "I accept",
+      "terms": "the Terms of Service",
+      "and": "and",
+      "privacy": "the Privacy Policy."
+    },
+    "errors": { "required": "This field is required" }
+  }
+}

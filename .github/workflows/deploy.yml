@@ -1,0 +1,43 @@
+name: Deploy Workflow
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      tag_value:
+        required: true
+        type: string
+    secrets:
+      kube_config_data:
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update Helm Chart Values
+        uses: Nextdoor/helm-set-image-tag-action@main
+        with:
+          values_files: deployment/values-${{ inputs.environment }}.yaml
+          tag_keys: .backend.tag,.broker.tag,.frontend.tag,.nginx.tag
+          tag_value: ${{ inputs.tag_value }}
+
+      - name: Deploy to Kubernetes
+        uses: wahyd4/kubectl-helm-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.kube_config_data }}
+        with:
+          args: |
+            helm repo add bitnami https://charts.bitnami.com/bitnami
+            cd deployment
+            helm upgrade --install loop . \
+              --namespace default \
+              --values 'values-${{ inputs.environment }}.yaml' \
+              --set broker.env.TAG=${{ inputs.tag_value }}

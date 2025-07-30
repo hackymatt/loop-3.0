@@ -1,0 +1,16 @@
+{
+  "title": { "part1": "Register now for get", "part2": "discount" },
+  "subtitle": "Subscribe to the newsletter",
+  "email": {
+    "label": "Enter your email",
+    "errors": { "required": "Email is required", "invalid": "Email is invalid" }
+  },
+  "button": "Subscribe",
+  "marketingConsent": {
+    "label": {
+      "accept": "I consent to receiving commercial information about services and newsletters at the provided email address — more information can be found ",
+      "link": "here"
+    },
+    "errors": { "required": "This field is required" }
+  }
+}

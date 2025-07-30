@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "personal": {
+      "title": "Personal Information – Change Name and Profile Picture",
+      "description": "Manage your profile on the platform. Edit your first and last name, and update your profile picture to personalize your account."
+    },
+    "manage": {
+      "title": "Manage Your Account – Change Password or Delete Account",
+      "description": "Update your account details, change your password, or delete your account. Keep your profile secure and stay in control on our learning platform."
+    },
+    "subscription": {
+      "title": "Subscription – View and Change Your Plan",
+      "description": "Check the details of your current subscription, compare available plans, and switch to the one that best fits your learning goals."
+    }
+  },
+  "email": {
+    "label": "Email",
+    "errors": { "required": "Email is required", "invalid": "Email is invalid" }
+  },
+  "firstName": {
+    "label": "First name",
+    "errors": { "required": "First name is required" }
+  },
+  "lastName": {
+    "label": "Last name",
+    "errors": { "required": "Last name is required" }
+  },
+  "password": {
+    "label": "Password",
+    "placeholder": "Enter password",
+    "errors": {
+      "required": "Password is required",
+      "minLength": "Password must be at least minPasswordLength characters",
+      "bigLetter": "Password must contain at least one uppercase letter",
+      "smallLetter": "Password must contain at least one lowercase letter",
+      "number": "Password must contain at least one number",
+      "specialCharacter": "Password must contain at least one special character"
+    }
+  },
+  "oldPassword": {
+    "label": "Old password",
+    "placeholder": "Enter password",
+    "errors": {
+      "required": "Password is required",
+      "minLength": "Password must be at least minPasswordLength characters",
+      "bigLetter": "Password must contain at least one uppercase letter",
+      "smallLetter": "Password must contain at least one lowercase letter",
+      "number": "Password must contain at least one number",
+      "specialCharacter": "Password must contain at least one special character"
+    }
+  },
+  "newPassword": {
+    "label": "New password",
+    "placeholder": "Enter password",
+    "errors": {
+      "required": "Password is required",
+      "minLength": "Password must be at least minPasswordLength characters",
+      "bigLetter": "Password must contain at least one uppercase letter",
+      "smallLetter": "Password must contain at least one lowercase letter",
+      "number": "Password must contain at least one number",
+      "specialCharacter": "Password must contain at least one special character",
+      "same": "New password must be different than old password"
+    }
+  },
+  "termsAcceptance": {
+    "label": {
+      "accept": "I accept",
+      "terms": "the Terms of Service",
+      "and": "and",
+      "privacy": "the Privacy Policy."
+    },
+    "errors": { "required": "This field is required" }
+  },
+  "dataProcessingConsent": {
+    "label": "I consent to the processing of my personal data provided in the form for the purpose and to the extent necessary to provide the service, and only for this purpose.",
+    "errors": { "required": "This field is required" }
+  },
+  "personal": { "title": "Personal data", "button": "Save" },
+  "manage": { "title": "Manage account", "button": "Save" },
+  "subscription": {
+    "title": "Subscription",
+    "label": "Current plan",
+    "billing": { "label": "Billing", "monthly": "Monthly", "yearly": "Yearly" },
+    "renewal": "Renewal",
+    "on": "on",
+    "button": "Cancel subscription",
+    "cancel": "Cancel",
+    "description": "Are you sure you want to cancel your subscription? This action cannot be undone.",
+    "sell": "Gain programming skills that will accelerate your career growth! Get access to all projects and certificates.",
+    "error": "Cancellation failed. Please try again."
+  },
+  "logout": { "title": "Logout", "error": "Logout failed. Please try again." },
+  "photo": { "change": "Change photo", "error": "Photo change failed. Please try again." },
+  "delete": {
+    "text": "All your profile and learning data will be permanently deleted. If you are looking to cancel your subscription, please have a look at",
+    "button": "Delete account",
+    "cancel": "Cancel",
+    "description": "Are you sure you want to delete your account? This action cannot be undone."
+  }
+}

@@ -1,0 +1,325 @@
+import random
+import string
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+from user.utils import get_unique_username
+from const import UserType, Language, Currency
+
+from user.type.admin_user.models import Admin
+from user.type.instructor_user.models import Instructor
+from user.type.student_user.models import Student
+
+from blog.tag.models import Tag, TagTranslation
+from blog.topic.models import Topic, TopicTranslation
+from blog.models import Blog, BlogTranslation
+
+from project.category.models import Category, CategoryTranslation
+from project.level.models import Level, LevelTranslation
+from project.technology.models import Technology
+from project.stage.models import Stage, StageTranslation
+from project.step.models import Step, StepTranslation
+from project.models import Project, ProjectTranslation
+
+from review.models import Review
+
+from plan.models import Plan, PlanTranslation, Option, OptionTranslation
+from plan.subscription.utils import subscribe_free_plan
+
+from certificate.models import Certificate
+
+languages = [choice.value for choice in Language]
+
+
+def _generate_random_string(length=10):
+    """Generate a random alphanumeric string of a given length."""
+    return "".join(random.choices(string.ascii_letters + string.digits, k=length))
+
+
+def _generate_random_number(min_val=1, max_val=100):
+    return random.randint(min_val, max_val)
+
+
+def _generate_random_bool():
+    return random.choice([True, False])
+
+
+def _generate_random_slug():
+    return f"{int(timezone.now().timestamp() * 1000)}{_generate_random_string()}"
+
+
+def _generate_random_email(domain="example.com", length=10):
+    local_part = _generate_random_string(length)
+    return f"{local_part}@{domain}"
+
+
+def _generate_random_url(domain="example.com"):
+    return f"https://{domain}/{_generate_random_string(10)}"
+
+
+def _create_translations(model, obj, languages, translation_fields, related_field_name):
+    translations = {}
+    for language in languages:
+        # Create translation data with random string generation
+        translation_data = {
+            field: _generate_random_string(50) for field in translation_fields
+        }
+
+        # Add the related object (e.g., 'level' or 'topic') dynamically
+        translation_data.update(
+            {"language": language, related_field_name: obj, **translation_data}
+        )
+
+        # Create the translation instance and store it in the dictionary
+        translations[language] = model.objects.create(**translation_data)
+
+    return translations
+
+
+def create_user():
+    first_name = _generate_random_string(12)
+    last_name = _generate_random_string(12)
+    email = _generate_random_email()
+    username = get_unique_username(email.split("@")[0])
+    password = _generate_random_string(12)
+
+    user = get_user_model().objects.create_user(
+        email=email,
+        first_name=first_name,
+        last_name=last_name,
+        password=password,
+        username=username,
+        is_active=True,
+    )
+
+    return user, password
+
+
+def create_user_with_type(user_type):
+    user, password = create_user()
+    user.user_type = user_type
+    user.save()
+    return user, password
+
+
+def create_admin_user():
+    return create_user_with_type(UserType.ADMIN)
+
+
+def create_student_user():
+    return create_user_with_type(UserType.STUDENT)
+
+
+def create_instructor_user():
+    return create_user_with_type(UserType.INSTRUCTOR)
+
+
+def create_admin():
+    user, password = create_user_with_type(UserType.ADMIN)
+    admin = Admin.objects.create(user=user)
+    return admin, password
+
+
+def create_student():
+    user, password = create_user_with_type(UserType.STUDENT)
+    student = Student.objects.create(user=user)
+    subscribe_free_plan(student)
+    return student, password
+
+
+def create_instructor():
+    user, password = create_user_with_type(UserType.INSTRUCTOR)
+    role = _generate_random_string(5)
+    instructor = Instructor.objects.create(user=user, role=role)
+    return instructor, password
+
+
+def create_tag():
+    slug = _generate_random_slug()
+    tag = Tag.objects.create(slug=slug)
+    _create_translations(TagTranslation, tag, languages, ["name"], "tag")
+    return tag
+
+
+def create_topic():
+    slug = _generate_random_slug()
+    topic = Topic.objects.create(slug=slug)
+    _create_translations(TopicTranslation, topic, languages, ["name"], "topic")
+    return topic
+
+
+def create_blog():
+    slug = _generate_random_slug()
+    topic = create_topic()
+    tags = [create_tag() for _ in range(_generate_random_number())]
+    instructor, _ = create_instructor()
+    published_at = timezone.now()
+
+    blog = Blog.objects.create(
+        slug=slug,
+        topic=topic,
+        author=instructor,
+        published_at=published_at,
+        active=True,
+    )
+    blog.tags.add(*tags)
+
+    _create_translations(
+        BlogTranslation, blog, languages, ["name", "description", "content"], "blog"
+    )
+    return blog
+
+
+def create_category():
+    slug = _generate_random_slug()
+    category = Category.objects.create(slug=slug)
+    _create_translations(CategoryTranslation, category, languages, ["name"], "category")
+    return category
+
+
+def create_level():
+    slug = _generate_random_slug()
+    level = Level.objects.create(slug=slug)
+    _create_translations(LevelTranslation, level, languages, ["name"], "level")
+    return level
+
+
+def create_technology():
+    slug = _generate_random_slug()
+    name = _generate_random_string(5)
+    technology = Technology.objects.create(slug=slug, name=name)
+    return technology
+
+
+def create_step():
+    slug = _generate_random_slug()
+    points = _generate_random_number(50, 100)
+    duration = _generate_random_number(30, 600)
+
+    step = Step.objects.create(slug=slug, points=points, duration=duration, active=True)
+    _create_translations(
+        StepTranslation,
+        step,
+        languages,
+        ["name", "text"],
+        "step",
+    )
+
+    return step
+
+
+def create_stage():
+    slug = _generate_random_slug()
+    steps = [create_step() for _ in range(_generate_random_number(10, 15))]
+    stage = Stage.objects.create(slug=slug, active=True)
+    stage.steps.add(*steps)
+
+    _create_translations(
+        StageTranslation, stage, languages, ["name", "description"], "stage"
+    )
+    return stage
+
+
+def create_project(with_prerequisites=False):
+    slug = _generate_random_slug()
+    technologies = [create_technology() for _ in range(_generate_random_number(1, 5))]
+    level = create_level()
+    category = create_category()
+    chat_url = _generate_random_url()
+    stages = [create_stage() for _ in range(_generate_random_number(5, 10))]
+    instructors = [create_instructor()[0] for _ in range(_generate_random_number(1, 3))]
+    if with_prerequisites:
+        blog_prerequisites = [
+            create_blog() for _ in range(_generate_random_number(1, 2))
+        ]
+        project_prerequisites = [create_project()]
+
+    project = Project.objects.create(
+        slug=slug,
+        level=level,
+        category=category,
+        chat_url=chat_url,
+        active=True,
+    )
+    project.technology.add(*technologies)
+    project.instructors.add(*instructors)
+    project.stages.add(*stages)
+    if with_prerequisites:
+        project.blog_prerequisites.add(*blog_prerequisites)
+        project.project_prerequisites.add(*project_prerequisites)
+
+    _create_translations(
+        ProjectTranslation,
+        project,
+        languages,
+        ["name", "description", "overview"],
+        "project",
+    )
+    return project
+
+
+def create_review():
+    student, _ = create_student()
+    project = create_project()
+    rating = _generate_random_number(1, 5)
+    language = random.choice(languages)
+    comment = _generate_random_string(50)
+
+    review = Review.objects.create(
+        student=student,
+        project=project,
+        rating=rating,
+        language=language,
+        comment=comment,
+    )
+    return review
+
+
+def create_plan():
+    slug = _generate_random_slug()
+    popular = _generate_random_bool()
+    premium = _generate_random_bool()
+
+    plan = Plan.objects.create(
+        slug=slug,
+        popular=popular,
+        premium=premium,
+    )
+
+    translations = {}
+    for language in languages:
+        monthly_price = _generate_random_number(10, 50)
+        yearly_price = _generate_random_number(100, 500)
+        currency = random.choice([choice.value for choice in Currency])
+        translations[language] = PlanTranslation.objects.create(
+            language=language,
+            plan=plan,
+            license=license,
+            monthly_price=monthly_price,
+            yearly_price=yearly_price,
+            currency=currency,
+        )
+
+    return plan
+
+
+def create_plan_option():
+    slug = _generate_random_slug()
+
+    plan_option = Option.objects.create(slug=slug)
+
+    _create_translations(
+        OptionTranslation,
+        plan_option,
+        languages,
+        ["title"],
+        "option",
+    )
+
+    return plan_option
+
+
+def create_certificate():
+    project = create_project()
+    student, _ = create_student()
+
+    return Certificate.objects.create(student=student, project=project)

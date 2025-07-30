@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "About Us – Online Programming Learning Platform",
+    "description": "loop is an innovative online programming learning platform offering projects for beginners and advanced learners. Join us and learn programming with the latest technologies!"
+  },
+  "hero": {
+    "title": "Interactive online projects",
+    "subtitle": "is an innovative educational platform offering programming projects led by experienced professionals. Learn through hands-on practice, earn certificates, and develop your skills in the rapidly growing IT industry.",
+    "button": "Explore projects"
+  },
+  "mission": {
+    "title": "Our mission",
+    "subtitle": "Our mission is to create a platform that enables effective and engaging programming education, supporting the development of technical skills in an accessible way for everyone, regardless of experience level.",
+    "methods": [
+      {
+        "name": "Interactive exercises",
+        "description": "Videos, texts, and interactive exercises where participants write code in an AI-verified editor."
+      },
+      {
+        "name": "Tests and quizzes",
+        "description": "Tools to assess knowledge and reinforce learning with immediate feedback."
+      },
+      {
+        "name": "Accessible for all levels",
+        "description": "Projects designed for both beginners and advanced programmers, offering a flexible learning experience."
+      }
+    ]
+  },
+  "coreValues": {
+    "title": "Core Values",
+    "subtitle": "Our actions are guided by four key values that define our mission and form the foundation of everything we do.",
+    "values": [
+      {
+        "name": "Accessibility",
+        "description": "We believe that learning programming should be accessible to everyone, regardless of experience or professional background.",
+        "icon": "ic-popularity.svg"
+      },
+      {
+        "name": "Practicality",
+        "description": "We focus on a practical approach to learning that allows participants to acquire both theoretical knowledge and hands-on skills.",
+        "icon": "ic-web-programming.svg"
+      },
+      {
+        "name": "Innovation",
+        "description": "We embrace modern teaching methods, combining technology with effective educational techniques.",
+        "icon": "ic-chip.svg"
+      },
+      {
+        "name": "Support",
+        "description": "We provide support at every stage of learning, helping participants grow and overcome challenges.",
+        "icon": "ic-cooperate.svg"
+      }
+    ]
+  }
+}

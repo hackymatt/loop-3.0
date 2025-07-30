@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "title": "Server Error",
+    "description": "Something went wrong on our end. We apologize for the inconvenience — please try again later or contact our support team."
+  },
+  "title": "500 internal server error",
+  "subtitle": "There was an error, please try again later.",
+  "button": "Go to home"
+}

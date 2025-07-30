@@ -1,0 +1,33 @@
+{
+  "home": "Home",
+  "projects": "Projects",
+  "pricing": "Pricing",
+  "blog": "Blog",
+  "about": "About us",
+  "contact": "Contact",
+  "login": "Login",
+  "register": "Try it for free",
+  "help": "Need help?",
+  "support": "Support",
+  "more": "See all projects",
+  "tags": "Popular projects",
+  "levels": "Levels",
+  "technologies": "Technologies",
+  "categories": "Categories",
+  "duration": {
+    "label": "Time to Complete",
+    "short": "Up to 2 hours",
+    "medium": "2 to 5 hours",
+    "long": "More than 5 hours"
+  },
+  "socialMedia": "Follow us",
+  "apps": "Install app",
+  "allRightsReserved": "All rights reserved.",
+  "privacyPolicy": "Privacy policy",
+  "termsOfService": "Terms of Service",
+  "dashboard": "Dashboard",
+  "accountSettings": "Account settings",
+  "logout": "Logout",
+  "upgrade": "Upgrade plan",
+  "certificates": "Certificates"
+}

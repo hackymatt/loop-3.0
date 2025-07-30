@@ -1,0 +1,27 @@
+.github-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 36px;
+  height: 40px;
+  transition:
+    background-color 0.3s ease,
+    border-radius 0.3s ease;
+  border-radius: 50%;
+}
+
+.github-login-button button {
+  display: none;
+}
+
+.github-login-button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.github-login-button .MuiSvgIcon-root {
+  font-size: 1.5rem;
+}

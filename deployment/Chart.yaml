@@ -1,0 +1,21 @@
+apiVersion: v2
+appVersion: latest
+
+name: loop
+type: application
+description: A Helm chart for loop
+version: 1.0.0
+
+dependencies:
+  - name: backend
+    version: "*"
+    repository: file://charts/backend
+    condition: backend.enabled
+  - name: frontend
+    version: "*"
+    repository: file://charts/frontend
+    condition: frontend.enabled
+  - name: nginx
+    version: "*"
+    repository: file://charts/nginx
+    condition: nginx.enabled
