@@ -1,12 +1,15 @@
 {
   "meta": {
-    "title": "Pricing – Choose What Fits You Best",
-    "description": "Explore our flexible pricing plans and choose the one that suits your learning goals. Start learning programming with access to projects, certificates, and instructor support."
+    "title": "Pricing plans – choose the best one for you",
+    "description": "Explore our flexible pricing plans and pick the option that fits your needs. Start learning to code with access to projects, certificates, and instructor support."
   },
-  "title": { "cards": "Flexible plans tailored to your needs", "columns": "Compare Plans" },
+  "title": {
+    "cards": "Flexible plans tailored to your needs",
+    "columns": "Compare plans"
+  },
   "subtitle": {
-    "cards": "Start learning programming now and develop your skills according to your own needs.",
-    "columns": "Choose the best plan for you and start learning programming at your own pace."
+    "cards": "Start learning to code now and grow your skills at your own pace.",
+    "columns": "Choose the best plan for you and learn to code on your schedule."
   },
   "monthly": "Monthly",
   "yearly": "Yearly",

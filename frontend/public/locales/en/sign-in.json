@@ -1,12 +1,12 @@
 {
   "meta": {
-    "title": "Login – Access the Learning Platform",
+    "title": "Login – access the platform",
     "description": "Log in to your account to continue learning programming, track your progress, and earn certificates on the loop platform."
   },
-  "title": "Sign in",
-  "subtitle": "Don't have an account?",
-  "link": "Get started",
+  "title": "Log in",
+  "subtitle": "Don’t have an account yet?",
+  "link": "Try for free",
   "or": "or",
-  "button": "Sign in",
-  "forgotPassword": "Forgot password?"
+  "button": "Log in",
+  "forgotPassword": "Forgot your password?"
 }

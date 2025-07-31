@@ -1,7 +1,7 @@
 {
   "meta": {
     "certificates": {
-      "title": "Twoje Certyfikaty – Potwierdzenie Umiejętności Programistycznych",
+      "title": "Twoje Certyfikaty – potwierdzenie umiejętności programistycznych",
       "description": "Zobacz swoje certyfikaty, które dokumentują ukończenie projektów programistycznych na platformie loop. Pokaż światu swoje realne osiągnięcia!"
     },
     "certificate": {
@@ -11,7 +11,7 @@
   },
   "title": "Certyfikaty",
   "label": "CERTYFIKAT UKOŃCZENIA",
-  "name": "Jan Kowalski",
+  "name": "Patryk Devowski",
   "award": "PRZYZNANY DLA",
   "completion": "ZA ZREALIZOWANIE PROJEKTU",
   "date": "DNIA",

@@ -1,12 +1,12 @@
 {
   "meta": {
     "posts": {
-      "title": "Blog – Programming Tips, News and Inspiration",
-      "description": "Explore articles on programming, IT trends, and tips for both beginners and advanced learners. Stay updated with our latest blog posts."
+      "title": "Blog – tips, updates, and programming inspiration",
+      "description": "Read articles about programming, IT trends, and tips for both beginners and advanced developers. Stay up to date with the latest posts on our blog."
     },
     "post": {
       "title": "[name] – read the article now",
-      "description": "Read our article titled [name]. Discover practical tips and best practices to help you grow your programming skills."
+      "description": "Check out our article titled [name]. Discover practical tips and best practices to help you grow your programming skills."
     }
   },
   "title": "Recently added",
@@ -17,6 +17,6 @@
   "recentPosts": "Recent posts",
   "popularTags": "Popular tags",
   "tags": "Tags",
-  "prev": "Prev",
+  "prev": "Previous",
   "next": "Next"
 }

@@ -1,12 +1,12 @@
 {
   "home": "Home",
   "projects": "Projects",
-  "pricing": "Pricing",
+  "pricing": "Pricing plans",
   "blog": "Blog",
   "about": "About us",
   "contact": "Contact",
-  "login": "Login",
-  "register": "Try it for free",
+  "login": "Log in",
+  "register": "Try for free",
   "help": "Need help?",
   "support": "Support",
   "more": "See all projects",
@@ -15,19 +15,19 @@
   "technologies": "Technologies",
   "categories": "Categories",
   "duration": {
-    "label": "Time to Complete",
+    "label": "Duration",
     "short": "Up to 2 hours",
     "medium": "2 to 5 hours",
-    "long": "More than 5 hours"
+    "long": "Over 5 hours"
   },
   "socialMedia": "Follow us",
-  "apps": "Install app",
+  "apps": "Install the app",
   "allRightsReserved": "All rights reserved.",
   "privacyPolicy": "Privacy policy",
-  "termsOfService": "Terms of Service",
+  "termsOfService": "Terms of service",
   "dashboard": "Dashboard",
   "accountSettings": "Account settings",
-  "logout": "Logout",
-  "upgrade": "Upgrade plan",
+  "logout": "Log out",
+  "upgrade": "Change plan",
   "certificates": "Certificates"
 }

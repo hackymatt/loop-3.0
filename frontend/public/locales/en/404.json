@@ -1,9 +1,9 @@
 {
   "meta": {
-    "title": "Page Not Found",
-    "description": "Oops! It looks like this page doesn't exist. Check the URL or go back to the homepage and continue your programming journey with LOOP."
+    "title": "Page not found",
+    "description": "Oops! It looks like this page doesn't exist. Check the URL or go back to the homepage and keep learning programming with LOOP."
   },
   "title": "Page not found!",
-  "subtitle": "Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check your spelling.",
-  "button": "Go to home"
+  "subtitle": "Sorry, we couldn't find the page you're looking for. Maybe you typed the wrong URL? Check the spelling and try again.",
+  "button": "Go to homepage"
 }

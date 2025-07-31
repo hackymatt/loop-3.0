@@ -1,15 +1,15 @@
 {
   "meta": {
     "personal": {
-      "title": "Twój profil – Zaktualizuj dane",
+      "title": "Twój profil – zaktualizuj dane",
       "description": "Dostosuj swój profil na platformie loop. Edytuj imię, nazwisko oraz zdjęcie, aby inni uczestnicy ścieżek rozpoznali Cię w projektach i społeczności."
     },
     "manage": {
-      "title": "Ustawienia konta – Zmień hasło lub usuń konto",
+      "title": "Ustawienia konta – zmień hasło lub usuń konto",
       "description": "Zadbaj o bezpieczeństwo swojego konta na platformie loop. Zmieniaj hasło, zarządzaj danymi lub usuń konto, jeśli kończysz swoją ścieżkę."
     },
     "subscription": {
-      "title": "Subskrypcja – Zarządzaj dostępem do projektów",
+      "title": "Subskrypcja – zarządzaj dostępem do projektów",
       "description": "Sprawdź aktywną subskrypcję i zarządzaj planem. Zyskaj pełen dostęp do projektów, ścieżek i certyfikatów rozwoju na platformie loop."
     }
   },
@@ -111,7 +111,7 @@
     "error": "Wystąpił błąd podczas zmiany zdjęcia"
   },
   "delete": {
-    "text": "Wszystkie dane, w tym Twoje postępy, projekty i historia certyfikatów zostaną trwale usunięte. Jeśli chcesz jedynie anulować subskrypcję, zrób to w sekcji powyżej.",
+    "text": "Wszystkie dane, w tym Twoje postępy, projekty i historia certyfikatów zostaną trwale usunięte. Jeśli chcesz jedynie anulować subskrypcję, zrób to w sekcji poniżej.",
     "button": "Usuń konto",
     "cancel": "Anuluj",
     "description": "Czy na pewno chcesz usunąć swoje konto? Tego kroku nie można cofnąć."

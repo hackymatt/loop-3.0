@@ -1,7 +1,7 @@
 {
   "meta": {
     "projects": {
-      "title": "Nasze projekty - Zacznij rozwijać swoje umiejętności z nami",
+      "title": "Nasze projekty - zacznij rozwijać swoje umiejętności z nami",
       "description": "Oferujemy różnorodne projekty programistyczne, które pomogą Ci zdobyć praktyczne doświadczenie w nowoczesnych technologiach. Dołącz i rozwijaj swoje kompetencje w IT!"
     },
     "project": {
@@ -58,10 +58,6 @@
   "review": ["recenzja", "recenzje", "recenzji"],
   "hour": ["godzina", "godziny", "godzin"],
   "stage": ["etap", "etapy", "etapów"],
-  "video": ["nagranie", "nagrania", "nagrań"],
-  "article": ["artykuł", "artykuły", "artykułów"],
-  "exercise": ["ćwiczenie", "ćwiczenia", "ćwiczeń"],
-  "quiz": ["test", "testy", "testów"],
   "sign-up": {
     "header": "Utwórz darmowe konto",
     "button": "Rozpocznij projekt za darmo"
