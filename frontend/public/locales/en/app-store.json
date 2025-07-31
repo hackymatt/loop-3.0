@@ -1,10 +1,10 @@
 {
   "install": "Install on",
   "steps": {
-    "click": "Click on",
+    "click": "Tap on",
     "screen": { "iOS": "at the bottom of the screen", "Android": "at the top of the screen" },
     "chose": "Select the option",
-    "add": { "iOS": "Add to Home Screen", "Android": "Add to Home Screen" }
+    "add": { "iOS": "Add to Home Screen", "Android": "Add to Home screen" }
   },
   "title": "Install the app",
   "subtitle": "Install the app on your device for easy access to learning anytime. No [platform], no downloads, no hassle."

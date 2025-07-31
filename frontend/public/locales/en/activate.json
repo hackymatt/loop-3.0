@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "Account Activation – Confirm Your Email",
-    "description": "Click the activation link to confirm your email address and get full access to the online programming learning platform."
+    "title": "Account activation – confirm your email address",
+    "description": "Click the activation link to confirm your email address and get full access to the platform."
   },
   "title": "Check your inbox",
-  "subtitle": "We've sent you an activation link. Please check your inbox, including the spam folder.",
+  "subtitle": "We’ve sent you a message with an activation link. Please check your inbox, including the spam folder.",
   "link": "Back to login",
   "help": "Didn't receive the email?",
   "button": "Resend"

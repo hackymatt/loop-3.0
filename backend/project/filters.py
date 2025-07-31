@@ -57,7 +57,7 @@ class ProjectFilter(django_filters.FilterSet):
         if not user.is_authenticated or user.user_type != UserType.STUDENT:
             return queryset
 
-        # policz ile lekcji ma projekt
+        # policz ile kroków ma projekt
         queryset = queryset.annotate(total_steps=Count("stages__steps", distinct=True))
 
         # subquery, który liczy ukończone kroki w danym projekcie

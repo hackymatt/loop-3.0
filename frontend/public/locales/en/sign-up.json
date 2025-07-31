@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "Registration – Join the Learning Platform",
-    "description": "Sign up to access online programming projects. Learn at your own pace, earn points and certificates, and grow your tech skills."
+    "title": "Sign up – join loop",
+    "description": "Sign up to get access to online projects. Learn at your own pace, earn points, certificates, and develop your IT skills."
   },
-  "title": "Get started",
+  "title": "Sign up",
   "subtitle": "Already have an account?",
-  "link": "Sign in",
+  "link": "Log in",
   "or": "or",
-  "button": "Sign up"
+  "button": "Create account"
 }

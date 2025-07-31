@@ -1,40 +1,54 @@
 {
   "meta": {
-    "title": "Contact – Get in Touch with Us",
-    "description": "Have questions? Reach out to the loop platform team. We’re here to help with projects, subscriptions, and technical support."
+    "title": "Contact – get in touch with the loop team",
+    "description": "Have questions about projects, learning paths, or the platform? Reach out to us – we’re happy to help!"
   },
   "phoneLabel": "Phone",
   "emailLabel": "Email",
   "socialMedia": "Follow us",
-  "title": { "header": "Get in touch", "form": "Drop us a line" },
+  "title": {
+    "header": "Get in touch",
+    "form": "Send a message"
+  },
   "subtitle": {
-    "header": "We'd love to talk about how we can help you.",
-    "form": "We normally respond within 24 business hours."
+    "header": "We're here to help you grow as a developer.",
+    "form": "We typically respond within 24 hours on business days."
   },
   "button": "Send message",
   "email": {
     "label": "Email",
-    "errors": { "required": "Email is required", "invalid": "Email is invalid" }
+    "errors": {
+      "required": "Please provide your email address",
+      "invalid": "Enter a valid email address"
+    }
   },
   "fullName": {
     "label": "Full name",
-    "errors": { "required": "Full name is required" }
+    "errors": {
+      "required": "Please enter your full name"
+    }
   },
   "subject": {
     "label": "Subject",
-    "errors": { "required": "Subject is required" }
+    "errors": {
+      "required": "Please enter a subject"
+    }
   },
   "message": {
     "label": "Message",
-    "errors": { "required": "Message is required" }
+    "errors": {
+      "required": "Message content is required"
+    }
   },
   "termsAcceptance": {
     "label": {
-      "accept": "I accept",
-      "terms": "the Terms of Service",
+      "accept": "I accept the",
+      "terms": "terms of service",
       "and": "and",
-      "privacy": "the Privacy Policy."
+      "privacy": "privacy policy"
     },
-    "errors": { "required": "This field is required" }
+    "errors": {
+      "required": "You must accept the terms of service and privacy policy"
+    }
   }
 }
