@@ -12,7 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     display: "standalone",
     description:
-      "Ucz się programowania szybciej z AI, interaktywnymi kursami i wsparciem mentorów.",
+      "Ucz się programowania szybciej z AI, interaktywnymi Zamiast teorii – praktyczne projekty, które trafiają do Twojego portfolio. Nauka programowania z loop to kod, GitHub, własne decyzje i realne umiejętności.",
     lang: "pl-PL",
     dir: "auto",
     theme_color: "#000000",

@@ -1,19 +1,23 @@
 {
   "meta": {
     "certificates": {
-      "title": "Your Certificates – Programming Learning Achievement",
-      "description": "View your certificates for completing programming projects on the loop platform. Share your achievements with others!"
+      "title": "Your certificates – proof of your coding skills",
+      "description": "View your certificates that document completed programming projects on the loop platform. Show the world what you've really achieved!"
     },
     "certificate": {
-      "title": "Certificate for [studentName] – Completed [projectName]",
-      "description": "This certificate confirms that [studentName] has successfully completed the [projectName] project on the loop platform. Share your achievement!"
+      "title": "Certificate for [studentName] for completing the project [projectName]",
+      "description": "This certificate confirms that [studentName] successfully completed the project [projectName] on the loop platform. It's proof of practical skills and readiness for work."
     }
   },
   "title": "Certificates",
-  "label": "CERTIFICATE OF ACCOMPLISHMENT",
-  "name": "John Doe",
-  "award": "HAS BEEN AWARDED TO",
-  "completion": "FOR COMPLETING",
+  "label": "CERTIFICATE OF COMPLETION",
+  "name": "Patrick Devowski",
+  "award": "AWARDED TO",
+  "completion": "FOR COMPLETING THE PROJECT",
   "date": "ON",
-  "buttons": { "png": "Download as PNG", "pdf": "Download as PDF", "linkedin": "Share on LinkedIn" }
+  "buttons": {
+    "png": "Download as PNG",
+    "pdf": "Download as PDF",
+    "linkedin": "Share on LinkedIn"
+  }
 }

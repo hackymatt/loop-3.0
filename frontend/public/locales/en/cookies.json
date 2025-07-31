@@ -1,6 +1,6 @@
 {
   "text": {
-    "main": "We use cookies to provide you with a better experience on our website. You can accept all or customize your preferences. For more information, see our",
+    "main": "We use cookies to provide you with a better experience on our site. You can accept all or customize your preferences. More information can be found in our",
     "manage": "Manage cookies",
     "mandatory": "Mandatory",
     "optional": "Optional"
@@ -14,15 +14,15 @@
   "options": {
     "mandatory": {
       "title": "Essential cookies",
-      "description": "These cookies are necessary for the website to function properly and cannot be disabled in our systems. They are used to store your privacy preferences, log in to your account, and fill out forms."
+      "description": "These cookies are necessary for the proper functioning of the site and cannot be disabled in our systems. They are used, among other things, to save your privacy preferences, log in to your account, and complete forms."
     },
     "analytics": {
       "title": "Analytics cookies",
-      "description": "These cookies allow us to collect statistical data about website usage. They help us understand how users navigate the site, enabling continuous improvement. The collected data is anonymous."
+      "description": "These cookies allow us to collect statistical data about how the site is used. They help us understand how users navigate the site, enabling continuous improvement. The collected data is anonymous."
     },
     "marketing": {
       "title": "Marketing cookies",
-      "description": "These cookies are used to display advertisements tailored to your interests. They may be used by us or our advertising partners to show personalized ads on other websites."
+      "description": "These cookies are used to show ads tailored to your interests. They may be used by us or our advertising partners to display personalized advertising content on other sites."
     }
   }
 }

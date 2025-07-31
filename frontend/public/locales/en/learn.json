@@ -1,16 +1,16 @@
 {
   "meta": {
-    "title": "Step [name] – continue learning",
-    "description": "Continue your learning journey and gain more practical skills with the [name] step. Finish it and enhance your programming abilities."
+    "title": "Step [name] – continue your project",
+    "description": "Keep working on your project and develop practical skills with step [name]. Complete it and expand your programming expertise."
   },
   "estimatedTime": "Estimated time",
   "upgrade": {
     "title": "Unlock full access!",
-    "description": "Get all steps, more points, and additional materials!",
+    "description": "Get access to all projects, more points, and additional materials!",
     "banner": {
-      "title": "You are on the free plan and only have access to one step.",
-      "description": "To continue learning and unlock more steps — upgrade your plan!"
+      "title": "You’re on the free plan with access to only one project.",
+      "description": "To continue working and unlock more projects, upgrade your plan!"
     },
-    "button": "Back to project"
+    "button": "Return to project"
   }
 }

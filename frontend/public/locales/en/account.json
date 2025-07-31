@@ -1,21 +1,24 @@
 {
   "meta": {
     "personal": {
-      "title": "Personal Information – Change Name and Profile Picture",
-      "description": "Manage your profile on the platform. Edit your first and last name, and update your profile picture to personalize your account."
+      "title": "Your profile – update your information",
+      "description": "Customize your profile on the loop platform. Edit your name, surname, and profile photo so other learners can recognize you in projects and the community."
     },
     "manage": {
-      "title": "Manage Your Account – Change Password or Delete Account",
-      "description": "Update your account details, change your password, or delete your account. Keep your profile secure and stay in control on our learning platform."
+      "title": "Account settings – change password or delete account",
+      "description": "Keep your loop account secure. Change your password, manage your data, or delete your account if you're finishing your learning path."
     },
     "subscription": {
-      "title": "Subscription – View and Change Your Plan",
-      "description": "Check the details of your current subscription, compare available plans, and switch to the one that best fits your learning goals."
+      "title": "Subscription – manage your project access",
+      "description": "Check your active subscription and manage your plan. Get full access to projects, paths, and development certificates on the loop platform."
     }
   },
   "email": {
     "label": "Email",
-    "errors": { "required": "Email is required", "invalid": "Email is invalid" }
+    "errors": {
+      "required": "Email is required",
+      "invalid": "The provided email is invalid"
+    }
   },
   "firstName": {
     "label": "First name",
@@ -27,10 +30,10 @@
   },
   "password": {
     "label": "Password",
-    "placeholder": "Enter password",
+    "placeholder": "Enter your password",
     "errors": {
       "required": "Password is required",
-      "minLength": "Password must be at least minPasswordLength characters",
+      "minLength": "Password must be at least minPasswordLength characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
@@ -38,11 +41,11 @@
     }
   },
   "oldPassword": {
-    "label": "Old password",
-    "placeholder": "Enter password",
+    "label": "Current password",
+    "placeholder": "Enter your current password",
     "errors": {
-      "required": "Password is required",
-      "minLength": "Password must be at least minPasswordLength characters",
+      "required": "This field is required",
+      "minLength": "Password must be at least minPasswordLength characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
@@ -51,48 +54,64 @@
   },
   "newPassword": {
     "label": "New password",
-    "placeholder": "Enter password",
+    "placeholder": "Enter your new password",
     "errors": {
-      "required": "Password is required",
-      "minLength": "Password must be at least minPasswordLength characters",
+      "required": "This field is required",
+      "minLength": "Password must be at least minPasswordLength characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
       "specialCharacter": "Password must contain at least one special character",
-      "same": "New password must be different than old password"
+      "same": "New password must be different from the current one"
     }
   },
   "termsAcceptance": {
     "label": {
-      "accept": "I accept",
-      "terms": "the Terms of Service",
+      "accept": "I accept the",
+      "terms": "terms of service",
       "and": "and",
-      "privacy": "the Privacy Policy."
+      "privacy": "privacy policy"
     },
     "errors": { "required": "This field is required" }
   },
   "dataProcessingConsent": {
-    "label": "I consent to the processing of my personal data provided in the form for the purpose and to the extent necessary to provide the service, and only for this purpose.",
+    "label": "I consent to the processing of my personal data for the purpose of providing the educational service on the loop platform.",
     "errors": { "required": "This field is required" }
   },
-  "personal": { "title": "Personal data", "button": "Save" },
-  "manage": { "title": "Manage account", "button": "Save" },
+  "personal": {
+    "title": "Personal information",
+    "button": "Save changes"
+  },
+  "manage": {
+    "title": "Manage account",
+    "button": "Save settings"
+  },
   "subscription": {
     "title": "Subscription",
     "label": "Current plan",
-    "billing": { "label": "Billing", "monthly": "Monthly", "yearly": "Yearly" },
-    "renewal": "Renewal",
-    "on": "on",
+    "billing": {
+      "label": "Billing cycle",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "renewal": "Renewal amount",
+    "on": "will be charged on",
     "button": "Cancel subscription",
     "cancel": "Cancel",
-    "description": "Are you sure you want to cancel your subscription? This action cannot be undone.",
-    "sell": "Gain programming skills that will accelerate your career growth! Get access to all projects and certificates.",
-    "error": "Cancellation failed. Please try again."
+    "description": "Are you sure you want to cancel your subscription? You will lose access to active projects and learning paths.",
+    "sell": "Build your portfolio, learn with projects, and earn certificates. Choose a plan and grow with loop.",
+    "error": "Something went wrong. Please try again."
   },
-  "logout": { "title": "Logout", "error": "Logout failed. Please try again." },
-  "photo": { "change": "Change photo", "error": "Photo change failed. Please try again." },
+  "logout": {
+    "title": "Log out",
+    "error": "Logout failed. Please try again."
+  },
+  "photo": {
+    "change": "Change profile photo",
+    "error": "An error occurred while updating the photo"
+  },
   "delete": {
-    "text": "All your profile and learning data will be permanently deleted. If you are looking to cancel your subscription, please have a look at",
+    "text": "All your data, including progress, projects, and certificate history, will be permanently deleted. If you only want to cancel your subscription, do that in the section below.",
     "button": "Delete account",
     "cancel": "Cancel",
     "description": "Are you sure you want to delete your account? This action cannot be undone."

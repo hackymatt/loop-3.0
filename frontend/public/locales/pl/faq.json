@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Pomoc",
+    "title": "Pomoc - najczęściej zadawane pytania",
     "description": "Masz pytania lub potrzebujesz pomocy? Sprawdź najczęściej zadawane pytania lub skontaktuj się z naszym zespołem wsparcia. Jesteśmy tutaj, aby Ci pomóc!"
   },
   "title": "Najczęściej zadawane pytania",
@@ -52,36 +52,32 @@
     },
     {
       "id": "projects",
-      "title": "Kursy",
-      "icon": "solar:tag-price-bold",
+      "title": "Projekty",
+      "icon": "solar:code-file-bold",
       "content": [
         {
-          "question": "Jak działają kursy na platformie?",
-          "answer": "Kursy składają się z interaktywnych lekcji, które możesz realizować we własnym tempie. Nie są to zajęcia na żywo – uczysz się, kiedy chcesz."
+          "question": "Jak działają projekty na platformie?",
+          "answer": "Projekty składają się z interaktywnych etapów, które możesz realizować we własnym tempie. Nie są to zajęcia na żywo – pracujesz, kiedy chcesz."
         },
         {
           "question": "Czy muszę instalować dodatkowe oprogramowanie?",
-          "answer": "Nie. Wszystko odbywa się w przeglądarce. Wystarczy komputer lub tablet z dostępem do internetu."
+          "answer": "Tak. Projekty kodujesz na własnym komputerze, więc potrzebujesz edytora kodu (np. VS Code) i ewentualnych narzędzi zależnych od technologii użytej w projekcie."
         },
         {
-          "question": "Czy mogę przerywać kurs i wrócić później?",
-          "answer": "Tak. Twój postęp jest zapisywany automatycznie, więc możesz wrócić do kursu w dowolnym momencie."
+          "question": "Czy mogę przerywać projekt i wrócić później?",
+          "answer": "Tak. Twój postęp jest zapisywany automatycznie, więc możesz wrócić do projektu w dowolnym momencie."
         },
         {
-          "question": "Czy kursy zawierają zadania praktyczne?",
-          "answer": "Tak. Każdy kurs zawiera interaktywne ćwiczenia i zadania do wykonania bezpośrednio w przeglądarce."
+          "question": "Czy otrzymam certyfikat po ukończeniu projektu?",
+          "answer": "Tak. Po ukończeniu projektu na planie Podstawowym lub Premium otrzymasz certyfikat, który możesz pobrać lub udostępnić."
         },
         {
-          "question": "Czy otrzymam certyfikat po ukończeniu kursu?",
-          "answer": "Tak. Po ukończeniu kursu na planie Podstawowym lub Premium otrzymasz certyfikat, który możesz pobrać lub udostępnić."
-        },
-        {
-          "question": "Czy dostęp do kursów jest czasowo ograniczony?",
+          "question": "Czy dostęp do projektów jest czasowo ograniczony?",
           "answer": "Nie. Po wykupieniu dostępu masz nielimitowany czasowo dostęp do materiałów w ramach danego planu."
         },
         {
-          "question": "Czy mogę korzystać z kursów na telefonie?",
-          "answer": "Tak, nasza platforma działa również na urządzeniach mobilnych. Dla najlepszego doświadczenia zalecamy korzystanie z tabletu lub komputera."
+          "question": "Czy mogę korzystać z projektów na telefonie?",
+          "answer": "Tak, nasza platforma działa również na urządzeniach mobilnych. Dla najlepszego doświadczenia zalecamy korzystanie z komputera."
         }
       ]
     },
@@ -91,16 +87,16 @@
       "icon": "solar:diploma-bold",
       "content": [
         {
-          "question": "Czy otrzymam certyfikat po ukończeniu kursu?",
-          "answer": "Tak, po ukończeniu kursu na planie Podstawowym lub Premium otrzymasz imienny certyfikat ukończenia w formacie PDF lub PNG."
+          "question": "Czy otrzymam certyfikat po ukończeniu projektu?",
+          "answer": "Tak, po ukończeniu projektu na planie Podstawowym lub Premium otrzymasz imienny certyfikat ukończenia w formacie PDF lub PNG."
         },
         {
-          "question": "Czy certyfikat jest dostępny od razu po ukończeniu kursu?",
-          "answer": "Tak, certyfikat generowany jest automatycznie po ukończeniu wszystkich lekcji. Można go pobrać bezpośrednio z platformy."
+          "question": "Czy certyfikat jest dostępny od razu po ukończeniu projektu?",
+          "answer": "Tak, certyfikat generowany jest automatycznie po ukończeniu wszystkich etapów. Można go pobrać bezpośrednio z platformy."
         },
         {
           "question": "Jak wygląda certyfikat?",
-          "answer": "Certyfikat zawiera Twoje imię i nazwisko, tytuł kursu, datę ukończenia oraz podpis naszej szkoły programowania loop. Można go dodać do CV lub profilu LinkedIn."
+          "answer": "Certyfikat zawiera Twoje imię i nazwisko, tytuł projektu, datę ukończenia oraz podpis naszej szkoły programowania loop. Można go dodać do CV lub profilu LinkedIn."
         },
         {
           "question": "Czy mogę uzyskać certyfikat, jeśli korzystam z darmowego planu?",
@@ -112,7 +108,7 @@
         },
         {
           "question": "Czy certyfikaty są uznawane przez pracodawców?",
-          "answer": "Certyfikaty świadczą o ukończeniu kursu i zdobyciu praktycznych umiejętności. Wiele osób dołącza je do swojego portfolio lub profilu na LinkedIn jako potwierdzenie nauki."
+          "answer": "Certyfikaty świadczą o ukończeniu projektu i zdobyciu praktycznych umiejętności. Wiele osób dołącza je do swojego portfolio lub profilu na LinkedIn jako potwierdzenie nauki."
         }
       ]
     },
@@ -123,19 +119,19 @@
       "content": [
         {
           "question": "Jak zdobywam punkty na platformie?",
-          "answer": "Punkty zdobywasz za rozwiązywanie quizów, wykonywanie zadań w kursach oraz ukończenie rozdziałów i kursów."
+          "answer": "Punkty zdobywasz za ukończenie etapów i całych projektów."
         },
         {
           "question": "Do czego służą punkty?",
-          "answer": "Punkty pokazują Twój postęp i zaangażowanie w naukę."
+          "answer": "Punkty pokazują Twój postęp i zaangażowanie w pracę nad projektami."
         },
         {
           "question": "Czy punkty mają wpływ na certyfikat?",
-          "answer": "Nie. Certyfikat otrzymujesz po ukończeniu całego kursu, niezależnie od liczby zdobytych punktów. Punkty są jednak dowodem aktywnej nauki."
+          "answer": "Nie. Certyfikat otrzymujesz po ukończeniu całego projektu, niezależnie od liczby zdobytych punktów. Punkty są jednak dowodem aktywnej nauki."
         },
         {
           "question": "Czy mogę stracić zdobyte punkty?",
-          "answer": "Nie, punkty zdobyte w trakcie nauki pozostają na Twoim koncie i nie wygasają."
+          "answer": "Nie, punkty zdobyte w trakcie pracy pozostają na Twoim koncie i nie wygasają."
         },
         {
           "question": "Gdzie mogę sprawdzić swoje punkty?",
@@ -166,7 +162,7 @@
         },
         {
           "question": "Jak mogę anulować subskrypcję?",
-          "answer": "Możesz anulować subskrypcję w dowolnym momencie w ustawieniach konta, w sekcji 'Subskrypcja'. Po anulowaniu dostęp do kursów pozostanie aktywny do końca bieżącego okresu rozliczeniowego."
+          "answer": "Możesz anulować subskrypcję w dowolnym momencie w ustawieniach konta, w sekcji 'Subskrypcja'. Po anulowaniu dostęp do projektów pozostanie aktywny do końca bieżącego okresu rozliczeniowego."
         },
         {
           "question": "Czy moje dane płatnicze są bezpieczne?",
@@ -174,7 +170,7 @@
         },
         {
           "question": "Czy oferujecie darmowy okres próbny?",
-          "answer": "Każdy użytkownik może rozpocząć naukę za darmo dzięki darmowemu planowi, który daje dostęp do jednego rozdziału każdego kursu. To świetna okazja, by przetestować platformę przed przejściem na płatny plan."
+          "answer": "Każdy użytkownik może rozpocząć pracę za darmo dzięki darmowemu planowi, który daje dostęp do jednego etapu każdego projektu. To świetna okazja, by przetestować platformę przed przejściem na płatny plan."
         },
         {
           "question": "Co zrobić, jeśli moja płatność została odrzucona?",

@@ -1,64 +1,98 @@
 {
   "meta": {
     "projects": {
-      "title": "Our Projects - Start learning programming with us",
-      "description": "We offer a wide selection of programming projects to help you gain practical skills in the latest technologies. Register now and start your journey in IT!"
+      "title": "Our projects – start building your skills with us",
+      "description": "We offer a variety of programming projects to help you gain practical experience with modern technologies. Join us and grow your IT skills!"
     },
     "project": {
-      "title": "Project [name] - Start learning now",
-      "description": "Gain practical programming skills in [technologyName] with our [name] project. Register now and grow your IT career!"
+      "title": "Project [name] – start working on it now",
+      "description": "Gain hands-on experience in [technologyName] by completing the project [name]. Join us and advance your IT career!"
     }
   },
   "title": "Projects",
   "filter": {
-    "level": "Skill levels",
+    "level": "Difficulty level",
     "technology": "Technology",
     "category": "Category",
-    "rating": { "title": "Rating", "more": "& Up" },
+    "duration": {
+      "title": "Estimated time",
+      "options": [
+        {
+          "slug": "short",
+          "name": "Up to 2 hours"
+        },
+        {
+          "slug": "medium",
+          "name": "2 to 5 hours"
+        },
+        {
+          "slug": "long",
+          "name": "More than 5 hours"
+        }
+      ]
+    },
+    "rating": {
+      "title": "Rating",
+      "more": "and up"
+    },
     "status": {
       "title": "Status",
       "options": [
-        { "slug": "not-started", "name": "Not started" },
-        { "slug": "in-progress", "name": "In progress" },
-        { "slug": "completed", "name": "Completed" }
+        {
+          "slug": "not-started",
+          "name": "Not started"
+        },
+        {
+          "slug": "in-progress",
+          "name": "In progress"
+        },
+        {
+          "slug": "completed",
+          "name": "Completed"
+        }
       ]
     }
   },
-  "instructor": ["instructor"],
-  "student": ["student"],
-  "review": ["review"],
-  "hour": ["hour"],
-  "step": ["step"],
-  "video": ["video"],
-  "article": ["article"],
-  "exercise": ["exercise"],
-  "quiz": ["quiz"],
-  "sign-up": { "header": "Create your free account", "button": "Start learning for free" },
+  "instructor": ["mentor", "mentors", "mentors"],
+  "student": ["participant", "participants", "participants"],
+  "review": ["review", "reviews", "reviews"],
+  "hour": ["hour", "hours", "hours"],
+  "stage": ["stage", "stages", "stages"],
+  "sign-up": {
+    "header": "Create a free account",
+    "button": "Start your project for free"
+  },
   "start": "Start project for free",
   "continue": "Continue project",
   "access": "Lifetime access",
   "certificate": {
-    "title": "Certificate of accomplishment",
-    "subtitle": "Include this credential on your LinkedIn profile, resume, or CV. Share it on social media and during your performance evaluation."
+    "title": "Project completion certificate",
+    "subtitle": "Add this credential to your LinkedIn profile, CV, or resume. Share it on social media or during performance reviews."
   },
   "chat": {
     "title": "Chat",
-    "subtitle": "Join our project chat to get support and exchange experiences with other participants.",
-    "button": "Join the chat"
+    "subtitle": "Join the project chat to get support and share experiences with other participants.",
+    "button": "Join chat"
   },
-  "preview": "Project Preview",
+  "preview": "Project preview",
   "prerequisites": {
-    "title": "Recommended Knowledge",
-    "none": "There are no prerequisites for this project."
+    "title": "Prerequisites",
+    "none": "No prerequisites required."
   },
-  "instructors": "Instructors",
-  "reviews": { "label": "Reviews", "button": "Write a review" },
-  "included": { "start": "Included with", "plans": "Basic and Premium" },
-  "overview": "Overview",
+  "instructors": "Mentors",
+  "reviews": {
+    "label": "Reviews",
+    "button": "Write a review"
+  },
+  "included": {
+    "start": "Included in the",
+    "plans": "Basic and Premium plans"
+  },
+  "overview": "Project overview",
   "similar": "Similar projects",
   "viewAll": "View all",
-  "steps": {
-    "title": "Steps",
+  "stages": {
+    "title": "Project stages",
     "start": "Start",
     "continue": "Continue",
     "show": "Show",

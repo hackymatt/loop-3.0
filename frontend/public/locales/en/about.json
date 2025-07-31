@@ -1,53 +1,53 @@
 {
   "meta": {
-    "title": "About Us – Online Programming Learning Platform",
-    "description": "loop is an innovative online programming learning platform offering projects for beginners and advanced learners. Join us and learn programming with the latest technologies!"
+    "title": "About us – learn by building real projects",
+    "description": "loop is a modern platform for learning programming through hands-on projects. Build your portfolio, learn technologies step by step, and grow your IT skills – no matter your experience level."
   },
   "hero": {
-    "title": "Interactive online projects",
-    "subtitle": "is an innovative educational platform offering programming projects led by experienced professionals. Learn through hands-on practice, earn certificates, and develop your skills in the rapidly growing IT industry.",
+    "title": "Learn by building projects",
+    "subtitle": "a learning platform that teaches programming through building real-world projects. Each project has a clear goal, real technology, and a chance to develop your skills in practice.",
     "button": "Explore projects"
   },
   "mission": {
     "title": "Our mission",
-    "subtitle": "Our mission is to create a platform that enables effective and engaging programming education, supporting the development of technical skills in an accessible way for everyone, regardless of experience level.",
+    "subtitle": "We want to make learning to code accessible through action. We’re building a system of project-based paths that help you develop real skills step by step.",
     "methods": [
       {
-        "name": "Interactive exercises",
-        "description": "Videos, texts, and interactive exercises where participants write code in an AI-verified editor."
+        "name": "Learning by doing",
+        "description": "Every project is a real-world problem to solve."
       },
       {
-        "name": "Tests and quizzes",
-        "description": "Tools to assess knowledge and reinforce learning with immediate feedback."
+        "name": "Project dependencies",
+        "description": "Some projects require previous ones – that way you learn in the right order and avoid wasting time on unnecessary theory."
       },
       {
-        "name": "Accessible for all levels",
-        "description": "Projects designed for both beginners and advanced programmers, offering a flexible learning experience."
+        "name": "Accessible at any level",
+        "description": "Projects for beginners, intermediate, and advanced learners – all broken into steps with clear instructions."
       }
     ]
   },
   "coreValues": {
-    "title": "Core Values",
-    "subtitle": "Our actions are guided by four key values that define our mission and form the foundation of everything we do.",
+    "title": "Core values",
+    "subtitle": "At loop, we follow four key values that shape how we teach and support our community.",
     "values": [
       {
         "name": "Accessibility",
-        "description": "We believe that learning programming should be accessible to everyone, regardless of experience or professional background.",
+        "description": "We believe learning to code should be available to everyone, regardless of background or experience.",
         "icon": "ic-popularity.svg"
       },
       {
         "name": "Practicality",
-        "description": "We focus on a practical approach to learning that allows participants to acquire both theoretical knowledge and hands-on skills.",
+        "description": "We focus on hands-on learning – you learn by coding, not just reading.",
         "icon": "ic-web-programming.svg"
       },
       {
         "name": "Innovation",
-        "description": "We embrace modern teaching methods, combining technology with effective educational techniques.",
+        "description": "We’re committed to modern teaching methods and constantly improving our platform to support you better.",
         "icon": "ic-chip.svg"
       },
       {
         "name": "Support",
-        "description": "We provide support at every stage of learning, helping participants grow and overcome challenges.",
+        "description": "You’re not alone – you can count on support from mentors, the community, and clear step-by-step instructions.",
         "icon": "ic-cooperate.svg"
       }
     ]

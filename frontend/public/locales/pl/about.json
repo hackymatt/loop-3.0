@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "O nas – Nauka przez praktyczne projekty",
+    "title": "O nas – nauka przez praktyczne projekty",
     "description": "loop to nowoczesna platforma do nauki programowania przez realizację praktycznych projektów. Buduj portfolio, ucz się technologii krok po kroku i rozwijaj się w IT – niezależnie od poziomu zaawansowania."
   },
   "hero": {
@@ -14,7 +14,7 @@
     "methods": [
       {
         "name": "Nauka przez tworzenie",
-        "description": "Każdy projekt to rzeczywisty problem do rozwiązania – kodujesz od początku, rozwijasz swoje portfolio i zdobywasz doświadczenie."
+        "description": "Każdy projekt to rzeczywisty problem do rozwiązania."
       },
       {
         "name": "Zależności między projektami",

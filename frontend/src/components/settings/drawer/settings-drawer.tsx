@@ -4,11 +4,9 @@ import type { Language } from "src/locales/types";
 
 import { useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useQueryClient } from "@tanstack/react-query";
 import { hasKeys, varAlpha } from "minimal-shared/utils";
 
 import Box from "@mui/material/Box";
-import Badge from "@mui/material/Badge";
 import Drawer from "@mui/material/Drawer";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
@@ -36,8 +34,9 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
 
   const settings = useSettingsContext();
   const pathname = usePathname();
-  const queryClient = useQueryClient();
   const router = useRouter();
+  const locales = Object.values(LANGUAGE);
+  const defaultLocale = LANGUAGE.PL;
 
   const { mode, setMode, systemMode } = useColorScheme();
 
@@ -51,13 +50,18 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
   // Visible options by default settings
   const isColorSchemeVisible = hasKeys(defaultSettings, ["colorScheme"]);
 
+  const detectCurrentLanguage = () => {
+    const segments = pathname.split("/").filter(Boolean);
+    const firstSegment = segments[0];
+    const hasLocale = locales.includes(firstSegment as Language);
+    return hasLocale ? (firstSegment as Language) : defaultLocale;
+  };
+
+  const currentLanguage = detectCurrentLanguage();
+
   const handleChangeLang = useCallback(
     (newLang: Language) => {
       const segments = pathname.split("/");
-      const locales = Object.values(LANGUAGE);
-
-      settings.setField("language", newLang);
-      queryClient.invalidateQueries();
 
       if (newLang === LANGUAGE.PL) {
         if (segments.length > 1 && locales.includes(segments[1] as Language)) {
@@ -70,16 +74,10 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
           segments.splice(1, 0, newLang);
         }
       }
-
       router.push(segments.join("/") || "/");
     },
-    [pathname, queryClient, router, settings]
+    [locales, pathname, router]
   );
-
-  const handleReset = useCallback(() => {
-    settings.onReset();
-    handleChangeLang(LANGUAGE.PL);
-  }, [handleChangeLang, settings]);
 
   const renderHead = () => (
     <Box
@@ -94,14 +92,6 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
         {t("title")}
       </Typography>
-
-      <Tooltip title={t("reset")}>
-        <IconButton onClick={handleReset}>
-          <Badge color="error" variant="dot" invisible={!settings.canReset}>
-            <Iconify icon="solar:restart-bold" />
-          </Badge>
-        </IconButton>
-      </Tooltip>
 
       <Tooltip title={t("close")}>
         <IconButton onClick={settings.onCloseDrawer}>
@@ -125,11 +115,7 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
 
   const renderLanguage = () => (
     <LargeBlock title={t("language")} sx={{ gap: 2.5 }}>
-      <LanguageOptions
-        options={langs}
-        value={settings.state.language}
-        onChangeOption={handleChangeLang}
-      />
+      <LanguageOptions options={langs} value={currentLanguage} onChangeOption={handleChangeLang} />
     </LargeBlock>
   );
 

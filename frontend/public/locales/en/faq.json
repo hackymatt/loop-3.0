@@ -1,15 +1,15 @@
 {
   "meta": {
-    "title": "Support",
-    "description": "Have questions or need assistance? Check out our frequently asked questions or contact our support team. We’re here to help you!"
+    "title": "Help - frequently asked questions",
+    "description": "Have questions or need help? Check out the frequently asked questions or contact our support team. We're here to help you!"
   },
   "title": "Frequently asked questions",
   "moreQuestions": {
-    "title": "Still have questions?",
-    "subtitle": "Please describe your case to receive the most accurate advice.",
+    "title": "Have more questions?",
+    "subtitle": "Describe your case to get the most accurate assistance.",
     "button": "Contact us"
   },
-  "header": "Welcome to support",
+  "header": "Welcome to help",
   "faq": [
     {
       "id": "account",
@@ -18,70 +18,66 @@
       "content": [
         {
           "question": "How do I create an account?",
-          "answer": "Click the 'Try for free' button on the homepage. You can sign up using your email address or log in with Google, Facebook, or GitHub."
+          "answer": "To create an account, click the 'Try for free' button on the homepage. You can register using your email address or sign in with Google, Facebook, or GitHub."
         },
         {
           "question": "Do I need to activate my account after registration?",
-          "answer": "Yes, if you sign up using email, you'll receive a message with an activation link. Click it to activate your account and access the platform."
+          "answer": "Yes, if you register using your email, you'll receive a message with an activation link. Click it to activate your account and gain access to the platform."
         },
         {
           "question": "What are the password requirements?",
-          "answer": "Your password must be at least 8 characters long and include one uppercase letter, one lowercase letter, and one special character (e.g., !, @, #)."
+          "answer": "Your password must be at least 8 characters long, including one uppercase letter, one lowercase letter, and one special character (e.g., !, @, #)."
         },
         {
           "question": "How can I change my password?",
-          "answer": "If you log in using email and password, you can change it in the 'Account Settings' → 'Manage Account' section."
+          "answer": "If you log in with email and password, you can change your password in the 'Account settings' → 'Manage account' section."
         },
         {
           "question": "I forgot my password – what should I do?",
-          "answer": "On the login page, click 'Forgot password?'. Enter your email address, and you'll receive a message with a reset link."
+          "answer": "On the login page, click 'Forgot password?'. Enter your email address, and you'll receive a message with a link to reset your password."
         },
         {
-          "question": "How can I update my personal details?",
-          "answer": "Log in and go to 'Account Settings' → 'Personal Info' to edit your name or other profile details."
+          "question": "How do I change my personal information?",
+          "answer": "Log in and go to 'Account settings' → 'Personal information' to edit your first name, last name, or other profile details."
         },
         {
-          "question": "Where can I check or change my subscription plan?",
-          "answer": "Log in and go to 'Account Settings' → 'Subscription' to view your current plan or switch to another."
+          "question": "Where can I check or change my plan?",
+          "answer": "Log in and go to 'Account settings' → 'Subscription' to view your current plan and switch to another."
         },
         {
           "question": "How do I delete my account?",
-          "answer": "Log in and go to 'Account Settings' → 'Manage Account'. You'll find the option to delete your account there."
+          "answer": "Log in and go to 'Account settings' → 'Manage account'. You'll find the option to delete your account there."
         }
       ]
     },
     {
       "id": "projects",
       "title": "Projects",
-      "icon": "solar:tag-price-bold",
+      "icon": "solar:code-file-bold",
       "content": [
         {
           "question": "How do projects work on the platform?",
-          "answer": "Projects consist of interactive substeps that you complete at your own pace. These are not live classes – you learn whenever you want."
+          "answer": "Projects consist of interactive stages you can complete at your own pace. They are not live classes—you work whenever you want."
         },
         {
-          "question": "Do I need to install any additional software?",
-          "answer": "No. Everything runs in your browser. You just need a computer or tablet with internet access."
+          "question": "Do I need to install additional software?",
+          "answer": "Yes. You code projects on your own computer, so you need a code editor (e.g., VS Code) and any tools required for the technologies used in the project."
         },
         {
-          "question": "Can I pause a project and continue later?",
-          "answer": "Yes. Your progress is saved automatically, so you can return to the project at any time."
-        },
-        {
-          "question": "Do the projects include practical tasks?",
-          "answer": "Yes. Each project includes interactive exercises and tasks that you can complete directly in your browser."
+          "question": "Can I pause a project and come back later?",
+          "answer": "Yes. Your progress is saved automatically, so you can return to the project anytime."
         },
         {
           "question": "Will I get a certificate after completing a project?",
-          "answer": "Yes. After completing a project on the Basic or Premium plan, you’ll receive a certificate that you can download or share."
+          "answer": "Yes. After finishing a project on the Basic or Premium plan, you'll receive a certificate that you can download or share."
         },
         {
           "question": "Is access to projects time-limited?",
-          "answer": "No. Once you purchase access, you have unlimited time to complete the project within your chosen plan."
+          "answer": "No. Once you purchase access, you have unlimited time to use the materials within your plan."
         },
         {
-          "question": "Can I use the projects on my phone?",
-          "answer": "Yes, our platform also works on mobile devices. For the best experience, we recommend using a tablet or computer."
+          "question": "Can I use projects on my phone?",
+          "answer": "Yes, our platform works on mobile devices too. For the best experience, we recommend using a computer."
         }
       ]
     },
@@ -91,28 +87,28 @@
       "icon": "solar:diploma-bold",
       "content": [
         {
-          "question": "Will I get a certificate after completing a project?",
-          "answer": "Yes, after completing a project on the Basic or Premium plan, you'll receive a personalized certificate in PDF or PNG format."
+          "question": "Will I receive a certificate after completing a project?",
+          "answer": "Yes, after completing a project on the Basic or Premium plan, you'll get a personalized certificate in PDF or PNG format."
         },
         {
           "question": "Is the certificate available immediately after completing the project?",
-          "answer": "Yes, the certificate is generated automatically once all substeps are completed. You can download it directly from the platform."
+          "answer": "Yes, the certificate is generated automatically after finishing all stages. You can download it directly from the platform."
         },
         {
           "question": "What does the certificate look like?",
-          "answer": "The certificate includes your name, project title, completion date, and our programming school’s signature. You can add it to your CV or LinkedIn profile."
+          "answer": "The certificate includes your name, project title, completion date, and a signature from our Loop programming school. You can add it to your CV or LinkedIn profile."
         },
         {
-          "question": "Can I get a certificate with a free plan?",
-          "answer": "No. Certificates are available only to users with an active Basic or Premium plan."
+          "question": "Can I get a certificate if I'm on the free plan?",
+          "answer": "No. Certificates are only available for users with an active Basic or Premium plan."
         },
         {
-          "question": "Does the certificate have a unique ID?",
-          "answer": "Yes, every certificate has a unique ID that allows for verification."
+          "question": "Does the certificate have a unique identification number?",
+          "answer": "Yes, every certificate has a unique ID number that allows verification."
         },
         {
-          "question": "Are the certificates recognized by employers?",
-          "answer": "Certificates demonstrate project completion and practical skills gained. Many learners add them to their portfolio or LinkedIn profiles as proof of learning."
+          "question": "Are certificates recognized by employers?",
+          "answer": "Certificates prove project completion and practical skills gained. Many users include them in their portfolios or LinkedIn profiles as proof of learning."
         }
       ]
     },
@@ -123,23 +119,23 @@
       "content": [
         {
           "question": "How do I earn points on the platform?",
-          "answer": "You earn points by completing quizzes, tasks in projects, and finishing steps and entire projects."
+          "answer": "You earn points by completing stages and entire projects."
         },
         {
           "question": "What are points used for?",
-          "answer": "Points show your learning progress and engagement."
+          "answer": "Points show your progress and engagement with projects."
         },
         {
-          "question": "Do points affect my certificate?",
-          "answer": "No. You receive a certificate after completing the project regardless of your points. However, points are a sign of active learning."
+          "question": "Do points affect the certificate?",
+          "answer": "No. You receive a certificate after completing the entire project, regardless of how many points you've earned. Points are proof of active learning."
         },
         {
-          "question": "Can I lose earned points?",
-          "answer": "No, points earned during learning stay on your account and do not expire."
+          "question": "Can I lose points I've earned?",
+          "answer": "No, points earned during your work stay on your account and do not expire."
         },
         {
           "question": "Where can I check my points?",
-          "answer": "Your current point total is visible in your dashboard."
+          "answer": "Your current points total is visible on your dashboard."
         }
       ]
     },
@@ -150,35 +146,35 @@
       "content": [
         {
           "question": "What payment methods are available?",
-          "answer": "We accept payments by credit/debit card (Visa, Mastercard, etc.), as well as Google Pay and Apple Pay. All payments are processed securely via Stripe."
+          "answer": "We accept payments by credit card (Visa, Mastercard, etc.), as well as Google Pay and Apple Pay. All payments are processed through Stripe – a global and secure payment provider."
         },
         {
           "question": "Is the payment one-time or recurring?",
-          "answer": "Our plans are subscription-based – the payment renews automatically every month or year unless you cancel beforehand."
+          "answer": "Our plans work on a subscription basis – payments renew automatically monthly or yearly unless you cancel your subscription."
         },
         {
           "question": "Can I pay using Google Pay or Apple Pay?",
-          "answer": "Yes, Stripe supports both Google Pay and Apple Pay – you can use them during checkout on our platform."
+          "answer": "Yes, Stripe supports both Google Pay and Apple Pay – you can use them when paying on our platform."
         },
         {
           "question": "Will I receive an invoice for my subscription?",
-          "answer": "Yes, after each payment you will receive an invoice that you can download from your account settings under 'Payments'."
+          "answer": "Yes, after each payment, you’ll receive an invoice you can download from your account settings under 'Payments'."
         },
         {
-          "question": "How can I cancel my subscription?",
-          "answer": "You can cancel your subscription at any time in the account settings under 'Subscription'. After cancellation, you'll retain access to projects until the end of the billing period."
+          "question": "How do I cancel my subscription?",
+          "answer": "You can cancel your subscription anytime in account settings under 'Subscription'. After cancellation, access to projects remains active until the end of the current billing period."
         },
         {
           "question": "Are my payment details secure?",
-          "answer": "Yes, we use Stripe – one of the world’s most secure payment platforms. Your card details are not stored on our servers."
+          "answer": "Yes, we use Stripe – one of the safest payment platforms worldwide. Your card data is not stored on our servers."
         },
         {
-          "question": "Do you offer a free trial?",
-          "answer": "Every user can start learning for free with our free plan, which gives access to one step of each project. It's a great way to test the platform before upgrading."
+          "question": "Do you offer a free trial period?",
+          "answer": "Every user can start for free with the free plan, which gives access to one stage of each project. It's a great chance to test the platform before switching to a paid plan."
         },
         {
           "question": "What should I do if my payment was declined?",
-          "answer": "Make sure your card is active and has sufficient funds. You can also try a different payment method (e.g. Google Pay). If the problem persists, contact our technical support."
+          "answer": "Make sure your card is active and has sufficient funds. You can also try another payment method (e.g., Google Pay). If problems persist, contact our support team."
         }
       ]
     }
