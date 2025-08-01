@@ -89,3 +89,6 @@ msgstr "Prawie dobrze! Przejrzyj swoje odpowiedzi i spróbuj ponownie."
 
 msgid "You are assisting with a programming project step. Only respond based on the specific context provided by the user. Do not answer anything beyond the scope of the current step. If the user asks something unrelated or beyond this step, politely remind them that you're limited to this step only. Respond in English. This is step content: %(text)s"
 msgstr "Pomagasz w realizacji kroku projektu programistycznego. Odpowiadaj wyłącznie w oparciu o kontekst podany przez użytkownika. Nie udzielaj odpowiedzi wykraczających poza zakres bieżącego kroku. Jeśli użytkownik zapyta o coś niezwiązanego lub wykraczającego poza ten krok, uprzejmie przypomnij, że jesteś ograniczony tylko do tego kroku. Odpowiadaj po polsku. Treść kroku: %(text)s"
+
+msgid "Token usage limit exceeded. Please upgrade your plan or wait until next period."
+msgstr "Limit wykorzystania tokenów został przekroczony. Proszę zmienić plan lub poczekać do kolejnego okresu rozliczeniowego."

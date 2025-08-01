@@ -21,6 +21,7 @@
     "greeting": "Cześć",
     "points": "Punkty XP",
     "streak": "Seria dni nauki",
-    "days": ["dzień", "dni", "dni"]
+    "days": ["dzień", "dni", "dni"],
+    "tokens": "Tokeny OpenAI"
   }
 }

@@ -22,10 +22,12 @@ type IOption = {
 
 type IPlan = {
   slug: string;
+  tokens_limit: number;
   license: string;
   popular: boolean;
   premium: boolean;
   price: IPrice;
+  currency: string;
   options: IOption[];
 };
 
@@ -37,11 +39,12 @@ export const planQuery = (language: Language, slug: string) => {
     const { data } = await getData<IPlan>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    const { slug: planSlug, ...rest }: IPlan = data;
+    const { slug: planSlug, tokens_limit, ...rest }: IPlan = data;
 
     const modifiedResults: IPlanProps = {
       ...rest,
       slug: planSlug as PlanType,
+      tokensLimit: tokens_limit,
     };
     return { results: modifiedResults };
   };

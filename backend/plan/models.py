@@ -7,6 +7,7 @@ class Plan(models.Model):
     slug = models.SlugField(unique=True)
     popular = models.BooleanField(default=False)
     premium = models.BooleanField(default=False)
+    tokens_limit = models.PositiveIntegerField(default=0)
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()

@@ -18,6 +18,8 @@ from ..step.models import Step
 from plan.subscription.utils import get_subscription
 from plan.utils import is_default_plan
 from user.type.student_user.models import Student
+from user.token.models import TokenUsage
+from user.token.utils import is_user_within_token_limit, count_tokens
 from utils.openai.chat import OpenAIChat
 from datetime import datetime
 
@@ -85,6 +87,18 @@ class StepChatView(APIView):
     open_ai_chat = OpenAIChat()
 
     def post(self, request, step):
+        is_allowed = is_user_within_token_limit(request.user)
+
+        if not is_allowed:
+            return Response(
+                {
+                    "detail": _(
+                        "Token usage limit exceeded. Please upgrade your plan or wait until next period."
+                    )
+                },
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+            )
+
         body = request.data
         language = get_language_from_request(request)
 
@@ -100,7 +114,15 @@ class StepChatView(APIView):
         messages = [system_message, *user_messages]
         model = "gpt-3.5-turbo"
 
+        tokens_count = count_tokens(messages)
+
         data = self.open_ai_chat.chat({"messages": messages, "model": model})
+
+        TokenUsage.objects.create(
+            student=Student.objects.get(user=request.user),
+            endpoint=request.get_full_path(),
+            tokens=tokens_count,
+        )
 
         return StreamingHttpResponse(
             streaming_content=data,

@@ -21,6 +21,7 @@
     "greeting": "Hello",
     "points": "XP points",
     "streak": "Learning streak",
-    "days": ["day", "days", "days"]
+    "days": ["day", "days", "days"],
+    "tokens": "OpenAI Tokens"
   }
 }

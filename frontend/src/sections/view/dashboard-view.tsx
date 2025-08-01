@@ -46,7 +46,11 @@ export function DashboardView({ data }: DashboardProps) {
         py: 5,
       }}
     >
-      <ProfileSummary totalPoints={data.totalPoints || 0} dailyStreak={data.dailyStreak || 0} />
+      <ProfileSummary
+        totalPoints={data.totalPoints || 0}
+        dailyStreak={data.dailyStreak || 0}
+        tokens={data.tokens || 0}
+      />
     </Box>
   );
 

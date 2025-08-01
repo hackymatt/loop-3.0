@@ -13,7 +13,7 @@ import { paths } from "src/routes/paths";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { getPlanIcon } from "src/utils/plan-icon";
-import { fCurrency } from "src/utils/format-number";
+import { fCurrency, fShortenNumber } from "src/utils/format-number";
 
 import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
@@ -90,6 +90,16 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
         flexDirection: "column",
       }}
     >
+      <Box
+        sx={{
+          gap: 1.5,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Iconify icon="logos:openai-icon" />
+        {fShortenNumber(plan.tokensLimit, { code: locale("code") })} {t("token")}
+      </Box>
       {plan.options.map((option) => (
         <Box
           key={option.title}

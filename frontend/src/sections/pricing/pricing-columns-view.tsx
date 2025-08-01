@@ -66,6 +66,18 @@ export function PricingColumnsView({ plans }: PricingColumnsViewProps) {
         size={{ xs: 12, md: 3 }}
         sx={(theme) => ({ borderTop: `solid 1px ${theme.vars.palette.divider}` })}
       >
+        <Box
+          sx={(theme) => ({
+            display: "flex",
+            alignItems: "center",
+            height: "var(--row-height)",
+            borderBottom: `solid 1px ${theme.vars.palette.divider}`,
+          })}
+        >
+          <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+            {t("tokenLimit")}
+          </Typography>
+        </Box>
         {(pricingColumns[0]?.options || []).map((option) => (
           <Box
             key={option.title}
@@ -110,7 +122,7 @@ export function PricingColumnsView({ plans }: PricingColumnsViewProps) {
       <Grid container sx={{ alignItems: "flex-end" }}>
         <Grid sx={{ pb: 5, display: { xs: "none", md: "block " } }} size={{ xs: 12, md: 3 }}>
           <Typography variant="overline" sx={{ color: "primary.main" }}>
-            Feature
+            {t("feature")}
           </Typography>
         </Grid>
 
