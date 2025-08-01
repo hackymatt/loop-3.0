@@ -8,7 +8,5 @@ urlpatterns = [
         StepViewSet.as_view({"get": "retrieve"}),
         name="step",
     ),
-    path(
-        Urls.STEP_CHAT, StepChatView.as_view(), name="step-chat"
-    ),
+    path(Urls.STEP_CHAT, StepChatView.as_view(), name="step-chat"),
 ]

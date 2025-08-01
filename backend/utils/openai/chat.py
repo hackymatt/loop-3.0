@@ -5,7 +5,12 @@ from global_config import CONFIG
 
 class OpenAIChat:
     def __init__(self):
-        self.API_KEY = CONFIG["open_ai_api_key"]
+        self.URL = "https://api.openai.com/v1/chat/completions"
+        self.HEADERS = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + CONFIG["open_ai_api_key"],
+        }
+
     @staticmethod
     def _create_chat_body(body, stream=False):
         # Text messages are stored inside request body using the Deep Chat JSON format:
@@ -24,37 +29,17 @@ class OpenAIChat:
             chat_body["stream"] = True
         return chat_body
 
-    def chat(self, body):
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + self.API_KEY,
-        }
-        chat_body = self._create_chat_body(body)
-        response = requests.post(
-            "https://api.openai.com/v1/chat/completions",
-            json=chat_body,
-            headers=headers,
-        )
-        json_response = response.json()
-        if "error" in json_response:
-            raise Exception(json_response["error"]["message"])
-        result = json_response["choices"][0]["message"]["content"]
-        # Sends response back to Deep Chat using the Response format:
-        # https://deepchat.dev/docs/connect/#Response
-        return {"text": result}
-
-    def chat_stream(self, body):
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + self.API_KEY
-        }
-        chat_body = self._create_chat_body(body, stream=True)
-        response = requests.post(
-            "https://api.openai.com/v1/chat/completions",
-            json=chat_body,
-            headers=headers,
+    def _send_request(self, body):
+        return requests.post(
+            self.URL,
+            json=body,
+            headers=self.HEADERS,
             stream=True,
         )
+
+    def chat(self, body):
+        chat_body = self._create_chat_body(body, stream=True)
+        response = self._send_request(chat_body)
 
         def generate():
             # increase chunk size if getting errors for long messages
