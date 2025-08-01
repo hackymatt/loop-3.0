@@ -95,6 +95,7 @@ INSTALLED_APPS = [
     "user.type.admin_user",
     "user.type.student_user",
     "user.type.instructor_user",
+    "user.token",
     "project.level",
     "project.technology",
     "project.category",

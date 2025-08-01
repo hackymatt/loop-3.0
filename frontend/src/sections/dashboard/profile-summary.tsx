@@ -61,13 +61,13 @@ const StatBox = ({
 type Props = {
   totalPoints: number;
   dailyStreak: number;
+  tokens: number;
 };
 
-export function ProfileSummary({ totalPoints, dailyStreak }: Props) {
+export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
   const { t: locale } = useTranslation("locale");
   const { t } = useTranslation("dashboard");
   const days = t("profile.days", { returnObjects: true }) as string[];
-  console.log(days);
   const localize = useLocalizedPath();
   const languagePluralize = usePluralize();
 
@@ -99,6 +99,31 @@ export function ProfileSummary({ totalPoints, dailyStreak }: Props) {
         </Label>
       </Card>
     </Link>
+  );
+
+  const renderTokens = () => (
+    <Card
+      sx={(theme) => ({
+        borderRadius: 2,
+        p: 3,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        backgroundColor: theme.palette.background.default,
+        gap: 1,
+      })}
+    >
+      <Iconify icon="simple-icons:openai" sx={{ color: "primary" }} width={18} height={18} />
+
+      <Typography variant="body2" fontWeight="bold">
+        {t("profile.tokens")}:
+      </Typography>
+
+      <Label color="info" sx={{ textTransform: "uppercase" }}>
+        {tokens}
+      </Label>
+    </Card>
   );
 
   const renderUser = () => (
@@ -167,6 +192,7 @@ export function ProfileSummary({ totalPoints, dailyStreak }: Props) {
     >
       {renderUser()}
       {renderPlan()}
+      {renderTokens()}
       {renderStats()}
     </Box>
   );

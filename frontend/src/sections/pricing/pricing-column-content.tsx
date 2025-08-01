@@ -12,6 +12,8 @@ import { paths } from "src/routes/paths";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
+import { fShortenNumber } from "src/utils/format-number";
+
 import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
 
@@ -34,6 +36,7 @@ export function PricingColumnContentMobile({
   ...other
 }: PricingColumnContentProps) {
   const { t } = useTranslation("pricing");
+  const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
 
   const user = useUserContext();
@@ -77,6 +80,17 @@ export function PricingColumnContentMobile({
         },
       }}
     >
+      <Box
+        sx={{
+          gap: 1.5,
+          display: "flex",
+          alignItems: "center",
+          typography: "body2",
+        }}
+      >
+        <Iconify icon="logos:openai-icon" />
+        {fShortenNumber(plan.tokensLimit, { code: locale("code") })} {t("token")}
+      </Box>
       {plan.options.map((option) => (
         <Box
           key={option.title}
@@ -144,6 +158,7 @@ export function PricingColumnContentDesktop({
   ...other
 }: PricingColumnContentProps) {
   const { t } = useTranslation("pricing");
+  const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
 
   const user = useUserContext();
@@ -161,6 +176,19 @@ export function PricingColumnContentDesktop({
 
   return (
     <Box sx={sx} {...other}>
+      <Box
+        sx={(theme) => ({
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "text.secondary",
+          height: "var(--row-height)",
+          borderBottom: `solid 1px ${theme.vars.palette.divider}`,
+          ...(plan.popular && { bgcolor: "background.neutral" }),
+        })}
+      >
+        {fShortenNumber(plan.tokensLimit, { code: locale("code") })}
+      </Box>
       {plan.options.map((item) => (
         <Box
           key={item.title}

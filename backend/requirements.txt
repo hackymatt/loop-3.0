@@ -20,3 +20,4 @@ Pillow==9.2.0
 psycopg2-binary==2.9.9
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+tiktoken==0.9.0

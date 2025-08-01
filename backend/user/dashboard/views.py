@@ -10,6 +10,7 @@ from project.enrollment.models import ProjectEnrollment
 from project.serializers import ProjectListSerializer
 from certificate.models import Certificate
 from certificate.serializers import CertificateSerializer
+from ..token.utils import get_user_tokens_left
 
 
 class DashboardView(APIView):
@@ -60,6 +61,7 @@ class DashboardView(APIView):
         )[:4]
 
         data = {
+            "tokens": get_user_tokens_left(user),
             "total_points": total_points,
             "daily_streak": daily_streak,
             "projects": ProjectListSerializer(

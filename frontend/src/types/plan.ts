@@ -20,6 +20,7 @@ type IPlanOptionProp = {
 
 export type IPlanProps = {
   slug: PlanType;
+  tokensLimit: number;
   license: string;
   popular: boolean;
   premium: boolean;

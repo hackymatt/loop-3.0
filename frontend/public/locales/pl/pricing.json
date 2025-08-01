@@ -21,5 +21,8 @@
   "perYear": "na rok",
   "hide": "Ukryj",
   "show": "Pokaż",
-  "allFeatures": "wszystkie funkcje"
+  "feature": "FUNKCJA",
+  "allFeatures": "wszystkie funkcje",
+  "tokenLimit": "Limit tokenów do OpenAI / mc",
+  "token": "tokenów do OpenAI / mc"
 }
