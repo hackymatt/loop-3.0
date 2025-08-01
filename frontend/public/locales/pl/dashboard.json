@@ -21,6 +21,6 @@
     "greeting": "Cześć",
     "points": "Punkty XP",
     "streak": "Seria dni nauki",
-    "days": "dni"
+    "days": ["dzień", "dni", "dni"]
   }
 }

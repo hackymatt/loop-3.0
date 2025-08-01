@@ -33,6 +33,7 @@ class Urls:
     SIMILAR_PROJECTS = "similar-projects/<slug:slug>"
     # STEP
     STEP = "step/<slug:project_slug>/<slug:stage_slug>/<slug:step_slug>"
+    STEP_CHAT = "step/chat/<slug:step>"
     # REVIEW
     PROJECT_REVIEW_SUMMARY = "reviews-summary/<slug:slug>"
     PROJECT_REVIEWS = "reviews/<slug:slug>"
