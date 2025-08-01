@@ -4,9 +4,13 @@ import type { Language } from "src/locales/types";
 import React from "react";
 import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useBoolean } from "minimal-shared/hooks";
 
 import Box from "@mui/material/Box";
-import { Divider, Skeleton, Typography } from "@mui/material";
+import { Fab, Paper, Divider, Skeleton, Typography } from "@mui/material";
+
+import { URLS } from "src/api/urls";
+import { CONFIG } from "src/global-config";
 
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
@@ -26,6 +30,7 @@ type StepProps = {
 
 export const Step = React.memo(function Step({ step, locale, isLocked = false }: StepProps) {
   const { t } = useTranslation("learn");
+  const chatBoxOpen = useBoolean();
 
   const renderHeader = () => (
     <Box>
@@ -62,19 +67,54 @@ export const Step = React.memo(function Step({ step, locale, isLocked = false }:
     </m.div>
   );
 
+  const renderChat = () => (
+    <>
+      <Fab
+        color="primary"
+        variant="extended"
+        sx={{
+          position: "fixed",
+          bottom: 24,
+          right: 24,
+          zIndex: 1500,
+          boxShadow: 6,
+        }}
+        onClick={() => chatBoxOpen.onToggle()}
+      >
+        <Iconify icon="simple-icons:openai" sx={{ color: "white" }} />
+        {chatBoxOpen.value ? t("chat.hide") : t("chat.show")}
+      </Fab>
+
+      {chatBoxOpen.value && (
+        <Paper
+          elevation={6}
+          sx={{
+            position: "fixed",
+            bottom: 100,
+            right: 24,
+            width: { xs: "90%", sm: 400 },
+            height: 400,
+            zIndex: 1400,
+            overflow: "hidden",
+          }}
+        >
+          <Chat
+            language={locale}
+            url={`${CONFIG.api}${URLS.STEP_CHAT}/${step.slug}`}
+            placeholder={t("chat.placeholder")}
+            history={[{ text: t("chat.welcome"), role: "ai" }]}
+          />
+        </Paper>
+      )}
+    </>
+  );
+
   return (
     <>
       {renderHeader()}
       <Divider />
       {renderContent()}
-      <Box height="300px">
-        <Chat
-          language={locale}
-          url={`http://localhost:8000/api/step/chat/${step.slug}`}
-          placeholder={t("chat.placeholder")}
-          history={[{ text: t("chat.welcome"), role: "ai" }]}
-        />
-      </Box>
+      {renderChat()}
     </>
   );
 });
