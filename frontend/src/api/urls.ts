@@ -22,6 +22,7 @@ export const URLS = {
   SIMILAR_PROJECTS: "/similar-projects",
   // STEP
   STEP: "/step",
+  STEP_CHAT: "/step/chat",
   // REVIEWS
   REVIEWS: "/reviews",
   REVIEWS_SUMMARY: "/reviews-summary",
