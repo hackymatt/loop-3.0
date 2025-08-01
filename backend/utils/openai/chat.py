@@ -12,7 +12,7 @@ class OpenAIChat:
         }
 
     @staticmethod
-    def _create_chat_body(body, stream=False):
+    def create_chat_body(body):
         # Text messages are stored inside request body using the Deep Chat JSON format:
         # https://deepchat.dev/docs/connect
         chat_body = {
@@ -25,8 +25,7 @@ class OpenAIChat:
             ],
             "model": body["model"],
         }
-        if stream:
-            chat_body["stream"] = True
+        chat_body["stream"] = True
         return chat_body
 
     def _send_request(self, body):
@@ -38,8 +37,7 @@ class OpenAIChat:
         )
 
     def chat(self, body):
-        chat_body = self._create_chat_body(body, stream=True)
-        response = self._send_request(chat_body)
+        response = self._send_request(body)
 
         def generate():
             # increase chunk size if getting errors for long messages

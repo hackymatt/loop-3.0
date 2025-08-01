@@ -10,7 +10,7 @@ import { RouterLink } from "src/routes/components";
 import { usePluralize } from "src/hooks/use-pluralize";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
-import { fNumber } from "src/utils/format-number";
+import { fNumber, fShortenNumber } from "src/utils/format-number";
 
 import { DEFAULT_AVATAR_URL } from "src/consts/avatar";
 
@@ -121,7 +121,7 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
       </Typography>
 
       <Label color="info" sx={{ textTransform: "uppercase" }}>
-        {tokens}
+        {fShortenNumber(tokens, { code: locale("code") })}
       </Label>
     </Card>
   );
