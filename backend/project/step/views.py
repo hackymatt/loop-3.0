@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.http import StreamingHttpResponse
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-from django.utils.translation import get_language_from_request
+from django.utils.translation import get_language_from_request, gettext as _
 from .models import Step
 from .serializers import StepBaseSerializer, StepDetailsSerializer
 from ..enrollment.models import ProjectEnrollment
@@ -70,14 +70,13 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-
-
 class EventStreamRenderer(BaseRenderer):
-    media_type = 'text/event-stream'
-    format = 'event-stream'
+    media_type = "text/event-stream"
+    format = "event-stream"
 
     def render(self, data, media_type=None, renderer_context=None):
-        return data  
+        return data  # pragma: no cover
+
 
 class StepChatView(APIView):
     renderer_classes = [EventStreamRenderer]
@@ -92,26 +91,19 @@ class StepChatView(APIView):
         step = get_object_or_404(Step, slug=step, active=True)
         text = step.get_translation(language).text
 
-        system_message = {
-            "role": "system",
-            "text": (
-                "You are assisting with a programming project step. "
-                "Only respond based on the specific context provided by the user. "
-                "Do not answer anything beyond the scope of the current step. "
-                "If the user asks something unrelated or beyond this step, "
-                "politely remind them that you're limited to this step only. "
-                f"This is step content: {text}"
-            )
-        }
+        text = _(
+            "You are assisting with a programming project step. Only respond based on the specific context provided by the user. Do not answer anything beyond the scope of the current step. If the user asks something unrelated or beyond this step, politely remind them that you're limited to this step only. Respond in English. This is step content: %(text)s"
+        ) % {"text": text}
+        system_message = {"role": "system", "text": text}
 
         user_messages = body.get("messages", [])
         messages = [system_message, *user_messages]
         model = "gpt-3.5-turbo"
 
-        data = self.open_ai_chat.chat_stream({"messages": messages, "model": model})
+        data = self.open_ai_chat.chat({"messages": messages, "model": model})
 
         return StreamingHttpResponse(
             streaming_content=data,
             status=status.HTTP_200_OK,
-            content_type="text/event-stream"
+            content_type="text/event-stream",
         )

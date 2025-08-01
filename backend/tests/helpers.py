@@ -2,10 +2,20 @@ from const import Urls
 import jwt
 import datetime
 from global_config import CONFIG
+from unittest.mock import MagicMock
 
 
 def mock_send_message(mock):
     mock.return_value = {}
+
+
+def mock_send_request(mock):
+    class MockResponse:
+        def iter_content(self, chunk_size=2048):
+            yield b'data: {"choices": [{"delta": {"content": "Hello"}}]}\n'
+            yield b'data: {"choices": [{"delta": {"content": "World"}}]}\n'
+
+    mock.return_value = MockResponse()
 
 
 def mock_auth_return_value(mock, return_value):
