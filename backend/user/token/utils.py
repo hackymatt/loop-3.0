@@ -1,9 +1,21 @@
+import tiktoken
+
 from plan.subscription.utils import get_subscription
 from calendar import monthrange
 from user.token.models import TokenUsage
 from django.db.models import Sum
 from django.utils.timezone import now
-import tiktoken
+
+
+def calculate_tokens_limit(start_date, today, plan_limit):
+    total_days_in_month = monthrange(start_date.year, start_date.month)[1]
+    days_remaining = total_days_in_month - start_date.day + 1
+    tokens_limit = (
+        int((days_remaining / total_days_in_month) * plan_limit)
+        if start_date.year == today.year and start_date.month == today.month
+        else plan_limit
+    )
+    return tokens_limit
 
 
 def get_user_tokens_left(user):
@@ -13,13 +25,7 @@ def get_user_tokens_left(user):
 
     today = now().date()
 
-    # If current month is the subscription start month, prorate the limit
-    if start_date.year == today.year and start_date.month == today.month:
-        total_days_in_month = monthrange(start_date.year, start_date.month)[1]
-        days_remaining = total_days_in_month - start_date.day + 1
-        tokens_limit = int((days_remaining / total_days_in_month) * plan_limit)
-    else:
-        tokens_limit = plan_limit
+    tokens_limit = calculate_tokens_limit(start_date, today, plan_limit)
 
     first_day_of_month = today.replace(day=1)
     _, last_day = monthrange(today.year, today.month)
@@ -43,16 +49,13 @@ def is_user_within_token_limit(user):
 
 def count_tokens(messages, model="gpt-3.5-turbo"):
     encoding = tiktoken.encoding_for_model(model)
-    tokens_per_message = 4  # stała liczba tokenów na wiadomość w chat-completions
-    tokens_per_name = -1  # jeśli wiadomość ma "name", tokeny inaczej się liczą
-
+    tokens_per_message = 4  # stała liczba tokenów na wiadomość (nagłówki + struktura)
     total_tokens = 0
+
     for message in messages:
         total_tokens += tokens_per_message
-        for key, value in message.items():
+        for value in message.values():
             total_tokens += len(encoding.encode(value))
-            if key == "name":
-                total_tokens += tokens_per_name
-    total_tokens += 2  # końcowe tokeny systemowe
 
+    total_tokens += 2  # zakończenie rozmowy/system prompt
     return total_tokens

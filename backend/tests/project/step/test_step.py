@@ -7,6 +7,7 @@ from rest_framework import status
 from project.enrollment.models import ProjectEnrollment
 from project.progress.models import ProjectProgress
 from plan.subscription.utils import subscribe
+from plan.subscription.models import PlanSubscription
 from ...factory import (
     create_student,
     create_project,
@@ -154,9 +155,13 @@ class StepChatViewTest(TestCase):
         self.step = create_step()
 
     @patch.object(OpenAIChat, "_send_request")
-    def test_chat(self, send_request_mock):
+    def test_chat_allowed(self, send_request_mock):
         login(self, self.student.user.email, self.student_password)
         mock_send_request(send_request_mock)
+
+        subscription = PlanSubscription.objects.filter(student=self.student).first()
+        subscription.plan.tokens_limit = 9999
+        subscription.plan.save()
 
         response = self.client.post(
             self.url.replace("<slug:step>", self.step.slug),
@@ -172,3 +177,13 @@ class StepChatViewTest(TestCase):
         chunks = list(response.streaming_content)
         self.assertIn(b'data: {"text": "Hello"}\n\n', chunks)
         self.assertIn(b'data: {"text": "World"}\n\n', chunks)
+
+    def test_chat_not_allowed(self):
+        login(self, self.student.user.email, self.student_password)
+
+        response = self.client.post(
+            self.url.replace("<slug:step>", self.step.slug),
+            {"messages": [{"role": "user", "text": "What's next?"}]},
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)

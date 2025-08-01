@@ -114,9 +114,13 @@ class StepChatView(APIView):
         messages = [system_message, *user_messages]
         model = "gpt-3.5-turbo"
 
-        tokens_count = count_tokens(messages)
+        body = self.open_ai_chat.create_chat_body(
+            {"messages": messages, "model": model}
+        )
 
-        data = self.open_ai_chat.chat({"messages": messages, "model": model})
+        tokens_count = count_tokens(body["messages"], body["model"])
+
+        data = self.open_ai_chat.chat(body)
 
         TokenUsage.objects.create(
             student=Student.objects.get(user=request.user),
