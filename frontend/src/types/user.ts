@@ -21,6 +21,7 @@ export type IInstructorProps = IUserProps & {
 };
 
 export type IDashboardProps = {
+  tokens: number;
   totalPoints: number;
   dailyStreak: number;
   projects: IProjectListProps[];

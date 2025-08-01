@@ -12,5 +12,12 @@
       "description": "Aby kontynuować pracę i odblokować kolejne projekty — przejdź na wyższy plan!"
     },
     "button": "Wróć do projektu"
+  },
+  "chat": {
+    "welcome": "W czym moge pomóc?",
+    "placeholder": "Zapytaj o cokolwiek",
+    "errorMessage": "Wystąpił błąd podczas komunikacji z serwisem. Spróbuj ponownie później.",
+    "hide": "Ukryj chat",
+    "show": "Zapytaj AI"
   }
 }

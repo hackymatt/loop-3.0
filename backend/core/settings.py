@@ -95,6 +95,7 @@ INSTALLED_APPS = [
     "user.type.admin_user",
     "user.type.student_user",
     "user.type.instructor_user",
+    "user.token",
     "project.level",
     "project.technology",
     "project.category",
@@ -458,6 +459,7 @@ NOREPLY_EMAIL = os.getenv("NOREPLY_EMAIL", "")
 GOOGLE_CREDENTIALS = json.loads(
     base64.urlsafe_b64decode(os.getenv("GOOGLE_CREDENTIALS", "e30=")).decode()
 )
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "")

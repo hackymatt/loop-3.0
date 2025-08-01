@@ -2,10 +2,12 @@ from django.test import TestCase
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from rest_framework.test import APIClient
+from unittest.mock import patch
 from rest_framework import status
 from project.enrollment.models import ProjectEnrollment
 from project.progress.models import ProjectProgress
 from plan.subscription.utils import subscribe
+from plan.subscription.models import PlanSubscription
 from ...factory import (
     create_student,
     create_project,
@@ -13,7 +15,8 @@ from ...factory import (
     create_stage,
     create_plan,
 )
-from ...helpers import login
+from ...helpers import login, mock_send_request
+from utils.openai.chat import OpenAIChat
 from const import Urls, Currency
 
 
@@ -140,3 +143,47 @@ class StepViewSetTestCase(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class StepChatViewTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.url = f"/{Urls.API}/{Urls.STEP_CHAT}"
+
+        self.student, self.student_password = create_student()
+
+        self.step = create_step()
+
+    @patch.object(OpenAIChat, "_send_request")
+    def test_chat_allowed(self, send_request_mock):
+        login(self, self.student.user.email, self.student_password)
+        mock_send_request(send_request_mock)
+
+        subscription = PlanSubscription.objects.filter(student=self.student).first()
+        subscription.plan.tokens_limit = 9999
+        subscription.plan.save()
+
+        response = self.client.post(
+            self.url.replace("<slug:step>", self.step.slug),
+            {"messages": [{"role": "user", "text": "What's next?"}]},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response["Content-Type"], "text/event-stream")
+        self.assertTrue(response.streaming)
+
+        # Make sure streamed content is correct
+        chunks = list(response.streaming_content)
+        self.assertIn(b'data: {"text": "Hello"}\n\n', chunks)
+        self.assertIn(b'data: {"text": "World"}\n\n', chunks)
+
+    def test_chat_not_allowed(self):
+        login(self, self.student.user.email, self.student_password)
+
+        response = self.client.post(
+            self.url.replace("<slug:step>", self.step.slug),
+            {"messages": [{"role": "user", "text": "What's next?"}]},
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)

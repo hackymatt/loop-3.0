@@ -11,6 +11,7 @@ import { getData } from "src/api/utils";
 const endpoint = URLS.STEP;
 
 type IStep = {
+  slug: string;
   name: string;
   points: number;
   text: string;

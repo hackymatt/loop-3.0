@@ -45,7 +45,7 @@ class StepBaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Step
-        fields = ["points", "name", "duration"]
+        fields = ["slug", "points", "name", "duration"]
 
     def get_name(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE

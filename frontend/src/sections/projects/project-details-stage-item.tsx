@@ -101,13 +101,10 @@ export function ProjectDetailsStageItem({
 
           {stage.progress ? (
             <>
-              <LinearProgress
-                color="primary"
-                variant="determinate"
-                value={stage.progress}
-                sx={{ flex: "1 1 auto", mr: 1 }}
-              />
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              <Box sx={{ width: 120, mx: 2 }}>
+                <LinearProgress color="primary" variant="determinate" value={stage.progress} />
+              </Box>
+              <Typography variant="body2" sx={{ color: "text.secondary", minWidth: 32 }}>
                 {Math.round(stage.progress)}%
               </Typography>
             </>

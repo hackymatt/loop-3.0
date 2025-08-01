@@ -12,5 +12,12 @@
       "description": "To continue working and unlock more projects, upgrade your plan!"
     },
     "button": "Return to project"
+  },
+  "chat": {
+    "welcome": "How can I help you?",
+    "placeholder": "Ask anything",
+    "errorMessage": "An error occurred while communicating with the service. Please try again later.",
+    "hide": "Hide chat",
+    "show": "Ask AI"
   }
 }

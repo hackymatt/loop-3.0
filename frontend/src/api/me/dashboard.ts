@@ -57,6 +57,7 @@ type ICertificate = {
 };
 
 type IDashboard = {
+  tokens: number;
   total_points: number;
   daily_streak: number;
   projects: IProject[];
@@ -72,9 +73,10 @@ export const dashboardQuery = (language: Language) => {
       headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
-    const { total_points, daily_streak, projects, certificates } = data;
+    const { total_points, daily_streak, projects, certificates, ...rest } = data;
 
     const modifiedResult: IDashboardProps = {
+      ...rest,
       totalPoints: total_points,
       dailyStreak: daily_streak,
       projects: projects.map(
@@ -91,9 +93,9 @@ export const dashboardQuery = (language: Language) => {
           ratings_count,
           students_count,
           progress,
-          ...rest
+          ...restProject
         }: IProject) => ({
-          ...rest,
+          ...restProject,
           name: translated_name,
           description: translated_description,
           level: {
@@ -122,8 +124,8 @@ export const dashboardQuery = (language: Language) => {
         })
       ),
       certificates: certificates.map(
-        ({ student_name, project_name, completed_at, ...rest }: ICertificate) => ({
-          ...rest,
+        ({ student_name, project_name, completed_at, ...restCertificate }: ICertificate) => ({
+          ...restCertificate,
           studentName: student_name,
           projectName: project_name,
           completedAt: completed_at,
