@@ -1,4 +1,5 @@
 import type { IStepProps } from "src/types/step";
+import type { Language } from "src/locales/types";
 
 import React from "react";
 import { m } from "framer-motion";
@@ -8,19 +9,22 @@ import Box from "@mui/material/Box";
 import { Divider, Skeleton, Typography } from "@mui/material";
 
 import { Label } from "src/components/label";
+import { Iconify } from "src/components/iconify";
 import { Markdown } from "src/components/markdown";
+
+import { Chat } from "./chat";
 
 // ----------------------------------------------------------------------
 
 type StepProps = {
   step: IStepProps;
-  onSubmit: () => void;
+  locale: Language;
   isLocked?: boolean;
 };
 
 // ----------------------------------------------------------------------
 
-export const Step = React.memo(function Step({ step, onSubmit, isLocked = false }: StepProps) {
+export const Step = React.memo(function Step({ step, locale, isLocked = false }: StepProps) {
   const { t } = useTranslation("learn");
 
   const renderHeader = () => (
@@ -29,8 +33,12 @@ export const Step = React.memo(function Step({ step, onSubmit, isLocked = false 
         <Typography variant="h4">{step.name}</Typography>
         <Label color="warning">{step.totalPoints} XP</Label>
       </Box>
-      <Typography variant="subtitle2" color="text.secondary">
-        ⏱ {t("estimatedTime")}: {step.duration} min
+      <Typography
+        variant="subtitle2"
+        color="text.secondary"
+        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+      >
+        <Iconify icon="solar:clock-circle-outline" /> {t("estimatedTime")}: {step.duration} min
       </Typography>
     </Box>
   );
@@ -59,6 +67,14 @@ export const Step = React.memo(function Step({ step, onSubmit, isLocked = false 
       {renderHeader()}
       <Divider />
       {renderContent()}
+      <Box height="300px">
+        <Chat
+          language={locale}
+          url={`http://localhost:8000/api/step/chat/${step.slug}`}
+          placeholder={t("chat.placeholder")}
+          history={[{ text: t("chat.welcome"), role: "ai" }]}
+        />
+      </Box>
     </>
   );
 });

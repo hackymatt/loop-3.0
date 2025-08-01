@@ -128,6 +128,42 @@ class SimilarProjectsView(views.APIView):
 
         similar_projects = (
             project.similar.all()
+            .prefetch_related(
+                "instructors",
+                "translations",
+                Prefetch(
+                    "stages",
+                    queryset=Stage.objects.prefetch_related("steps").order_by(
+                        "projectstage__order"
+                    ),
+                ),
+                Prefetch(
+                    "project_prerequisites",
+                    queryset=Project.objects.prefetch_related("translations"),
+                ),
+                Prefetch(
+                    "blog_prerequisites",
+                    queryset=Blog.objects.prefetch_related("translations"),
+                ),
+                Prefetch(
+                    "similar",
+                    queryset=Project.objects.prefetch_related("translations"),
+                ),
+            )
+            .annotate(
+                stages_count=Count(
+                    "stages", filter=Q(stages__active=True), distinct=True
+                ),
+                average_rating=Avg("reviews__rating"),
+                ratings_count=Count("reviews", distinct=True),
+                students_count=Count("enrollments", distinct=True),
+                points=Sum(
+                    "stages__steps__points", filter=Q(stages__steps__active=True)
+                ),
+                duration=Sum(
+                    "stages__steps__duration", filter=Q(stages__steps__active=True)
+                ),
+            )
             .filter(active=True)
             .exclude(id=project.id)
             .distinct()[:3]

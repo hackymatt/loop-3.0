@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import type { BoxProps } from "@mui/material";
 import type { IStepProps } from "src/types/step";
+import type { Language } from "src/locales/types";
 import type { IProjectProps } from "src/types/project";
 
 import { useMemo, useCallback } from "react";
@@ -22,6 +23,7 @@ import { ArrowBasicButtons } from "../learn/arrow-buttons/arrow-buttons";
 
 interface LearnViewProps {
   data: { project: IProjectProps; step: IStepProps; isLocked: boolean };
+  locale: Language;
   projectSlug: string;
   stageSlug: string;
   stepSlug: string;
@@ -48,7 +50,7 @@ const ContentBox = ({ children, sx }: { children: ReactNode; sx?: BoxProps["sx"]
   </Box>
 );
 
-export function LearnView({ data, projectSlug, stageSlug, stepSlug }: LearnViewProps) {
+export function LearnView({ data, locale, projectSlug, stageSlug, stepSlug }: LearnViewProps) {
   const localize = useLocalizedPath();
   const router = useRouter();
 
@@ -101,7 +103,7 @@ export function LearnView({ data, projectSlug, stageSlug, stepSlug }: LearnViewP
       />
       <ArrowBasicButtons
         disablePrev={currentStepIndex <= 0}
-        disableNext={currentStepIndex >= allSteps.length - 1}
+        disableNext={false}
         onClickPrev={() => navigateTo(currentStepIndex - 1)}
         onClickNext={() => navigateTo(currentStepIndex + 1)}
       />
@@ -110,7 +112,7 @@ export function LearnView({ data, projectSlug, stageSlug, stepSlug }: LearnViewP
 
   const Content = () => (
     <ContentBox>
-      <Step step={step} onSubmit={() => {}} isLocked={isLocked} />
+      <Step step={step} locale={locale} isLocked={isLocked} />
     </ContentBox>
   );
 
@@ -119,7 +121,7 @@ export function LearnView({ data, projectSlug, stageSlug, stepSlug }: LearnViewP
       component="section"
       sx={{ pb: { xs: 5, md: 10 }, textAlign: { xs: "center", md: "left" } }}
     >
-      <Container maxWidth={false}>
+      <Container>
         <Header />
         <Content />
       </Container>

@@ -1,4 +1,5 @@
 type IStepBaseProps = {
+  slug: string;
   name: string;
   totalPoints: number;
 };

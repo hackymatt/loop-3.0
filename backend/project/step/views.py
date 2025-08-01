@@ -1,9 +1,13 @@
 from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.renderers import BaseRenderer
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
+from django.http import StreamingHttpResponse
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+from django.utils.translation import get_language_from_request
 from .models import Step
 from .serializers import StepBaseSerializer, StepDetailsSerializer
 from ..enrollment.models import ProjectEnrollment
@@ -14,6 +18,7 @@ from ..step.models import Step
 from plan.subscription.utils import get_subscription
 from plan.utils import is_default_plan
 from user.type.student_user.models import Student
+from utils.openai.chat import OpenAIChat
 from datetime import datetime
 
 
@@ -63,3 +68,50 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
 
         serializer = StepDetailsSerializer(step, context={"request": request})
         return Response(serializer.data)
+
+
+
+
+class EventStreamRenderer(BaseRenderer):
+    media_type = 'text/event-stream'
+    format = 'event-stream'
+
+    def render(self, data, media_type=None, renderer_context=None):
+        return data  
+
+class StepChatView(APIView):
+    renderer_classes = [EventStreamRenderer]
+    http_method_names = ["post"]
+    permission_classes = [IsAuthenticated]
+    open_ai_chat = OpenAIChat()
+
+    def post(self, request, step):
+        body = request.data
+        language = get_language_from_request(request)
+
+        step = get_object_or_404(Step, slug=step, active=True)
+        text = step.get_translation(language).text
+
+        system_message = {
+            "role": "system",
+            "text": (
+                "You are assisting with a programming project step. "
+                "Only respond based on the specific context provided by the user. "
+                "Do not answer anything beyond the scope of the current step. "
+                "If the user asks something unrelated or beyond this step, "
+                "politely remind them that you're limited to this step only. "
+                f"This is step content: {text}"
+            )
+        }
+
+        user_messages = body.get("messages", [])
+        messages = [system_message, *user_messages]
+        model = "gpt-3.5-turbo"
+
+        data = self.open_ai_chat.chat_stream({"messages": messages, "model": model})
+
+        return StreamingHttpResponse(
+            streaming_content=data,
+            status=status.HTTP_200_OK,
+            content_type="text/event-stream"
+        )

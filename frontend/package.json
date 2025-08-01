@@ -57,6 +57,7 @@
     "axios": "^1.6.5",
     "caniuse-lite": "^1.0.30001721",
     "dayjs": "^1.11.13",
+    "deep-chat-react": "^2.2.2",
     "embla-carousel": "^8.5.1",
     "embla-carousel-auto-height": "^8.5.1",
     "embla-carousel-auto-scroll": "^8.5.1",

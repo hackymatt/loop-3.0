@@ -7,6 +7,7 @@ import { Box, Card, Link, Avatar, Typography } from "@mui/material";
 import { paths } from "src/routes/paths";
 import { RouterLink } from "src/routes/components";
 
+import { usePluralize } from "src/hooks/use-pluralize";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { fNumber } from "src/utils/format-number";
@@ -65,7 +66,10 @@ type Props = {
 export function ProfileSummary({ totalPoints, dailyStreak }: Props) {
   const { t: locale } = useTranslation("locale");
   const { t } = useTranslation("dashboard");
+  const days = t("profile.days", { returnObjects: true }) as string[];
+  console.log(days);
   const localize = useLocalizedPath();
+  const languagePluralize = usePluralize();
 
   const user = useUserContext();
   const { firstName, email, avatarUrl, plan } = user.state;
@@ -143,7 +147,7 @@ export function ProfileSummary({ totalPoints, dailyStreak }: Props) {
       <StatBox
         icon="solar:fire-bold"
         label={t("profile.streak")}
-        value={`${dailyStreak} ${t("profile.days")}`}
+        value={`${dailyStreak} ${languagePluralize(days, dailyStreak)}`}
         color="warning"
       />
     </Box>

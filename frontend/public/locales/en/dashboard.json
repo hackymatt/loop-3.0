@@ -21,6 +21,6 @@
     "greeting": "Hello",
     "points": "XP points",
     "streak": "Learning streak",
-    "days": "days"
+    "days": ["day", "days", "days"]
   }
 }
