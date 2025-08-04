@@ -8,6 +8,7 @@ from django.http import StreamingHttpResponse
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.utils.translation import get_language_from_request, gettext as _
+from django.utils import timezone
 from .models import Step
 from .serializers import StepBaseSerializer, StepDetailsSerializer
 from ..enrollment.models import ProjectEnrollment
@@ -21,7 +22,6 @@ from user.type.student_user.models import Student
 from user.token.models import TokenUsage
 from user.token.utils import is_user_within_token_limit, count_tokens
 from utils.openai.chat import OpenAIChat
-from datetime import datetime
 import json
 
 
@@ -66,7 +66,7 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
         ProjectProgress.objects.get_or_create(
             student=student,
             step=step,
-            defaults={"completed_at": datetime.now()},
+            defaults={"completed_at": timezone.now()},
         )
 
         serializer = StepDetailsSerializer(step, context={"request": request})

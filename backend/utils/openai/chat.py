@@ -1,6 +1,7 @@
 import requests
 import json
 from global_config import CONFIG
+from utils.logger.logger import logger
 
 
 class OpenAIChat:
@@ -45,7 +46,9 @@ class OpenAIChat:
                 if chunk:
                     if not (chunk.decode().strip().startswith("data")):
                         errorMessage = json.loads(chunk.decode())["error"]["message"]
-                        print("Error in the retrieved stream chunk:", errorMessage)
+                        logger.error(
+                            "Error in the retrieved stream chunk:", errorMessage
+                        )
                         # this exception is not caught, however it signals to the user that there was an error
                         raise Exception(errorMessage)
                     lines = chunk.decode().split("\n")
