@@ -8,7 +8,6 @@ import { LANGUAGE } from "./consts/language";
 import type { Language } from "./locales/types";
 
 const locales = Object.values(LANGUAGE);
-const defaultLocale = LANGUAGE.PL;
 
 const AUTHORIZED_PATHS = [
   paths.certificates,
@@ -36,7 +35,6 @@ export function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
   const accessToken = req.cookies.get("access_token");
 
-  // 1. Skip static and API
   if (
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
@@ -46,16 +44,22 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Locale detection
   const segments = pathname.split("/").filter(Boolean);
   const firstSegment = segments[0];
   const hasLocale = locales.includes(firstSegment as Language);
 
-  const locale = hasLocale ? (firstSegment as Language) : defaultLocale;
-  const pathWithoutLocale = `/${segments.slice(hasLocale ? 1 : 0).join("/") || ""}`;
+  let locale: Language;
+  if (hasLocale) {
+    locale = firstSegment as Language;
+  } else {
+    // Detect from Accept-Language
+    const acceptLang = req.headers.get("accept-language") || "";
+    const detected = acceptLang.toLowerCase().startsWith("en") ? LANGUAGE.EN : LANGUAGE.PL;
+    locale = detected;
+  }
 
-  // 3. Auth logic
-  const redirectLocale = hasLocale ? `/${locale}` : "";
+  const pathWithoutLocale = `/${segments.slice(hasLocale ? 1 : 0).join("/") || ""}`;
+  const redirectLocale = `/${locale}`;
 
   if (!accessToken && AUTHORIZED_PATHS.includes(pathWithoutLocale)) {
     return NextResponse.redirect(new URL(`${redirectLocale}${paths.auth.login}`, origin));
@@ -65,20 +69,16 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(`${redirectLocale}${paths.account.dashboard}`, origin));
   }
 
-  // 4. Internally rewrite to defaultLocale path if not present in URL
-  if (!hasLocale && locale === defaultLocale) {
+  // Rewrite if missing locale
+  if (!hasLocale) {
     const url = req.nextUrl.clone();
-    url.pathname = `/${defaultLocale}${pathname}`;
+    url.pathname = `/${locale}${pathname}`;
     return NextResponse.rewrite(url);
   }
 
   return NextResponse.next();
 }
 
-// --- Matcher that captures paths with or without locale ---
 export const config = {
-  matcher: [
-    // Obsługujemy wszystkie ścieżki, z i bez /locale/
-    "/((?!_next|api|favicon.ico|assets).*)",
-  ],
+  matcher: ["/((?!_next|api|favicon.ico|assets).*)"],
 };
