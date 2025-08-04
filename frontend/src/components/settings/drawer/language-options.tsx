@@ -19,7 +19,7 @@ export type FontFamilyOptionsProps = BoxProps & {
     label: string;
     countryCode: string;
   }[];
-  value: SettingsState["language"];
+  value: Language;
   onChangeOption: (newOption: Language) => void;
 };
 

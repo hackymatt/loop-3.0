@@ -4,7 +4,8 @@ from plan.subscription.utils import get_subscription
 from calendar import monthrange
 from user.token.models import TokenUsage
 from django.db.models import Sum
-from django.utils.timezone import now
+from datetime import datetime, time
+from django.utils.timezone import now, make_aware
 
 
 def calculate_tokens_limit(start_date, today, plan_limit):
@@ -27,9 +28,11 @@ def get_user_tokens_left(user):
 
     tokens_limit = calculate_tokens_limit(start_date, today, plan_limit)
 
-    first_day_of_month = today.replace(day=1)
+    first_day_of_month = make_aware(datetime.combine(today.replace(day=1), time.min))
     _, last_day = monthrange(today.year, today.month)
-    last_day_of_month = today.replace(day=last_day)
+    last_day_of_month = make_aware(
+        datetime.combine(today.replace(day=last_day), time.max)
+    )
 
     tokens_used = (
         TokenUsage.objects.filter(

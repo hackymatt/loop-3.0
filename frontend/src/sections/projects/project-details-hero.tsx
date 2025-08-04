@@ -1,4 +1,5 @@
 import type { BoxProps } from "@mui/material/Box";
+import type { Language } from "src/locales/types";
 import type { IProjectProps } from "src/types/project";
 
 import { useTranslation } from "react-i18next";
@@ -51,10 +52,11 @@ type Props = BoxProps &
     | "totalStudents"
     | "stages"
     | "progress"
-  >;
+  > & { language: Language };
 
 export function ProjectDetailsHero({
   sx,
+  language,
   slug,
   name,
   level,
@@ -91,7 +93,7 @@ export function ProjectDetailsHero({
   const completed = (progress || 0) === 100;
   const next = findNextStep(stages);
   const redirect = localize(
-    `${paths.learn}/${slug}/${next.step?.slug || stages[0].slug}/${next.step?.slug || stages[0].steps[0].slug}`
+    `${paths.learn}/${slug}/${next.stage?.slug || stages[0].slug}/${next.step?.slug || stages[0].steps[0].slug}`
   );
 
   const languagePluralize = usePluralize();
@@ -284,6 +286,7 @@ export function ProjectDetailsHero({
         <SignUpView
           header={<FormHead title={t("sign-up.header")} />}
           buttonText={t("sign-up.button")}
+          locale={language}
         />
       </div>
     </Box>

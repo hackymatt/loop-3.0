@@ -11,15 +11,25 @@ import { DEFAULT_AVATAR_URL } from "src/consts/avatar";
 
 import { useUserContext } from "src/components/user";
 
+// ----------------------------------------------------------------------
+
+export type ChatMessage = {
+  text: string;
+  role: "user" | "ai";
+};
+
 type ChatProps = {
   placeholder?: string;
   errorMessage?: string;
   history?: { text: string; role: "user" | "ai" }[];
+  onMessage?: (message: ChatMessage) => void;
   url: string;
   language: Language;
 };
 
-export function Chat({ url, placeholder, errorMessage, history, language }: ChatProps) {
+// ----------------------------------------------------------------------
+
+export function Chat({ url, placeholder, errorMessage, history, onMessage, language }: ChatProps) {
   const {
     state: { avatarUrl },
   } = useUserContext();
@@ -148,6 +158,10 @@ export function Chat({ url, placeholder, errorMessage, history, language }: Chat
           },
         }}
         history={history}
+        onMessage={(body) => {
+          if (body.isHistory) return;
+          onMessage?.(body.message as ChatMessage);
+        }}
         connect={{
           stream: true,
           url,

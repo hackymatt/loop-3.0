@@ -2,6 +2,7 @@ import "src/global.css";
 
 // ----------------------------------------------------------------------
 import type { Metadata, Viewport } from "next";
+import type { Language } from "src/locales/types";
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 
@@ -40,13 +41,13 @@ export async function generateStaticParams() {
 
 type Props = {
   children: React.ReactNode;
-  params: { locale: string };
+  params: { locale: Language };
 };
 
 export default function LocaleLayout({ children, params: { locale } }: Props) {
   return (
     <TranslationProvider locale={locale}>
-      <LocalizationProvider>
+      <LocalizationProvider locale={locale}>
         <AppRouterCacheProvider options={{ key: "css" }}>
           <SnackbarProvider>
             <CookiesManagerProvider>

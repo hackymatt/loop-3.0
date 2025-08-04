@@ -22,6 +22,7 @@ from user.token.models import TokenUsage
 from user.token.utils import is_user_within_token_limit, count_tokens
 from utils.openai.chat import OpenAIChat
 from datetime import datetime
+import json
 
 
 class StepViewSet(RetrieveModelMixin, GenericViewSet):
@@ -86,17 +87,24 @@ class StepChatView(APIView):
     permission_classes = [IsAuthenticated]
     open_ai_chat = OpenAIChat()
 
+    def event_stream_error(self, content):
+        def generate():
+            yield "data: {}\n\n".format(json.dumps({"text": content}))
+
+        return generate()
+
     def post(self, request, step):
         is_allowed = is_user_within_token_limit(request.user)
 
         if not is_allowed:
-            return Response(
-                {
-                    "detail": _(
+            return StreamingHttpResponse(
+                streaming_content=self.event_stream_error(
+                    _(
                         "Token usage limit exceeded. Please upgrade your plan or wait until next period."
                     )
-                },
-                status=status.HTTP_429_TOO_MANY_REQUESTS,
+                ),
+                status=status.HTTP_200_OK,
+                content_type="text/event-stream",
             )
 
         body = request.data
