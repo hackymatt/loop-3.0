@@ -8,9 +8,11 @@ import { I18nextProvider } from "react-i18next";
 
 import i18n from "./i18n";
 
+import type { Language } from "./types";
+
 type Props = {
   children: React.ReactNode;
-  locale: string;
+  locale: Language;
 };
 
 export function TranslationProvider({ children, locale }: Props) {

@@ -13,8 +13,8 @@ type PageProps = {
   params: { locale: Language };
 };
 
-export default function Page() {
-  return <SignUpView />;
+export default function Page({ params }: PageProps) {
+  return <SignUpView locale={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

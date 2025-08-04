@@ -2,6 +2,7 @@
 
 import type { IPlanProps } from "src/types/plan";
 import type { FabProps } from "@mui/material/Fab";
+import type { Language } from "src/locales/types";
 import type { UseBackToTopReturn } from "minimal-shared/hooks";
 import type { ITestimonialProps } from "src/types/testimonial";
 import type { IBlogRecentProps, IBlogFeaturedPost } from "src/types/blog";
@@ -36,9 +37,10 @@ type HomeViewProps = {
     recentPosts: IBlogRecentProps[];
     plans: IPlanProps[];
   };
+  locale: Language;
 };
 
-export function HomeView({ data }: HomeViewProps) {
+export function HomeView({ data, locale }: HomeViewProps) {
   const pageProgress = useScrollProgress();
 
   const { onBackToTop, isVisible } = useBackToTop("90%");
@@ -62,7 +64,7 @@ export function HomeView({ data }: HomeViewProps) {
 
       <BackToTopButton isVisible={isVisible} onClick={onBackToTop} />
 
-      <HomeHero />
+      <HomeHero locale={locale} />
 
       <HomeNewStart />
 

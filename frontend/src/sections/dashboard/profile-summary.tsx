@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 
-import { Box, Card, Link, Avatar, Typography } from "@mui/material";
+import { Box, Card, Link, Stack, Avatar, Typography } from "@mui/material";
 
 import { paths } from "src/routes/paths";
 import { RouterLink } from "src/routes/components";
@@ -10,13 +10,18 @@ import { RouterLink } from "src/routes/components";
 import { usePluralize } from "src/hooks/use-pluralize";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
+import { getPlanIcon } from "src/utils/plan-icon";
 import { fNumber, fShortenNumber } from "src/utils/format-number";
 
+import { CONFIG } from "src/global-config";
 import { DEFAULT_AVATAR_URL } from "src/consts/avatar";
 
-import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
+
+// --------------------------------------------
+
+const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${name}`;
 
 // --------------------------------------------
 
@@ -83,20 +88,43 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
     >
       <Card
         sx={(theme) => ({
-          borderRadius: 2,
-          p: 2,
+          borderRadius: 3,
+          px: 3,
+          py: 2,
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          textAlign: "center",
-          gap: 2,
-          backgroundColor: theme.palette.background.default,
-          "&:hover": { boxShadow: theme.vars.customShadows.z24 },
+          backgroundColor: theme.palette.background.paper,
+          boxShadow: theme.shadows[1],
         })}
       >
-        <Label color="error" sx={{ textTransform: "uppercase" }}>
-          {plan.license}
-        </Label>
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+            }}
+          >
+            <Box
+              component="img"
+              alt={plan.license}
+              src={iconPath(getPlanIcon(plan.type))}
+              sx={{ width: 80, height: 80 }}
+            />
+          </Box>
+
+          <Box>
+            <Typography variant="caption" color="text.secondary">
+              {t("profile.plan")}
+            </Typography>
+            <Typography variant="h6" fontWeight="bold">
+              {plan.license}
+            </Typography>
+          </Box>
+        </Stack>
       </Card>
     </Link>
   );
@@ -104,25 +132,38 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
   const renderTokens = () => (
     <Card
       sx={(theme) => ({
-        borderRadius: 2,
-        p: 3,
+        borderRadius: 3,
+        px: 3,
+        py: 2,
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        backgroundColor: theme.palette.background.default,
-        gap: 1,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[1],
       })}
     >
-      <Iconify icon="simple-icons:openai" sx={{ color: "primary" }} width={18} height={18} />
+      <Stack direction="row" alignItems="center" spacing={2}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 36,
+            height: 36,
+            borderRadius: "50%",
+          }}
+        >
+          <Iconify icon="logos:openai-icon" width={24} height={24} />
+        </Box>
 
-      <Typography variant="body2" fontWeight="bold">
-        {t("profile.tokens")}:
-      </Typography>
-
-      <Label color="info" sx={{ textTransform: "uppercase" }}>
-        {fShortenNumber(tokens, { code: locale("code") })}
-      </Label>
+        <Box>
+          <Typography variant="caption" color="text.secondary">
+            {t("profile.tokens")}
+          </Typography>
+          <Typography variant="h6" fontWeight="bold">
+            {fShortenNumber(tokens, { code: locale("code") })}
+          </Typography>
+        </Box>
+      </Stack>
     </Card>
   );
 

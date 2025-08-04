@@ -1,5 +1,6 @@
 "use client";
 
+import type { Language } from "src/locales/types";
 import type { IReviewItemProp, IReviewSummaryProps } from "src/types/review";
 import type { LevelType, IProjectProps, IProjectListProps } from "src/types/project";
 
@@ -34,9 +35,10 @@ type ProjectViewProps = {
     reviewsCount: number;
     reviewsPageSize: number;
   };
+  locale: Language;
 };
 
-export function ProjectView({ slug, data }: ProjectViewProps) {
+export function ProjectView({ slug, data, locale }: ProjectViewProps) {
   const query = useSetState({
     page: "1",
   });
@@ -82,6 +84,7 @@ export function ProjectView({ slug, data }: ProjectViewProps) {
   return (
     <>
       <ProjectDetailsHero
+        language={locale}
         slug={slug}
         name={project.name || ""}
         level={project.level || { slug: "" as unknown as LevelType, name: "" }}

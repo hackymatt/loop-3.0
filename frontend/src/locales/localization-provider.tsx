@@ -11,22 +11,21 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider as MUIProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { useSettingsContext } from "src/components/settings";
+import type { Language } from "./types";
 
 dayjs.extend(localizedFormat);
 
 type Props = {
   children: React.ReactNode;
+  locale: Language;
 };
 
-export function LocalizationProvider({ children }: Props) {
-  const settings = useSettingsContext();
+export function LocalizationProvider({ children, locale }: Props) {
   const isClient = useIsClient();
 
   useEffect(() => {
-    const { language } = settings.state;
-    dayjs.locale(language);
-  }, [settings.state]);
+    dayjs.locale(locale);
+  }, [locale]);
 
   if (!isClient) {
     return null;

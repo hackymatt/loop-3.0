@@ -7,24 +7,17 @@ import type { Language } from "src/locales/types";
 import type { IProjectProps } from "src/types/project";
 
 import { useMemo, useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { useBoolean } from "minimal-shared/hooks";
 
-import { Box, Fab, Paper, Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
-import { URLS } from "src/api/urls";
-import { CONFIG } from "src/global-config";
-
-import { Iconify } from "src/components/iconify";
 import { CustomBreadcrumbs } from "src/components/custom-breadcrumbs";
 
 import { Step } from "../learn/step";
-import { Chat } from "../learn/chat";
 import { UpgradeBanner } from "../learn/upgrade-banner";
 import { ArrowBasicButtons } from "../learn/arrow-buttons/arrow-buttons";
 
@@ -60,9 +53,6 @@ const ContentBox = ({ children, sx }: { children: ReactNode; sx?: BoxProps["sx"]
 export function LearnView({ data, locale, projectSlug, stageSlug, stepSlug }: LearnViewProps) {
   const localize = useLocalizedPath();
   const router = useRouter();
-  const chatBoxOpen = useBoolean();
-
-  const { t } = useTranslation("learn");
 
   const { project, step, isLocked } = data;
 
@@ -120,48 +110,9 @@ export function LearnView({ data, locale, projectSlug, stageSlug, stepSlug }: Le
     </Box>
   );
 
-  const renderChat = () =>
-    chatBoxOpen.value && (
-      <Paper
-        elevation={6}
-        sx={{
-          position: "absolute",
-          bottom: 80,
-          right: 16,
-          width: { xs: "90%", sm: 400 },
-          height: 400,
-          zIndex: 1400,
-          overflow: "hidden",
-        }}
-      >
-        <Chat
-          language={locale}
-          url={`${CONFIG.api}${URLS.STEP_CHAT}/${step.slug}`}
-          placeholder={t("chat.placeholder")}
-          history={[{ text: t("chat.welcome"), role: "ai" }]}
-        />
-      </Paper>
-    );
-
   const Content = () => (
     <ContentBox sx={{ position: "relative" }}>
-      <Step step={step} isLocked={isLocked} />
-      <Fab
-        color="primary"
-        variant="extended"
-        sx={{
-          position: "absolute",
-          bottom: 16,
-          right: 16,
-          zIndex: 1500,
-          boxShadow: 6,
-        }}
-        onClick={() => chatBoxOpen.onToggle()}
-      >
-        <Iconify icon="simple-icons:openai" sx={{ color: "white" }} />
-        {chatBoxOpen.value ? t("chat.hide") : t("chat.show")}
-      </Fab>
-      {renderChat()}
+      <Step step={step} isLocked={isLocked} locale={locale} />
     </ContentBox>
   );
 

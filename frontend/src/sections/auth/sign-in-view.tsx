@@ -1,5 +1,7 @@
 "use client";
 
+import type { Language } from "src/locales/types";
+
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,8 +29,11 @@ import { FormDivider } from "./components/form-divider";
 import type { SignInSchemaType } from "./components/schema";
 
 // ----------------------------------------------------------------------
+type SignInViewProps = {
+  locale: Language;
+};
 
-export function SignInView() {
+export function SignInView({ locale }: SignInViewProps) {
   const { t } = useTranslation("sign-in");
   const localize = useLocalizedPath();
 
@@ -101,7 +106,7 @@ export function SignInView() {
 
       <FormDivider label={t("or")} />
 
-      <FormSocials methods={methods} />
+      <FormSocials methods={methods} locale={locale} />
     </>
   );
 }

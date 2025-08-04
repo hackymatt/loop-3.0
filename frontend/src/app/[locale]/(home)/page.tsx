@@ -51,7 +51,7 @@ async function getData(language: Language) {
 
 export default async function Page({ params }: PageProps) {
   const data = await getData(params.locale);
-  return <HomeView data={data} />;
+  return <HomeView data={data} locale={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {
