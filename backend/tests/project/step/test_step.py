@@ -186,4 +186,13 @@ class StepChatViewTest(TestCase):
             {"messages": [{"role": "user", "text": "What's next?"}]},
             format="json",
         )
-        self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response["Content-Type"], "text/event-stream")
+        self.assertTrue(response.streaming)
+
+        # Make sure streamed content is correct
+        chunks = list(response.streaming_content)
+        self.assertIn(
+            b'data: {"text": "Token usage limit exceeded. Please upgrade your plan or wait until next period."}\n\n',
+            chunks,
+        )
