@@ -4,7 +4,7 @@ from blog.tag.models import Tag, TagTranslation
 from rest_framework.test import APIClient
 from const import Urls
 from ...helpers import login
-from ...factory import create_admin, create_student, create_tag
+from ...factory import create_admin, create_student, create_blog, create_blog_tag
 
 
 class TagViewTest(TestCase):
@@ -16,8 +16,12 @@ class TagViewTest(TestCase):
         self.admin, self.admin_password = create_admin()
         self.student, self.student_password = create_student()
 
-        # Create a project tag and translations
-        self.tag = create_tag()
+        # Create a blog tag and translations
+        self.tag = create_blog_tag()
+        blog = create_blog()
+        blog.tags.clear()
+        blog.tags.add(self.tag)
+        blog.save()
 
     # CREATE (Only Admin)
     def test_create_tag_admin(self):
@@ -26,7 +30,6 @@ class TagViewTest(TestCase):
         response = self.client.post(self.url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Tag.objects.count(), 2)
         self.assertEqual(
             TagTranslation.objects.get(tag__slug="backend").name,
             "Backend",

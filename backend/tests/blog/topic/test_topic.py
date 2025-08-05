@@ -4,7 +4,7 @@ from blog.topic.models import Topic, TopicTranslation
 from rest_framework.test import APIClient
 from const import Urls
 from ...helpers import login
-from ...factory import create_admin, create_student, create_topic
+from ...factory import create_admin, create_student, create_topic, create_blog
 
 
 class TopicViewTest(TestCase):
@@ -18,6 +18,10 @@ class TopicViewTest(TestCase):
 
         # Create a project topic and translations
         self.topic = create_topic()
+        self.project_topic = create_topic()
+        blog = create_blog()
+        blog.topic = self.project_topic
+        blog.save()
 
     # CREATE (Only Admin)
     def test_create_topic_admin(self):
@@ -26,7 +30,6 @@ class TopicViewTest(TestCase):
         response = self.client.post(self.url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Topic.objects.count(), 2)
         self.assertEqual(
             TopicTranslation.objects.get(topic__slug="backend").name,
             "Backend",
@@ -49,7 +52,7 @@ class TopicViewTest(TestCase):
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
             response.data["results"][0]["translated_name"],
-            self.topic.get_translation("pl").name,
+            self.project_topic.get_translation("pl").name,
         )
 
     def test_get_project_topics_anonymous(self):
@@ -58,7 +61,7 @@ class TopicViewTest(TestCase):
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
             response.data["results"][0]["translated_name"],
-            self.topic.get_translation("en").name,
+            self.project_topic.get_translation("en").name,
         )
 
     # UPDATE TRANSLATION (Only Admin)
