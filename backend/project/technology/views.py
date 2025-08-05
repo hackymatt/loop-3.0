@@ -7,7 +7,11 @@ from django.db.models import Count, Avg, Q
 
 
 class TechnologyViewSet(viewsets.ModelViewSet):
-    queryset = Technology.objects.order_by("name")
+    queryset = (
+        Technology.objects.annotate(projects_count=Count("projects"))
+        .filter(projects_count__gt=0)
+        .order_by("name")
+    )
     serializer_class = TechnologySerializer
 
     def get_permissions(self):

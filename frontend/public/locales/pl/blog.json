@@ -18,5 +18,9 @@
   "popularTags": "Popularne tagi",
   "tags": "Tagi",
   "prev": "Poprzedni",
-  "next": "Następny"
+  "next": "Następny",
+  "show": {
+    "more": "Pokaż więcej",
+    "less": "Pokaż mniej"
+  }
 }

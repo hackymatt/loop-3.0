@@ -2,10 +2,16 @@ from rest_framework import viewsets
 from .models import Category
 from .serializers import CategorySerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from django.db.models import Count
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.prefetch_related("translations").order_by("slug")
+    queryset = (
+        Category.objects.annotate(projects_count=Count("project"))
+        .filter(projects_count__gt=0)
+        .prefetch_related("translations")
+        .order_by("slug")
+    )
     serializer_class = CategorySerializer
 
     def get_permissions(self):

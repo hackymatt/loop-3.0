@@ -3,11 +3,12 @@ import type { Theme, SxProps } from "@mui/material/styles";
 import type { IBlogTagProp, IBlogTopicProp, IBlogRecentProps } from "src/types/blog";
 
 import { useTranslation } from "react-i18next";
+import { useBoolean } from "minimal-shared/hooks";
 
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
-import { Stack, Checkbox, FormControlLabel } from "@mui/material";
+import { Stack, Button, Checkbox, FormControlLabel } from "@mui/material";
 
 import { useQueryParams } from "src/hooks/use-query-params";
 
@@ -39,6 +40,8 @@ export function PostSidebar({
   recentPosts,
   ...other
 }: PostSidebarProps) {
+  const showAll = useBoolean(false);
+
   const { t } = useTranslation("blog");
 
   const { query, handleChange } = useQueryParams();
@@ -117,13 +120,23 @@ export function PostSidebar({
         ? selectedItems.filter((value) => value !== item)
         : [...selectedItems, item];
 
+    const visibleTags = showAll.value ? tags : tags?.slice(0, 10);
+
     return (
       !!tags?.length && (
         <Box sx={slotProps?.tags}>
           <Typography variant="h5">{t("popularTags")}</Typography>
 
-          <Box sx={{ mt: 2, gap: 1, display: "flex", flexWrap: "wrap" }}>
-            {tags.map((tag) => {
+          <Box
+            sx={{
+              mt: 2,
+              gap: 1,
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            {visibleTags.map((tag) => {
               const isSelected = currentTags.includes(tag.slug);
               return (
                 <Chip
@@ -139,6 +152,22 @@ export function PostSidebar({
                 />
               );
             })}
+
+            {tags.length > 10 && (
+              <Button
+                size="small"
+                onClick={() => showAll.onToggle()}
+                sx={{
+                  minHeight: "32px",
+                  height: "32px",
+                  px: 1.5,
+                  lineHeight: 1,
+                  textTransform: "none",
+                }}
+              >
+                {showAll.value ? t("show.less") : t("show.more")}
+              </Button>
+            )}
           </Box>
         </Box>
       )

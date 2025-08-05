@@ -1,5 +1,6 @@
 import type { BoxProps } from "@mui/material/Box";
 import type {
+  IProjectTagProp,
   IProjectLevelProp,
   IProjectStatusProp,
   IProjectCategoryProp,
@@ -11,12 +12,12 @@ import { useTranslation } from "react-i18next";
 import { useBoolean } from "minimal-shared/hooks";
 
 import Box from "@mui/material/Box";
-import { Stack } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Rating from "@mui/material/Rating";
 import Collapse from "@mui/material/Collapse";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
+import { Chip, Stack, Button } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { useQueryParams } from "src/hooks/use-query-params";
@@ -36,11 +37,14 @@ type FiltersProps = {
     durations: IProjectDurationProp[];
     ratings: string[];
     statuses: IProjectStatusProp[];
+    tags: IProjectTagProp[];
   };
 };
 
 export function ProjectsFilters({ open, onClose, options }: FiltersProps) {
   const { t } = useTranslation("project");
+
+  const showAll = useBoolean(false);
 
   const { handleChange, query } = useQueryParams();
 
@@ -67,6 +71,10 @@ export function ProjectsFilters({ open, onClose, options }: FiltersProps) {
     const currentRating = query?.rating ?? "";
 
     const currentStatus = query?.status ?? "";
+
+    const tags = query?.tags;
+    const currentTags = tags ? tags.split(",") : [];
+    const visibleTags = showAll.value ? options.tags : options.tags.slice(0, 10);
 
     return (
       <>
@@ -256,6 +264,51 @@ export function ProjectsFilters({ open, onClose, options }: FiltersProps) {
             </Box>
           </Block>
         ) : null}
+
+        <Block title={t("filter.tags.title")}>
+          <Box
+            sx={{
+              pt: 1,
+              gap: 1,
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            {visibleTags.map((tag) => {
+              const isSelected = currentTags.includes(tag.slug);
+              return (
+                <Chip
+                  key={tag.slug}
+                  label={tag.name}
+                  variant={isSelected ? "filled" : "outlined"}
+                  size="small"
+                  component="a"
+                  clickable
+                  onClick={() => {
+                    handleChange("tags", getSelected(currentTags, tag.slug).join(","));
+                  }}
+                />
+              );
+            })}
+
+            {options.tags.length > 10 && (
+              <Button
+                size="small"
+                onClick={() => showAll.onToggle()}
+                sx={{
+                  minHeight: "32px",
+                  height: "32px",
+                  px: 1.5,
+                  lineHeight: 1,
+                  textTransform: "none",
+                }}
+              >
+                {showAll.value ? t("filter.tags.show.less") : t("filter.tags.show.more")}
+              </Button>
+            )}
+          </Box>
+        </Block>
       </>
     );
   };

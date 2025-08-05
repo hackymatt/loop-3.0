@@ -51,6 +51,13 @@
           "name": "Zakończone"
         }
       ]
+    },
+    "tags": {
+      "title": "Tagi",
+      "show": {
+        "more": "Pokaż więcej",
+        "less": "Pokaż mniej"
+      }
     }
   },
   "instructor": ["mentor", "mentorów", "mentorów"],
