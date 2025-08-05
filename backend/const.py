@@ -10,6 +10,7 @@ class Urls:
     # ROOT
     API = "api"
     ADMIN = "admin"
+    MDEDITOR = "mdeditor"
     # AUTH
     REGISTER = "auth/register"
     ACTIVATE = "auth/activate"
