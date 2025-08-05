@@ -77,8 +77,8 @@ class EventStreamRenderer(BaseRenderer):
     media_type = "text/event-stream"
     format = "event-stream"
 
-    def render(self, data, media_type=None, renderer_context=None):
-        return data  # pragma: no cover
+    def render(self, data, media_type=None, renderer_context=None):  # pragma: no cover
+        return data
 
 
 class StepChatView(APIView):

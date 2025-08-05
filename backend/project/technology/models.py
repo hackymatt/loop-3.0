@@ -10,5 +10,5 @@ class Technology(BaseModel):
         db_table = "project_technology"
         verbose_name_plural = "Technologies"
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug

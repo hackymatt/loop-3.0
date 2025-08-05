@@ -10,8 +10,8 @@ class TokenUsage(BaseModel):
     endpoint = models.CharField(max_length=255, blank=True, null=True)
     tokens = models.PositiveIntegerField()
 
-    def __str__(self):
-        return f"{self.student.user.email} - {self.tokens} tokens on {self.created_at}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.student.user.email} - {self.tokens} tokens on {self.created_at}"
 
     class Meta:
         db_table = "token_usage"

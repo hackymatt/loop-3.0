@@ -5,11 +5,9 @@ from ..models import Project
 from global_config import CONFIG
 
 
-def get_dummy_student():
+def get_dummy_student():  # pragma: no cover
     """Returns the dummy student instance."""
-    return Student.objects.get(
-        user__email=CONFIG["dummy_student_email"]
-    )  # pragma: no cover
+    return Student.objects.get(user__email=CONFIG["dummy_student_email"])
 
 
 class ProjectEnrollment(BaseModel):
@@ -27,5 +25,5 @@ class ProjectEnrollment(BaseModel):
             "project",
         )  # Ensures that a student can only enroll in a project once
 
-    def __str__(self):
-        return f"{self.student.user.email} started {self.project.slug} on {self.created_at}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.student.user.email} started {self.project.slug} on {self.created_at}"

@@ -55,8 +55,8 @@ class User(AbstractUser):
 
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return f"{self.email} ({self.get_user_type_display()} - {self.get_join_type_display()})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.email} ({self.get_user_type_display()} - {self.get_join_type_display()})"
 
     class Meta:
         db_table = "user"

@@ -17,8 +17,8 @@ class Plan(models.Model):
             raise ValueError("You cannot delete the default plan.")
         super().delete(*args, **kwargs)
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
     class Meta:
         db_table = "plan"
@@ -43,8 +43,8 @@ class PlanTranslation(models.Model):
         unique_together = ("plan", "language")
         db_table = "plan_translation"
 
-    def __str__(self):
-        return f"{self.plan.slug} ({self.language})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.plan.slug} ({self.language})"
 
 
 class Option(models.Model):
@@ -53,8 +53,8 @@ class Option(models.Model):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
     class Meta:
         db_table = "option"
@@ -74,8 +74,8 @@ class OptionTranslation(models.Model):
         unique_together = ("option", "language")
         db_table = "option_translation"
 
-    def __str__(self):
-        return f"{self.option.slug} ({self.language})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.option.slug} ({self.language})"
 
 
 class PlanOption(models.Model):
@@ -93,5 +93,5 @@ class PlanOption(models.Model):
         db_table = "plan_option"
         ordering = ["order"]
 
-    def __str__(self):
-        return f"{self.plan.slug} - {self.option.slug} (disabled: {self.disabled}) | Order: {self.order}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.plan.slug} - {self.option.slug} (disabled: {self.disabled}) | Order: {self.order}"
