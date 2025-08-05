@@ -15,8 +15,8 @@ class Stage(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class StageTranslation(BaseModel):
@@ -35,8 +35,8 @@ class StageTranslation(BaseModel):
         unique_together = ("stage", "language")
         verbose_name_plural = "Stage translations"
 
-    def __str__(self):
-        return f"{self.name} ({self.language})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.name} ({self.language})"
 
 
 class StageStep(models.Model):
@@ -49,5 +49,7 @@ class StageStep(models.Model):
         unique_together = ("stage", "step")
         ordering = ["order"]
 
-    def __str__(self):
-        return f"Stage: {self.stage.slug} | Step: {self.step.slug} | Order: {self.order}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return (
+            f"Stage: {self.stage.slug} | Step: {self.step.slug} | Order: {self.order}"
+        )

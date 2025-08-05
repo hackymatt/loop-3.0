@@ -19,8 +19,8 @@ class Step(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class StepTranslation(BaseModel):
@@ -38,13 +38,11 @@ class StepTranslation(BaseModel):
         db_table = "project_step_translation"
         verbose_name_plural = "Step translations"
 
-    def clean(self):
+    def clean(self):  # pragma: no cover
         try:
-            markdown.markdown(self.text)  # pragma: no cover
+            markdown.markdown(self.text)
         except Exception as e:
-            raise ValidationError(
-                {"content": f"Invalid Markdown: {str(e)}"}
-            )  # pragma: no cover
+            raise ValidationError({"content": f"Invalid Markdown: {str(e)}"})
 
-    def __str__(self):
-        return f"{self.step.slug} ({self.language})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.step.slug} ({self.language})"

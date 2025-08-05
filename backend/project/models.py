@@ -58,8 +58,8 @@ class Project(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class ProjectTranslation(BaseModel):
@@ -79,16 +79,14 @@ class ProjectTranslation(BaseModel):
         unique_together = ("project", "language")
         verbose_name_plural = "Project translations"
 
-    def clean(self):
+    def clean(self):  # pragma: no cover
         try:
-            markdown.markdown(self.overview)  # pragma: no cover
+            markdown.markdown(self.overview)
         except Exception as e:
-            raise ValidationError(
-                {"content": f"Invalid Markdown: {str(e)}"}
-            )  # pragma: no cover
+            raise ValidationError({"content": f"Invalid Markdown: {str(e)}"})
 
-    def __str__(self):
-        return f"{self.name} ({self.language})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.name} ({self.language})"
 
 
 class ProjectStage(models.Model):
@@ -101,5 +99,5 @@ class ProjectStage(models.Model):
         unique_together = ("project", "stage")
         ordering = ["order"]
 
-    def __str__(self):
-        return f"Project: {self.project.slug} | Stage: {self.stage.slug} | Order: {self.order}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"Project: {self.project.slug} | Stage: {self.stage.slug} | Order: {self.order}"

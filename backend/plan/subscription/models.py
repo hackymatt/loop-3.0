@@ -5,11 +5,9 @@ from global_config import CONFIG
 from const import Currency
 
 
-def get_dummy_student():
+def get_dummy_student():  # pragma: no cover
     """Returns the dummy student instance."""
-    return Student.objects.get(
-        user__email=CONFIG["dummy_student_email"]
-    )  # pragma: no cover
+    return Student.objects.get(user__email=CONFIG["dummy_student_email"])
 
 
 class PlanSubscription(models.Model):
@@ -23,5 +21,5 @@ class PlanSubscription(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
 
-    def __str__(self):
-        return f"{self.student.user.email} - {self.plan.slug}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.student.user.email} - {self.plan.slug}"

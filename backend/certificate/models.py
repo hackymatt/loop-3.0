@@ -14,5 +14,5 @@ class Certificate(BaseModel):
         Project, on_delete=models.CASCADE, related_name="certificates"
     )
 
-    def __str__(self):
-        return f"Certificate for {self.student.user.first_name} {self.student.user.last_name} - {self.project.slug}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"Certificate for {self.student.user.first_name} {self.student.user.last_name} - {self.project.slug}"

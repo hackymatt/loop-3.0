@@ -7,11 +7,9 @@ from const import Language
 from global_config import CONFIG
 
 
-def get_dummy_student():
+def get_dummy_student():  # pragma: no cover
     """Returns the dummy student instance."""
-    return Student.objects.get(
-        user__email=CONFIG["dummy_student_email"]
-    )  # pragma: no cover
+    return Student.objects.get(user__email=CONFIG["dummy_student_email"])
 
 
 class Review(BaseModel):
@@ -30,8 +28,8 @@ class Review(BaseModel):
         choices=Language.choices,
     )
 
-    def __str__(self):
-        return f"{self.student.user.email} - {self.project.slug} ({self.rating}/5)"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.student.user.email} - {self.project.slug} ({self.rating}/5)"
 
     class Meta:
         db_table = "review"
