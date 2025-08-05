@@ -2,16 +2,11 @@ from rest_framework import viewsets
 from .models import Topic
 from .serializers import TopicSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from django.db.models import Count
+from django.db.models import Count, Q
 
 
 class TopicViewSet(viewsets.ModelViewSet):
-    queryset = (
-        Topic.objects.prefetch_related("translations")
-        .annotate(blogs_count=Count("blogs"))
-        .filter(blogs_count__gt=0)
-        .order_by("slug")
-    )
+    queryset = Topic.objects.prefetch_related("translations").order_by("slug")
     serializer_class = TopicSerializer
 
     def get_permissions(self):
@@ -23,3 +18,10 @@ class TopicViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [AllowAny]  # Allow read (GET) for anyone
         return [permission() for permission in permission_classes]  # Everyone can read
+
+    def get_queryset(self):
+        if self.request.method == "GET":
+            return self.queryset.annotate(
+                blogs_count=Count("blogs", filter=Q(blogs__active=True), distinct=True)
+            ).filter(blogs_count__gt=0)
+        return self.queryset

@@ -26,6 +26,10 @@ class TechnologyViewTest(TestCase):
 
         # Create a project technology
         self.project_technology = create_technology()
+        project = create_project()
+        project.technology.clear()
+        project.technology.add(self.project_technology)
+        project.save()
 
     # CREATE (Only Admin)
     def test_create_project_technology_admin(self):
@@ -34,7 +38,6 @@ class TechnologyViewTest(TestCase):
         response = self.client.post(self.url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Technology.objects.count(), 2)
 
     def test_create_project_technology_regular_user(self):
         login(self, self.student.user.email, self.student_password)

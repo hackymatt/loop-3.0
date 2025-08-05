@@ -146,6 +146,13 @@ class ProjectViewSetTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["results"][0]["slug"], self.project_1.slug)
 
+    def test_filter_projects_by_tags(self):
+        response = self.client.get(
+            f"{self.url}?tags={self.project_1.tags.all()[0].slug}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["results"][0]["slug"], self.project_1.slug)
+
     def test_filter_projects_by_minimum_rating(self):
         response = self.client.get(f"{self.url}?rating=4")
 

@@ -9,13 +9,17 @@ from user.type.admin_user.models import Admin
 from user.type.instructor_user.models import Instructor
 from user.type.student_user.models import Student
 
-from blog.tag.models import Tag, TagTranslation
+from blog.tag.models import Tag as BlogTag, TagTranslation as BlogTagTranslation
 from blog.topic.models import Topic, TopicTranslation
 from blog.models import Blog, BlogTranslation
 
 from project.category.models import Category, CategoryTranslation
 from project.level.models import Level, LevelTranslation
 from project.technology.models import Technology
+from project.tag.models import (
+    Tag as ProjectTag,
+    TagTranslation as ProjectTagTranslation,
+)
 from project.stage.models import Stage, StageTranslation
 from project.step.models import Step, StepTranslation
 from project.models import Project, ProjectTranslation
@@ -133,10 +137,10 @@ def create_instructor():
     return instructor, password
 
 
-def create_tag():
+def create_blog_tag():
     slug = _generate_random_slug()
-    tag = Tag.objects.create(slug=slug)
-    _create_translations(TagTranslation, tag, languages, ["name"], "tag")
+    tag = BlogTag.objects.create(slug=slug)
+    _create_translations(BlogTagTranslation, tag, languages, ["name"], "tag")
     return tag
 
 
@@ -150,7 +154,7 @@ def create_topic():
 def create_blog():
     slug = _generate_random_slug()
     topic = create_topic()
-    tags = [create_tag() for _ in range(_generate_random_number())]
+    tags = [create_blog_tag() for _ in range(_generate_random_number(1, 5))]
     instructor, _ = create_instructor()
     published_at = timezone.now()
 
@@ -190,6 +194,13 @@ def create_technology():
     return technology
 
 
+def create_project_tag():
+    slug = _generate_random_slug()
+    tag = ProjectTag.objects.create(slug=slug)
+    _create_translations(ProjectTagTranslation, tag, languages, ["name"], "tag")
+    return tag
+
+
 def create_step():
     slug = _generate_random_slug()
     points = _generate_random_number(50, 100)
@@ -227,6 +238,7 @@ def create_project(with_prerequisites=False):
     chat_url = _generate_random_url()
     stages = [create_stage() for _ in range(_generate_random_number(5, 10))]
     instructors = [create_instructor()[0] for _ in range(_generate_random_number(1, 3))]
+    tags = [create_project_tag() for _ in range(_generate_random_number(1, 5))]
     if with_prerequisites:
         blog_prerequisites = [
             create_blog() for _ in range(_generate_random_number(1, 2))
@@ -243,6 +255,7 @@ def create_project(with_prerequisites=False):
     project.technology.add(*technologies)
     project.instructors.add(*instructors)
     project.stages.add(*stages)
+    project.tags.add(*tags)
     if with_prerequisites:
         project.blog_prerequisites.add(*blog_prerequisites)
         project.project_prerequisites.add(*project_prerequisites)
