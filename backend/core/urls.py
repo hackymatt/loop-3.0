@@ -29,6 +29,7 @@ urlpatterns = [
     path(f"{Urls.API}/", include(api_urlpatterns)),
     # Admin route
     path(f"{Urls.ADMIN}/", admin.site.urls),
+    path(f"{Urls.MDEDITOR}/", include("mdeditor.urls")),
 ]
 
 # Debug toolbar and static/media settings in development mode
