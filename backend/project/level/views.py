@@ -2,10 +2,16 @@ from rest_framework import viewsets
 from .models import Level
 from .serializers import LevelSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from django.db.models import Count
 
 
 class LevelViewSet(viewsets.ModelViewSet):
-    queryset = Level.objects.prefetch_related("translations").order_by("order")
+    queryset = (
+        Level.objects.annotate(projects_count=Count("project"))
+        .filter(projects_count__gt=0)
+        .prefetch_related("translations")
+        .order_by("order")
+    )
     serializer_class = LevelSerializer
 
     def get_permissions(self):

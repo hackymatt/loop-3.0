@@ -1,6 +1,7 @@
 "use client";
 
 import type {
+  IProjectTagProp,
   IProjectLevelProp,
   IProjectListProps,
   IProjectStatusProp,
@@ -34,6 +35,7 @@ type ProjectsViewProps = {
     projectLevels: IProjectLevelProp[];
     projectTechnologies: IProjectTechnologyProp[];
     projectCategories: IProjectCategoryProp[];
+    projectTags: IProjectTagProp[];
     projects: IProjectListProps[];
     projectsCount: number;
     projectsPageSize: number;
@@ -54,6 +56,7 @@ export function ProjectsView({ data }: ProjectsViewProps) {
     projectLevels,
     projectTechnologies,
     projectCategories,
+    projectTags,
     projects,
     projectsCount,
     projectsPageSize,
@@ -100,6 +103,7 @@ export function ProjectsView({ data }: ProjectsViewProps) {
           durations: durationOptions,
           ratings: RATING_OPTIONS,
           statuses: statusOptions,
+          tags: projectTags ?? [],
         }}
       />
     </Box>

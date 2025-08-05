@@ -2,10 +2,16 @@ from rest_framework import viewsets
 from .models import Topic
 from .serializers import TopicSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from django.db.models import Count
 
 
 class TopicViewSet(viewsets.ModelViewSet):
-    queryset = Topic.objects.prefetch_related("translations").order_by("slug")
+    queryset = (
+        Topic.objects.prefetch_related("translations")
+        .annotate(blogs_count=Count("blogs"))
+        .filter(blogs_count__gt=0)
+        .order_by("slug")
+    )
     serializer_class = TopicSerializer
 
     def get_permissions(self):

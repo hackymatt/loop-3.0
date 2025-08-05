@@ -2,10 +2,16 @@ from rest_framework import viewsets
 from .models import Tag
 from .serializers import TagSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from django.db.models import Count
 
 
 class TagViewSet(viewsets.ModelViewSet):
-    queryset = Tag.objects.prefetch_related("translations").order_by("slug")
+    queryset = (
+        Tag.objects.prefetch_related("translations")
+        .annotate(blogs_count=Count("blogs"))
+        .filter(blogs_count__gt=0)
+        .order_by("-blogs_count")
+    )
     serializer_class = TagSerializer
 
     def get_permissions(self):
