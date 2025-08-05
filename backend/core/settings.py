@@ -100,6 +100,7 @@ INSTALLED_APPS = [
     "project.level",
     "project.technology",
     "project.category",
+    "project.tag.apps.ProjectTagConfig",
     "project.step",
     "project.stage",
     "project.enrollment",

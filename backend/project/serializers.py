@@ -4,6 +4,7 @@ from .stage.serializers import StageSerializer
 from .level.serializers import LevelSerializer
 from .category.serializers import CategorySerializer
 from .technology.serializers import TechnologySerializer
+from .tag.serializers import TagSerializer
 from user.type.instructor_user.serializers import InstructorSerializer
 from .progress.models import ProjectProgress
 from blog.models import Blog
@@ -124,6 +125,8 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
     project_prerequisites = serializers.SerializerMethodField()
     blog_prerequisites = serializers.SerializerMethodField()
 
+    tags = TagSerializer(many=True, read_only=True)
+
     class Meta(BaseProjectSerializer.Meta):
         fields = BaseProjectSerializer.Meta.fields + [
             "translated_overview",
@@ -137,6 +140,7 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
             "stages",
             "project_prerequisites",
             "blog_prerequisites",
+            "tags",
         ]
 
     def get_translated_overview(self, obj):

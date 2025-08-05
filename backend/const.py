@@ -27,6 +27,7 @@ class Urls:
     PROJECT_LEVEL = "project-levels"
     PROJECT_TECHNOLOGY = "project-technologies"
     PROJECT_CATEGORY = "project-categories"
+    PROJECT_TAG = "project-tags"
     PROJECT = "projects"
     FEATURED_PROJECT = "featured-projects"
     FEATURED_TECHNOLOGIES = "featured-technologies"

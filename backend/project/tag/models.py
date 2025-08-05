@@ -7,8 +7,8 @@ class Tag(BaseModel):
     slug = models.SlugField(unique=True)
 
     class Meta:
-        db_table = "blog_tag"
-        verbose_name_plural = "Blog tags"
+        db_table = "project_tag"
+        verbose_name_plural = "Project tags"
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -26,8 +26,8 @@ class TagTranslation(BaseModel):
     name = models.CharField()
 
     class Meta:
-        db_table = "blog_tag_translation"
-        verbose_name_plural = "Blog tag translations"
+        db_table = "project_tag_translation"
+        verbose_name_plural = "Project tag translations"
         unique_together = ("tag", "language")
 
     def __str__(self):

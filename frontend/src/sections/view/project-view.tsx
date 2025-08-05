@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
 
 import { ReviewList } from "../review/review-list";
+import { ProjectTags } from "../projects/project-tags";
 import { ReviewSummary } from "../review/review-summary";
 import { ReviewNewForm } from "../projects/review-new-form";
 import { ProjectDetailsHero } from "../projects/project-details-hero";
@@ -128,6 +129,8 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
 
             <ProjectChatDetailsInfo slug={slug} chatUrl={project.chatUrl || null} />
           </Grid>
+
+          <ProjectTags tags={project.tags || []} />
         </Grid>
       </Container>
 
