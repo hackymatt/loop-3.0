@@ -1,6 +1,7 @@
 import "./styles.css";
 
 import type { BoxProps } from "@mui/material/Box";
+import type { Language } from "src/locales/types";
 import type { UseFormReturn } from "react-hook-form";
 import type { TokenResponse } from "@react-oauth/google";
 import type { ReactFacebookLoginInfo } from "react-facebook-login";
@@ -21,20 +22,18 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
 import { CONFIG } from "src/global-config";
-import { LANGUAGE } from "src/consts/language";
 import { useLoginGithub } from "src/api/auth/github-login";
 import { useLoginGoogle } from "src/api/auth/google-login";
 import { useLoginFacebook } from "src/api/auth/facebook-login";
 import { GithubIcon, GoogleIcon, FacebookIcon } from "src/assets/icons";
 
 import { useUserContext } from "src/components/user";
-import { useSettingsContext } from "src/components/settings";
 
 // ----------------------------------------------------------------------
 
-type FormSocialsProps = BoxProps & { methods: UseFormReturn<any> };
+type FormSocialsProps = BoxProps & { methods: UseFormReturn<any>; locale: Language };
 
-export function FormSocials({ methods, sx, ...other }: FormSocialsProps) {
+export function FormSocials({ methods, locale, sx, ...other }: FormSocialsProps) {
   return (
     <Box
       sx={[
@@ -43,26 +42,23 @@ export function FormSocials({ methods, sx, ...other }: FormSocialsProps) {
       ]}
       {...other}
     >
-      <GoogleSignIn methods={methods} />
+      <GoogleSignIn methods={methods} locale={locale} />
 
-      <GithubSignIn methods={methods} />
+      <GithubSignIn methods={methods} locale={locale} />
 
-      <FacebookSignIn methods={methods} />
+      <FacebookSignIn methods={methods} locale={locale} />
     </Box>
   );
 }
 
-function GoogleSignIn({ methods }: { methods: UseFormReturn<any> }) {
+function GoogleSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
   const router = useRouter();
   const user = useUserContext();
-  const {
-    state: { language },
-  } = useSettingsContext();
   const { redirect } = user.state;
 
   const localize = useLocalizedPath();
 
-  const { mutateAsync: googleLogin } = useLoginGoogle(language || LANGUAGE.PL);
+  const { mutateAsync: googleLogin } = useLoginGoogle(locale);
 
   const handleFormError = useFormErrorHandler(methods);
 
@@ -104,17 +100,14 @@ function GoogleSignIn({ methods }: { methods: UseFormReturn<any> }) {
   );
 }
 
-function GithubSignIn({ methods }: { methods: UseFormReturn<any> }) {
+function GithubSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
   const router = useRouter();
   const user = useUserContext();
-  const {
-    state: { language },
-  } = useSettingsContext();
   const { redirect } = user.state;
 
   const localize = useLocalizedPath();
 
-  const { mutateAsync: githubLogin } = useLoginGithub(language || LANGUAGE.PL);
+  const { mutateAsync: githubLogin } = useLoginGithub(locale);
 
   const handleFormError = useFormErrorHandler(methods);
 
@@ -156,17 +149,14 @@ function GithubSignIn({ methods }: { methods: UseFormReturn<any> }) {
   );
 }
 
-function FacebookSignIn({ methods }: { methods: UseFormReturn<any> }) {
+function FacebookSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
   const router = useRouter();
   const user = useUserContext();
-  const {
-    state: { language },
-  } = useSettingsContext();
   const { redirect } = user.state;
 
   const localize = useLocalizedPath();
 
-  const { mutateAsync: facebookLogin } = useLoginFacebook(language || LANGUAGE.PL);
+  const { mutateAsync: facebookLogin } = useLoginFacebook(locale);
 
   const handleFormError = useFormErrorHandler(methods);
 

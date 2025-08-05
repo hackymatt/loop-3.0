@@ -1,5 +1,7 @@
 "use client";
 
+import type { Language } from "src/locales/types";
+
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,9 +31,10 @@ import { useSignUpSchema, type SignUpSchemaType } from "./components/schema";
 type Props = {
   header?: React.ReactNode;
   buttonText?: string;
+  locale: Language;
 };
 
-export function SignUpView({ header, buttonText = "Utwórz konto" }: Props) {
+export function SignUpView({ header, buttonText = "Utwórz konto", locale }: Props) {
   const { t } = useTranslation("sign-up");
 
   const localize = useLocalizedPath();
@@ -95,7 +98,7 @@ export function SignUpView({ header, buttonText = "Utwórz konto" }: Props) {
 
       <FormDivider label={t("or")} />
 
-      <FormSocials methods={methods} />
+      <FormSocials methods={methods} locale={locale} />
     </>
   );
 }

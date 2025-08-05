@@ -44,7 +44,7 @@ export function ProjectCertificateDetailsInfo({
   const completed = (progress || 0) === 100;
   const next = findNextStep(stages);
   const redirect = localize(
-    `${paths.learn}/${slug}/${next.step?.slug || stages[0].slug}/${next.step?.slug || stages[0].steps[0].slug}`
+    `${paths.learn}/${slug}/${next.stage?.slug || stages[0].slug}/${next.step?.slug || stages[0].steps[0].slug}`
   );
 
   return (

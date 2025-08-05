@@ -8,6 +8,7 @@ from django.http import StreamingHttpResponse
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.utils.translation import get_language_from_request, gettext as _
+from django.utils import timezone
 from .models import Step
 from .serializers import StepBaseSerializer, StepDetailsSerializer
 from ..enrollment.models import ProjectEnrollment
@@ -21,7 +22,7 @@ from user.type.student_user.models import Student
 from user.token.models import TokenUsage
 from user.token.utils import is_user_within_token_limit, count_tokens
 from utils.openai.chat import OpenAIChat
-from datetime import datetime
+import json
 
 
 class StepViewSet(RetrieveModelMixin, GenericViewSet):
@@ -65,7 +66,7 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
         ProjectProgress.objects.get_or_create(
             student=student,
             step=step,
-            defaults={"completed_at": datetime.now()},
+            defaults={"completed_at": timezone.now()},
         )
 
         serializer = StepDetailsSerializer(step, context={"request": request})
@@ -86,17 +87,24 @@ class StepChatView(APIView):
     permission_classes = [IsAuthenticated]
     open_ai_chat = OpenAIChat()
 
+    def event_stream_error(self, content):
+        def generate():
+            yield "data: {}\n\n".format(json.dumps({"text": content}))
+
+        return generate()
+
     def post(self, request, step):
         is_allowed = is_user_within_token_limit(request.user)
 
         if not is_allowed:
-            return Response(
-                {
-                    "detail": _(
+            return StreamingHttpResponse(
+                streaming_content=self.event_stream_error(
+                    _(
                         "Token usage limit exceeded. Please upgrade your plan or wait until next period."
                     )
-                },
-                status=status.HTTP_429_TOO_MANY_REQUESTS,
+                ),
+                status=status.HTTP_200_OK,
+                content_type="text/event-stream",
             )
 
         body = request.data

@@ -59,7 +59,7 @@ export default async function Page({ params }: PageProps) {
     return <NotFoundView />;
   }
 
-  return <ProjectView slug={params.slug} data={data} />;
+  return <ProjectView slug={params.slug} data={data} locale={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
