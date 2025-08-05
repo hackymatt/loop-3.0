@@ -54,6 +54,7 @@
     }
   },
   "instructor": ["mentor", "mentors", "mentors"],
+  "tags": "Tags",
   "student": ["participant", "participants", "participants"],
   "review": ["review", "reviews", "reviews"],
   "hour": ["hour", "hours", "hours"],

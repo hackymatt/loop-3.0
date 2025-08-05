@@ -67,12 +67,18 @@ type IProjectBaseProps = {
 
 export type IPrerequisite = Pick<IProjectBaseProps, "slug" | "name"> & { type: "project" | "blog" };
 
+export type IProjectTagProp = {
+  slug: string;
+  name: string;
+};
+
 export type IProjectListProps = IProjectBaseProps;
 
 export type IProjectProps = IProjectBaseProps & {
   overview: string;
   stages: IProjectStageProp[];
   prerequisites: IPrerequisite[];
+  tags: IProjectTagProp[];
   totalPoints: number;
   chatUrl: string | null;
   videoUrl: string | null;

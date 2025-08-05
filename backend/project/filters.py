@@ -32,11 +32,20 @@ class ProjectFilter(django_filters.FilterSet):
     rating = filters.NumberFilter(
         method="filter_by_min_rating"
     )  # Filter by minimum average rating
+    tags = filters.BaseInFilter(field_name="tags__slug", lookup_expr="in")
     status = filters.CharFilter(method="filter_by_status")  # Filter by progress status
 
     class Meta:
         model = Project
-        fields = ["level", "category", "technology", "rating"]
+        fields = [
+            "levels",
+            "categories",
+            "technologies",
+            "duration",
+            "rating",
+            "tags",
+            "active",
+        ]
 
     def filter_by_min_rating(self, queryset, name, value):
         return queryset.annotate(avg_rating=Avg("reviews__rating")).filter(

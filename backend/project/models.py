@@ -10,6 +10,7 @@ from .stage.models import Stage
 from .level.models import Level
 from .category.models import Category
 from .technology.models import Technology
+from .tag.models import Tag
 from blog.models import Blog
 from user.type.instructor_user.models import Instructor
 
@@ -48,6 +49,7 @@ class Project(BaseModel):
     similar = models.ManyToManyField(
         "self", related_name="similar_projects", blank=True, symmetrical=False
     )
+    tags = models.ManyToManyField(Tag, related_name="projects")
     active = models.BooleanField(default=False)
 
     class Meta:
