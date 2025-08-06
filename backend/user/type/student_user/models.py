@@ -21,8 +21,8 @@ class Student(BaseModel):
         self.clean()
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return f"Student Profile: {self.user.email}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"Student Profile: {self.user.email}"
 
     class Meta:
         db_table = "student"

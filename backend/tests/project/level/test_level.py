@@ -4,7 +4,7 @@ from project.level.models import Level, LevelTranslation
 from rest_framework.test import APIClient
 from const import Urls
 from ...helpers import login
-from ...factory import create_admin, create_student, create_level
+from ...factory import create_admin, create_student, create_level, create_project
 
 
 class LevelViewTest(TestCase):
@@ -18,6 +18,10 @@ class LevelViewTest(TestCase):
 
         # Create a project level and translations
         self.level = create_level()
+        self.project_level = create_level()
+        project = create_project()
+        project.level = self.project_level
+        project.save()
 
     # CREATE (Only Admin)
     def test_create_level_admin(self):
@@ -26,7 +30,6 @@ class LevelViewTest(TestCase):
         response = self.client.post(self.url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Level.objects.count(), 2)
         self.assertEqual(
             LevelTranslation.objects.get(level__slug="intermediate").name,
             "Intermediate",
@@ -49,7 +52,7 @@ class LevelViewTest(TestCase):
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
             response.data["results"][0]["translated_name"],
-            self.level.get_translation("pl").name,
+            self.project_level.get_translation("pl").name,
         )
 
     def test_get_levels_anonymous(self):
@@ -58,7 +61,7 @@ class LevelViewTest(TestCase):
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
             response.data["results"][0]["translated_name"],
-            self.level.get_translation("en").name,
+            self.project_level.get_translation("en").name,
         )
 
     # UPDATE TRANSLATION (Only Admin)

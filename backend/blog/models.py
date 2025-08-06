@@ -1,6 +1,9 @@
 import os
 import uuid
+import markdown
 from django.db import models
+from django.core.exceptions import ValidationError
+from mdeditor import fields
 from core.base_model import BaseModel
 from .topic.models import Topic
 from .tag.models import Tag
@@ -43,8 +46,8 @@ class Blog(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class BlogTranslation(BaseModel):
@@ -57,12 +60,18 @@ class BlogTranslation(BaseModel):
     )
     name = models.CharField(max_length=255)
     description = models.TextField()
-    content = models.TextField()
+    content = fields.MDTextField()
 
     class Meta:
         db_table = "blog_translation"
         unique_together = ("blog", "language")
         verbose_name_plural = "Blog translations"
 
-    def __str__(self):
-        return f"{self.name} ({self.language})"  # pragma: no cover
+    def clean(self):  # pragma: no cover
+        try:
+            markdown.markdown(self.content)
+        except Exception as e:
+            raise ValidationError({"content": f"Invalid Markdown: {str(e)}"})
+
+    def __str__(self):  # pragma: no cover
+        return f"{self.name} ({self.language})"

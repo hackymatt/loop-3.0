@@ -8,13 +8,13 @@ class Tag(BaseModel):
 
     class Meta:
         db_table = "blog_tag"
-        verbose_name_plural = "Tags"
+        verbose_name_plural = "Blog tags"
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class TagTranslation(BaseModel):
@@ -27,8 +27,8 @@ class TagTranslation(BaseModel):
 
     class Meta:
         db_table = "blog_tag_translation"
-        verbose_name_plural = "Tag translations"
+        verbose_name_plural = "Blog tag translations"
         unique_together = ("tag", "language")
 
-    def __str__(self):
-        return f"{self.tag.slug} ({self.language})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.tag.slug} ({self.language})"

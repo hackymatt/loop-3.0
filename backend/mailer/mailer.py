@@ -36,6 +36,4 @@ class Mailer:
                 email_attachments=attachments,
             )
         except Exception as e:  # pragma: no cover
-            logger.error(
-                f"Błąd podczas wysyłania wiadomości: {e}", exc_info=True
-            )  # pragma: no cover
+            logger.error(f"Błąd podczas wysyłania wiadomości: {e}", exc_info=True)

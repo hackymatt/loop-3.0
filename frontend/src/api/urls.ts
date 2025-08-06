@@ -19,6 +19,7 @@ export const URLS = {
   PROJECT_CATEGORIES: "/project-categories",
   PROJECT_LEVELS: "/project-levels",
   PROJECT_TECHNOLOGIES: "/project-technologies",
+  PROJECT_TAGS: "/project-tags",
   SIMILAR_PROJECTS: "/similar-projects",
   // STEP
   STEP: "/step",

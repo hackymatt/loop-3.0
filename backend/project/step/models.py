@@ -1,4 +1,7 @@
+import markdown
 from django.db import models
+from django.core.exceptions import ValidationError
+from mdeditor import fields
 from core.base_model import BaseModel
 from const import Language
 
@@ -16,8 +19,8 @@ class Step(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class StepTranslation(BaseModel):
@@ -29,11 +32,17 @@ class StepTranslation(BaseModel):
         choices=Language.choices,
     )
     name = models.CharField(max_length=255)
-    text = models.TextField()
+    text = fields.MDTextField()
 
     class Meta:
         db_table = "project_step_translation"
         verbose_name_plural = "Step translations"
 
-    def __str__(self):
-        return f"{self.step.slug} ({self.language})"  # pragma: no cover
+    def clean(self):  # pragma: no cover
+        try:
+            markdown.markdown(self.text)
+        except Exception as e:
+            raise ValidationError({"content": f"Invalid Markdown: {str(e)}"})
+
+    def __str__(self):  # pragma: no cover
+        return f"{self.step.slug} ({self.language})"

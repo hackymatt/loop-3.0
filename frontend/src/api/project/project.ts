@@ -52,6 +52,11 @@ type IPrerequisite = {
   translated_name: string;
 };
 
+type ITag = {
+  slug: string;
+  translated_name: string;
+};
+
 type IProject = {
   slug: string;
   translated_name: string;
@@ -72,6 +77,7 @@ type IProject = {
   stages: IStage[];
   project_prerequisites: IPrerequisite[];
   blog_prerequisites: IPrerequisite[];
+  tags: ITag[];
   progress?: number;
   reviewed?: boolean;
 };
@@ -103,6 +109,7 @@ export const projectQuery = (language: Language, slug: string) => {
       stages,
       project_prerequisites,
       blog_prerequisites,
+      tags,
       progress,
       reviewed,
       ...rest
@@ -124,6 +131,10 @@ export const projectQuery = (language: Language, slug: string) => {
       technologies: technologies.map((technology: ITechnology) => ({
         slug: technology.slug,
         name: technology.name,
+      })),
+      tags: tags.map((tag) => ({
+        slug: tag.slug,
+        name: tag.translated_name,
       })),
       teachers: instructors.map(({ full_name, image, ...restInstructor }) => ({
         ...restInstructor,

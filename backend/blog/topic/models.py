@@ -13,8 +13,8 @@ class Topic(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class TopicTranslation(BaseModel):
@@ -32,5 +32,5 @@ class TopicTranslation(BaseModel):
         verbose_name_plural = "Topic translations"
         unique_together = ("topic", "language")
 
-    def __str__(self):
-        return f"{self.topic.slug} ({self.language})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.topic.slug} ({self.language})"

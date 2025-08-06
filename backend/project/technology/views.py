@@ -20,6 +20,15 @@ class TechnologyViewSet(viewsets.ModelViewSet):
             permission_classes = [AllowAny]  # Allow read (GET) for anyone
         return [permission() for permission in permission_classes]  # Everyone can read
 
+    def get_queryset(self):
+        if self.request.method == "GET":
+            return self.queryset.annotate(
+                project_count=Count(
+                    "projects", filter=Q(projects__active=True), distinct=True
+                )
+            ).filter(project_count__gt=0)
+        return self.queryset
+
 
 class FeaturedTechnologiesView(views.APIView):
     def get(self, request):

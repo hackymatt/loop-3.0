@@ -1,12 +1,16 @@
 import os
 import uuid
+import markdown
 from django.db import models
+from django.core.exceptions import ValidationError
+from mdeditor import fields
 from core.base_model import BaseModel
 from const import Language
 from .stage.models import Stage
 from .level.models import Level
 from .category.models import Category
 from .technology.models import Technology
+from .tag.models import Tag
 from blog.models import Blog
 from user.type.instructor_user.models import Instructor
 
@@ -45,6 +49,7 @@ class Project(BaseModel):
     similar = models.ManyToManyField(
         "self", related_name="similar_projects", blank=True, symmetrical=False
     )
+    tags = models.ManyToManyField(Tag, related_name="projects")
     active = models.BooleanField(default=False)
 
     class Meta:
@@ -53,8 +58,8 @@ class Project(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class ProjectTranslation(BaseModel):
@@ -67,15 +72,21 @@ class ProjectTranslation(BaseModel):
     )
     name = models.CharField(max_length=255)
     description = models.TextField()
-    overview = models.TextField()
+    overview = fields.MDTextField()
 
     class Meta:
         db_table = "project_translation"
         unique_together = ("project", "language")
         verbose_name_plural = "Project translations"
 
-    def __str__(self):
-        return f"{self.name} ({self.language})"  # pragma: no cover
+    def clean(self):  # pragma: no cover
+        try:
+            markdown.markdown(self.overview)
+        except Exception as e:
+            raise ValidationError({"content": f"Invalid Markdown: {str(e)}"})
+
+    def __str__(self):  # pragma: no cover
+        return f"{self.name} ({self.language})"
 
 
 class ProjectStage(models.Model):
@@ -88,5 +99,5 @@ class ProjectStage(models.Model):
         unique_together = ("project", "stage")
         ordering = ["order"]
 
-    def __str__(self):
-        return f"Project: {self.project.slug} | Stage: {self.stage.slug} | Order: {self.order}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"Project: {self.project.slug} | Stage: {self.stage.slug} | Order: {self.order}"

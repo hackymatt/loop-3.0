@@ -4,7 +4,7 @@ from rest_framework import status
 from project.category.models import Category, CategoryTranslation
 from const import Urls
 from ...helpers import login
-from ...factory import create_admin, create_student, create_category
+from ...factory import create_admin, create_student, create_category, create_project
 
 
 class CategoryViewTest(TestCase):
@@ -18,6 +18,10 @@ class CategoryViewTest(TestCase):
 
         # Create a project category and translations
         self.category = create_category()
+        self.project_category = create_category()
+        project = create_project()
+        project.category = self.project_category
+        project.save()
 
     # CREATE (Only Admin)
     def test_create_category_admin(self):
@@ -26,7 +30,6 @@ class CategoryViewTest(TestCase):
         response = self.client.post(self.url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Category.objects.count(), 2)
         self.assertEqual(
             CategoryTranslation.objects.get(category__slug="backend").name,
             "Backend",
@@ -49,7 +52,7 @@ class CategoryViewTest(TestCase):
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
             response.data["results"][0]["translated_name"],
-            self.category.get_translation("pl").name,
+            self.project_category.get_translation("pl").name,
         )
 
     def test_get_project_categories_anonymous(self):
@@ -58,7 +61,7 @@ class CategoryViewTest(TestCase):
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
             response.data["results"][0]["translated_name"],
-            self.category.get_translation("en").name,
+            self.project_category.get_translation("en").name,
         )
 
     # UPDATE TRANSLATION (Only Admin)

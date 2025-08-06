@@ -14,8 +14,8 @@ class Level(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
-    def __str__(self):
-        return self.slug  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return self.slug
 
 
 class LevelTranslation(BaseModel):
@@ -32,5 +32,5 @@ class LevelTranslation(BaseModel):
         db_table = "project_level_translation"
         unique_together = ("level", "language")
 
-    def __str__(self):
-        return f"{self.level.slug} ({self.language})"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.level.slug} ({self.language})"

@@ -13,5 +13,5 @@ class ProjectProgress(BaseModel):
         db_table = "project_progress"
         unique_together = ("student", "step")
 
-    def __str__(self):
-        return f"{self.student.user} - {self.step}"  # pragma: no cover
+    def __str__(self):  # pragma: no cover
+        return f"{self.student.user} - {self.step}"

@@ -51,9 +51,17 @@
           "name": "Completed"
         }
       ]
+    },
+    "tags": {
+      "title": "Tags",
+      "show": {
+        "more": "Show more",
+        "less": "Show less"
+      }
     }
   },
   "instructor": ["mentor", "mentors", "mentors"],
+  "tags": "Tags",
   "student": ["participant", "participants", "participants"],
   "review": ["review", "reviews", "reviews"],
   "hour": ["hour", "hours", "hours"],

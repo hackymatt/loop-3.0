@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
     "allauth.socialaccount.providers.facebook",
+    "mdeditor",
     "user",
     "user.type.admin_user",
     "user.type.student_user",
@@ -99,6 +100,7 @@ INSTALLED_APPS = [
     "project.level",
     "project.technology",
     "project.category",
+    "project.tag.apps.ProjectTagConfig",
     "project.step",
     "project.stage",
     "project.enrollment",
@@ -214,6 +216,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
+
+MDEDITOR_CONFIGS = {
+    "default": {
+        "language": "en",
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
