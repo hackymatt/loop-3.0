@@ -11,7 +11,7 @@ import { usePluralize } from "src/hooks/use-pluralize";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { getPlanIcon } from "src/utils/plan-icon";
-import { fNumber, fShortenNumber } from "src/utils/format-number";
+import { fShortenNumber } from "src/utils/format-number";
 
 import { CONFIG } from "src/global-config";
 import { DEFAULT_AVATAR_URL } from "src/consts/avatar";
@@ -205,7 +205,7 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
       <StatBox
         icon="solar:medal-star-bold"
         label={t("profile.points")}
-        value={fNumber(totalPoints, {
+        value={fShortenNumber(totalPoints, {
           code: locale("code"),
         })}
         color="primary"
@@ -213,7 +213,7 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
       <StatBox
         icon="solar:fire-bold"
         label={t("profile.streak")}
-        value={`${dailyStreak} ${languagePluralize(days, dailyStreak)}`}
+        value={`${fShortenNumber(dailyStreak, { code: locale("code") })} ${languagePluralize(days, dailyStreak)}`}
         color="warning"
       />
     </Box>

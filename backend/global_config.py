@@ -14,6 +14,7 @@ CONFIG = {
     "dummy_student_password": settings.DUMMY_STUDENT_PASSWORD,
     "google_credentials": settings.GOOGLE_CREDENTIALS,
     "open_ai_api_key": settings.OPENAI_API_KEY,
+    "stripe_secret_key": settings.STRIPE_SECRET_KEY,
     "min_password_length": settings.MIN_PASSWORD_LENGTH,
     "default_plan": "free",
 }

@@ -49,6 +49,7 @@ class Urls:
     # PLAN
     PLAN = "plans"
     SUBSCRIBE = "subscribe"
+    PAYMENT_INTENT = "create-payment-intent"
     # CONTACT
     CONTACT = "contact"
     # CERTIFICATE

@@ -22,6 +22,7 @@
   "customer": { "label": "Dane konta" },
   "paymentMethods": {
     "label": "Metody płatności",
+    "blik": { "label": "BLIK", "description": "Wpisz 6-cyfrowy kod BLIK." },
     "card": { "label": "Karta", "description": "Obsługujemy karty Mastercard i Visa." },
     "applepay": {
       "label": "Apple Pay",
@@ -32,12 +33,28 @@
       "description": "Po złożeniu zamówienia pojawi się dodatkowy krok w celu uzupełnienia szczegółów płatności."
     }
   },
+  "blik": {
+    "code": {
+      "label": "Kod BLIK",
+      "errors": {
+        "required": "Kod BLIK jest wymagany",
+        "invalid": "Kod BLIK jest nieprawidłowy"
+      }
+    },
+    "security": {
+      "label": "CVC",
+      "errors": {
+        "required": "Kod CVC jest wymagany",
+        "invalid": "Kod CVC karty jest niekompletny"
+      }
+    }
+  },
   "card": {
     "number": {
       "label": "Numer karty",
       "errors": {
         "required": "Numer karty jest wymagany",
-        "invalid": "Numer karty jest niekompletny."
+        "invalid": "Numer karty jest niekompletny"
       }
     },
     "holder": {
@@ -49,14 +66,14 @@
       "label": "Data ważności",
       "errors": {
         "required": "Data ważności jest wymagana",
-        "invalid": "Data ważności jest nieprawidłowa."
+        "invalid": "Data ważności jest nieprawidłowa"
       }
     },
     "security": {
       "label": "CVC",
       "errors": {
         "required": "Kod CVC jest wymagany",
-        "invalid": "Kod CVC karty jest niekompletny."
+        "invalid": "Kod CVC karty jest niekompletny"
       }
     }
   }

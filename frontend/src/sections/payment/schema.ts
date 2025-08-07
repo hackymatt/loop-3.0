@@ -28,6 +28,17 @@ export const useCustomerSchema = () => {
 export const usePaymentMethods = () => {
   const { t } = useTranslation("payment");
 
+  const blikSchema = zod.object({
+    code: zod
+      .string()
+      .min(6, { message: t("blik.code.errors.required") })
+      .max(6, { message: t("blik.code.errors.invalid") })
+      .refine((value) => {
+        const cleanCode = value.replaceAll(" ", "");
+        return cleanCode.length === 6 && /^\d+$/.test(cleanCode);
+      }),
+  });
+
   const cardSchema = zod.object({
     number: zod
       .string()
@@ -62,10 +73,23 @@ export const usePaymentMethods = () => {
 
   return zod
     .object({
-      method: zod.enum(["card", "applepay", "googlepay", ""]),
+      method: zod.enum(["blik", "card", "applepay", "googlepay", ""]),
+      blik: zod.any(),
       card: zod.any(),
     })
     .superRefine((data, ctx) => {
+      if (data.method === "blik") {
+        const result = blikSchema.safeParse(data.blik);
+        if (!result.success) {
+          for (const issue of result.error.issues) {
+            ctx.addIssue({
+              ...issue,
+              path: ["blik", ...(issue.path ?? [])],
+            });
+          }
+        }
+      }
+
       if (data.method === "card") {
         const result = cardSchema.safeParse(data.card);
         if (!result.success) {

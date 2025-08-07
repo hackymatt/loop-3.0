@@ -21,6 +21,11 @@
   "customer": { "label": "Account details" },
   "paymentMethods": {
     "label": "Payment methods",
+    "blik": {
+      "label": "BLIK",
+      "description": "Enter your 6-digit BLIK code."
+    },
+
     "card": { "label": "Card", "description": "We accept Mastercard and Visa." },
     "applepay": {
       "label": "Apple Pay",
@@ -31,12 +36,19 @@
       "description": "After placing your order, you'll complete payment details in a follow-up step."
     }
   },
+  "code": {
+    "label": "BLIK code",
+    "errors": {
+      "required": "BLIK code is required",
+      "invalid": "Invalid BLIK code"
+    }
+  },
   "card": {
     "number": {
       "label": "Card number",
       "errors": {
         "required": "Card number is required",
-        "invalid": "Card number is incomplete."
+        "invalid": "Card number is incomplete"
       }
     },
     "holder": {
@@ -48,14 +60,14 @@
       "label": "Expiration date",
       "errors": {
         "required": "Expiration date is required",
-        "invalid": "Expiration date is invalid."
+        "invalid": "Expiration date is invalid"
       }
     },
     "security": {
       "label": "CVC",
       "errors": {
         "required": "CVC code is required",
-        "invalid": "CVC code is incomplete."
+        "invalid": "CVC code is incomplete"
       }
     }
   }

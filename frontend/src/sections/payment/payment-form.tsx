@@ -5,9 +5,13 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import Box from "@mui/material/Box";
 
+import { CONFIG } from "src/global-config";
+
 import { Iconify } from "src/components/iconify";
 
 import { PaymentNewCardForm } from "src/sections/payment/payment-new-card-form";
+
+import { PaymentBlikForm } from "./payment-blik-form";
 
 // ----------------------------------------------------------------------
 
@@ -97,7 +101,13 @@ function OptionItem({ option, selected, sx, ...other }: OptionItemProps) {
         </Box>
 
         <Box sx={{ gap: 1, display: "flex", alignItems: "center" }}>
-          {option.value === "card" ? (
+          {option.value === "blik" ? (
+            <Box
+              component="img"
+              src={`${CONFIG.assetsDir}/assets/images/blik.png`}
+              sx={{ height: 24 }}
+            />
+          ) : option.value === "card" ? (
             <>
               <Iconify width={24} icon="logos:mastercard" />
               <Iconify width={24} icon="logos:visa" />
@@ -109,6 +119,21 @@ function OptionItem({ option, selected, sx, ...other }: OptionItemProps) {
           ) : null}
         </Box>
       </Box>
+
+      {option.value === "blik" && selected && (
+        <Box
+          sx={{
+            gap: 2.5,
+            display: "flex",
+            alignItems: "flex-end",
+            flexDirection: "column",
+            px: 3,
+            pb: 3,
+          }}
+        >
+          <PaymentBlikForm codeField={{ name: "paymentMethods.blik.code" }} />
+        </Box>
+      )}
 
       {option.value === "card" && selected && (
         <Box

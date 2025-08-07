@@ -46,8 +46,8 @@ export function PricingColumnContentMobile({
 
   const redirect = localize(
     plan.slug === PLAN_TYPE.FREE
-      ? `${paths.payment}?plan=${plan.slug}`
-      : `${paths.payment}?plan=${plan.slug}&yearly=${isYearly}`
+      ? `${paths.payment}/${plan.slug}`
+      : `${paths.payment}/${plan.slug}?yearly=${isYearly}`
   );
 
   const { trackEvent } = useAnalytics();
@@ -168,8 +168,8 @@ export function PricingColumnContentDesktop({
 
   const redirect = localize(
     plan.slug === PLAN_TYPE.FREE
-      ? `${paths.payment}?plan=${plan.slug}`
-      : `${paths.payment}?plan=${plan.slug}&yearly=${isYearly}`
+      ? `${paths.payment}/${plan.slug}`
+      : `${paths.payment}/${plan.slug}?yearly=${isYearly}`
   );
 
   const { trackEvent } = useAnalytics();
