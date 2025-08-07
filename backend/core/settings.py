@@ -112,6 +112,7 @@ INSTALLED_APPS = [
     "blog",
     "plan",
     "plan.subscription",
+    "plan.payment",
     "certificate",
 ]
 
@@ -476,3 +477,5 @@ DUMMY_STUDENT_EMAIL = os.getenv("DUMMY_STUDENT_EMAIL", "")
 DUMMY_STUDENT_PASSWORD = os.getenv("DUMMY_STUDENT_PASSWORD", "")
 
 MIN_PASSWORD_LENGTH = int(os.environ.get("MIN_PASSWORD_LENGTH", "8"))
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")

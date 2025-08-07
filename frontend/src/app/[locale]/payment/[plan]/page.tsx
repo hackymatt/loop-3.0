@@ -10,11 +10,9 @@ import { LANGUAGE } from "src/consts/language";
 import { PaymentView } from "src/sections/view/payment-view";
 
 // ----------------------------------------------------------------------
-type SearchParams = Record<string, string>;
 
 type PageProps = {
-  params: { locale: Language };
-  searchParams: SearchParams;
+  params: { locale: Language; plan: string };
 };
 
 const queries = {
@@ -30,8 +28,8 @@ async function getData(language: Language, slug: string) {
     plan: plan.results,
   };
 }
-export default async function Page({ params, searchParams }: PageProps) {
-  const data = await getData(params.locale, searchParams.plan);
+export default async function Page({ params }: PageProps) {
+  const data = await getData(params.locale, params.plan);
   return <PaymentView data={data} language={params.locale} />;
 }
 

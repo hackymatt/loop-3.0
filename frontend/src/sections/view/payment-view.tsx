@@ -73,7 +73,8 @@ export function PaymentView({ data, language }: PaymentViewProps) {
         lastName: lastName || "",
       },
       paymentMethods: {
-        method: "card",
+        method: "blik",
+        blik: { code: "" },
         card: { number: "", holder: "", expiration: "", security: "" },
       },
     }),
@@ -92,7 +93,8 @@ export function PaymentView({ data, language }: PaymentViewProps) {
     reset({
       ...defaultValues,
       paymentMethods: {
-        method: isFreePlan ? "" : "card",
+        method: isFreePlan ? "" : "blik",
+        blik: { code: "" },
         card: { number: "", holder: "", expiration: "", security: "" },
       },
     });
@@ -142,6 +144,11 @@ export function PaymentView({ data, language }: PaymentViewProps) {
       <PaymentForm
         name="paymentMethods.method"
         options={[
+          {
+            label: t("paymentMethods.blik.label"),
+            value: "blik",
+            description: t("paymentMethods.blik.description"),
+          },
           {
             label: t("paymentMethods.card.label"),
             value: "card",

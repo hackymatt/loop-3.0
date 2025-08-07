@@ -88,7 +88,7 @@
   },
   "subscription": {
     "title": "Subskrypcja",
-    "label": "Obecny pakiet",
+    "label": "Obecny plan",
     "billing": {
       "label": "Okres rozliczenia",
       "monthly": "Miesięcznie",

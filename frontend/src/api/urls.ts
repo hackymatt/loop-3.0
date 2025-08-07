@@ -41,6 +41,7 @@ export const URLS = {
   // PLAN
   PLANS: "/plans",
   SUBSCRIBE: "/subscribe",
+  PAYMENT_INTENT: "/create-payment-intent",
   // CERTIFICATES
   CERTIFICATES: "/certificates",
   // ME
