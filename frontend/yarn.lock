@@ -2861,6 +2861,11 @@
   resolved "https://registry.npmjs.org/@stitches/core/-/core-1.2.8.tgz"
   integrity sha512-Gfkvwk9o9kE9r9XNBmJRfV8zONvXThnm1tcuojL04Uy5uRyqg93DC83lDebl0rocZCfKSjUv+fWYtMQmEDJldg==
 
+"@stripe/stripe-js@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.npmjs.org/@stripe/stripe-js/-/stripe-js-7.8.0.tgz"
+  integrity sha512-DNXRfYUgkZlrniQORbA/wH8CdFRhiBSE0R56gYU0V5vvpJ9WZwvGrz9tBAZmfq2aTgw6SK7mNpmTizGzLWVezw==
+
 "@svgr/babel-plugin-add-jsx-attribute@8.0.0":
   version "8.0.0"
   resolved "https://registry.npmjs.org/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-8.0.0.tgz"
