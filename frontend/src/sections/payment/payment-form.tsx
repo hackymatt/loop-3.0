@@ -101,17 +101,17 @@ function OptionItem({ option, selected, sx, ...other }: OptionItemProps) {
         </Box>
 
         <Box sx={{ gap: 1, display: "flex", alignItems: "center" }}>
-          {option.value === "blik" ? (
+          {option.value === "card" ? (
+            <>
+              <Iconify width={24} icon="logos:mastercard" />
+              <Iconify width={24} icon="logos:visa" />
+            </>
+          ) : option.value === "blik" ? (
             <Box
               component="img"
               src={`${CONFIG.assetsDir}/assets/images/blik.png`}
               sx={{ height: 24 }}
             />
-          ) : option.value === "card" ? (
-            <>
-              <Iconify width={24} icon="logos:mastercard" />
-              <Iconify width={24} icon="logos:visa" />
-            </>
           ) : option.value === "applepay" ? (
             <Iconify width={24} icon="logos:apple-pay" />
           ) : option.value === "googlepay" ? (
@@ -119,21 +119,6 @@ function OptionItem({ option, selected, sx, ...other }: OptionItemProps) {
           ) : null}
         </Box>
       </Box>
-
-      {option.value === "blik" && selected && (
-        <Box
-          sx={{
-            gap: 2.5,
-            display: "flex",
-            alignItems: "flex-end",
-            flexDirection: "column",
-            px: 3,
-            pb: 3,
-          }}
-        >
-          <PaymentBlikForm codeField={{ name: "paymentMethods.blik.code" }} />
-        </Box>
-      )}
 
       {option.value === "card" && selected && (
         <Box
@@ -152,6 +137,21 @@ function OptionItem({ option, selected, sx, ...other }: OptionItemProps) {
             dateField={{ name: "paymentMethods.card.expiration" }}
             cvvField={{ name: "paymentMethods.card.security" }}
           />
+        </Box>
+      )}
+
+      {option.value === "blik" && selected && (
+        <Box
+          sx={{
+            gap: 2.5,
+            display: "flex",
+            alignItems: "flex-end",
+            flexDirection: "column",
+            px: 3,
+            pb: 3,
+          }}
+        >
+          <PaymentBlikForm codeField={{ name: "paymentMethods.blik.code" }} />
         </Box>
       )}
     </Box>

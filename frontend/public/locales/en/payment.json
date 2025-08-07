@@ -21,12 +21,11 @@
   "customer": { "label": "Account details" },
   "paymentMethods": {
     "label": "Payment methods",
+    "card": { "label": "Card", "description": "We accept Mastercard and Visa." },
     "blik": {
       "label": "BLIK",
       "description": "Enter your 6-digit BLIK code."
     },
-
-    "card": { "label": "Card", "description": "We accept Mastercard and Visa." },
     "applepay": {
       "label": "Apple Pay",
       "description": "After placing your order, you'll complete payment details in a follow-up step."
@@ -34,13 +33,6 @@
     "googlepay": {
       "label": "Google Pay",
       "description": "After placing your order, you'll complete payment details in a follow-up step."
-    }
-  },
-  "code": {
-    "label": "BLIK code",
-    "errors": {
-      "required": "BLIK code is required",
-      "invalid": "Invalid BLIK code"
     }
   },
   "card": {
@@ -68,6 +60,15 @@
       "errors": {
         "required": "CVC code is required",
         "invalid": "CVC code is incomplete"
+      }
+    }
+  },
+  "blik": {
+    "code": {
+      "label": "BLIK code",
+      "errors": {
+        "required": "BLIK code is required",
+        "invalid": "Invalid BLIK code"
       }
     }
   }

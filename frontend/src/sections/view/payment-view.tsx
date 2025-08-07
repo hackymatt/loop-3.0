@@ -8,6 +8,7 @@ import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
 import { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useBoolean } from "minimal-shared/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Box from "@mui/material/Box";
@@ -32,6 +33,7 @@ import { Form, Field } from "src/components/hook-form";
 import { PaymentForm } from "../payment/payment-form";
 import { PaymentSummary } from "../payment/payment-summary";
 import { usePaymentSchema, useCustomerSchema, usePaymentMethods } from "../payment/schema";
+import { isBLIKAvailable, isApplePayAvailable, isGooglePayAvailable } from "../payment/utils";
 
 // ----------------------------------------------------------------------
 type PaymentViewProps = {
@@ -46,6 +48,11 @@ export function PaymentView({ data, language }: PaymentViewProps) {
 
   const { t: account } = useTranslation("account");
   const { t } = useTranslation("payment");
+  const { t: locale } = useTranslation("locale");
+
+  const blikAvailable = useBoolean();
+  const applePayAvailable = useBoolean();
+  const googlePayAvailable = useBoolean();
 
   const user = useUserContext();
   const { email, firstName, lastName } = user.state;
@@ -53,6 +60,9 @@ export function PaymentView({ data, language }: PaymentViewProps) {
   const { plan } = data;
 
   const { mutateAsync: subscribe } = useSubscribe(language);
+
+  const country = locale("country").toUpperCase();
+  const currency = plan.currency.toLocaleLowerCase();
 
   const isFreePlan = (plan.slug || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
 
@@ -73,9 +83,9 @@ export function PaymentView({ data, language }: PaymentViewProps) {
         lastName: lastName || "",
       },
       paymentMethods: {
-        method: "blik",
-        blik: { code: "" },
+        method: "card",
         card: { number: "", holder: "", expiration: "", security: "" },
+        blik: { code: "" },
       },
     }),
     [email, firstName, lastName]
@@ -90,15 +100,52 @@ export function PaymentView({ data, language }: PaymentViewProps) {
   const { handleSubmit, reset } = methods;
 
   useEffect(() => {
+    async function checkPaymentAvailability() {
+      blikAvailable.setValue(isBLIKAvailable({ country, currency }));
+      applePayAvailable.setValue(await isApplePayAvailable({ country, currency }));
+      googlePayAvailable.setValue(await isGooglePayAvailable({ country, currency }));
+    }
+    checkPaymentAvailability();
     reset({
       ...defaultValues,
       paymentMethods: {
-        method: isFreePlan ? "" : "blik",
+        method: isFreePlan ? "" : "card",
         blik: { code: "" },
         card: { number: "", holder: "", expiration: "", security: "" },
       },
     });
-  }, [defaultValues, isFreePlan, reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country, currency, defaultValues, isFreePlan, reset]);
+
+  const paymentOptions = [
+    {
+      label: t("paymentMethods.card.label"),
+      value: "card",
+      description: t("paymentMethods.card.description"),
+    },
+  ];
+
+  if (blikAvailable.value) {
+    paymentOptions.push({
+      label: t("paymentMethods.blik.label"),
+      value: "blik",
+      description: t("paymentMethods.blik.description"),
+    });
+  }
+  if (applePayAvailable.value) {
+    paymentOptions.push({
+      label: t("paymentMethods.applepay.label"),
+      value: "applepay",
+      description: t("paymentMethods.applepay.description"),
+    });
+  }
+  if (googlePayAvailable.value) {
+    paymentOptions.push({
+      label: t("paymentMethods.googlepay.label"),
+      value: "googlepay",
+      description: t("paymentMethods.googlepay.description"),
+    });
+  }
 
   const handleFormError = useFormErrorHandler(methods);
 
@@ -141,31 +188,7 @@ export function PaymentView({ data, language }: PaymentViewProps) {
   const renderPaymentMethods = () => (
     <>
       <StepLabel title={t("paymentMethods.label")} step="2" />
-      <PaymentForm
-        name="paymentMethods.method"
-        options={[
-          {
-            label: t("paymentMethods.blik.label"),
-            value: "blik",
-            description: t("paymentMethods.blik.description"),
-          },
-          {
-            label: t("paymentMethods.card.label"),
-            value: "card",
-            description: t("paymentMethods.card.description"),
-          },
-          {
-            label: t("paymentMethods.applepay.label"),
-            value: "applepay",
-            description: t("paymentMethods.applepay.description"),
-          },
-          {
-            label: t("paymentMethods.googlepay.label"),
-            value: "googlepay",
-            description: t("paymentMethods.googlepay.description"),
-          },
-        ]}
-      />
+      <PaymentForm name="paymentMethods.method" options={paymentOptions} />
     </>
   );
 

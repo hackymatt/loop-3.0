@@ -41,5 +41,9 @@ spec:
                 name: redis-secrets
             - secretRef:
                 name: s3-secrets
+            - secretRef:
+                name: openai-secrets
+            - secretRef:
+                name: stripe-secrets
             - configMapRef:
                 name: backend-config
