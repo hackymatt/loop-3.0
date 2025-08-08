@@ -10,6 +10,8 @@ import Switch from "@mui/material/Switch";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
+import { useSettingsContext } from "src/components/settings";
+
 import { PricingCard } from "./pricing-card";
 
 // ----------------------------------------------------------------------
@@ -18,10 +20,14 @@ type PricingCardsViewProps = { plans: IPlanProps[] };
 
 export function PricingCardsView({ plans }: PricingCardsViewProps) {
   const { t } = useTranslation("pricing");
+  const {
+    state: { currency },
+  } = useSettingsContext();
 
   const [isYearly, setIsYearly] = useState(true);
 
-  const pricingCards = (plans || []).map(({ price, ...rest }: IPlanProps) => {
+  const pricingCards = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
+    const price = pricing.find((p) => p.currency === currency)!;
     const { monthly, yearly } = price;
     return { ...rest, price: isYearly ? yearly / 12 : monthly };
   });

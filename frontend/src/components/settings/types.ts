@@ -9,6 +9,7 @@ export type SettingsState = {
   direction?: ThemeDirection;
   colorScheme?: ThemeColorScheme;
   primaryColor?: "default" | "preset1" | "preset2" | "preset3" | "preset4" | "preset5";
+  currency: string;
 };
 
 export type SettingsContextValue = {

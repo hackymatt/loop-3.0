@@ -11,6 +11,7 @@ import { fCurrency } from "src/utils/format-number";
 import { CONFIG } from "src/global-config";
 
 import { Label } from "src/components/label";
+import { useSettingsContext } from "src/components/settings";
 
 import type { PricingCardProps } from "./types";
 
@@ -25,6 +26,9 @@ const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${nam
 export function PricingColumnHeader({ plan, sx, ...other }: PricingColumnHeaderProps) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
+  const {
+    state: { currency },
+  } = useSettingsContext();
 
   const renderIcons = () => (
     <Box
@@ -46,7 +50,7 @@ export function PricingColumnHeader({ plan, sx, ...other }: PricingColumnHeaderP
       }}
     >
       <Typography component="span" variant="h3">
-        {fCurrency(plan.price, { code: locale("code"), currency: plan.currency })}
+        {fCurrency(plan.price, { code: locale("code"), currency })}
       </Typography>
 
       <Typography component="span" variant="subtitle2">
@@ -89,8 +93,7 @@ export function PricingColumnHeader({ plan, sx, ...other }: PricingColumnHeaderP
       {renderIcons()}
 
       <Typography variant="body2" sx={{ color: "text.secondary" }}>
-        {fCurrency(plan.price * 12, { code: locale("code"), currency: plan.currency })}{" "}
-        {t("perYear")}
+        {fCurrency(plan.price * 12, { code: locale("code"), currency })} {t("perYear")}
       </Typography>
     </Box>
   );

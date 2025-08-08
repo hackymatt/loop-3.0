@@ -1,11 +1,20 @@
 from rest_framework import serializers
-from .models import Plan
+from .models import Plan, PlanPricing
+
+
+class PlanPricingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlanPricing
+        fields = [
+            "currency",
+            "monthly",
+            "yearly",
+        ]
 
 
 class PlanSerializer(serializers.ModelSerializer):
     license = serializers.SerializerMethodField()
-    price = serializers.SerializerMethodField()
-    currency = serializers.SerializerMethodField()
+    pricing = serializers.SerializerMethodField()
     options = serializers.SerializerMethodField()
 
     class Meta:
@@ -16,8 +25,7 @@ class PlanSerializer(serializers.ModelSerializer):
             "license",
             "popular",
             "premium",
-            "price",
-            "currency",
+            "pricing",
             "options",
         ]
 
@@ -26,22 +34,9 @@ class PlanSerializer(serializers.ModelSerializer):
         translation = obj.get_translation(lang)
         return translation.license if translation else None
 
-    def get_price(self, obj):
-        lang = self.context.get("request").LANGUAGE_CODE
-        translation = obj.get_translation(lang)
-        return (
-            {
-                "monthly": float(translation.monthly_price),
-                "yearly": float(translation.yearly_price),
-            }
-            if translation
-            else None
-        )
-
-    def get_currency(self, obj):
-        lang = self.context.get("request").LANGUAGE_CODE
-        translation = obj.get_translation(lang)
-        return translation.currency if translation else None
+    def get_pricing(self, obj):
+        pricing = PlanPricing.objects.filter(plan=obj)
+        return PlanPricingSerializer(pricing, many=True).data
 
     def get_options(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE

@@ -22,6 +22,7 @@ import { useAnalytics } from "src/app/analytics-provider";
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
+import { useSettingsContext } from "src/components/settings";
 
 import type { PricingCardProps } from "./types";
 
@@ -38,6 +39,9 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const {
+    state: { currency },
+  } = useSettingsContext();
 
   const user = useUserContext();
   const { isLoggedIn, plan: userPlan } = user.state;
@@ -71,7 +75,7 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
       }}
     >
       <Typography component="span" variant="h3">
-        {fCurrency(plan.price, { code: locale("code"), currency: plan.currency })}
+        {fCurrency(plan.price, { code: locale("code"), currency })}
       </Typography>
 
       <Typography component="span" variant="subtitle2">

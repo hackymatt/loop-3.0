@@ -1,4 +1,5 @@
-import { CURRENCY, PLAN_TYPE } from "src/consts/plan";
+import { PLAN_TYPE } from "src/consts/plan";
+import { CURRENCY } from "src/consts/currency";
 import { JOIN_TYPE, USER_TYPE } from "src/consts/user";
 
 import type { UserState } from "./types";

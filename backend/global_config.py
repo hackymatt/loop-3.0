@@ -15,6 +15,7 @@ CONFIG = {
     "google_credentials": settings.GOOGLE_CREDENTIALS,
     "open_ai_api_key": settings.OPENAI_API_KEY,
     "stripe_secret_key": settings.STRIPE_SECRET_KEY,
+    "stripe_webhook_secret": settings.STRIPE_WEBHOOK_SECRET,
     "min_password_length": settings.MIN_PASSWORD_LENGTH,
     "default_plan": "free",
 }

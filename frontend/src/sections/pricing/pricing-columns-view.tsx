@@ -11,6 +11,8 @@ import Switch from "@mui/material/Switch";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
+import { useSettingsContext } from "src/components/settings";
+
 import { PricingColumnHeader } from "./pricing-column-header";
 import { PricingColumnContentMobile, PricingColumnContentDesktop } from "./pricing-column-content";
 
@@ -19,10 +21,14 @@ type PricingColumnsViewProps = { plans: IPlanProps[] };
 
 export function PricingColumnsView({ plans }: PricingColumnsViewProps) {
   const { t } = useTranslation("pricing");
+  const {
+    state: { currency },
+  } = useSettingsContext();
 
   const [isYearly, setIsYearly] = useState(true);
 
-  const pricingColumns = (plans || []).map(({ price, ...rest }: IPlanProps) => {
+  const pricingColumns = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
+    const price = pricing.find((p) => p.currency === currency)!;
     const { monthly, yearly } = price;
     return { ...rest, price: isYearly ? yearly / 12 : monthly };
   });
