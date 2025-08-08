@@ -1,20 +1,22 @@
 "use client";
 
+import type { IPlanProps } from "src/types/plan";
 import type { BoxProps } from "@mui/material/Box";
 import type { Language } from "src/locales/types";
-import type { PlanType, IPlanProps } from "src/types/plan";
 
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
-import { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useBoolean } from "minimal-shared/hooks";
+import { loadStripe } from "@stripe/stripe-js";
+import { useMemo, useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Elements, useStripe, useElements } from "@stripe/react-stripe-js";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
+import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
 import { paths } from "src/routes/paths";
@@ -22,18 +24,25 @@ import { useRouter } from "src/routes/hooks";
 
 import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
-import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
+import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
-import { useSubscribe } from "src/api/plan/subscribe";
+import { useCreatePaymentIntent } from "src/api/plan/payment";
 
 import { useUserContext } from "src/components/user";
 import { Form, Field } from "src/components/hook-form";
+import { SplashScreen } from "src/components/loading-screen";
+import { useSettingsContext } from "src/components/settings";
 
 import { PaymentForm } from "../payment/payment-form";
 import { PaymentSummary } from "../payment/payment-summary";
-import { usePaymentSchema, useCustomerSchema, usePaymentMethods } from "../payment/schema";
-import { isBLIKAvailable, isApplePayAvailable, isGooglePayAvailable } from "../payment/utils";
+import { usePaymentSchema, useCustomerSchema } from "../payment/schema";
+
+// ----------------------------------------------------------------------
+
+const stripePromise = loadStripe(CONFIG.stripePublishableKey);
+
+// ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
 type PaymentViewProps = {
@@ -43,33 +52,85 @@ type PaymentViewProps = {
 
 export function PaymentView({ data, language }: PaymentViewProps) {
   const { query } = useQueryParams();
-  const router = useRouter();
+  const theme = useTheme();
+  const {
+    state: { currency },
+  } = useSettingsContext();
+
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const { mutateAsync: createPaymentIntent } = useCreatePaymentIntent("pl");
+
+  const {
+    plan: { pricing },
+  } = data;
+
+  const { monthly, yearly } = pricing.find((p) => p.currency === currency)!;
+  const isYearlyPlan = query.yearly === "true";
+
+  useEffect(() => {
+    async function fetchPaymentIntent() {
+      try {
+        const {
+          data: { client_secret },
+        } = await createPaymentIntent({
+          amount: (isYearlyPlan ? yearly : monthly) * 100,
+          currency,
+        });
+
+        setClientSecret(client_secret);
+      } catch {
+        setClientSecret(null);
+      }
+    }
+
+    fetchPaymentIntent();
+  }, [createPaymentIntent, currency, isYearlyPlan, monthly, yearly]);
+
+  if (!clientSecret) {
+    return <SplashScreen />;
+  }
+
+  return (
+    <Elements
+      key={clientSecret}
+      stripe={stripePromise}
+      options={{
+        clientSecret,
+        appearance: {
+          theme: "flat",
+          variables: {
+            borderRadius: "8px",
+            colorBackground: "#919eab14",
+            colorPrimary: theme.palette.primary.main,
+            spacingUnit: "4px",
+          },
+        },
+      }}
+    >
+      <Payment data={data} language={language} />
+    </Elements>
+  );
+}
+
+function Payment({ data }: PaymentViewProps) {
   const localize = useLocalizedPath();
+  const router = useRouter();
+
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const { t: account } = useTranslation("account");
   const { t } = useTranslation("payment");
-  const { t: locale } = useTranslation("locale");
-
-  const blikAvailable = useBoolean();
-  const applePayAvailable = useBoolean();
-  const googlePayAvailable = useBoolean();
 
   const user = useUserContext();
   const { email, firstName, lastName } = user.state;
 
   const { plan } = data;
 
-  const { mutateAsync: subscribe } = useSubscribe(language);
-
-  const country = locale("country").toUpperCase();
-  const currency = plan.currency.toLocaleLowerCase();
-
   const isFreePlan = (plan.slug || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
 
   const PaymentSchema = zod.object({
     summary: usePaymentSchema(),
     customer: useCustomerSchema(),
-    paymentMethods: usePaymentMethods(),
   });
 
   type PaymentSchemaType = zod.infer<typeof PaymentSchema>;
@@ -81,11 +142,6 @@ export function PaymentView({ data, language }: PaymentViewProps) {
         email: email || "",
         firstName: firstName || "",
         lastName: lastName || "",
-      },
-      paymentMethods: {
-        method: "card",
-        card: { number: "", holder: "", expiration: "", security: "" },
-        blik: { code: "" },
       },
     }),
     [email, firstName, lastName]
@@ -100,69 +156,30 @@ export function PaymentView({ data, language }: PaymentViewProps) {
   const { handleSubmit, reset } = methods;
 
   useEffect(() => {
-    async function checkPaymentAvailability() {
-      blikAvailable.setValue(isBLIKAvailable({ country, currency }));
-      applePayAvailable.setValue(await isApplePayAvailable({ country, currency }));
-      googlePayAvailable.setValue(await isGooglePayAvailable({ country, currency }));
+    reset(defaultValues);
+  }, [defaultValues, reset]);
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const onSubmit = handleSubmit(async (formData) => {
+    if (!stripe || !elements) {
+      return;
     }
-    checkPaymentAvailability();
-    reset({
-      ...defaultValues,
-      paymentMethods: {
-        method: isFreePlan ? "" : "card",
-        blik: { code: "" },
-        card: { number: "", holder: "", expiration: "", security: "" },
+
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: localize(`${window.location.origin}${paths.order.completed}`),
       },
+      redirect: "if_required",
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [country, currency, defaultValues, isFreePlan, reset]);
 
-  const paymentOptions = [
-    {
-      label: t("paymentMethods.card.label"),
-      value: "card",
-      description: t("paymentMethods.card.description"),
-    },
-  ];
-
-  if (blikAvailable.value) {
-    paymentOptions.push({
-      label: t("paymentMethods.blik.label"),
-      value: "blik",
-      description: t("paymentMethods.blik.description"),
-    });
-  }
-  if (applePayAvailable.value) {
-    paymentOptions.push({
-      label: t("paymentMethods.applepay.label"),
-      value: "applepay",
-      description: t("paymentMethods.applepay.description"),
-    });
-  }
-  if (googlePayAvailable.value) {
-    paymentOptions.push({
-      label: t("paymentMethods.googlepay.label"),
-      value: "googlepay",
-      description: t("paymentMethods.googlepay.description"),
-    });
-  }
-
-  const handleFormError = useFormErrorHandler(methods);
-
-  const onSubmit = handleSubmit(async (newData) => {
-    try {
-      const { data: response } = await subscribe({
-        plan: query.plan,
-        interval:
-          query.plan === PLAN_TYPE.FREE ? null : query.yearly === "true" ? "yearly" : "monthly",
-        currency: plan.currency,
-        user: { first_name: newData.customer.firstName, last_name: newData.customer.lastName },
-      });
-      const { type, ...rest } = response;
-      user.setField("plan", { ...rest, type: type as PlanType });
-      router.push(localize(paths.account.dashboard));
-    } catch (error) {
-      handleFormError(error);
+    if (error) {
+      setPaymentError(error.message || null);
+    } else if (paymentIntent) {
+      setPaymentError(null);
+      router.push(paths.order.completed);
     }
   });
 
@@ -188,7 +205,12 @@ export function PaymentView({ data, language }: PaymentViewProps) {
   const renderPaymentMethods = () => (
     <>
       <StepLabel title={t("paymentMethods.label")} step="2" />
-      <PaymentForm name="paymentMethods.method" options={paymentOptions} />
+      {paymentError && (
+        <Typography variant="body2" color="error" sx={{ width: 1, p: 1 }}>
+          {paymentError}
+        </Typography>
+      )}
+      <PaymentForm />
     </>
   );
 

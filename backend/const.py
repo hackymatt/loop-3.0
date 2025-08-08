@@ -50,6 +50,7 @@ class Urls:
     PLAN = "plans"
     SUBSCRIBE = "subscribe"
     PAYMENT_INTENT = "create-payment-intent"
+    STRIPE_WEBHOOK = "stripe-webhook"
     # CONTACT
     CONTACT = "contact"
     # CERTIFICATE

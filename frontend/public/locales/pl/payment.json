@@ -20,60 +20,6 @@
   },
   "customer": { "label": "Dane konta" },
   "paymentMethods": {
-    "label": "Metody płatności",
-    "card": { "label": "Karta", "description": "Obsługujemy karty Mastercard i Visa." },
-    "blik": { "label": "BLIK", "description": "Wpisz 6-cyfrowy kod BLIK." },
-    "applepay": {
-      "label": "Apple Pay",
-      "description": "Po złożeniu zamówienia pojawi się dodatkowy krok w celu uzupełnienia szczegółów płatności."
-    },
-    "googlepay": {
-      "label": "Google Pay",
-      "description": "Po złożeniu zamówienia pojawi się dodatkowy krok w celu uzupełnienia szczegółów płatności."
-    }
-  },
-  "card": {
-    "number": {
-      "label": "Numer karty",
-      "errors": {
-        "required": "Numer karty jest wymagany",
-        "invalid": "Numer karty jest niekompletny"
-      }
-    },
-    "holder": {
-      "label": "Właściciel karty",
-      "placeholder": "Jan Kowalski",
-      "errors": { "required": "Właściciel karty jest wymagany" }
-    },
-    "expiration": {
-      "label": "Data ważności",
-      "errors": {
-        "required": "Data ważności jest wymagana",
-        "invalid": "Data ważności jest nieprawidłowa"
-      }
-    },
-    "security": {
-      "label": "CVC",
-      "errors": {
-        "required": "Kod CVC jest wymagany",
-        "invalid": "Kod CVC karty jest niekompletny"
-      }
-    }
-  },
-  "blik": {
-    "code": {
-      "label": "Kod BLIK",
-      "errors": {
-        "required": "Kod BLIK jest wymagany",
-        "invalid": "Kod BLIK jest nieprawidłowy"
-      }
-    },
-    "security": {
-      "label": "CVC",
-      "errors": {
-        "required": "Kod CVC jest wymagany",
-        "invalid": "Kod CVC karty jest niekompletny"
-      }
-    }
+    "label": "Metody płatności"
   }
 }

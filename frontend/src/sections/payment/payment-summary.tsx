@@ -20,6 +20,7 @@ import { PLAN_TYPE } from "src/consts/plan";
 
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
+import { useSettingsContext } from "src/components/settings";
 
 import { PaymentTerms } from "./payment-terms";
 
@@ -32,10 +33,15 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   const { t: pricing } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
 
+  const {
+    state: { currency },
+  } = useSettingsContext();
+
   const { query, handleChange } = useQueryParams();
 
-  const { license, price: priceObj, currency } = plan;
+  const { license, pricing: pricingObj } = plan;
 
+  const priceObj = pricingObj.find((p) => p.currency === currency)!;
   const isYearly = (query?.yearly ?? "false") === "true";
   const price = isYearly ? priceObj.yearly / 12 : priceObj.monthly;
 

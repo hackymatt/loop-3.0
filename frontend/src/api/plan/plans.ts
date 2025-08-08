@@ -10,7 +10,8 @@ import { URLS } from "../urls";
 
 const endpoint = URLS.PLANS;
 
-type IPrice = {
+type IPricing = {
+  currency: "PLN" | "EUR" | "USD" | "GBP";
   monthly: number;
   yearly: number;
 };
@@ -26,8 +27,7 @@ type IPlan = {
   license: string;
   popular: boolean;
   premium: boolean;
-  price: IPrice;
-  currency: string;
+  pricing: IPricing[];
   options: IOption[];
 };
 

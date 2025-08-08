@@ -1,11 +1,10 @@
 import type { BoxProps } from "@mui/material/Box";
-import type { Language } from "src/locales/types";
+import type { Currency } from "src/locales/types";
 import type { SliderProps } from "@mui/material/Slider";
 
 import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
 import Slider, { sliderClasses } from "@mui/material/Slider";
-
-import { FlagIcon } from "src/components/flag-icon";
 
 import { OptionButton } from "./styles";
 
@@ -13,23 +12,23 @@ import type { SettingsState } from "../types";
 
 // ----------------------------------------------------------------------
 
-export type LanguageOptionsProps = BoxProps & {
+export type CurrencyOptionsProps = BoxProps & {
   options: {
-    value: Language;
+    value: Currency;
     label: string;
-    countryCode: string;
+    symbol: string;
   }[];
-  value: Language;
-  onChangeOption: (newOption: Language) => void;
+  value: Currency;
+  onChangeOption: (newOption: Currency) => void;
 };
 
-export function LanguageOptions({
+export function CurrencyOptions({
   sx,
   value,
   options,
   onChangeOption,
   ...other
-}: LanguageOptionsProps) {
+}: CurrencyOptionsProps) {
   return (
     <Box
       sx={[
@@ -55,10 +54,10 @@ export function LanguageOptions({
               gap: 0.75,
               flexDirection: "column",
               fontSize: theme.typography.pxToRem(12),
+              alignItems: "center",
             })}
           >
-            <FlagIcon code={option.countryCode} />
-
+            <Typography>{option.symbol}</Typography>
             {option.label}
           </OptionButton>
         );

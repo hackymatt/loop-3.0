@@ -33,11 +33,6 @@ class PlanTranslation(models.Model):
         choices=Language.choices,
     )
     license = models.CharField(max_length=100)
-    monthly_price = models.DecimalField(max_digits=6, decimal_places=2)
-    yearly_price = models.DecimalField(max_digits=6, decimal_places=2)
-    currency = models.CharField(
-        max_length=3, choices=Currency.choices, default=Currency.PLN
-    )
 
     class Meta:
         unique_together = ("plan", "language")
@@ -45,6 +40,22 @@ class PlanTranslation(models.Model):
 
     def __str__(self):  # pragma: no cover
         return f"{self.plan.slug} ({self.language})"
+
+
+class PlanPricing(models.Model):
+    plan = models.ForeignKey(Plan, related_name="pricings", on_delete=models.CASCADE)
+    currency = models.CharField(
+        max_length=3, choices=Currency.choices, default=Currency.PLN
+    )
+    monthly = models.DecimalField(max_digits=6, decimal_places=2)
+    yearly = models.DecimalField(max_digits=6, decimal_places=2)
+
+    class Meta:
+        unique_together = ("plan", "currency")
+        db_table = "plan_pricing"
+
+    def __str__(self):  # pragma: no cover
+        return f"{self.plan.slug} - {self.currency}"
 
 
 class Option(models.Model):

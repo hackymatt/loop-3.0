@@ -11,6 +11,7 @@ import { Switch } from "@mui/material";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
+import { useSettingsContext } from "src/components/settings";
 import { varFade, MotionViewport } from "src/components/animate";
 
 import { PricingCard } from "../pricing/pricing-card";
@@ -26,10 +27,14 @@ type HomePricingProps = {
 export function HomePricing({ plans, sx, ...other }: HomePricingProps) {
   const { t } = useTranslation("pricing");
   const { t: home } = useTranslation("home");
+  const {
+    state: { currency },
+  } = useSettingsContext();
 
   const [isYearly, setIsYearly] = useState(true);
 
-  const pricingCards = (plans || []).map(({ price, ...rest }: IPlanProps) => {
+  const pricingCards = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
+    const price = pricing.find((p) => p.currency === currency)!;
     const { monthly, yearly } = price;
     return { ...rest, price: isYearly ? yearly / 12 : monthly };
   });
