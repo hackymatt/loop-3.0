@@ -19,8 +19,8 @@ import { useUserContext } from "src/components/user";
 
 // ----------------------------------------------------------------------
 
-type Props = CardProps & Pick<IProjectProps, "slug" | "chatUrl">;
-export function ProjectChatDetailsInfo({ sx, slug, chatUrl, ...other }: Props) {
+type Props = CardProps & Pick<IProjectProps, "slug">;
+export function ProjectChatDetailsInfo({ sx, slug, ...other }: Props) {
   const { t } = useTranslation("project");
   const localize = useLocalizedPath();
 
@@ -38,10 +38,10 @@ export function ProjectChatDetailsInfo({ sx, slug, chatUrl, ...other }: Props) {
       {...other}
     >
       <Typography component="h6" variant="h6">
-        {t("chat.title")}
+        {t("channel.title")}
       </Typography>
 
-      <Typography variant="body2">{t("chat.subtitle")}</Typography>
+      <Typography variant="body2">{t("channel.subtitle")}</Typography>
 
       <Box sx={{ gap: 1, display: "flex", alignItems: "center" }}>
         <Iconify icon="carbon:checkmark-filled" sx={{ color: "success.main" }} />
@@ -57,7 +57,7 @@ export function ProjectChatDetailsInfo({ sx, slug, chatUrl, ...other }: Props) {
         <Button
           variant="contained"
           size="large"
-          startIcon={<Iconify icon="logos:google-icon" />}
+          startIcon={<Iconify icon="solar:chat-line-outline" />}
           href={localize(paths.auth.register)}
           onClick={() => {
             user.setField("redirect", localize(`${paths.project}/${slug}`));
@@ -65,19 +65,19 @@ export function ProjectChatDetailsInfo({ sx, slug, chatUrl, ...other }: Props) {
           }}
           sx={{ px: 2, borderRadius: "inherit", textAlign: "center" }}
         >
-          {t("chat.button")}
+          {t("channel.button")}
         </Button>
-      ) : chatUrl ? (
+      ) : (
         <Button
           variant="contained"
           size="large"
-          startIcon={<Iconify icon="logos:google-icon" />}
-          href={chatUrl}
+          startIcon={<Iconify icon="solar:chat-line-outline" />}
+          href={localize(`${paths.channel}/${slug}`)}
           sx={{ px: 2, borderRadius: "inherit", textAlign: "center" }}
         >
-          {t("chat.button")}
+          {t("channel.button")}
         </Button>
-      ) : null}
+      )}
     </Card>
   );
 }

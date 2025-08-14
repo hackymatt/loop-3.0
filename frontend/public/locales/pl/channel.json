@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "channel": {
+      "title": "Kanał [name] - dołącz do dyskusji",
+      "description": "Bierz udział w rozmowach, dziel się wiedzą i inspiruj innych w kanale [name]. Twoje pomysły mogą pomóc całej społeczności!"
+    }
+  },
+  "title": "Kanał",
+  "ago": "temu",
+  "helpful": "Pomocne",
+  "reply": "Odpowiedz",
+  "placeholder": "Napisz odpowiedź..."
+}

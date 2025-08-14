@@ -80,7 +80,6 @@ export type IProjectProps = IProjectBaseProps & {
   prerequisites: IPrerequisite[];
   tags: IProjectTagProp[];
   totalPoints: number;
-  chatUrl: string | null;
   videoUrl: string | null;
   reviewed: boolean | null;
 };

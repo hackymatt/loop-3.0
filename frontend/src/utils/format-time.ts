@@ -81,6 +81,19 @@ export function fTimestamp(date: DatePickerFormat): number | "Invalid date" {
 // ----------------------------------------------------------------------
 
 /**
+ * @output a few seconds, 2 years
+ */
+export function fToNow(date: DatePickerFormat): string {
+  if (!isValidDate(date)) {
+    return "Invalid date";
+  }
+
+  return dayjs(date).toNow(true);
+}
+
+// ----------------------------------------------------------------------
+
+/**
  * @output boolean
  */
 export function fIsAfter(startDate: DatePickerFormat, endDate: DatePickerFormat): boolean {

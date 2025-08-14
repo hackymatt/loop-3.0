@@ -76,10 +76,10 @@
     "title": "Certyfikat ukończenia projektu",
     "subtitle": "Dodaj to poświadczenie do swojego profilu LinkedIn, CV lub życiorysu. Podziel się nim w mediach społecznościowych oraz podczas oceny wyników pracy."
   },
-  "chat": {
-    "title": "Chat",
-    "subtitle": "Dołącz do czatu projektowego, aby uzyskać wsparcie i wymieniać się doświadczeniami z innymi uczestnikami.",
-    "button": "Dołącz do czatu"
+  "channel": {
+    "title": "Kanał",
+    "subtitle": "Dołącz do kanału projektowego, aby uzyskać wsparcie i wymieniać się doświadczeniami z innymi uczestnikami.",
+    "button": "Dołącz do kanału"
   },
   "preview": "Podgląd projektu",
   "prerequisites": {

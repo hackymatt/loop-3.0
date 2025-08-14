@@ -2,8 +2,12 @@
 
 import type { IDashboardProps } from "src/types/user";
 
+import { useEffect } from "react";
+
 import Grid from "@mui/material/Grid2";
 import { Box, Container } from "@mui/material";
+
+import { useUserContext } from "src/components/user";
 
 import { ProfileSummary } from "../dashboard/profile-summary";
 import { ProjectsProgress } from "../dashboard/projects-progress";
@@ -15,6 +19,14 @@ type DashboardProps = {
 };
 
 export function DashboardView({ data }: DashboardProps) {
+  const { state, setState } = useUserContext();
+  const { projects, certificates, tokens, dailyStreak, totalPoints, user } = data;
+
+  useEffect(() => {
+    setState({ ...state, ...user });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   const renderContent = () => (
     <Box
       sx={{
@@ -33,9 +45,9 @@ export function DashboardView({ data }: DashboardProps) {
           mb: 1,
         }}
       >
-        <ProjectsProgress projects={data.projects || []} />
+        <ProjectsProgress projects={projects || []} />
 
-        <CertificatesProgress certificates={data.certificates || []} />
+        <CertificatesProgress certificates={certificates || []} />
       </Box>
     </Box>
   );
@@ -47,9 +59,9 @@ export function DashboardView({ data }: DashboardProps) {
       }}
     >
       <ProfileSummary
-        totalPoints={data.totalPoints || 0}
-        dailyStreak={data.dailyStreak || 0}
-        tokens={data.tokens || 0}
+        totalPoints={totalPoints || 0}
+        dailyStreak={dailyStreak || 0}
+        tokens={tokens || 0}
       />
     </Box>
   );

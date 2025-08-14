@@ -31,6 +31,10 @@ export const paths = {
    */
   learn: "/learn",
   /**
+   * Channel
+   */
+  channel: "/channel",
+  /**
    * Other
    */
   pricing: "/pricing",
