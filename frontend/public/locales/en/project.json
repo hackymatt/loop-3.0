@@ -77,10 +77,10 @@
     "title": "Project completion certificate",
     "subtitle": "Add this credential to your LinkedIn profile, CV, or resume. Share it on social media or during performance reviews."
   },
-  "chat": {
-    "title": "Chat",
-    "subtitle": "Join the project chat to get support and share experiences with other participants.",
-    "button": "Join chat"
+  "channel": {
+    "title": "Channel",
+    "subtitle": "Join the project channel to get support and share experiences with other participants.",
+    "button": "Join channel"
   },
   "preview": "Project preview",
   "prerequisites": {

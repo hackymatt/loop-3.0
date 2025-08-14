@@ -127,7 +127,7 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
               sx={{ mb: 3 }}
             />
 
-            <ProjectChatDetailsInfo slug={slug} chatUrl={project.chatUrl || null} />
+            <ProjectChatDetailsInfo slug={slug} />
           </Grid>
 
           <ProjectTags tags={project.tags || []} />

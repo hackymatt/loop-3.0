@@ -68,7 +68,6 @@ type IProject = {
   instructors: IInstructor[];
   stages_count: number;
   duration: number;
-  chat_url: string | null;
   video_url: string | null;
   points: number;
   average_rating: number | null;
@@ -100,7 +99,6 @@ export const projectQuery = (language: Language, slug: string) => {
       instructors,
       stages_count,
       duration,
-      chat_url,
       video_url,
       points,
       average_rating,
@@ -143,7 +141,6 @@ export const projectQuery = (language: Language, slug: string) => {
       })),
       totalStages: stages_count,
       totalHours: duration / 60,
-      chatUrl: chat_url,
       videoUrl: video_url,
       totalPoints: points,
       ratingNumber: average_rating,

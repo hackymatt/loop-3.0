@@ -1,3 +1,4 @@
+import type { PlanType } from "src/types/plan";
 import type { Language } from "src/locales/types";
 import type { LevelType } from "src/types/project";
 import type { GetQueryResponse } from "src/api/types";
@@ -56,12 +57,29 @@ type ICertificate = {
   completed_at: string;
 };
 
+type IPlan = {
+  type: "free" | "basic" | "premium";
+  license: string;
+};
+
+type IUser = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  image: string | null;
+  user_type: "admin" | "instructor" | "student";
+  join_type: "email" | "google" | "facebook" | "github";
+  is_active: boolean;
+  plan: IPlan;
+};
+
 type IDashboard = {
   tokens: number;
   total_points: number;
   daily_streak: number;
   projects: IProject[];
   certificates: ICertificate[];
+  user: IUser;
 };
 
 export const dashboardQuery = (language: Language) => {
@@ -73,7 +91,7 @@ export const dashboardQuery = (language: Language) => {
       headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
-    const { total_points, daily_streak, projects, certificates, ...rest } = data;
+    const { total_points, daily_streak, projects, certificates, user, ...rest } = data;
 
     const modifiedResult: IDashboardProps = {
       ...rest,
@@ -131,6 +149,16 @@ export const dashboardQuery = (language: Language) => {
           completedAt: completed_at,
         })
       ),
+      user: {
+        ...user,
+        avatarUrl: user.image,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        isActive: user.is_active,
+        joinType: user.join_type,
+        userType: user.user_type,
+        plan: { ...user.plan, type: user.plan.type as PlanType },
+      },
     };
 
     return { results: modifiedResult };

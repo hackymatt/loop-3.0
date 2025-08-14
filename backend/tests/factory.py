@@ -56,10 +56,6 @@ def _generate_random_email(domain="example.com", length=10):
     return f"{local_part}@{domain}"
 
 
-def _generate_random_url(domain="example.com"):
-    return f"https://{domain}/{_generate_random_string(10)}"
-
-
 def _create_translations(model, obj, languages, translation_fields, related_field_name):
     translations = {}
     for language in languages:
@@ -235,7 +231,6 @@ def create_project(with_prerequisites=False):
     technologies = [create_technology() for _ in range(_generate_random_number(1, 5))]
     level = create_level()
     category = create_category()
-    chat_url = _generate_random_url()
     stages = [create_stage() for _ in range(_generate_random_number(5, 10))]
     instructors = [create_instructor()[0] for _ in range(_generate_random_number(1, 3))]
     tags = [create_project_tag() for _ in range(_generate_random_number(1, 5))]
@@ -249,7 +244,6 @@ def create_project(with_prerequisites=False):
         slug=slug,
         level=level,
         category=category,
-        chat_url=chat_url,
         active=True,
     )
     project.technology.add(*technologies)
