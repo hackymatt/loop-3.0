@@ -9,5 +9,10 @@
   "ago": "ago",
   "helpful": "Helpful",
   "reply": "Reply",
-  "placeholder": "Write comment..."
+  "placeholder": "Write comment...",
+  "showAll": [
+    "Open [comments] previous comment",
+    "Open [comments] previous comments",
+    "Open [comments] previous comments"
+  ]
 }

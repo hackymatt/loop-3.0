@@ -9,5 +9,10 @@
   "ago": "temu",
   "helpful": "Pomocne",
   "reply": "Odpowiedz",
-  "placeholder": "Napisz odpowiedź..."
+  "placeholder": "Napisz odpowiedź...",
+  "showAll": [
+    "Pokaż [comments] poprzedni komentarz",
+    "Pokaż [comments] poprzednie komentarze",
+    "Pokaż [comments] poprzednich komentarzy"
+  ]
 }

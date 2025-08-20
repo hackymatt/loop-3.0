@@ -108,7 +108,15 @@ export function ChannelItem({
         {!hasReply && renderActions()}
 
         {!hasReply && openReply.value && (
-          <Box sx={{ width: { xs: 0.45, sm: 0.85, md: 1 } }}>
+          <Box
+            sx={(theme) => ({
+              border: `solid 1px ${theme.palette.divider}`,
+              borderRadius: 1,
+              p: 1,
+              mt: 2,
+              width: { xs: 0.45, sm: 0.85, md: 1 },
+            })}
+          >
             <MarkdownEditor value={comment} onChange={setComment} />
           </Box>
         )}
