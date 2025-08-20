@@ -12,6 +12,7 @@ import { paths } from "src/routes/paths";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
+import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
 
 import { Iconify } from "src/components/iconify";
@@ -20,14 +21,17 @@ import { useUserContext } from "src/components/user";
 // ----------------------------------------------------------------------
 
 type Props = CardProps & Pick<IProjectProps, "slug">;
-export function ProjectChatDetailsInfo({ sx, slug, ...other }: Props) {
+export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
   const { t } = useTranslation("project");
   const localize = useLocalizedPath();
 
   const { trackEvent } = useAnalytics();
 
   const user = useUserContext();
-  const { isLoggedIn } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type },
+  } = user.state;
 
   return (
     <Card
@@ -67,7 +71,7 @@ export function ProjectChatDetailsInfo({ sx, slug, ...other }: Props) {
         >
           {t("channel.button")}
         </Button>
-      ) : (
+      ) : type !== PLAN_TYPE.FREE ? (
         <Button
           variant="contained"
           size="large"
@@ -77,7 +81,7 @@ export function ProjectChatDetailsInfo({ sx, slug, ...other }: Props) {
         >
           {t("channel.button")}
         </Button>
-      )}
+      ) : null}
     </Card>
   );
 }

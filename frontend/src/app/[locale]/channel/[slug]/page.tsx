@@ -7,6 +7,7 @@ import { createMetadata } from "src/utils/create-metadata";
 
 import { LANGUAGE } from "src/consts/language";
 import { projectQuery } from "src/api/project/project";
+import { channelPostsQuery } from "src/api/project/channel/posts";
 
 import { ChannelView } from "src/sections/view/channel-view";
 import { NotFoundView } from "src/sections/error/not-found-view";
@@ -18,16 +19,19 @@ type PageProps = {
 
 const queries = {
   project: (lang: Language, slug: string) => projectQuery(lang, slug),
+  channelPosts: (lang: Language, slug: string) => channelPostsQuery(lang, slug),
 };
 
 async function getData(language: Language, slug: string) {
   try {
     const projectPromise = queries.project(language, slug).queryFn();
+    const channelPostsPromise = queries.channelPosts(language, slug).queryFn();
 
-    const [project] = await Promise.all([projectPromise]);
+    const [project, channelPosts] = await Promise.all([projectPromise, channelPostsPromise]);
 
     return {
       project: project.results,
+      channelItems: channelPosts.results,
     };
   } catch {
     return null;

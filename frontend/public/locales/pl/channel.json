@@ -5,6 +5,17 @@
       "description": "Bierz udział w rozmowach, dziel się wiedzą i inspiruj innych w kanale [name]. Twoje pomysły mogą pomóc całej społeczności!"
     }
   },
+  "button": "Opublikuj na kanale",
+  "newPost": {
+    "header": "Nowy post",
+    "title": "Tytuł",
+    "cancel": "Anuluj",
+    "submit": "Opublikuj post",
+    "errors": {
+      "title": { "required": "Tytuł jest wymagany" },
+      "message": { "required": "Opis jest wymagany" }
+    }
+  },
   "title": "Kanał",
   "ago": "temu",
   "helpful": "Pomocne",

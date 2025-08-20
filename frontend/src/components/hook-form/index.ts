@@ -29,3 +29,5 @@ export * from "./rhf-number-input";
 export * from "./rhf-autocomplete";
 
 export * from "./rhf-country-select";
+
+export * from "./rhf-markdown-field";

@@ -6,6 +6,7 @@ import { RHFRadioGroup } from "./rhf-radio-group";
 import { RHFPhoneInput } from "./rhf-phone-input";
 import { RHFNumberInput } from "./rhf-number-input";
 import { RHFAutocomplete } from "./rhf-autocomplete";
+import { RHFMarkdownField } from "./rhf-markdown-field";
 import { RHFCountrySelect } from "./rhf-country-select";
 import { RHFSwitch, RHFMultiSwitch } from "./rhf-switch";
 import { RHFSelect, RHFMultiSelect } from "./rhf-select";
@@ -32,4 +33,5 @@ export const Field = {
   MultiCheckbox: RHFMultiCheckbox,
   CountrySelect: RHFCountrySelect,
   MobileDateTimePicker: RHFMobileDateTimePicker,
+  Markdown: RHFMarkdownField,
 };

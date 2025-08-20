@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     "project.stage",
     "project.enrollment",
     "project.progress.apps.ProjectProgressConfig",
+    "project.channel",
     "project",
     "review",
     "blog.topic",
