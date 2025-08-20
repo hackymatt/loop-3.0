@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Step, StepTranslation
+from .models import ChannelPost, ChannelPostLike, ChannelPostComment
 
-admin.site.register(Step)
-admin.site.register(StepTranslation)
+admin.site.register(ChannelPost)
+admin.site.register(ChannelPostLike)
+admin.site.register(ChannelPostComment)
