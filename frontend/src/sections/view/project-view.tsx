@@ -20,8 +20,8 @@ import { ProjectListSimilar } from "../projects/project-list-similar";
 import { ProjectDetailsPreview } from "../projects/project-preview-info";
 import { CongratulationsBanner } from "../projects/congratulations-banner";
 import { ProjectDetailsSummary } from "../projects/project-details-summary";
-import { ProjectChatDetailsInfo } from "../projects/project-chat-details-info";
 import { ProjectDetailsTeachers } from "../projects/project-details-teachers-info";
+import { ProjectChannelDetailsInfo } from "../projects/project-channel-details-info";
 import { ProjectDetailsPrerequisites } from "../projects/project-prerequisites-info";
 import { ProjectCertificateDetailsInfo } from "../projects/project-certificate-details-info";
 
@@ -127,7 +127,7 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
               sx={{ mb: 3 }}
             />
 
-            <ProjectChatDetailsInfo slug={slug} />
+            <ProjectChannelDetailsInfo slug={slug} />
           </Grid>
 
           <ProjectTags tags={project.tags || []} />

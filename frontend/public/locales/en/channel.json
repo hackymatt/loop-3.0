@@ -5,6 +5,17 @@
       "description": "Take part in conversations, share your knowledge, and inspire others in the [name] channel. Your ideas can help the entire community!"
     }
   },
+  "button": "Post in channel",
+  "newPost": {
+    "header": "New post",
+    "title": "Title",
+    "cancel": "Cancel",
+    "submit": "Publish post",
+    "errors": {
+      "title": { "required": "Title is required" },
+      "message": { "required": "Description is required" }
+    }
+  },
   "title": "Channel",
   "ago": "ago",
   "helpful": "Helpful",

@@ -20,6 +20,8 @@ export const URLS = {
   PROJECT_LEVELS: "/project-levels",
   PROJECT_TECHNOLOGIES: "/project-technologies",
   PROJECT_TAGS: "/project-tags",
+  PROJECT_CHANNEL: "/project-channel",
+  PROJECT_CHANNEL_SUBMIT: "/project-channel-submit",
   SIMILAR_PROJECTS: "/similar-projects",
   // STEP
   STEP: "/step",

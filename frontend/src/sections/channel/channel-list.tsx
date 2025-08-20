@@ -60,7 +60,7 @@ export function ChannelItemsList({ items, recordsCount, pagesCount, page, onPage
         key={comment.id}
         createdAt={comment.createdAt}
         message={comment.message}
-        user={comment.user}
+        student={comment.student}
         hasReply
       />
     ));
@@ -85,7 +85,7 @@ export function ChannelItemsList({ items, recordsCount, pagesCount, page, onPage
               }}
             >
               <ChannelItem
-                user={item.user}
+                student={item.student}
                 createdAt={item.createdAt}
                 title={item.title}
                 message={item.message}

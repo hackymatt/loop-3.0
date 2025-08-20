@@ -12,6 +12,8 @@ import ButtonBase from "@mui/material/ButtonBase";
 
 import { fToNow } from "src/utils/format-time";
 
+import { DEFAULT_AVATAR_URL } from "src/consts/avatar";
+
 import { Iconify } from "src/components/iconify";
 import { Markdown } from "src/components/markdown";
 import { MarkdownEditor } from "src/components/markdown-editor";
@@ -20,7 +22,7 @@ import { MarkdownEditor } from "src/components/markdown-editor";
 
 const AVATAR_SIZE = { root: 32, comment: 24 };
 
-type Props = Pick<IChannelItemProp, "user" | "message" | "createdAt"> &
+type Props = Pick<IChannelItemProp, "student" | "message" | "createdAt"> &
   Partial<IChannelItemProp> & {
     hasReply?: boolean;
     sx?: SxProps<Theme>;
@@ -28,7 +30,7 @@ type Props = Pick<IChannelItemProp, "user" | "message" | "createdAt"> &
 
 export function ChannelItem({
   sx,
-  user,
+  student,
   title,
   message,
   createdAt,
@@ -84,15 +86,15 @@ export function ChannelItem({
       <Box sx={{ flex: "1 1 auto" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Avatar
-            alt={user.name}
-            src={user.avatarUrl}
+            alt={student.name}
+            src={student.avatarUrl || DEFAULT_AVATAR_URL}
             sx={{
               width: title ? AVATAR_SIZE.root : AVATAR_SIZE.comment,
               height: title ? AVATAR_SIZE.root : AVATAR_SIZE.comment,
             }}
           />
 
-          <Typography variant={title ? "subtitle1" : "subtitle2"}>{user.name}</Typography>
+          <Typography variant={title ? "subtitle1" : "subtitle2"}>{student.name}</Typography>
 
           <Typography variant="caption" sx={{ color: "text.disabled" }}>
             {`${fToNow(createdAt)} ${t("ago")}`}
