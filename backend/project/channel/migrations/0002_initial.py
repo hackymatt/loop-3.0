@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import project.enrollment.models
 
 
 class Migration(migrations.Migration):
@@ -10,31 +9,31 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("project", "0001_initial"),
-        ("enrollment", "0001_initial"),
         ("student_user", "0001_initial"),
+        ("channel", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="projectenrollment",
+            model_name="channelpost",
             name="project",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name="enrollments",
+                related_name="channel_posts",
                 to="project.project",
             ),
         ),
         migrations.AddField(
-            model_name="projectenrollment",
+            model_name="channelpost",
             name="student",
             field=models.ForeignKey(
-                on_delete=models.SET(project.enrollment.models.get_dummy_student),
-                related_name="enrollments",
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="channel_posts",
                 to="student_user.student",
             ),
         ),
         migrations.AlterUniqueTogether(
-            name="projectenrollment",
-            unique_together={("student", "project")},
+            name="channelpostlike",
+            unique_together={("channel_post", "student")},
         ),
     ]
