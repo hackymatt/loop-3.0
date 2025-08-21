@@ -16,7 +16,7 @@ class SubscriptionSerializer(serializers.Serializer):
     user = UserSerializer(required=True)
 
 
-class UserSubscription(serializers.ModelSerializer):
+class UserSubscriptionSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source="plan.slug")
     license = serializers.SerializerMethodField()
     interval = serializers.SerializerMethodField()

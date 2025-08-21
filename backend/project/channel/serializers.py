@@ -8,12 +8,11 @@ class ChannelPostCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChannelPostComment
-        fields = (
+        fields = [
             "id",
             "student",
             "message",
-            "created_at",
-        )
+            "created_at"]
 
 
 class ChannelPostSerializer(serializers.ModelSerializer):
@@ -24,7 +23,7 @@ class ChannelPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChannelPost
-        fields = (
+        fields = [
             "id",
             "title",
             "student",
@@ -32,8 +31,7 @@ class ChannelPostSerializer(serializers.ModelSerializer):
             "helpful_count",
             "is_helpful",
             "created_at",
-            "comments",
-        )
+            "comments"]
 
     def get_is_helpful(self, obj):
         request = self.context.get("request")

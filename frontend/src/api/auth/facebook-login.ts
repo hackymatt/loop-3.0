@@ -15,10 +15,6 @@ type ILogin = {
 type IPlan = {
   type: "free" | "basic" | "premium";
   license: string;
-  interval: "monthly" | "yearly" | null;
-  valid_to: string | null;
-  price: number | null;
-  currency: string;
 };
 
 type ILoginReturn = {

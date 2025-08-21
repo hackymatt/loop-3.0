@@ -21,23 +21,27 @@ export type IInstructorProps = IUserProps & {
   role: string;
 };
 
+type IDashboardPlanProp = {
+  type: PlanType;
+  license: string;
+};
+
 export type IDashboardProps = {
-  tokens: number;
-  totalPoints: number;
-  dailyStreak: number;
   projects: IProjectListProps[];
   certificates: ICertificateProps[];
-  user: {
-    email: string;
-    firstName: string;
-    lastName: string;
-    avatarUrl: string | null;
-    userType: UserType;
-    joinType: JoinType;
-    isActive: boolean;
-    plan: {
-      type: PlanType;
-      license: string;
+  profile: {
+    user: {
+      email: string;
+      firstName: string;
+      lastName: string;
+      avatarUrl: string | null;
+      userType: UserType;
+      joinType: JoinType;
+      isActive: boolean;
+      plan: IDashboardPlanProp;
     };
+    tokens: number;
+    totalPoints: number;
+    dailyStreak: number;
   };
 };

@@ -28,10 +28,7 @@ export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
   const { trackEvent } = useAnalytics();
 
   const user = useUserContext();
-  const {
-    isLoggedIn,
-    plan: { type },
-  } = user.state;
+  const { isLoggedIn, planType } = user.state;
 
   return (
     <Card
@@ -71,7 +68,7 @@ export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
         >
           {t("channel.button")}
         </Button>
-      ) : type !== PLAN_TYPE.FREE ? (
+      ) : planType !== PLAN_TYPE.FREE ? (
         <Button
           variant="contained"
           size="large"

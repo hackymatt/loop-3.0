@@ -1,9 +1,20 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from plan.models import Plan
 from plan.subscription.utils import get_subscription
-from plan.subscription.serializers import UserSubscription
 from const import UserType
 
+class PlanSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(source="slug")
+    license = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Plan
+        fields = ["type", "license"]
+
+    def get_license(self, obj):
+        lang = self.context.get("request").LANGUAGE_CODE
+        return obj.get_translation(lang).license
 
 class LoginResponseSerializer(serializers.ModelSerializer):
     plan = serializers.SerializerMethodField()
@@ -27,8 +38,8 @@ class LoginResponseSerializer(serializers.ModelSerializer):
             return None
 
         subscription = get_subscription(obj)
-        return UserSubscription(
-            subscription, context={"request": self.context.get("request")}
+        return PlanSerializer(
+            subscription.plan, context={"request": self.context.get("request")}
         ).data
 
     def get_image(self, obj):

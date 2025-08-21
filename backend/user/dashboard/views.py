@@ -62,15 +62,19 @@ class DashboardView(APIView):
         )[:4]
 
         data = {
-            "tokens": get_user_tokens_left(user),
-            "total_points": total_points,
-            "daily_streak": daily_streak,
             "projects": ProjectListSerializer(
                 projects, many=True, context={"request": request}
             ).data,
             "certificates": CertificateSerializer(
                 certificates, many=True, context={"request": request}
             ).data,
-            "user": LoginResponseSerializer(user, context={"request": request}).data,
+            "profile": {
+                "user": LoginResponseSerializer(
+                    user, context={"request": request}
+                ).data,
+                "tokens": get_user_tokens_left(user),
+                "total_points": total_points,
+                "daily_streak": daily_streak,
+            },
         }
         return Response(data, status=status.HTTP_200_OK)

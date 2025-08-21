@@ -64,8 +64,16 @@ export function SignInView({ locale }: SignInViewProps) {
         });
         router.push(localize(paths.auth.activate));
       } else {
-        const { email, first_name, last_name, image, user_type, join_type, is_active, plan } =
-          responseData;
+        const {
+          email,
+          first_name,
+          last_name,
+          image,
+          user_type,
+          join_type,
+          is_active,
+          plan: { type },
+        } = responseData;
         user.setState({
           isActive: is_active,
           isLoggedIn: true,
@@ -75,7 +83,7 @@ export function SignInView({ locale }: SignInViewProps) {
           avatarUrl: image,
           userType: user_type,
           joinType: join_type,
-          plan,
+          planType: type,
           redirect: null,
         });
         router.push(localize(redirect || paths.account.dashboard));
