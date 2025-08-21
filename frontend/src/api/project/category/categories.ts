@@ -20,7 +20,9 @@ export const projectCategoriesQuery = (language: Language, query?: QueryType) =>
   const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<ListQueryResponse<IProjectCategoryProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IProjectCategory>(queryUrl, {
+    const {
+      data: { results, records_count, pages_count },
+    } = await getListData<IProjectCategory>(queryUrl, {
       headers: { "Accept-Language": language },
     });
     const modifiedResults: IProjectCategoryProp[] = (results ?? []).map(

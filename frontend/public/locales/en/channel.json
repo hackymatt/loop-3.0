@@ -1,9 +1,7 @@
 {
   "meta": {
-    "channel": {
-      "title": "Channel [name] - join the discussion",
-      "description": "Take part in conversations, share your knowledge, and inspire others in the [name] channel. Your ideas can help the entire community!"
-    }
+    "title": "Channel [name] - join the discussion",
+    "description": "Take part in conversations, share your knowledge, and inspire others in the [name] channel. Your ideas can help the entire community!"
   },
   "button": "Post in channel",
   "newPost": {

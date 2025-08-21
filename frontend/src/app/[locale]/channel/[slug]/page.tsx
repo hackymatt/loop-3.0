@@ -32,6 +32,7 @@ async function getData(language: Language, slug: string) {
     return {
       project: project.results,
       channelItems: channelPosts.results,
+      isLocked: channelPosts.error?.status === 403,
     };
   } catch {
     return null;

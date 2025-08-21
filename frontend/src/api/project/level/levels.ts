@@ -20,7 +20,9 @@ export const projectLevelsQuery = (language: Language, query?: QueryType) => {
   const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<ListQueryResponse<IProjectLevelProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IProjectLevel>(queryUrl, {
+    const {
+      data: { results, records_count, pages_count },
+    } = await getListData<IProjectLevel>(queryUrl, {
       headers: { "Accept-Language": language },
     });
     const modifiedResults: IProjectLevelProp[] = (results ?? []).map(

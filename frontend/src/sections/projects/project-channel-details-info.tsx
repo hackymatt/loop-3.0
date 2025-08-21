@@ -12,7 +12,6 @@ import { paths } from "src/routes/paths";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
-import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
 
 import { Iconify } from "src/components/iconify";
@@ -28,7 +27,7 @@ export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
   const { trackEvent } = useAnalytics();
 
   const user = useUserContext();
-  const { isLoggedIn, planType } = user.state;
+  const { isLoggedIn } = user.state;
 
   return (
     <Card
@@ -68,7 +67,7 @@ export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
         >
           {t("channel.button")}
         </Button>
-      ) : planType !== PLAN_TYPE.FREE ? (
+      ) : (
         <Button
           variant="contained"
           size="large"
@@ -78,7 +77,7 @@ export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
         >
           {t("channel.button")}
         </Button>
-      ) : null}
+      )}
     </Card>
   );
 }

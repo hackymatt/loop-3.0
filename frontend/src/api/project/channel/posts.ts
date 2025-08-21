@@ -3,6 +3,7 @@ import type { ListQueryResponse } from "src/api/types";
 import type { IChannelItemProp } from "src/types/channel";
 
 import { compact } from "lodash-es";
+import { cookies } from "next/headers";
 
 import { URLS } from "src/api/urls";
 import { getListData } from "src/api/utils";
@@ -37,8 +38,11 @@ export const channelPostsQuery = (language: Language, slug: string) => {
   const queryUrl = `${url}/${slug}`;
 
   const queryFn = async (): Promise<ListQueryResponse<IChannelItemProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IChannelPost>(queryUrl, {
-      headers: { "Accept-Language": language },
+    const {
+      data: { results, records_count, pages_count },
+      error,
+    } = await getListData<IChannelPost>(queryUrl, {
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
     const modifiedResults: IChannelItemProp[] = (results ?? []).map(
       ({ student, helpful_count, is_helpful, created_at, comments, ...rest }: IChannelPost) => ({
@@ -66,7 +70,7 @@ export const channelPostsQuery = (language: Language, slug: string) => {
         ),
       })
     );
-    return { results: modifiedResults, count: records_count, pagesCount: pages_count };
+    return { results: modifiedResults, count: records_count, pagesCount: pages_count, error };
   };
 
   return { url, queryFn, queryKey: compact([url, slug]) };

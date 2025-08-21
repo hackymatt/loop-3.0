@@ -6,39 +6,41 @@ import type { QueryType, GetApiResponse, ListApiResponse } from "./types";
 
 export async function getListData<T>(queryUrl: string, config?: AxiosRequestConfig<any>) {
   let data: ListApiResponse<T> = { results: [], records_count: 0, pages_count: 0 };
+  let error: AxiosError | undefined = undefined;
 
   try {
     const response = await Api.get<ListApiResponse<T>>(queryUrl, config);
-    ({ data } = response);
-  } catch (error) {
-    if (
-      (error as AxiosError).response &&
-      ((error as AxiosError).response?.status === 400 ||
-        (error as AxiosError).response?.status === 404)
-    ) {
+    data = response.data;
+  } catch (err) {
+    error = err as AxiosError;
+
+    if (error.response && (error.response.status === 400 || error.response.status === 404)) {
       data = { results: [], records_count: 0, pages_count: 0 };
+    } else {
+      console.error(error);
     }
   }
-  return data;
+
+  return { data, error };
 }
 
 export async function getSimpleListData<T>(queryUrl: string, config?: AxiosRequestConfig<any>) {
   let data: T[] = [];
+  let error: AxiosError | undefined = undefined;
 
   try {
     const response = await Api.get<T[]>(queryUrl, config);
-    ({ data } = response);
-  } catch (error) {
+    data = response.data;
+  } catch (err) {
+    error = err as AxiosError;
     console.error(error);
-    if (
-      (error as AxiosError).response &&
-      ((error as AxiosError).response?.status === 400 ||
-        (error as AxiosError).response?.status === 404)
-    ) {
+
+    if (error.response && (error.response.status === 400 || error.response.status === 404)) {
       data = [];
     }
   }
-  return data;
+
+  return { data, error };
 }
 
 export async function getData<T>(
