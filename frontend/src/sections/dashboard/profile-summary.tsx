@@ -1,5 +1,7 @@
 "use client";
 
+import type { IDashboardProps } from "src/types/user";
+
 import { useTranslation } from "react-i18next";
 
 import { Box, Card, Link, Stack, Avatar, Typography } from "@mui/material";
@@ -63,13 +65,9 @@ const StatBox = ({
   </Card>
 );
 
-type Props = {
-  totalPoints: number;
-  dailyStreak: number;
-  tokens: number;
-};
+type Props = Pick<IDashboardProps, "profile">;
 
-export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
+export function ProfileSummary({ profile }: Props) {
   const { t: locale } = useTranslation("locale");
   const { t } = useTranslation("dashboard");
   const days = t("profile.days", { returnObjects: true }) as string[];
@@ -77,7 +75,7 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
   const languagePluralize = usePluralize();
 
   const user = useUserContext();
-  const { firstName, email, avatarUrl, plan } = user.state;
+  const { firstName, email, avatarUrl } = user.state;
 
   const renderPlan = () => (
     <Link
@@ -110,8 +108,8 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
           >
             <Box
               component="img"
-              alt={plan.license}
-              src={iconPath(getPlanIcon(plan.type))}
+              alt={profile.user.plan.license}
+              src={iconPath(getPlanIcon(profile.user.plan.type))}
               sx={{ width: 80, height: 80 }}
             />
           </Box>
@@ -121,7 +119,7 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
               {t("profile.plan")}
             </Typography>
             <Typography variant="h6" fontWeight="bold">
-              {plan.license}
+              {profile.user.plan.license}
             </Typography>
           </Box>
         </Stack>
@@ -160,7 +158,7 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
             {t("profile.tokens")}
           </Typography>
           <Typography variant="h6" fontWeight="bold">
-            {fShortenNumber(tokens, { code: locale("code") })}
+            {fShortenNumber(profile.tokens, { code: locale("code") })}
           </Typography>
         </Box>
       </Stack>
@@ -205,7 +203,7 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
       <StatBox
         icon="solar:medal-star-bold"
         label={t("profile.points")}
-        value={fShortenNumber(totalPoints, {
+        value={fShortenNumber(profile.totalPoints, {
           code: locale("code"),
         })}
         color="primary"
@@ -213,7 +211,7 @@ export function ProfileSummary({ totalPoints, dailyStreak, tokens }: Props) {
       <StatBox
         icon="solar:fire-bold"
         label={t("profile.streak")}
-        value={`${fShortenNumber(dailyStreak, { code: locale("code") })} ${languagePluralize(days, dailyStreak)}`}
+        value={`${fShortenNumber(profile.dailyStreak, { code: locale("code") })} ${languagePluralize(days, profile.dailyStreak)}`}
         color="warning"
       />
     </Box>

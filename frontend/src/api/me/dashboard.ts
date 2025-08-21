@@ -1,4 +1,3 @@
-import type { PlanType } from "src/types/plan";
 import type { Language } from "src/locales/types";
 import type { LevelType } from "src/types/project";
 import type { GetQueryResponse } from "src/api/types";
@@ -74,12 +73,9 @@ type IUser = {
 };
 
 type IDashboard = {
-  tokens: number;
-  total_points: number;
-  daily_streak: number;
   projects: IProject[];
   certificates: ICertificate[];
-  user: IUser;
+  profile: { user: IUser; tokens: number; total_points: number; daily_streak: number };
 };
 
 export const dashboardQuery = (language: Language) => {
@@ -91,12 +87,20 @@ export const dashboardQuery = (language: Language) => {
       headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
-    const { total_points, daily_streak, projects, certificates, user, ...rest } = data;
+    const {
+      projects,
+      certificates,
+      profile: {
+        daily_streak,
+        total_points,
+        user: { first_name, last_name, is_active, join_type, user_type, image, ...restUser },
+        ...restProfile
+      },
+      ...rest
+    } = data;
 
     const modifiedResult: IDashboardProps = {
       ...rest,
-      totalPoints: total_points,
-      dailyStreak: daily_streak,
       projects: projects.map(
         ({
           translated_name,
@@ -128,10 +132,10 @@ export const dashboardQuery = (language: Language) => {
             slug: technology.slug,
             name: technology.name,
           })),
-          teachers: instructors.map(({ full_name, image, ...restInstructor }) => ({
+          teachers: instructors.map(({ full_name, image: instructorImage, ...restInstructor }) => ({
             ...restInstructor,
             name: full_name,
-            avatarUrl: image,
+            avatarUrl: instructorImage,
           })),
           totalHours: duration / 60,
           totalStages: stages_count,
@@ -149,15 +153,19 @@ export const dashboardQuery = (language: Language) => {
           completedAt: completed_at,
         })
       ),
-      user: {
-        ...user,
-        avatarUrl: user.image,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        isActive: user.is_active,
-        joinType: user.join_type,
-        userType: user.user_type,
-        plan: { ...user.plan, type: user.plan.type as PlanType },
+      profile: {
+        ...restProfile,
+        user: {
+          ...restUser,
+          avatarUrl: image,
+          firstName: first_name,
+          lastName: last_name,
+          isActive: is_active,
+          joinType: join_type,
+          userType: user_type,
+        },
+        totalPoints: total_points,
+        dailyStreak: daily_streak,
       },
     };
 

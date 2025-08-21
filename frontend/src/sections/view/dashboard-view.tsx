@@ -20,12 +20,16 @@ type DashboardProps = {
 
 export function DashboardView({ data }: DashboardProps) {
   const { state, setState } = useUserContext();
-  const { projects, certificates, tokens, dailyStreak, totalPoints, user } = data;
+  const { projects, certificates, profile } = data;
 
   useEffect(() => {
-    setState({ ...state, ...user });
+    const {
+      plan: { type },
+      ...rest
+    } = profile.user;
+    setState({ ...state, ...{ ...rest, planType: type } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [profile.user]);
 
   const renderContent = () => (
     <Box
@@ -58,11 +62,7 @@ export function DashboardView({ data }: DashboardProps) {
         py: 5,
       }}
     >
-      <ProfileSummary
-        totalPoints={totalPoints || 0}
-        dailyStreak={dailyStreak || 0}
-        tokens={tokens || 0}
-      />
+      <ProfileSummary profile={profile} />
     </Box>
   );
 

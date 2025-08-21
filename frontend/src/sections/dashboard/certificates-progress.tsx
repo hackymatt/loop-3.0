@@ -32,11 +32,11 @@ export function CertificatesProgress({ certificates }: Props) {
   const localize = useLocalizedPath();
 
   const user = useUserContext();
-  const { firstName, lastName, plan } = user.state;
+  const { firstName, lastName, planType } = user.state;
 
   const studentName = `${firstName} ${lastName}`;
 
-  const blocked = plan.type === PLAN_TYPE.FREE && certificates.length === 0;
+  const blocked = planType === PLAN_TYPE.FREE && certificates.length === 0;
 
   const renderList = () => (
     <Box

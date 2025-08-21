@@ -1,11 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import SubscriptionSerializer, UserSubscription
+from .serializers import SubscriptionSerializer, UserSubscriptionSerializer
 from .utils import subscribe
 from ..models import Plan
 from user.type.student_user.models import Student
-from plan.models import Plan, PlanTranslation
+from plan.models import Plan
 from plan.utils import is_default_plan
 from django.shortcuts import get_object_or_404
 from dateutil.relativedelta import relativedelta
@@ -44,6 +44,6 @@ class SubscribeView(APIView):
         )
 
         return Response(
-            UserSubscription(subscription, context={"request": request}).data,
+            UserSubscriptionSerializer(subscription, context={"request": request}).data,
             status=status.HTTP_200_OK,
         )

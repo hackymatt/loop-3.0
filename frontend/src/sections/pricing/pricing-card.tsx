@@ -44,9 +44,9 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
   } = useSettingsContext();
 
   const user = useUserContext();
-  const { isLoggedIn, plan: userPlan } = user.state;
+  const { isLoggedIn, planType } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.slug === userPlan.type;
+  const isCurrentPlan = isLoggedIn && plan.slug === planType;
 
   const redirect = localize(
     plan.slug === PLAN_TYPE.FREE
