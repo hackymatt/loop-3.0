@@ -37,11 +37,11 @@ export const featuredPostsQuery = (language: Language) => {
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IBlogFeaturedPost[]>> => {
-    const results = await getSimpleListData<IBlog>(queryUrl, {
+    const { data } = await getSimpleListData<IBlog>(queryUrl, {
       headers: { "Accept-Language": language },
     });
 
-    const modifiedResults: IBlogFeaturedPost[] = results.map(
+    const modifiedResults: IBlogFeaturedPost[] = data.map(
       ({
         translated_name,
         translated_description,

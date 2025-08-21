@@ -27,7 +27,9 @@ export const reviewsQuery = (language: Language, slug: string) => {
   const queryUrl = `${url}/${slug}`;
 
   const queryFn = async (): Promise<ListQueryResponse<IReviewItemProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IReview>(queryUrl, {
+    const {
+      data: { results, records_count, pages_count },
+    } = await getListData<IReview>(queryUrl, {
       headers: { "Accept-Language": language },
     });
     const modifiedResults: IReviewItemProp[] = (results ?? []).map(

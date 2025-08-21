@@ -5,6 +5,8 @@ from rest_framework import status
 from .serializers import ChannelPostSerializer, ChannelPostSubmitSerializer
 from .models import ChannelPost
 from project.models import Project
+from plan.subscription.utils import get_subscription
+from plan.utils import is_default_plan
 from django.shortcuts import get_object_or_404
 from user.type.student_user.models import Student
 
@@ -18,6 +20,15 @@ class ChannelViewSet(viewsets.ModelViewSet):
         project_slug = self.kwargs["slug"]
         project = get_object_or_404(Project, slug=project_slug, active=True)
         return ChannelPost.objects.filter(project=project).order_by("-created_at")
+    
+    def list(self, request, *args, **kwargs):
+        student = Student.objects.get(user=request.user)
+
+        # Plan check: limit access for free users
+        if is_default_plan(get_subscription(student.user).plan):
+            return Response({}, status=status.HTTP_403_FORBIDDEN)
+
+        return super().list(request, *args, **kwargs)
 
 
 class SubmitChannelPostView(views.APIView):

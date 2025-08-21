@@ -36,10 +36,10 @@ export const plansQuery = (language: Language) => {
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IPlanProps[]>> => {
-    const results = await getSimpleListData<IPlan>(queryUrl, {
+    const { data } = await getSimpleListData<IPlan>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    const modifiedResults: IPlanProps[] = (results ?? []).map(
+    const modifiedResults: IPlanProps[] = (data ?? []).map(
       ({ slug, tokens_limit, ...rest }: IPlan) => ({
         ...rest,
         slug: slug as PlanType,

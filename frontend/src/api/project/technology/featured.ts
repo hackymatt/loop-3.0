@@ -19,10 +19,10 @@ export const featuredTechnologiesQuery = (language: Language) => {
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IProjectTechnologyProp[]>> => {
-    const results = await getSimpleListData<IProjectTechnology>(queryUrl, {
+    const { data } = await getSimpleListData<IProjectTechnology>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    return { results };
+    return { results: data };
   };
 
   return { url, queryFn, queryKey: compact([url]) };
