@@ -16,8 +16,6 @@ def generate_plan(apps, schema_editor):
                 plan=plan,
                 language=language,
                 license="",
-                monthly_price=0,
-                yearly_price=0,
             )
 
 
