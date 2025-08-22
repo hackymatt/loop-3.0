@@ -1,6 +1,7 @@
 "use client";
 
 import type { Language } from "src/locales/types";
+import type { ISubscriptionProps } from "src/types/user";
 
 import { useTranslation } from "react-i18next";
 import { useBoolean } from "minimal-shared/hooks";
@@ -17,27 +18,25 @@ import { CONFIG } from "src/global-config";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
 
-import { useUserContext } from "src/components/user";
-
 import { CancelSubscriptionForm } from "./cancel-subscription-form";
 
 // ----------------------------------------------------------------------
 type AccountSubscriptionViewProps = {
+  data: ISubscriptionProps;
   language: Language;
 };
 
 const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${name}`;
-export function AccountSubscriptionView({ language }: AccountSubscriptionViewProps) {
+export function AccountSubscriptionView({ data, language }: AccountSubscriptionViewProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
   const cancelSubscriptionFormOpen = useBoolean();
 
-  const user = useUserContext();
-  const { plan: userPlan } = user.state;
-  const isYearly = userPlan.interval === PLAN_INTERVAL.YEARLY;
+  const { type, license, interval, price, currency, validTo } = data;
+  const isYearly = interval === PLAN_INTERVAL.YEARLY;
 
-  const isFreePlan = userPlan.type === PLAN_TYPE.FREE;
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
   return (
     <>
@@ -66,13 +65,13 @@ export function AccountSubscriptionView({ language }: AccountSubscriptionViewPro
           <Box>
             <Box
               component="img"
-              alt={userPlan.license}
-              src={iconPath(getPlanIcon(userPlan.type || PLAN_TYPE.FREE))}
+              alt={license}
+              src={iconPath(getPlanIcon(type || PLAN_TYPE.FREE))}
               sx={{ width: 80, height: 80 }}
             />
 
             <Typography variant="h4" sx={{ mt: 1 }}>
-              {userPlan.license}
+              {license}
             </Typography>
           </Box>
 
@@ -115,14 +114,14 @@ export function AccountSubscriptionView({ language }: AccountSubscriptionViewPro
             >
               {t("subscription.renewal")}
               <Typography variant="body2" fontWeight="bold">
-                {fCurrency(userPlan.price, {
+                {fCurrency(price, {
                   code: locale("code"),
-                  currency: userPlan.currency,
+                  currency,
                 })}
               </Typography>
               {t("subscription.on")}
               <Typography variant="body2" fontWeight="bold">
-                {fDate(userPlan.valid_to)}
+                {fDate(validTo)}
               </Typography>
             </Box>
           )}

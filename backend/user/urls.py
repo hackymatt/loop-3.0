@@ -8,7 +8,12 @@ from .login.github.views import GithubLoginView
 from .login.facebook.views import FacebookLoginView
 from .logout.views import LogoutView
 from .reset_password.views import PasswordResetView, PasswordResetConfirmView
-from .me.views import UpdateUserView, ChangePasswordView, DeleteAccountView
+from .me.views import (
+    UpdateUserView,
+    ChangePasswordView,
+    DeleteAccountView,
+    SubscriptionView,
+)
 from .refresh_token.views import RefreshTokenView
 from .dashboard.views import DashboardView
 
@@ -40,5 +45,6 @@ urlpatterns = [
     path(Urls.DATA, UpdateUserView.as_view(), name="data"),
     path(Urls.PASSWORD_CHANGE, ChangePasswordView.as_view(), name="password"),
     path(Urls.DELETE_ACCOUNT, DeleteAccountView.as_view(), name="delete-account"),
+    path(Urls.SUBSCRIPTION, SubscriptionView.as_view(), name="subscription"),
     path(Urls.DASHBOARD, DashboardView.as_view(), name="dashboard"),
 ]
