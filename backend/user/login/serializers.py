@@ -4,6 +4,7 @@ from plan.models import Plan
 from plan.subscription.utils import get_subscription
 from const import UserType
 
+
 class PlanSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source="slug")
     license = serializers.SerializerMethodField()
@@ -15,6 +16,7 @@ class PlanSerializer(serializers.ModelSerializer):
     def get_license(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.get_translation(lang).license
+
 
 class LoginResponseSerializer(serializers.ModelSerializer):
     plan = serializers.SerializerMethodField()

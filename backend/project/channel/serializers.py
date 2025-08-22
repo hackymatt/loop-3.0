@@ -46,7 +46,7 @@ class ChannelPostSerializer(serializers.ModelSerializer):
     def get_is_helpful(self, obj):
         request = self.context.get("request")
         return obj.likes.filter(student__user=request.user).exists()
-    
+
     def get_is_mine(self, obj):
         request = self.context.get("request")
         return obj.student.user == request.user
@@ -55,7 +55,6 @@ class ChannelPostSerializer(serializers.ModelSerializer):
         return ChannelPostCommentSerializer(
             obj.comments.all(), many=True, context=self.context
         ).data
-
 
 
 class ChannelPostCreateEditSerializer(serializers.ModelSerializer):
@@ -68,5 +67,3 @@ class ChannelPostCommentCreateEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChannelPostComment
         fields = ["message"]
-
-
