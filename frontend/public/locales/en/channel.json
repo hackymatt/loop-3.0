@@ -14,10 +14,23 @@
       "message": { "required": "Description is required" }
     }
   },
+  "editPost": {
+    "title": "Title",
+    "submit": "Save post",
+    "errors": {
+      "title": { "required": "Title is required" },
+      "message": { "required": "Description is required" }
+    }
+  },
   "newComment": {
-    "header": "New comment",
-    "submit": "Publish post",
+    "submit": "Publish comment",
     "placeholder": "Write comment...",
+    "errors": {
+      "message": { "required": "Description is required" }
+    }
+  },
+  "editComment": {
+    "submit": "Save comment",
     "errors": {
       "message": { "required": "Description is required" }
     }

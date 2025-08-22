@@ -1,5 +1,5 @@
 import type { DialogProps } from "@mui/material/Dialog";
-import type { IChannelComment, IChannelItemProp } from "src/types/channel";
+import type { IChannelItemProp, IChannelCommentProp } from "src/types/channel";
 
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -22,7 +22,7 @@ import { Form } from "src/components/hook-form";
 type Props = DialogProps & {
   slug: string;
   id: IChannelItemProp["id"];
-  commentId: IChannelComment["id"];
+  commentId: IChannelCommentProp["id"];
   onClose: () => void;
 };
 

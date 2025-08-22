@@ -18,8 +18,10 @@ import { Iconify } from "src/components/iconify";
 import { Markdown } from "src/components/markdown";
 
 import { DeletePostForm } from "./delete-post-from";
+import { ChannelPostEditForm } from "./channel-post-edit-form";
 import { DeletePostCommentForm } from "./delete-post-comment-form";
 import { ChannelPostCommentNewForm } from "./channel-post-comment-new-form";
+import { ChannelPostCommentEditForm } from "./channel-post-comment-edit-form";
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +50,7 @@ export function ChannelItem({
   helpfulCount = 0,
 }: Props) {
   const openReply = useBoolean();
+  const editMode = useBoolean();
   const deletePostFormOpen = useBoolean();
   const deletePostCommentFormOpen = useBoolean();
 
@@ -92,7 +95,7 @@ export function ChannelItem({
   const renderModifyActions = () => (
     <Box>
       <IconButton>
-        <Iconify width={18} icon="solar:pen-2-outline" />
+        <Iconify width={18} icon="solar:pen-2-outline" onClick={editMode.onToggle} />
       </IconButton>
       <IconButton color="error">
         <Iconify width={18} icon="solar:trash-bin-2-bold" onClick={handleDelete} />
@@ -132,16 +135,37 @@ export function ChannelItem({
             {isMine && renderModifyActions()}
           </Box>
 
-          <Typography variant="h4" fontWeight="bold" mt={2}>
-            {title}
-          </Typography>
+          {!editMode.value ? (
+            <>
+              {!hasReply && (
+                <Typography variant="h4" fontWeight="bold" mt={2}>
+                  {title}
+                </Typography>
+              )}
 
-          <Markdown content={message} />
+              <Markdown content={message} />
+            </>
+          ) : !commentId ? (
+            <ChannelPostEditForm
+              slug={slug}
+              id={id}
+              defaultValues={{ title: title!, message }}
+              onClose={editMode.onFalse}
+            />
+          ) : (
+            <ChannelPostCommentEditForm
+              slug={slug}
+              id={id}
+              commentId={commentId}
+              defaultValues={{ message }}
+              onClose={editMode.onFalse}
+            />
+          )}
 
           {!hasReply && renderActions()}
 
           {!hasReply && openReply.value && (
-            <ChannelPostCommentNewForm postId={id} slug={slug || ""} onClose={openReply.onFalse} />
+            <ChannelPostCommentNewForm postId={id} slug={slug} onClose={openReply.onFalse} />
           )}
         </Box>
       </Box>

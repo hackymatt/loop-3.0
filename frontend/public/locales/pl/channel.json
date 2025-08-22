@@ -14,12 +14,26 @@
     },
     "placeholder": "Napisz odpowiedź..."
   },
+  "editPost": {
+    "title": "Tytuł",
+    "submit": "Zapisz post",
+    "errors": {
+      "title": { "required": "Tytuł jest wymagany" },
+      "message": { "required": "Opis jest wymagany" }
+    }
+  },
   "newComment": {
     "submit": "Opublikuj komentarz",
     "errors": {
       "message": { "required": "Opis jest wymagany" }
     },
     "placeholder": "Napisz komentarz..."
+  },
+  "editComment": {
+    "submit": "Zapisz komentarz",
+    "errors": {
+      "message": { "required": "Opis jest wymagany" }
+    }
   },
   "title": "Kanał",
   "ago": "temu",

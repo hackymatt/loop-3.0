@@ -16,15 +16,23 @@ type IEditPostReturn = {
   status: number;
 };
 
-export const useEditPost = (id: string) => {
-  const url = `${endpoint}/${id}`;
-  return useMutation<IEditPostReturn, AxiosError, IEditPost>(async (variables) => {
-    const result = await Api.put(url, variables);
-    return {
-      status: result.status,
-      data: result.data,
-    };
-  });
+export const useEditPost = (slug: string, id: string) => {
+  const router = useRouter();
+  const url = `${endpoint}/${slug}/${id}`;
+  return useMutation<IEditPostReturn, AxiosError, IEditPost>(
+    async (variables) => {
+      const result = await Api.put(url, variables);
+      return {
+        status: result.status,
+        data: result.data,
+      };
+    },
+    {
+      onSuccess: () => {
+        router.refresh();
+      },
+    }
+  );
 };
 
 type IDeletePost = {};
