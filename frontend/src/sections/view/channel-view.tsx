@@ -8,6 +8,8 @@ import { useBoolean } from "minimal-shared/hooks";
 
 import { Box, Card, Button, Skeleton, Container, Typography } from "@mui/material";
 
+import { useQueryParams } from "src/hooks/use-query-params";
+
 import { Iconify } from "src/components/iconify";
 
 import { UpgradeBanner } from "../learn/upgrade-banner";
@@ -17,13 +19,21 @@ import { ChannelPostNewForm } from "../channel/channel-post-new-form";
 // ----------------------------------------------------------------------
 
 type ChannelViewProps = {
-  data: { project: IProjectProps; channelItems: IChannelItemProp[]; isLocked: boolean };
+  data: {
+    project: IProjectProps;
+    channelItems: IChannelItemProp[];
+    channelItemsCount: number;
+    channelItemsPageSize: number;
+    isLocked: boolean;
+  };
 };
 
 export function ChannelView({ data }: ChannelViewProps) {
   const { t } = useTranslation("channel");
 
-  const { project, channelItems, isLocked } = data;
+  const { handleChange, query } = useQueryParams();
+
+  const { project, channelItems, channelItemsCount, channelItemsPageSize, isLocked } = data;
 
   const { name: projectName } = project;
 
@@ -40,7 +50,7 @@ export function ChannelView({ data }: ChannelViewProps) {
         color="inherit"
         variant="contained"
         startIcon={<Iconify icon="solar:pen-2-outline" />}
-        onClick={openPostForm.onTrue}
+        onClick={openPostForm.onToggle}
         disabled={isLocked}
       >
         {t("button")}
@@ -76,11 +86,12 @@ export function ChannelView({ data }: ChannelViewProps) {
       renderPostSkeleton()
     ) : (
       <ChannelItemsList
+        slug={project.slug}
         items={channelItems}
-        pagesCount={1}
-        page={1}
-        onPageChange={() => {}}
-        recordsCount={channelItems.length}
+        recordsCount={channelItemsCount || 0}
+        pagesCount={channelItemsPageSize || 0}
+        page={Number(query.page) || 1}
+        onPageChange={(selectedPage: number) => handleChange("page", String(selectedPage))}
       />
     );
 
@@ -88,6 +99,10 @@ export function ChannelView({ data }: ChannelViewProps) {
     <>
       <Container>
         {renderHead()}
+
+        {openPostForm.value && (
+          <ChannelPostNewForm slug={project.slug || ""} onClose={openPostForm.onFalse} />
+        )}
 
         <Box
           sx={{
@@ -99,12 +114,6 @@ export function ChannelView({ data }: ChannelViewProps) {
           <Box sx={{ flex: "1 1 auto", minWidth: 0 }}>{renderListView()}</Box>
         </Box>
       </Container>
-
-      <ChannelPostNewForm
-        slug={project.slug || ""}
-        open={openPostForm.value}
-        onClose={openPostForm.onFalse}
-      />
 
       {isLocked && <UpgradeBanner slug={project.slug} open />}
     </>

@@ -3,25 +3,43 @@
     "title": "Kanał [name] - dołącz do dyskusji",
     "description": "Bierz udział w rozmowach, dziel się wiedzą i inspiruj innych w kanale [name]. Twoje pomysły mogą pomóc całej społeczności!"
   },
-  "button": "Opublikuj na kanale",
+  "button": "Opublikuj",
   "newPost": {
     "header": "Nowy post",
     "title": "Tytuł",
-    "cancel": "Anuluj",
     "submit": "Opublikuj post",
     "errors": {
       "title": { "required": "Tytuł jest wymagany" },
       "message": { "required": "Opis jest wymagany" }
-    }
+    },
+    "placeholder": "Napisz odpowiedź..."
+  },
+  "newComment": {
+    "submit": "Opublikuj komentarz",
+    "errors": {
+      "message": { "required": "Opis jest wymagany" }
+    },
+    "placeholder": "Napisz komentarz..."
   },
   "title": "Kanał",
   "ago": "temu",
   "helpful": "Pomocne",
   "reply": "Odpowiedz",
-  "placeholder": "Napisz odpowiedź...",
   "showAll": [
     "Pokaż [comments] poprzedni komentarz",
     "Pokaż [comments] poprzednie komentarze",
     "Pokaż [comments] poprzednich komentarzy"
-  ]
+  ],
+  "delete": {
+    "post": {
+      "button": "Usuń post",
+      "description": "Czy na pewno chcesz usunąć ten post?",
+      "cancel": "Anuluj"
+    },
+    "comment": {
+      "button": "Usuń komentarz",
+      "description": "Czy na pewno chcesz usunąć ten komentarz?",
+      "cancel": "Anuluj"
+    }
+  }
 }

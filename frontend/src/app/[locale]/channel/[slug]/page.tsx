@@ -7,39 +7,45 @@ import { createMetadata } from "src/utils/create-metadata";
 
 import { LANGUAGE } from "src/consts/language";
 import { projectQuery } from "src/api/project/project";
-import { channelPostsQuery } from "src/api/project/channel/posts";
+import { channelPostsQuery } from "src/api/project/channel/list";
 
 import { ChannelView } from "src/sections/view/channel-view";
 import { NotFoundView } from "src/sections/error/not-found-view";
 
 // ----------------------------------------------------------------------
+type SearchParams = Record<string, string>;
+
 type PageProps = {
   params: { locale: Language; slug: string };
+  searchParams: SearchParams;
 };
 
 const queries = {
   project: (lang: Language, slug: string) => projectQuery(lang, slug),
-  channelPosts: (lang: Language, slug: string) => channelPostsQuery(lang, slug),
+  channelPosts: (lang: Language, slug: string, searchParams: SearchParams) =>
+    channelPostsQuery(lang, slug, searchParams),
 };
 
-async function getData(language: Language, slug: string) {
+async function getData(language: Language, slug: string, searchParams: SearchParams) {
   try {
     const projectPromise = queries.project(language, slug).queryFn();
-    const channelPostsPromise = queries.channelPosts(language, slug).queryFn();
+    const channelPostsPromise = queries.channelPosts(language, slug, searchParams).queryFn();
 
     const [project, channelPosts] = await Promise.all([projectPromise, channelPostsPromise]);
 
     return {
       project: project.results,
       channelItems: channelPosts.results,
+      channelItemsCount: channelPosts.count,
+      channelItemsPageSize: channelPosts.pagesCount,
       isLocked: channelPosts.error?.status === 403,
     };
   } catch {
     return null;
   }
 }
-export default async function Page({ params }: PageProps) {
-  const data = await getData(params.locale, params.slug);
+export default async function Page({ params, searchParams }: PageProps) {
+  const data = await getData(params.locale, params.slug, searchParams);
 
   if (!data) {
     return <NotFoundView />;

@@ -7,22 +7,20 @@ import { useRouter } from "src/routes/hooks";
 import { URLS } from "src/api/urls";
 import { Api } from "src/api/service";
 
-const endpoint = URLS.REVIEW_SUBMIT;
+const endpoint = URLS.PROJECT_CHANNEL_POST_LIKES;
 
-type ISubmit = {
-  slug: string;
-  rating: number;
-  comment: string | null;
+type ICreatePostLike = {
+  post_id: string;
 };
 
-type ISubmitReturn = { data: ISubmit; status: number };
+type ICreatePostLikeReturn = { data: ICreatePostLike; status: number };
 
-export const useReviewSubmit = () => {
+export const useLikePost = (slug: string) => {
   const router = useRouter();
-
-  return useMutation<ISubmitReturn, AxiosError, ISubmit>(
+  const url = `${endpoint}/${slug}`;
+  return useMutation<ICreatePostLikeReturn, AxiosError, ICreatePostLike>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(url, variables);
       return {
         status: result.status,
         data: result.data,

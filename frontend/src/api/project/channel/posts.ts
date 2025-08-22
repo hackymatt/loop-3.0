@@ -1,77 +1,33 @@
-import type { Language } from "src/locales/types";
-import type { ListQueryResponse } from "src/api/types";
-import type { IChannelItemProp } from "src/types/channel";
+import type { AxiosError } from "axios";
 
-import { compact } from "lodash-es";
-import { cookies } from "next/headers";
+import { useMutation } from "@tanstack/react-query";
+
+import { useRouter } from "src/routes/hooks";
 
 import { URLS } from "src/api/urls";
-import { getListData } from "src/api/utils";
+import { Api } from "src/api/service";
 
-const endpoint = URLS.PROJECT_CHANNEL;
+const endpoint = URLS.PROJECT_CHANNEL_POSTS;
 
-type IStudent = {
-  first_name: string;
-  image: string | null;
-};
-
-type IChannelPostComment = {
-  id: string;
-  student: IStudent;
-  message: string;
-  created_at: string;
-};
-
-type IChannelPost = {
-  id: string;
+type ICreatePost = {
   title: string;
-  student: IStudent;
   message: string;
-  helpful_count: number;
-  is_helpful: boolean;
-  created_at: string;
-  comments: IChannelPostComment[];
 };
 
-export const channelPostsQuery = (language: Language, slug: string) => {
-  const url = endpoint;
-  const queryUrl = `${url}/${slug}`;
+type ICreatePostReturn = { data: ICreatePost; status: number };
 
-  const queryFn = async (): Promise<ListQueryResponse<IChannelItemProp[]>> => {
-    const {
-      data: { results, records_count, pages_count },
-      error,
-    } = await getListData<IChannelPost>(queryUrl, {
-      headers: { "Accept-Language": language, Cookie: cookies().toString() },
-    });
-    const modifiedResults: IChannelItemProp[] = (results ?? []).map(
-      ({ student, helpful_count, is_helpful, created_at, comments, ...rest }: IChannelPost) => ({
-        ...rest,
-        student: {
-          name: student.first_name,
-          avatarUrl: student.image,
-        },
-        helpfulCount: helpful_count,
-        isHelpful: is_helpful,
-        createdAt: created_at,
-        comments: comments.map(
-          ({
-            student: commentStudent,
-            created_at: commentCreatedAt,
-            ...commentRest
-          }: IChannelPostComment) => ({
-            ...commentRest,
-            student: {
-              name: commentStudent.first_name,
-              avatarUrl: commentStudent.image,
-            },
-            createdAt: commentCreatedAt,
-          })
-        ),
-      })
-    );
-    return { results: modifiedResults, count: records_count, pagesCount: pages_count, error };
-  };
-
-  return { url, queryFn, queryKey: compact([url, slug]) };
+export const useCreatePost = (slug: string) => {
+  const router = useRouter();
+  const url = `${endpoint}/${slug}`;
+  return useMutation<ICreatePostReturn, AxiosError, ICreatePost>(
+    async (variables) => {
+      const result = await Api.post(url, variables);
+      return { status: result.status, data: result.data };
+    },
+    {
+      onSuccess: () => {
+        router.refresh();
+      },
+    }
+  );
 };

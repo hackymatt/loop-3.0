@@ -8,19 +8,20 @@ import LoadingButton from "@mui/lab/LoadingButton";
 
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
-import { useCreatePost } from "src/api/project/channel/posts";
+import { useCreatePostComment } from "src/api/project/channel/comments";
 
 import { Form, Field } from "src/components/hook-form";
 
 // ----------------------------------------------------------------------
 
-export type ChannelPostSchemaType = zod.infer<ReturnType<typeof useChannelPostSchema>>;
+export type ChannelPostCommentSchemaType = zod.infer<
+  ReturnType<typeof useChannelPostCommentSchema>
+>;
 
-export const useChannelPostSchema = () => {
+export const useChannelPostCommentSchema = () => {
   const { t } = useTranslation("channel");
   return zod.object({
-    title: zod.string().min(1, t("newPost.errors.title.required")),
-    message: zod.string().min(1, t("newPost.errors.message.required")),
+    message: zod.string().min(1, t("newComment.errors.message.required")),
   });
 };
 
@@ -28,20 +29,23 @@ export const useChannelPostSchema = () => {
 
 type Props = {
   slug: string;
+  postId: string;
   onClose: () => void;
 };
 
-export function ChannelPostNewForm({ slug, onClose }: Props) {
+export function ChannelPostCommentNewForm({ postId, slug, onClose }: Props) {
   const { t } = useTranslation("channel");
 
-  const { mutateAsync: createPost } = useCreatePost(slug);
+  const { mutateAsync: createPostComment } = useCreatePostComment(slug);
 
-  const ChannelPostSchema = useChannelPostSchema();
+  const ChannelPostCommentSchema = useChannelPostCommentSchema();
 
-  const defaultValues: ChannelPostSchemaType = { title: "", message: t("newPost.placeholder") };
+  const defaultValues: ChannelPostCommentSchemaType = {
+    message: t("newComment.placeholder"),
+  };
 
-  const methods = useForm<ChannelPostSchemaType>({
-    resolver: zodResolver(ChannelPostSchema),
+  const methods = useForm<ChannelPostCommentSchemaType>({
+    resolver: zodResolver(ChannelPostCommentSchema),
     defaultValues,
   });
 
@@ -55,7 +59,7 @@ export function ChannelPostNewForm({ slug, onClose }: Props) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createPost(data);
+      await createPostComment({ ...data, post_id: postId });
       reset();
       onClose();
     } catch (error) {
@@ -65,7 +69,6 @@ export function ChannelPostNewForm({ slug, onClose }: Props) {
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>
-      {/* Form Content */}
       <Box
         sx={(theme) => ({
           p: 1,
@@ -76,15 +79,12 @@ export function ChannelPostNewForm({ slug, onClose }: Props) {
           borderRadius: 1,
         })}
       >
-        <Field.Text name="title" label={t("newPost.title")} />
-
         <Field.Markdown name="message" />
       </Box>
 
-      {/* Actions */}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3, mb: 3, gap: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3, gap: 2 }}>
         <LoadingButton color="inherit" type="submit" variant="contained" loading={isSubmitting}>
-          {t("newPost.submit")}
+          {t("newComment.submit")}
         </LoadingButton>
       </Box>
     </Form>
