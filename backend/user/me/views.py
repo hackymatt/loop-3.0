@@ -5,8 +5,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.utils.translation import gettext as _
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import UpdateUserSerializer, ChangePasswordSerializer
+from .serializers import (
+    UpdateUserSerializer,
+    ChangePasswordSerializer,
+    SubscriptionSerializer,
+)
 from const import JoinType
+from plan.subscription.utils import get_subscription
 
 
 class UpdateUserView(UpdateAPIView):
@@ -76,3 +81,44 @@ class DeleteAccountView(APIView):
         response.delete_cookie("refresh_token")
 
         return response
+
+
+class DeleteAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+
+        refresh_token = request.COOKIES.get("refresh_token")
+
+        # Blacklist the refresh token
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except Exception as e:
+            return Response(
+                {"root": [_("Refresh token is required")]},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user.delete()
+
+        response = Response({}, status=status.HTTP_204_NO_CONTENT)
+        response.delete_cookie("access_token")
+        response.delete_cookie("refresh_token")
+
+        return response
+
+
+class SubscriptionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+
+        subscription = get_subscription(user)
+
+        return Response(
+            SubscriptionSerializer(subscription, context={"request": request}).data,
+            status=status.HTTP_200_OK,
+        )

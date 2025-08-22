@@ -1,7 +1,8 @@
+import type { Currency } from "src/locales/types";
 import type { JOIN_TYPE, USER_TYPE } from "src/consts/user";
 
-import type { PlanType } from "./plan";
 import type { IProjectListProps } from "./project";
+import type { PlanType, PlanInterval } from "./plan";
 import type { ICertificateProps } from "./certificate";
 
 // ----------------------------------------------------------------------
@@ -44,4 +45,13 @@ export type IDashboardProps = {
     totalPoints: number;
     dailyStreak: number;
   };
+};
+
+export type ISubscriptionProps = {
+  type: PlanType;
+  license: string;
+  interval: PlanInterval;
+  validTo: string;
+  price: number;
+  currency: Currency;
 };
