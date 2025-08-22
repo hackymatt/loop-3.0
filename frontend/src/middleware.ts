@@ -12,11 +12,13 @@ const locales = Object.values(LANGUAGE);
 const AUTHORIZED_PATHS = [
   paths.certificates,
   paths.learn,
+  paths.channel,
   paths.account.dashboard,
   paths.account.personal,
   paths.account.manage,
   paths.account.subscription,
   paths.payment,
+  paths.order.completed,
 ];
 
 const UNAUTHORIZED_PATHS = [

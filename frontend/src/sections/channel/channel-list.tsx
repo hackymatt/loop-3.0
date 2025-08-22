@@ -15,6 +15,7 @@ import { ChannelItem } from "./channel-item";
 // ----------------------------------------------------------------------
 
 type Props = {
+  slug: string;
   items: IChannelItemProp[];
   recordsCount: number;
   pagesCount: number;
@@ -22,7 +23,14 @@ type Props = {
   onPageChange: (selectedPage: number) => void;
 };
 
-export function ChannelItemsList({ items, recordsCount, pagesCount, page, onPageChange }: Props) {
+export function ChannelItemsList({
+  slug,
+  items,
+  recordsCount,
+  pagesCount,
+  page,
+  onPageChange,
+}: Props) {
   const { t: locale } = useTranslation("locale");
   const { t } = useTranslation("channel");
   const show = t("showAll", { returnObjects: true }) as string[];
@@ -54,13 +62,17 @@ export function ChannelItemsList({ items, recordsCount, pagesCount, page, onPage
     return null;
   };
 
-  const renderReplyComments = (comments: IChannelItemProp["comments"]) =>
+  const renderReplyComments = (id: string, comments: IChannelItemProp["comments"]) =>
     comments.map((comment) => (
       <ChannelItem
         key={comment.id}
+        id={id}
+        commentId={comment.id}
+        slug={slug}
         createdAt={comment.createdAt}
         message={comment.message}
         student={comment.student}
+        isMine={comment.isMine}
         hasReply
       />
     ));
@@ -85,18 +97,24 @@ export function ChannelItemsList({ items, recordsCount, pagesCount, page, onPage
               }}
             >
               <ChannelItem
+                slug={slug}
+                id={item.id}
                 student={item.student}
                 createdAt={item.createdAt}
                 title={item.title}
                 message={item.message}
                 helpfulCount={item.helpfulCount}
                 isHelpful={item.isHelpful}
+                isMine={item.isMine}
               />
 
-              <Divider sx={{ ml: "auto" }} />
-
-              {renderShowAllComments(item.id, item.comments.length)}
-              {!!item.comments.length && renderReplyComments(commentsToRender)}
+              {!!item.comments.length && (
+                <>
+                  <Divider sx={{ mb: 2 }} />
+                  {renderShowAllComments(item.id, item.comments.length)}
+                  {renderReplyComments(item.id, commentsToRender)}
+                </>
+              )}
             </Card>
           );
         })}

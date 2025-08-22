@@ -7,10 +7,11 @@ type IChannelUserProp = {
   avatarUrl: string | null;
 };
 
-type IChannelComment = {
+export type IChannelComment = {
   id: string;
   student: IChannelUserProp;
   message: string;
+  isMine: boolean;
   createdAt: DatePickerFormat;
 };
 
@@ -21,6 +22,7 @@ export type IChannelItemProp = {
   message: string;
   helpfulCount: number;
   isHelpful: boolean;
+  isMine: boolean;
   createdAt: DatePickerFormat;
   comments: IChannelComment[];
 };

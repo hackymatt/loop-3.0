@@ -5,11 +5,13 @@ import type { IReviewItemProp, IReviewSummaryProps } from "src/types/review";
 import type { LevelType, IProjectProps, IProjectListProps } from "src/types/project";
 
 import { useState, useEffect } from "react";
-import { useBoolean, useSetState } from "minimal-shared/hooks";
+import { useBoolean } from "minimal-shared/hooks";
 
 import Grid from "@mui/material/Grid2";
 import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
+
+import { useQueryParams } from "src/hooks/use-query-params";
 
 import { ReviewList } from "../review/review-list";
 import { ProjectTags } from "../projects/project-tags";
@@ -40,9 +42,7 @@ type ProjectViewProps = {
 };
 
 export function ProjectView({ slug, data, locale }: ProjectViewProps) {
-  const query = useSetState({
-    page: "1",
-  });
+  const { handleChange, query } = useQueryParams();
 
   const { project, similarProjects, reviewsSummary, reviews, reviewsCount, reviewsPageSize } = data;
 
@@ -69,8 +69,8 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
           reviews={reviews || []}
           recordsCount={reviewsCount || 0}
           pagesCount={reviewsPageSize || 0}
-          page={Number(query.state.page) || 1}
-          onPageChange={(selectedPage: number) => query.setField("page", String(selectedPage))}
+          page={Number(query.page) || 1}
+          onPageChange={(selectedPage: number) => handleChange("page", String(selectedPage))}
         />
       </Container>
 

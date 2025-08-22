@@ -33,7 +33,9 @@ class Urls:
     FEATURED_TECHNOLOGIES = "featured-technologies"
     FEATURED_REVIEWS = "featured-reviews"
     SIMILAR_PROJECTS = "similar-projects/<slug:slug>"
-    PROJECT_CHANNEL = "project-channel/<slug:slug>"
+    PROJECT_CHANNEL_POSTS = "project-channel-posts/<slug:slug>"
+    PROJECT_CHANNEL_POST_COMMENTS = "project-channel-post-comments/<slug:slug>"
+    PROJECT_CHANNEL_POST_LIKES = "project-channel-post-likes/<slug:slug>"
     # STEP
     STEP = "step/<slug:project_slug>/<slug:stage_slug>/<slug:step_slug>"
     STEP_CHAT = "step/chat/<slug:step>"

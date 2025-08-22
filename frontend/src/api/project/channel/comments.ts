@@ -7,22 +7,21 @@ import { useRouter } from "src/routes/hooks";
 import { URLS } from "src/api/urls";
 import { Api } from "src/api/service";
 
-const endpoint = URLS.REVIEW_SUBMIT;
+const endpoint = URLS.PROJECT_CHANNEL_POST_COMMENTS;
 
-type ISubmit = {
-  slug: string;
-  rating: number;
-  comment: string | null;
+type ICreatePostComment = {
+  post_id: string;
+  message: string;
 };
 
-type ISubmitReturn = { data: ISubmit; status: number };
+type ICreatePostCommentReturn = { data: ICreatePostComment; status: number };
 
-export const useReviewSubmit = () => {
+export const useCreatePostComment = (slug: string) => {
   const router = useRouter();
-
-  return useMutation<ISubmitReturn, AxiosError, ISubmit>(
+  const url = `${endpoint}/${slug}`;
+  return useMutation<ICreatePostCommentReturn, AxiosError, ICreatePostComment>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(url, variables);
       return {
         status: result.status,
         data: result.data,
