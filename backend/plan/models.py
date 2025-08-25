@@ -1,11 +1,12 @@
 from django.db import models
+from django.utils import timezone
 from core.base_model import BaseModel
-from const import Language, Currency, PaymentInterval
+from const import PlanType, Language, Currency, PaymentInterval
 from global_config import CONFIG
 
 
 class Plan(BaseModel):
-    slug = models.SlugField(unique=True)
+    type = models.CharField(max_length=10, choices=PlanType.choices)
     popular = models.BooleanField(default=False)
     premium = models.BooleanField(default=False)
     tokens_limit = models.PositiveIntegerField(default=0)
@@ -15,12 +16,12 @@ class Plan(BaseModel):
         return self.translations.filter(language=lang_code).first()
 
     def delete(self, *args, **kwargs):  # pragma: no cover
-        if self.slug == CONFIG["default_plan"]:
+        if self.type == CONFIG["default_plan"]:
             raise ValueError("You cannot delete the default plan.")
         super().delete(*args, **kwargs)
 
     def __str__(self):  # pragma: no cover
-        return self.slug
+        return self.type
 
     class Meta:
         db_table = "plan"
@@ -41,7 +42,7 @@ class PlanTranslation(BaseModel):
         db_table = "plan_translation"
 
     def __str__(self):  # pragma: no cover
-        return f"{self.plan.slug} ({self.language})"
+        return f"{self.plan.type} ({self.language})"
 
 
 class PlanPricing(BaseModel):
@@ -52,13 +53,28 @@ class PlanPricing(BaseModel):
     interval = models.CharField(max_length=10, choices=PaymentInterval.choices)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stripe_price_id = models.CharField(max_length=255, blank=True, null=True)
+    valid_from = models.DateTimeField()
 
     class Meta:
-        unique_together = ("plan", "currency", "interval")
+        unique_together = ("plan", "currency", "interval", "valid_from")
         db_table = "plan_pricing"
 
     def __str__(self):  # pragma: no cover
-        return f"{self.plan.slug} - {self.interval} - {self.price} {self.currency}"
+        return f"{self.plan.type} - {self.interval} - {self.price} {self.currency}, since: {self.valid_from}"
+
+    @classmethod
+    def get_current_price(cls, plan, currency, interval):
+        """Get active price for a given plan, currency, and interval."""
+        return (
+            cls.objects.filter(
+                plan=plan,
+                currency=currency,
+                interval=interval,
+                valid_from__lte=timezone.now(),
+            )
+            .order_by("-valid_from")
+            .first()
+        )
 
 
 class Option(BaseModel):
@@ -108,4 +124,4 @@ class PlanOption(BaseModel):
         ordering = ["order"]
 
     def __str__(self):  # pragma: no cover
-        return f"{self.plan.slug} - {self.option.slug} (disabled: {self.disabled}) | Order: {self.order}"
+        return f"{self.plan.type} - {self.option.slug} (disabled: {self.disabled}) | Order: {self.order}"

@@ -12,8 +12,8 @@ const endpoint = URLS.PLANS;
 
 type IPricing = {
   currency: "PLN" | "EUR" | "USD" | "GBP";
-  monthly: number;
-  yearly: number;
+  interval: "monthly" | "yearly";
+  price: number;
 };
 
 type IOption = {
@@ -22,7 +22,7 @@ type IOption = {
 };
 
 type IPlan = {
-  slug: string;
+  type: string;
   tokens_limit: number;
   license: string;
   popular: boolean;
@@ -40,9 +40,9 @@ export const plansQuery = (language: Language) => {
       headers: { "Accept-Language": language },
     });
     const modifiedResults: IPlanProps[] = (data ?? []).map(
-      ({ slug, tokens_limit, ...rest }: IPlan) => ({
+      ({ type, tokens_limit, ...rest }: IPlan) => ({
         ...rest,
-        slug: slug as PlanType,
+        type: type as PlanType,
         tokensLimit: tokens_limit,
       })
     );

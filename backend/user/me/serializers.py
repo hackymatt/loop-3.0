@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from ..utils import check_password
 from plan.subscription.models import PlanSubscription
-from plan.models import PlanPricing
 
 
 class UpdateUserSerializer(serializers.ModelSerializer):
@@ -25,12 +24,12 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-    type = serializers.CharField(source="plan.slug")
+    type = serializers.CharField(source="plan_pricing.plan.slug")
     license = serializers.SerializerMethodField()
-    interval = serializers.CharField(source="plan.plan_pricing.interval")
+    interval = serializers.CharField(source="plan_pricing.interval")
     valid_to = serializers.DateTimeField(source="end_date")
-    price = serializers.CharField(source="plan.plan_pricing.price")
-    currency = serializers.CharField(source="plan.plan_pricing.currency")
+    price = serializers.CharField(source="plan_pricing.price")
+    currency = serializers.CharField(source="plan_pricing.currency")
 
     class Meta:
         model = PlanSubscription
@@ -38,4 +37,4 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_license(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
-        return obj.plan.get_translation(lang).license
+        return obj.plan_pricing.plan.get_translation(lang).license

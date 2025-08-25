@@ -42,12 +42,12 @@ export function PricingColumnContentMobile({
   const user = useUserContext();
   const { isLoggedIn, planType } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.slug === planType;
+  const isCurrentPlan = isLoggedIn && plan.type === planType;
 
   const redirect = localize(
-    plan.slug === PLAN_TYPE.FREE
-      ? `${paths.payment}/${plan.slug}`
-      : `${paths.payment}/${plan.slug}?yearly=${isYearly}`
+    plan.type === PLAN_TYPE.FREE
+      ? `${paths.payment}/${plan.type}`
+      : `${paths.payment}/${plan.type}?yearly=${isYearly}`
   );
 
   const { trackEvent } = useAnalytics();
@@ -164,12 +164,12 @@ export function PricingColumnContentDesktop({
   const user = useUserContext();
   const { isLoggedIn, planType } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.slug === planType;
+  const isCurrentPlan = isLoggedIn && plan.type === planType;
 
   const redirect = localize(
-    plan.slug === PLAN_TYPE.FREE
-      ? `${paths.payment}/${plan.slug}`
-      : `${paths.payment}/${plan.slug}?yearly=${isYearly}`
+    plan.type === PLAN_TYPE.FREE
+      ? `${paths.payment}/${plan.type}`
+      : `${paths.payment}/${plan.type}?yearly=${isYearly}`
   );
 
   const { trackEvent } = useAnalytics();

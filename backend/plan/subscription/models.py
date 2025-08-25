@@ -20,4 +20,4 @@ class PlanSubscription(BaseModel):
     end_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):  # pragma: no cover
-        return f"{self.student.user.email} - {self.plan.slug}"
+        return f"{self.student.user.email} - {self.plan_pricing.plan.type} - {self.plan_pricing.interval} - {self.plan_pricing.price} {self.plan_pricing.currency}"

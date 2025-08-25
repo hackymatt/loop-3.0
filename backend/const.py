@@ -98,6 +98,12 @@ class Currency(TextChoices):
     GBP = "GBP"
 
 
+class PlanType(TextChoices):
+    FREE = "free"
+    BASIC = "basic"
+    PREMIUM = "premium"
+
+
 class PaymentInterval(TextChoices):
     MONTHLY = "monthly"
     YEARLY = "yearly"

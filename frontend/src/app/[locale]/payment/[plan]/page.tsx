@@ -16,11 +16,11 @@ type PageProps = {
 };
 
 const queries = {
-  plan: (lang: Language, slug: string) => planQuery(lang, slug),
+  plan: (lang: Language, type: string) => planQuery(lang, type),
 };
 
-async function getData(language: Language, slug: string) {
-  const planPromise = queries.plan(language, slug).queryFn();
+async function getData(language: Language, type: string) {
+  const planPromise = queries.plan(language, type).queryFn();
 
   const [plan] = await Promise.all([planPromise]);
 

@@ -21,7 +21,7 @@ def calculate_tokens_limit(start_date, today, plan_limit):
 
 def get_user_tokens_left(user):
     subscription = get_subscription(user)
-    plan_limit = subscription.plan.tokens_limit
+    plan_limit = subscription.plan_pricing.plan.tokens_limit
     start_date = subscription.start_date.date()
 
     today = now().date()

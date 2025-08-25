@@ -16,7 +16,7 @@ import { useQueryParams } from "src/hooks/use-query-params";
 
 import { fCurrency } from "src/utils/format-number";
 
-import { PLAN_TYPE } from "src/consts/plan";
+import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
@@ -41,11 +41,16 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
 
   const { license, pricing: pricingObj } = plan;
 
-  const priceObj = pricingObj.find((p) => p.currency === currency)!;
   const isYearly = (query?.yearly ?? "false") === "true";
-  const price = isYearly ? priceObj.yearly / 12 : priceObj.monthly;
 
-  const isFreePlan = plan.slug === PLAN_TYPE.FREE;
+  const priceObj = pricingObj.find(
+    (p) =>
+      p.currency === currency &&
+      p.interval === (isYearly ? PLAN_INTERVAL.YEARLY : PLAN_INTERVAL.MONTHLY)
+  )!;
+  const price = isYearly ? priceObj.price / 12 : priceObj.price;
+
+  const isFreePlan = plan.type === PLAN_TYPE.FREE;
 
   const renderSubscription = () => (
     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -74,7 +79,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         {t("summary.yearly.save")}
         <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}>
           <Chip
-            label={fCurrency(priceObj.monthly * 12 - priceObj.yearly, {
+            label={fCurrency(priceObj.price * 12 - priceObj.price, {
               code: locale("code"),
               currency,
             })}
@@ -121,7 +126,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         {t("summary.total")}
       </Box>
       <Box component="span">
-        {fCurrency(isYearly ? priceObj.yearly : priceObj.monthly, {
+        {fCurrency(isYearly ? priceObj.price : priceObj.price, {
           code: locale("code"),
           currency,
         })}
