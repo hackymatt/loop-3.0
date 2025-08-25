@@ -12,11 +12,6 @@ type ILogin = {
   password: string;
 };
 
-type IPlan = {
-  type: "free" | "basic" | "premium";
-  license: string;
-};
-
 type ILoginReturn = {
   data: {
     email: string;
@@ -26,7 +21,7 @@ type ILoginReturn = {
     user_type: "admin" | "instructor" | "student";
     join_type: "email" | "google" | "facebook" | "github";
     is_active: boolean;
-    plan: IPlan;
+    plan_type: "free" | "basic" | "premium";
   };
   status: number;
 };
