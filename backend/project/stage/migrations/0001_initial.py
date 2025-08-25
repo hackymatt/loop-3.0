@@ -45,6 +45,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("order", models.PositiveIntegerField(default=0)),
                 (
                     "stage",

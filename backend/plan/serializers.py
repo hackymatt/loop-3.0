@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Plan, PlanPricing
+from const import PaymentInterval
 
 
 class PlanPricingSerializer(serializers.ModelSerializer):
@@ -7,8 +8,8 @@ class PlanPricingSerializer(serializers.ModelSerializer):
         model = PlanPricing
         fields = [
             "currency",
-            "monthly",
-            "yearly",
+            "interval",
+            "price",
         ]
 
 

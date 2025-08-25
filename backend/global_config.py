@@ -18,4 +18,5 @@ CONFIG = {
     "stripe_webhook_secret": settings.STRIPE_WEBHOOK_SECRET,
     "min_password_length": settings.MIN_PASSWORD_LENGTH,
     "default_plan": "free",
+    "free_trial_days": 7,
 }

@@ -1,68 +1,44 @@
 import stripe
-import json
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from user.type.student_user.models import Student
 from global_config import CONFIG
 
 stripe.api_key = CONFIG["stripe_secret_key"]
 
 
-@csrf_exempt
-def create_payment_intent(request):
-    try:
-        data = json.loads(request.body)
+class CreateSubscriptionView(APIView):
+    permission_classes = [IsAuthenticated]
 
-        amount = data.get("amount")
-        currency = data.get("currency")
+    def post(self, request, *args, **kwargs):
+        try:
+            student = Student.objects.get(user=request.user)
 
-        payment_intent = stripe.PaymentIntent.create(
-            amount=amount,
-            currency=currency,
-        )
+            if not student.stripe_customer_id:
+                customer = stripe.Customer.create(email=student.user.email)
+                student.stripe_customer_id = customer.id
+                student.save()
+            else:
+                customer = {"id": student.stripe_customer_id}
 
-        return JsonResponse({"client_secret": payment_intent.client_secret})
+            stripe_price_id = request.data.get("id")
 
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+            subscription = stripe.Subscription.create(
+                customer=customer["id"],
+                items=[{"price": stripe_price_id}],
+                trial_period_days=CONFIG["free_trial_days"],
+                payment_behavior="default_incomplete",
+                expand=["latest_invoice.payment_intent"],
+            )
 
+            client_secret = subscription.latest_invoice.payment_intent.client_secret
 
-@csrf_exempt
-def stripe_webhook(request):
-    payload = request.body
-    sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
+            return Response(
+                {"subscription_id": subscription.id, "client_secret": client_secret},
+                status=status.HTTP_201_CREATED,
+            )
 
-    try:
-        event = stripe.Webhook.construct_event(
-            payload=payload,
-            sig_header=sig_header,
-            secret=CONFIG["stripe_webhook_secret"],
-        )
-    except ValueError as e:
-        # Invalid payload
-        return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
-        # Invalid signature
-        return HttpResponse(status=400)
-
-    # 📌 Obsługa różnych typów eventów Stripe
-    if event["type"] == "payment_intent.succeeded":
-        payment_intent = event["data"]["object"]
-        # np. aktywuj subskrypcję użytkownika
-        print("💰 PaymentIntent was successful!", payment_intent["id"])
-
-    elif event["type"] == "invoice.payment_failed":
-        invoice = event["data"]["object"]
-        # np. wyślij maila do użytkownika że płatność nie powiodła się
-        print("❌ Payment for invoice failed", invoice["id"])
-
-    elif event["type"] == "customer.subscription.created":
-        subscription = event["data"]["object"]
-        print("📦 Subscription created", subscription["id"])
-
-    elif event["type"] == "customer.subscription.deleted":
-        subscription = event["data"]["object"]
-        print("🧹 Subscription canceled", subscription["id"])
-
-    # Możesz dodać więcej eventów jeśli potrzebujesz
-
-    return HttpResponse(status=200)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

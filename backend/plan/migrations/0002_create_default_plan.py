@@ -2,8 +2,8 @@
 
 from django.db import migrations
 from global_config import CONFIG
-from plan.models import Plan, PlanTranslation
-from const import Language
+from plan.models import Plan, PlanTranslation, PlanPricing
+from const import Language, Currency, PaymentInterval
 
 
 def generate_plan(apps, schema_editor):
@@ -17,6 +17,12 @@ def generate_plan(apps, schema_editor):
                 language=language,
                 license="",
             )
+
+        for currency in Currency:
+            for interval in PaymentInterval:
+                PlanPricing.objects.create(
+                    plan=plan, currency=currency, interval=interval, price=0
+                )
 
 
 def delete_plan(apps, schema_editor):

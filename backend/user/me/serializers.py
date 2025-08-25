@@ -27,9 +27,10 @@ class ChangePasswordSerializer(serializers.Serializer):
 class SubscriptionSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source="plan.slug")
     license = serializers.SerializerMethodField()
-    interval = serializers.SerializerMethodField()
+    interval = serializers.CharField(source="plan.plan_pricing.interval")
     valid_to = serializers.DateTimeField(source="end_date")
-    price = serializers.SerializerMethodField()
+    price = serializers.CharField(source="plan.plan_pricing.price")
+    currency = serializers.CharField(source="plan.plan_pricing.currency")
 
     class Meta:
         model = PlanSubscription
@@ -38,15 +39,3 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     def get_license(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.plan.get_translation(lang).license
-
-    def get_interval(self, obj):
-        if not obj.end_date:
-            return None
-        delta_days = (obj.end_date - obj.start_date).days
-        return "yearly" if delta_days > 31 else "monthly"
-
-    def get_price(self, obj):
-        interval = self.get_interval(obj)
-        currency = obj.currency
-        pricing = PlanPricing.objects.get(plan=obj.plan, currency=currency)
-        return pricing.yearly if interval == "yearly" else pricing.monthly
