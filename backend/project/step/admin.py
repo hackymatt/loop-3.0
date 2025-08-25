@@ -18,13 +18,13 @@ class StepTranslationInline(admin.TabularInline):
 @admin.register(Step)
 class StepAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Step)
-    search_fields = ('slug',)
-    list_filter = ('active',)
+    search_fields = ("slug",)
+    list_filter = ("active",)
     inlines = [StepTranslationInline]
 
 
 @admin.register(StepTranslation)
 class StepTranslationAdmin(admin.ModelAdmin):
     list_display = get_all_fields(StepTranslation)
-    search_fields = ('step__slug', 'language', 'name')
-    list_filter = ('language',)
+    search_fields = ("step__slug", "language", "name")
+    list_filter = ("language",)

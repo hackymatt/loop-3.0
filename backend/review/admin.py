@@ -13,5 +13,5 @@ def get_all_fields(model):
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Review)
-    search_fields = ('student__user__email', 'project__slug', 'rating')
-    list_filter = ('rating', 'language', 'project')
+    search_fields = ("student__user__email", "project__slug", "rating")
+    list_filter = ("rating", "language", "project")

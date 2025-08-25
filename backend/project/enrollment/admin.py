@@ -14,7 +14,7 @@ def get_all_fields(model):
 class ProjectEnrollmentAdmin(admin.ModelAdmin):
     list_display = get_all_fields(ProjectEnrollment)
     search_fields = (
-        'student__user__email',
-        'project__slug',
+        "student__user__email",
+        "project__slug",
     )
-    list_filter = ('project',)
+    list_filter = ("project",)

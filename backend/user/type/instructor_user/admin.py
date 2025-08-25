@@ -13,4 +13,4 @@ def get_all_fields(model):
 @admin.register(Instructor)
 class InstructorAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Instructor)
-    search_fields = ('user__email', 'user__username', 'role')
+    search_fields = ("user__email", "user__username", "role")

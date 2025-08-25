@@ -13,5 +13,5 @@ def get_all_fields(model):
 @admin.register(ProjectProgress)
 class ProjectProgressAdmin(admin.ModelAdmin):
     list_display = get_all_fields(ProjectProgress)
-    search_fields = ('student__user__email', 'step__slug')
-    list_filter = ('completed_at',)
+    search_fields = ("student__user__email", "step__slug")
+    list_filter = ("completed_at",)

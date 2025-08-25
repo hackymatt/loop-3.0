@@ -14,8 +14,8 @@ def get_all_fields(model):
 class CertificateAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Certificate)
     search_fields = (
-        'student__user__first_name',
-        'student__user__last_name',
-        'project__slug',
+        "student__user__first_name",
+        "student__user__last_name",
+        "project__slug",
     )
-    list_filter = ('project',)
+    list_filter = ("project",)

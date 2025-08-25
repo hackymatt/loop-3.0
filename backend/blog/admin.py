@@ -18,14 +18,14 @@ class BlogTranslationInline(admin.TabularInline):
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Blog)
-    search_fields = ('slug', 'topic__name', 'author__user__username')
-    list_filter = ('active', 'published_at', 'topic')
-    filter_horizontal = ('tags',)
+    search_fields = ("slug", "topic__name", "author__user__username")
+    list_filter = ("active", "published_at", "topic")
+    filter_horizontal = ("tags",)
     inlines = [BlogTranslationInline]
 
 
 @admin.register(BlogTranslation)
 class BlogTranslationAdmin(admin.ModelAdmin):
     list_display = get_all_fields(BlogTranslation)
-    search_fields = ('name', 'language', 'blog__slug')
-    list_filter = ('language',)
+    search_fields = ("name", "language", "blog__slug")
+    list_filter = ("language",)

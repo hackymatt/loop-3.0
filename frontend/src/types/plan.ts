@@ -23,7 +23,6 @@ export type IPlanProps = {
   tokensLimit: number;
   license: string;
   popular: boolean;
-  premium: boolean;
   pricing: IPlanPricingProp[];
   options: IPlanOptionProp[];
 };

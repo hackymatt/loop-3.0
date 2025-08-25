@@ -18,12 +18,12 @@ class CategoryTranslationInline(admin.TabularInline):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Category)
-    search_fields = ('slug',)
+    search_fields = ("slug",)
     inlines = [CategoryTranslationInline]
 
 
 @admin.register(CategoryTranslation)
 class CategoryTranslationAdmin(admin.ModelAdmin):
     list_display = get_all_fields(CategoryTranslation)
-    search_fields = ('category__slug', 'language', 'name')
-    list_filter = ('language',)
+    search_fields = ("category__slug", "language", "name")
+    list_filter = ("language",)

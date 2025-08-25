@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tag, TagTranslation
+from .models import Topic, TopicTranslation
 
 
 def get_all_fields(model):
@@ -10,20 +10,20 @@ def get_all_fields(model):
     ]
 
 
-class TagTranslationInline(admin.TabularInline):
-    model = TagTranslation
+class TopicTranslationInline(admin.TabularInline):
+    model = TopicTranslation
     extra = 1
 
 
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = get_all_fields(Tag)
-    search_fields = ('slug',)
-    inlines = [TagTranslationInline]
+@admin.register(Topic)
+class TopicAdmin(admin.ModelAdmin):
+    list_display = get_all_fields(Topic)
+    search_fields = ("slug",)
+    inlines = [TopicTranslationInline]
 
 
-@admin.register(TagTranslation)
-class TagTranslationAdmin(admin.ModelAdmin):
-    list_display = get_all_fields(TagTranslation)
-    search_fields = ('tag__slug', 'language', 'name')
-    list_filter = ('language',)
+@admin.register(TopicTranslation)
+class TopicTranslationAdmin(admin.ModelAdmin):
+    list_display = get_all_fields(TopicTranslation)
+    search_fields = ("topic__slug", "language", "name")
+    list_filter = ("language",)

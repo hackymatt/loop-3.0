@@ -18,12 +18,12 @@ class TagTranslationInline(admin.TabularInline):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Tag)
-    search_fields = ('slug',)
+    search_fields = ("slug",)
     inlines = [TagTranslationInline]
 
 
 @admin.register(TagTranslation)
 class TagTranslationAdmin(admin.ModelAdmin):
     list_display = get_all_fields(TagTranslation)
-    search_fields = ('tag__slug', 'language', 'name')
-    list_filter = ('language',)
+    search_fields = ("tag__slug", "language", "name")
+    list_filter = ("language",)

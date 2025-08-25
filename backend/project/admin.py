@@ -18,15 +18,15 @@ class ProjectTranslationInline(admin.TabularInline):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Project)
-    search_fields = ('slug', 'level__slug', 'category__slug')
-    list_filter = ('active', 'level', 'category')
+    search_fields = ("slug", "level__slug", "category__slug")
+    list_filter = ("active", "level", "category")
     filter_horizontal = (
-        'technology',
-        'instructors',
-        'project_prerequisites',
-        'blog_prerequisites',
-        'similar',
-        'tags',
+        "technology",
+        "instructors",
+        "project_prerequisites",
+        "blog_prerequisites",
+        "similar",
+        "tags",
     )
     inlines = [ProjectTranslationInline]
 
@@ -34,12 +34,12 @@ class ProjectAdmin(admin.ModelAdmin):
 @admin.register(ProjectTranslation)
 class ProjectTranslationAdmin(admin.ModelAdmin):
     list_display = get_all_fields(ProjectTranslation)
-    search_fields = ('project__slug', 'language', 'name')
-    list_filter = ('language',)
+    search_fields = ("project__slug", "language", "name")
+    list_filter = ("language",)
 
 
 @admin.register(ProjectStage)
 class ProjectStageAdmin(admin.ModelAdmin):
     list_display = get_all_fields(ProjectStage)
-    search_fields = ('project__slug', 'stage__slug')
-    list_filter = ('project', 'stage')
+    search_fields = ("project__slug", "stage__slug")
+    list_filter = ("project", "stage")
