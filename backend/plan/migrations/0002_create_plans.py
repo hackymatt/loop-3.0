@@ -19,7 +19,11 @@ def generate_plan(apps, schema_editor):
         for currency in Currency:
             for interval in PaymentInterval:
                 PlanPricing.objects.create(
-                    plan=plan, currency=currency, interval=interval, price=0, valid_from=timezone.now()
+                    plan=plan,
+                    currency=currency,
+                    interval=interval,
+                    price=0,
+                    valid_from=timezone.now(),
                 )
 
 

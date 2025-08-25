@@ -25,7 +25,6 @@ class PlanSerializer(serializers.ModelSerializer):
             "tokens_limit",
             "license",
             "popular",
-            "premium",
             "pricing",
             "options",
         ]

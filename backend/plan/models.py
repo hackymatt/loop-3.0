@@ -8,7 +8,6 @@ from global_config import CONFIG
 class Plan(BaseModel):
     type = models.CharField(max_length=10, choices=PlanType.choices)
     popular = models.BooleanField(default=False)
-    premium = models.BooleanField(default=False)
     tokens_limit = models.PositiveIntegerField(default=0)
     stripe_product_id = models.CharField(max_length=255, blank=True, null=True)
 

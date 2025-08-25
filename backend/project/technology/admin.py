@@ -13,4 +13,4 @@ def get_all_fields(model):
 @admin.register(Technology)
 class TechnologyAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Technology)
-    search_fields = ('slug', 'name')
+    search_fields = ("slug", "name")

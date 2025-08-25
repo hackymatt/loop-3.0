@@ -18,20 +18,20 @@ class StageTranslationInline(admin.TabularInline):
 @admin.register(Stage)
 class StageAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Stage)
-    search_fields = ('slug',)
-    list_filter = ('active',)
+    search_fields = ("slug",)
+    list_filter = ("active",)
     inlines = [StageTranslationInline]
 
 
 @admin.register(StageTranslation)
 class StageTranslationAdmin(admin.ModelAdmin):
     list_display = get_all_fields(StageTranslation)
-    search_fields = ('stage__slug', 'language', 'name')
-    list_filter = ('language',)
+    search_fields = ("stage__slug", "language", "name")
+    list_filter = ("language",)
 
 
 @admin.register(StageStep)
 class StageStepAdmin(admin.ModelAdmin):
     list_display = get_all_fields(StageStep)
-    search_fields = ('stage__slug', 'step__slug')
-    list_filter = ('stage',)
+    search_fields = ("stage__slug", "step__slug")
+    list_filter = ("stage",)

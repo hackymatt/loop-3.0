@@ -13,4 +13,4 @@ def get_all_fields(model):
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Student)
-    search_fields = ('user__email', 'user__username', 'stripe_customer_id')
+    search_fields = ("user__email", "user__username", "stripe_customer_id")

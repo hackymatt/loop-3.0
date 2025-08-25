@@ -26,7 +26,6 @@ type IPlan = {
   tokens_limit: number;
   license: string;
   popular: boolean;
-  premium: boolean;
   pricing: IPricing[];
   options: IOption[];
 };

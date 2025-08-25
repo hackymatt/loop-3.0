@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.db.models import Q
 from plan.utils import get_default_plan
 from plan.models import PlanPricing
+from const import Currency, PaymentInterval
 
 
 def get_subscription(user):
@@ -22,5 +23,7 @@ def subscribe(student, plan, end_date, currency):
 
 def subscribe_free_plan(student):
     plan = get_default_plan()
-    plan_pricing = PlanPricing.objects.filter(plan=plan).first()
+    plan_pricing = PlanPricing.get_current_price(
+        plan=plan, currency=Currency.PLN, interval=PaymentInterval.MONTHLY
+    )
     return PlanSubscription.objects.create(student=student, plan_pricing=plan_pricing)

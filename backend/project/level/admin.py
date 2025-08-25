@@ -18,13 +18,13 @@ class LevelTranslationInline(admin.TabularInline):
 @admin.register(Level)
 class LevelAdmin(admin.ModelAdmin):
     list_display = get_all_fields(Level)
-    search_fields = ('slug',)
-    ordering = ('order',)
+    search_fields = ("slug",)
+    ordering = ("order",)
     inlines = [LevelTranslationInline]
 
 
 @admin.register(LevelTranslation)
 class LevelTranslationAdmin(admin.ModelAdmin):
     list_display = get_all_fields(LevelTranslation)
-    search_fields = ('level__slug', 'language', 'name')
-    list_filter = ('language',)
+    search_fields = ("level__slug", "language", "name")
+    list_filter = ("language",)
