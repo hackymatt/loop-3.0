@@ -1,8 +1,11 @@
 from django.urls import path
-from .views import create_payment_intent
+from .views import CreateSubscriptionView
 from const import Urls
 
 urlpatterns = [
-    path(Urls.PAYMENT_INTENT, create_payment_intent),
-    path(Urls.STRIPE_WEBHOOK, create_payment_intent),
+    path(
+        Urls.CREATE_SUBSCRIPTION,
+        CreateSubscriptionView.as_view(),
+        name="create-subscription",
+    ),
 ]

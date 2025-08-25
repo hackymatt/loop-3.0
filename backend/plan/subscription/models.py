@@ -1,6 +1,7 @@
 from django.db import models
+from core.base_model import BaseModel
 from user.type.student_user.models import Student
-from plan.models import Plan
+from plan.models import PlanPricing
 from global_config import CONFIG
 from const import Currency
 
@@ -10,14 +11,11 @@ def get_dummy_student():  # pragma: no cover
     return Student.objects.get(user__email=CONFIG["dummy_student_email"])
 
 
-class PlanSubscription(models.Model):
+class PlanSubscription(BaseModel):
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, related_name="subscriptions"
     )
-    plan = models.ForeignKey(Plan, on_delete=models.PROTECT)
-    currency = models.CharField(
-        max_length=3, choices=Currency.choices, default=Currency.PLN
-    )
+    plan_pricing = models.ForeignKey(PlanPricing, on_delete=models.PROTECT)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
 

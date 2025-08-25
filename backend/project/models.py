@@ -88,7 +88,7 @@ class ProjectTranslation(BaseModel):
         return f"{self.name} ({self.language})"
 
 
-class ProjectStage(models.Model):
+class ProjectStage(BaseModel):
     project = models.ForeignKey("project.Project", on_delete=models.CASCADE)
     stage = models.ForeignKey(Stage, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0)

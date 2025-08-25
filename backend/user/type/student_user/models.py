@@ -9,6 +9,11 @@ class Student(BaseModel):
     user = models.OneToOneField(
         get_user_model(), on_delete=models.CASCADE, related_name="student_profile"
     )
+    stripe_customer_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
 
     def clean(self):
         """Ensure only users with user_type=STUDENT can be assigned"""

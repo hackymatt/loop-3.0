@@ -9,7 +9,7 @@
     "label": "Podsumowanie",
     "plan": "Plan",
     "yearly": { "save": "Zaoszczędź", "part1": "wybierając", "part2": "rozliczanie roczne" },
-    "total": "Łącznie",
+    "total": "Łącznie do zapłaty dziś",
     "button": { "free": "Subskrybuj", "other": "Zapłać i subskrybuj" },
     "info": "Zatwierdzając subskrypcję, zezwalasz loop na obciążenie Twojego konta przyszłymi płatnościami zgodnie z jego warunkami. Zawsze możesz anulować subskrypcję.",
     "stripe": {

@@ -52,7 +52,7 @@ class Urls:
     # PLAN
     PLAN = "plans"
     SUBSCRIBE = "subscribe"
-    PAYMENT_INTENT = "create-payment-intent"
+    CREATE_SUBSCRIPTION = "create-subscription"
     STRIPE_WEBHOOK = "stripe-webhook"
     # CONTACT
     CONTACT = "contact"
@@ -96,3 +96,8 @@ class Currency(TextChoices):
     EUR = "EUR"
     USD = "USD"
     GBP = "GBP"
+
+
+class PaymentInterval(TextChoices):
+    MONTHLY = "monthly"
+    YEARLY = "yearly"

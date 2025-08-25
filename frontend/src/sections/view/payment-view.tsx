@@ -64,6 +64,8 @@ export function PaymentView({ data, language }: PaymentViewProps) {
     plan: { pricing },
   } = data;
 
+  console.log(data);
+
   const { monthly, yearly } = pricing.find((p) => p.currency === currency)!;
   const isYearlyPlan = query.yearly === "true";
 

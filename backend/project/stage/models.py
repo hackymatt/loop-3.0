@@ -39,7 +39,7 @@ class StageTranslation(BaseModel):
         return f"{self.name} ({self.language})"
 
 
-class StageStep(models.Model):
+class StageStep(BaseModel):
     stage = models.ForeignKey("stage.Stage", on_delete=models.CASCADE)
     step = models.ForeignKey(Step, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0)

@@ -1,13 +1,15 @@
 from django.db import models
-from const import Language, Currency
+from core.base_model import BaseModel
+from const import Language, Currency, PaymentInterval
 from global_config import CONFIG
 
 
-class Plan(models.Model):
+class Plan(BaseModel):
     slug = models.SlugField(unique=True)
     popular = models.BooleanField(default=False)
     premium = models.BooleanField(default=False)
     tokens_limit = models.PositiveIntegerField(default=0)
+    stripe_product_id = models.CharField(max_length=255, blank=True, null=True)
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -24,7 +26,7 @@ class Plan(models.Model):
         db_table = "plan"
 
 
-class PlanTranslation(models.Model):
+class PlanTranslation(BaseModel):
     plan = models.ForeignKey(
         Plan, related_name="translations", on_delete=models.CASCADE
     )
@@ -42,23 +44,24 @@ class PlanTranslation(models.Model):
         return f"{self.plan.slug} ({self.language})"
 
 
-class PlanPricing(models.Model):
+class PlanPricing(BaseModel):
     plan = models.ForeignKey(Plan, related_name="pricings", on_delete=models.CASCADE)
     currency = models.CharField(
         max_length=3, choices=Currency.choices, default=Currency.PLN
     )
-    monthly = models.DecimalField(max_digits=6, decimal_places=2)
-    yearly = models.DecimalField(max_digits=6, decimal_places=2)
+    interval = models.CharField(max_length=10, choices=PaymentInterval.choices)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stripe_price_id = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        unique_together = ("plan", "currency")
+        unique_together = ("plan", "currency", "interval")
         db_table = "plan_pricing"
 
     def __str__(self):  # pragma: no cover
-        return f"{self.plan.slug} - {self.currency}"
+        return f"{self.plan.slug} - {self.interval} - {self.price} {self.currency}"
 
 
-class Option(models.Model):
+class Option(BaseModel):
     slug = models.SlugField(unique=True)
 
     def get_translation(self, lang_code):
@@ -71,7 +74,7 @@ class Option(models.Model):
         db_table = "option"
 
 
-class OptionTranslation(models.Model):
+class OptionTranslation(BaseModel):
     option = models.ForeignKey(
         Option, related_name="translations", on_delete=models.CASCADE
     )
@@ -89,7 +92,7 @@ class OptionTranslation(models.Model):
         return f"{self.option.slug} ({self.language})"
 
 
-class PlanOption(models.Model):
+class PlanOption(BaseModel):
     plan = models.ForeignKey(
         Plan, related_name="plan_options", on_delete=models.CASCADE
     )
