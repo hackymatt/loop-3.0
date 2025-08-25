@@ -10,6 +10,8 @@ import Switch from "@mui/material/Switch";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
+import { PLAN_INTERVAL } from "src/consts/plan";
+
 import { useSettingsContext } from "src/components/settings";
 
 import { PricingCard } from "./pricing-card";
@@ -27,9 +29,12 @@ export function PricingCardsView({ plans }: PricingCardsViewProps) {
   const [isYearly, setIsYearly] = useState(true);
 
   const pricingCards = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
-    const price = pricing.find((p) => p.currency === currency)!;
-    const { monthly, yearly } = price;
-    return { ...rest, price: isYearly ? yearly / 12 : monthly };
+    const priceObj = pricing.find(
+      (p) =>
+        p.currency === currency &&
+        p.interval === (isYearly ? PLAN_INTERVAL.YEARLY : PLAN_INTERVAL.MONTHLY)
+    )!;
+    return { ...rest, price: isYearly ? priceObj.price / 12 : priceObj.price };
   });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {

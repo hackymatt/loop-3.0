@@ -11,6 +11,8 @@ import { Switch } from "@mui/material";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
+import { PLAN_INTERVAL } from "src/consts/plan";
+
 import { useSettingsContext } from "src/components/settings";
 import { varFade, MotionViewport } from "src/components/animate";
 
@@ -34,9 +36,12 @@ export function HomePricing({ plans, sx, ...other }: HomePricingProps) {
   const [isYearly, setIsYearly] = useState(true);
 
   const pricingCards = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
-    const price = pricing.find((p) => p.currency === currency)!;
-    const { monthly, yearly } = price;
-    return { ...rest, price: isYearly ? yearly / 12 : monthly };
+    const priceObj = pricing.find(
+      (p) =>
+        p.currency === currency &&
+        p.interval === (isYearly ? PLAN_INTERVAL.YEARLY : PLAN_INTERVAL.MONTHLY)
+    )!;
+    return { ...rest, price: isYearly ? priceObj.price / 12 : priceObj.price };
   });
 
   const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {

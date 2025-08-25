@@ -1,4 +1,5 @@
 from django.conf import settings
+from const import PlanType
 
 CONFIG = {
     "secret": settings.SECRET_KEY,
@@ -17,6 +18,6 @@ CONFIG = {
     "stripe_secret_key": settings.STRIPE_SECRET_KEY,
     "stripe_webhook_secret": settings.STRIPE_WEBHOOK_SECRET,
     "min_password_length": settings.MIN_PASSWORD_LENGTH,
-    "default_plan": "free",
+    "default_plan": PlanType.FREE,
     "free_trial_days": 7,
 }

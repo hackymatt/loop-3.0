@@ -9,8 +9,8 @@ export type PlanInterval = (typeof PLAN_INTERVAL)[keyof typeof PLAN_INTERVAL];
 
 export type IPlanPricingProp = {
   currency: Currency;
-  monthly: number;
-  yearly: number;
+  interval: PlanInterval;
+  price: number;
 };
 
 type IPlanOptionProp = {
@@ -19,7 +19,7 @@ type IPlanOptionProp = {
 };
 
 export type IPlanProps = {
-  slug: PlanType;
+  type: PlanType;
   tokensLimit: number;
   license: string;
   popular: boolean;

@@ -34,7 +34,7 @@ export function PricingColumnHeader({ plan, sx, ...other }: PricingColumnHeaderP
     <Box
       component="img"
       alt={plan.license}
-      src={iconPath(getPlanIcon(plan.slug))}
+      src={iconPath(getPlanIcon(plan.type))}
       sx={{ width: 80, height: 80 }}
     />
   );

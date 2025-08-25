@@ -3,8 +3,8 @@ from global_config import CONFIG
 
 
 def get_default_plan():
-    slug = CONFIG["default_plan"]
-    return Plan.objects.get(slug=slug)
+    type = CONFIG["default_plan"]
+    return Plan.objects.get(type=type)
 
 
 def is_default_plan(plan):

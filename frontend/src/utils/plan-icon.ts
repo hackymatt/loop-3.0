@@ -2,8 +2,8 @@ import type { PlanType } from "src/types/plan";
 
 import { PLAN_TYPE } from "src/consts/plan";
 
-const FREE_ICON = "ic-plan-box-basic.svg";
-const BASIC_ICON = "ic-plan-box-starter.svg";
+const FREE_ICON = "ic-plan-box-free.svg";
+const BASIC_ICON = "ic-plan-box-basic.svg";
 const PREMIUM_ICON = "ic-plan-box-premium.svg";
 
 const PLAN_ICONS = new Map<PlanType, string>([

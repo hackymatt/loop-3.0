@@ -41,7 +41,8 @@ class LoginResponseSerializer(serializers.ModelSerializer):
 
         subscription = get_subscription(obj)
         return PlanSerializer(
-            subscription.plan, context={"request": self.context.get("request")}
+            subscription.plan_pricing.plan,
+            context={"request": self.context.get("request")},
         ).data
 
     def get_image(self, obj):

@@ -26,7 +26,7 @@ import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
-import { PLAN_TYPE } from "src/consts/plan";
+import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 import { useCreatePaymentIntent } from "src/api/plan/payment";
 
 import { useUserContext } from "src/components/user";
@@ -64,10 +64,13 @@ export function PaymentView({ data, language }: PaymentViewProps) {
     plan: { pricing },
   } = data;
 
-  console.log(data);
-
-  const { monthly, yearly } = pricing.find((p) => p.currency === currency)!;
   const isYearlyPlan = query.yearly === "true";
+
+  const priceObj = pricing.find(
+    (p) =>
+      p.currency === currency &&
+      p.interval === (isYearlyPlan ? PLAN_INTERVAL.YEARLY : PLAN_INTERVAL.MONTHLY)
+  )!;
 
   useEffect(() => {
     async function fetchPaymentIntent() {
@@ -75,7 +78,7 @@ export function PaymentView({ data, language }: PaymentViewProps) {
         const {
           data: { client_secret },
         } = await createPaymentIntent({
-          amount: (isYearlyPlan ? yearly : monthly) * 100,
+          amount: priceObj.price * 100,
           currency,
         });
 
@@ -86,7 +89,7 @@ export function PaymentView({ data, language }: PaymentViewProps) {
     }
 
     fetchPaymentIntent();
-  }, [createPaymentIntent, currency, isYearlyPlan, monthly, yearly]);
+  }, [createPaymentIntent, currency, isYearlyPlan, priceObj.price]);
 
   if (!clientSecret) {
     return <SplashScreen />;
@@ -128,7 +131,7 @@ function Payment({ data }: PaymentViewProps) {
 
   const { plan } = data;
 
-  const isFreePlan = (plan.slug || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
+  const isFreePlan = (plan.type || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
 
   const PaymentSchema = zod.object({
     summary: usePaymentSchema(),

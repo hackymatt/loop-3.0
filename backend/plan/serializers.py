@@ -21,7 +21,7 @@ class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plan
         fields = [
-            "slug",
+            "type",
             "tokens_limit",
             "license",
             "popular",
