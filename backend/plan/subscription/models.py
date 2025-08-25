@@ -18,6 +18,7 @@ class PlanSubscription(BaseModel):
     plan_pricing = models.ForeignKey(PlanPricing, on_delete=models.PROTECT)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
+    stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):  # pragma: no cover
         return f"{self.student.user.email} - {self.plan_pricing.plan.type} - {self.plan_pricing.interval} - {self.plan_pricing.price} {self.plan_pricing.currency}"

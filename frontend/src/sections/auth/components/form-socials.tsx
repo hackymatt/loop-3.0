@@ -69,16 +69,8 @@ function GoogleSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
 
     try {
       const { data: responseData } = await googleLogin({ token });
-      const {
-        email,
-        first_name,
-        last_name,
-        image,
-        user_type,
-        join_type,
-        is_active,
-        plan: { type },
-      } = responseData;
+      const { email, first_name, last_name, image, user_type, join_type, is_active, plan_type } =
+        responseData;
       user.setState({
         isActive: is_active,
         isLoggedIn: true,
@@ -88,7 +80,7 @@ function GoogleSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
         avatarUrl: image,
         userType: user_type,
         joinType: join_type,
-        planType: type,
+        planType: plan_type,
         redirect: null,
       });
       router.push(localize(redirect || paths.account.dashboard));
@@ -124,16 +116,8 @@ function GithubSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
 
     try {
       const { data: responseData } = await githubLogin({ code });
-      const {
-        email,
-        first_name,
-        last_name,
-        image,
-        user_type,
-        join_type,
-        is_active,
-        plan: { type },
-      } = responseData;
+      const { email, first_name, last_name, image, user_type, join_type, is_active, plan_type } =
+        responseData;
       user.setState({
         isActive: is_active,
         isLoggedIn: true,
@@ -143,7 +127,7 @@ function GithubSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
         avatarUrl: image,
         userType: user_type,
         joinType: join_type,
-        planType: type,
+        planType: plan_type,
         redirect: null,
       });
       router.push(localize(redirect || paths.account.dashboard));
@@ -181,16 +165,8 @@ function FacebookSignIn({ methods, locale }: { methods: UseFormReturn<any>; loca
 
     try {
       const { data: responseData } = await facebookLogin({ access_token });
-      const {
-        email,
-        first_name,
-        last_name,
-        image,
-        user_type,
-        join_type,
-        is_active,
-        plan: { type },
-      } = responseData;
+      const { email, first_name, last_name, image, user_type, join_type, is_active, plan_type } =
+        responseData;
       user.setState({
         isActive: is_active,
         isLoggedIn: true,
@@ -200,7 +176,7 @@ function FacebookSignIn({ methods, locale }: { methods: UseFormReturn<any>; loca
         avatarUrl: image,
         userType: user_type,
         joinType: join_type,
-        planType: type,
+        planType: plan_type,
         redirect: null,
       });
       router.push(localize(redirect || paths.account.dashboard));

@@ -24,7 +24,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-    type = serializers.CharField(source="plan_pricing.plan.slug")
+    type = serializers.CharField(source="plan_pricing.plan.type")
     license = serializers.SerializerMethodField()
     interval = serializers.CharField(source="plan_pricing.interval")
     valid_to = serializers.DateTimeField(source="end_date")
