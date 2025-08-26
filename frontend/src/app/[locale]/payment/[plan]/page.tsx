@@ -7,7 +7,7 @@ import { createMetadata } from "src/utils/create-metadata";
 
 import { planQuery } from "src/api/plan/plan";
 import { LANGUAGE } from "src/consts/language";
-import { createSubscription } from "src/api/plan/payment";
+import { createSetupIntent } from "src/api/plan/payment";
 
 import { PaymentView } from "src/sections/view/payment-view";
 
@@ -21,7 +21,7 @@ type PageProps = {
 
 const queries = {
   plan: (lang: Language, type: string) => planQuery(lang, type),
-  createSubscription: ({
+  setupIntent: ({
     type,
     interval,
     currency,
@@ -29,20 +29,18 @@ const queries = {
     type: string;
     interval: string;
     currency: string;
-  }) => createSubscription({ type, interval, currency }),
+  }) => createSetupIntent({ type, interval, currency }),
 };
 
 async function getData(language: Language, type: string, interval: string, currency: string) {
   const planPromise = queries.plan(language, type).queryFn();
-  const createSubscriptionPromise = queries.createSubscription({
+  const createSubscriptionPromise = queries.setupIntent({
     type,
     interval,
     currency,
   });
 
   const [plan, subscription] = await Promise.all([planPromise, createSubscriptionPromise]);
-
-  console.log(subscription);
 
   return {
     plan: plan.results,

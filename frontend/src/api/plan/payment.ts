@@ -3,22 +3,20 @@ import { cookies } from "next/headers";
 import { URLS } from "../urls";
 import { Api } from "../service";
 
-const endpoint = URLS.CREATE_SUBSCRIPTION;
+const endpoint = URLS.CREATE_SETUP_INTENT;
 
-export type IPaymentIntent = {
+type ISetupIntent = {
   type: string;
   interval: string;
   currency: string;
 };
 
-export type IPaymentIntentReturn = {
-  subscription_id: string;
+type ISetupIntentReturn = {
   client_secret: string;
-  intent_type: "setup" | "payment";
 };
 
-export async function createSubscription(payload: IPaymentIntent): Promise<IPaymentIntentReturn> {
-  const { data } = await Api.post<IPaymentIntentReturn>(endpoint, payload, {
+export async function createSetupIntent(payload: ISetupIntent): Promise<ISetupIntentReturn> {
+  const { data } = await Api.post<ISetupIntentReturn>(endpoint, payload, {
     headers: { Cookie: cookies().toString() },
   });
   return data;
