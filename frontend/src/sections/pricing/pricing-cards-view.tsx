@@ -76,12 +76,13 @@ export function PricingCardsView({ plans }: PricingCardsViewProps) {
         gap: 2,
         position: "relative",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: { xs: "column-reverse", md: "row" },
         alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      {renderIntervalToggle()}
       {renderCurrencyToggle()}
+      {renderIntervalToggle()}
     </Box>
   );
 
