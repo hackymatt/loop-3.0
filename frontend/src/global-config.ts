@@ -17,4 +17,5 @@ export const CONFIG = {
   googleAnalyticsId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ?? "",
   facebookPixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID ?? "",
   stripePublishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "",
+  annualDiscount: 15,
 };

@@ -1,4 +1,3 @@
-import type { Currency } from "src/locales/types";
 import type { Theme, SxProps } from "@mui/material/styles";
 import type { ThemeDirection, ThemeColorScheme } from "src/theme/types";
 
@@ -10,7 +9,6 @@ export type SettingsState = {
   direction?: ThemeDirection;
   colorScheme?: ThemeColorScheme;
   primaryColor?: "default" | "preset1" | "preset2" | "preset3" | "preset4" | "preset5";
-  currency: Currency;
 };
 
 export type SettingsContextValue = {

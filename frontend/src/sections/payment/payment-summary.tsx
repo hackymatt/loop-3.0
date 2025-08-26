@@ -20,7 +20,6 @@ import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
-import { useSettingsContext } from "src/components/settings";
 
 import { PaymentTerms } from "./payment-terms";
 
@@ -33,15 +32,14 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   const { t: pricing } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
 
-  const {
-    state: { currency },
-  } = useSettingsContext();
-
   const { query, handleChange } = useQueryParams();
 
   const { license, pricing: pricingObj } = plan;
 
-  const isYearly = (query?.yearly ?? "false") === "true";
+  const interval = query?.interval ?? PLAN_INTERVAL.YEARLY;
+  const currency = query?.currency ?? locale("currency");
+
+  const isYearly = interval === PLAN_INTERVAL.YEARLY;
 
   const priceObj = pricingObj.find(
     (p) =>
@@ -102,7 +100,9 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
 
       <Switch
         checked={isYearly}
-        onChange={() => handleChange("yearly", String(!isYearly))}
+        onChange={() =>
+          handleChange("interval", isYearly ? PLAN_INTERVAL.YEARLY : PLAN_INTERVAL.MONTHLY)
+        }
         inputProps={{ id: "plan-switch", "aria-label": "Plan switch" }}
       />
     </Box>
