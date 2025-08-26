@@ -15,7 +15,7 @@ import { getPlanIcon } from "src/utils/plan-icon";
 import { fCurrency } from "src/utils/format-number";
 
 import { CONFIG } from "src/global-config";
-import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
+import { PLAN_TYPE } from "src/consts/plan";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
 
 import { CancelSubscriptionForm } from "./cancel-subscription-form";
@@ -34,7 +34,6 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
   const cancelSubscriptionFormOpen = useBoolean();
 
   const { type, license, interval, price, currency, validTo } = data;
-  const isYearly = interval === PLAN_INTERVAL.YEARLY;
 
   const isFreePlan = type === PLAN_TYPE.FREE;
 
@@ -95,7 +94,7 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
             >
               {t("subscription.billing.label")}
               <Typography variant="body2" fontWeight="bold">
-                {isYearly ? t("subscription.billing.yearly") : t("subscription.billing.monthly")}
+                {t(`subscription.billing.${interval}`)}
               </Typography>
             </Box>
           )}

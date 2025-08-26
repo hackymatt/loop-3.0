@@ -32,7 +32,6 @@ import { useCreatePaymentIntent } from "src/api/plan/payment";
 import { useUserContext } from "src/components/user";
 import { Form, Field } from "src/components/hook-form";
 import { SplashScreen } from "src/components/loading-screen";
-import { useSettingsContext } from "src/components/settings";
 
 import { PaymentForm } from "../payment/payment-form";
 import { PaymentSummary } from "../payment/payment-summary";
@@ -53,9 +52,6 @@ type PaymentViewProps = {
 export function PaymentView({ data, language }: PaymentViewProps) {
   const { query } = useQueryParams();
   const theme = useTheme();
-  const {
-    state: { currency },
-  } = useSettingsContext();
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const { mutateAsync: createPaymentIntent } = useCreatePaymentIntent("pl");
@@ -64,7 +60,8 @@ export function PaymentView({ data, language }: PaymentViewProps) {
     plan: { pricing },
   } = data;
 
-  const isYearlyPlan = query.yearly === "true";
+  const currency = query.currency;
+  const isYearlyPlan = query.interval === PLAN_INTERVAL.YEARLY;
 
   const priceObj = pricing.find(
     (p) =>

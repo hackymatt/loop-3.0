@@ -1,4 +1,5 @@
 import type { PaperProps } from "@mui/material/Paper";
+import type { Currency, PlanInterval } from "src/types/plan";
 
 import { useTranslation } from "react-i18next";
 import { varAlpha } from "minimal-shared/utils";
@@ -22,7 +23,6 @@ import { useAnalytics } from "src/app/analytics-provider";
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
-import { useSettingsContext } from "src/components/settings";
 
 import type { PricingCardProps } from "./types";
 
@@ -30,18 +30,16 @@ import type { PricingCardProps } from "./types";
 
 type Props = PaperProps & {
   plan: PricingCardProps;
-  isYearly: boolean;
+  interval: PlanInterval;
+  currency: Currency;
 };
 
 const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${name}`;
 
-export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
+export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
-  const {
-    state: { currency },
-  } = useSettingsContext();
 
   const user = useUserContext();
   const { isLoggedIn, planType } = user.state;
@@ -51,7 +49,7 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
   const redirect = localize(
     plan.type === PLAN_TYPE.FREE
       ? `${paths.payment}/${plan.type}`
-      : `${paths.payment}/${plan.type}?yearly=${isYearly}`
+      : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
   );
 
   const { trackEvent } = useAnalytics();
@@ -155,18 +153,19 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
       ]}
       {...other}
     >
-      {plan.popular && (
-        <Label color="info" sx={{ position: "absolute", top: 16, right: 16 }}>
-          {t("popular")}
-        </Label>
-      )}
+      <Box sx={{ position: "absolute", top: 16, right: 16, display: "flex", gap: 1 }}>
+        {plan.popular && <Label color="info">{t("popular")}</Label>}
+        {plan.type !== PLAN_TYPE.FREE && <Label color="success">{t("trial")}</Label>}
+      </Box>
 
       <Box component="span" sx={{ color: "text.secondary", typography: "overline" }}>
         {plan.license}
       </Box>
 
       {renderIcons()}
+
       {renderPrices()}
+
       {renderList()}
 
       <Button

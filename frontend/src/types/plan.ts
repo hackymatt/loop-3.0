@@ -1,4 +1,4 @@
-import type { Currency } from "src/locales/types";
+import type { CURRENCY } from "src/consts/currency";
 import type { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 // ----------------------------------------------------------------------
@@ -6,6 +6,8 @@ import type { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 export type PlanType = (typeof PLAN_TYPE)[keyof typeof PLAN_TYPE];
 
 export type PlanInterval = (typeof PLAN_INTERVAL)[keyof typeof PLAN_INTERVAL];
+
+export type Currency = (typeof CURRENCY)[keyof typeof CURRENCY];
 
 export type IPlanPricingProp = {
   currency: Currency;

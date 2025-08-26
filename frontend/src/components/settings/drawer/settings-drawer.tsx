@@ -16,16 +16,13 @@ import { useColorScheme } from "@mui/material/styles";
 import { useRouter, usePathname } from "src/routes/hooks";
 
 import { LANGUAGE } from "src/consts/language";
-import { CURRENCY } from "src/consts/currency";
 import { langs } from "src/layouts/langs-config";
-import { currencies } from "src/layouts/currency-config";
 
 import { LargeBlock } from "./styles";
 import { Iconify } from "../../iconify";
 import { BaseOption } from "./base-option";
 import { Scrollbar } from "../../scrollbar";
 import { LanguageOptions } from "./language-options";
-import { CurrencyOptions } from "./currency-options";
 import { useSettingsContext } from "../context/use-settings-context";
 
 import type { SettingsDrawerProps } from "../types";
@@ -122,16 +119,6 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
     </LargeBlock>
   );
 
-  const renderCurrency = () => (
-    <LargeBlock title={t("currency")} sx={{ gap: 2.5 }}>
-      <CurrencyOptions
-        options={currencies}
-        value={settings.state.currency || CURRENCY.PLN}
-        onChangeOption={(option) => settings.setState({ currency: option })}
-      />
-    </LargeBlock>
-  );
-
   return (
     <Drawer
       anchor="right"
@@ -168,7 +155,6 @@ export function SettingsDrawer({ sx, defaultSettings }: SettingsDrawerProps) {
           </Box>
 
           {renderLanguage()}
-          {renderCurrency()}
         </Box>
       </Scrollbar>
     </Drawer>

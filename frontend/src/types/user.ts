@@ -1,9 +1,8 @@
-import type { Currency } from "src/locales/types";
 import type { JOIN_TYPE, USER_TYPE } from "src/consts/user";
 
 import type { IProjectListProps } from "./project";
-import type { PlanType, PlanInterval } from "./plan";
 import type { ICertificateProps } from "./certificate";
+import type { Currency, PlanType, PlanInterval } from "./plan";
 
 // ----------------------------------------------------------------------
 

@@ -1,4 +1,5 @@
 import type { BoxProps } from "@mui/material/Box";
+import type { Currency, PlanInterval } from "src/types/plan";
 
 import { useTranslation } from "react-i18next";
 import { useBoolean } from "minimal-shared/hooks";
@@ -26,12 +27,14 @@ import type { PricingCardProps } from "./types";
 
 type PricingColumnContentProps = BoxProps & {
   plan: PricingCardProps;
-  isYearly: boolean;
+  interval: PlanInterval;
+  currency: Currency;
 };
 
 export function PricingColumnContentMobile({
   plan,
-  isYearly,
+  interval,
+  currency,
   sx,
   ...other
 }: PricingColumnContentProps) {
@@ -47,7 +50,7 @@ export function PricingColumnContentMobile({
   const redirect = localize(
     plan.type === PLAN_TYPE.FREE
       ? `${paths.payment}/${plan.type}`
-      : `${paths.payment}/${plan.type}?yearly=${isYearly}`
+      : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
   );
 
   const { trackEvent } = useAnalytics();
@@ -153,7 +156,8 @@ export function PricingColumnContentMobile({
 
 export function PricingColumnContentDesktop({
   plan,
-  isYearly,
+  interval,
+  currency,
   sx,
   ...other
 }: PricingColumnContentProps) {
@@ -169,7 +173,7 @@ export function PricingColumnContentDesktop({
   const redirect = localize(
     plan.type === PLAN_TYPE.FREE
       ? `${paths.payment}/${plan.type}`
-      : `${paths.payment}/${plan.type}?yearly=${isYearly}`
+      : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
   );
 
   const { trackEvent } = useAnalytics();
