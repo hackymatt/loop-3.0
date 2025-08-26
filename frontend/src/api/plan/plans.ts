@@ -22,13 +22,16 @@ type IOption = {
 };
 
 type IPlan = {
-  type: string;
+  type: "free" | "basic" | "premium";
   tokens_limit: number;
   license: string;
   popular: boolean;
   pricing: IPricing[];
   options: IOption[];
 };
+
+// Kolejność sortowania typów planów
+const planOrder: PlanType[] = ["free", "basic", "premium"];
 
 export const plansQuery = (language: Language) => {
   const url = endpoint;
@@ -38,13 +41,15 @@ export const plansQuery = (language: Language) => {
     const { data } = await getSimpleListData<IPlan>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    const modifiedResults: IPlanProps[] = (data ?? []).map(
-      ({ type, tokens_limit, ...rest }: IPlan) => ({
+
+    const modifiedResults: IPlanProps[] = (data ?? [])
+      .map(({ type, tokens_limit, ...rest }: IPlan) => ({
         ...rest,
         type: type as PlanType,
         tokensLimit: tokens_limit,
-      })
-    );
+      }))
+      .sort((a, b) => planOrder.indexOf(a.type) - planOrder.indexOf(b.type));
+
     return { results: modifiedResults };
   };
 

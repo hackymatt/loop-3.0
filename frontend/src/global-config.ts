@@ -18,4 +18,5 @@ export const CONFIG = {
   facebookPixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID ?? "",
   stripePublishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "",
   annualDiscount: 15,
+  trialDays: 7,
 };
