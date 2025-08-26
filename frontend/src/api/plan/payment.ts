@@ -1,32 +1,25 @@
-import type { AxiosError } from "axios";
-import type { Language } from "src/locales/types";
-
-import { useMutation } from "@tanstack/react-query";
+import { cookies } from "next/headers";
 
 import { URLS } from "../urls";
 import { Api } from "../service";
 
-const endpoint = URLS.PAYMENT_INTENT;
+const endpoint = URLS.CREATE_SUBSCRIPTION;
 
-type IPaymentIntent = {
-  amount: number;
+export type IPaymentIntent = {
+  type: string;
+  interval: string;
   currency: string;
 };
 
-type IPaymentIntentReturn = {
-  data: {
-    client_secret: string;
-  };
-  status: number;
+export type IPaymentIntentReturn = {
+  subscription_id: string;
+  client_secret: string;
+  intent_type: "setup" | "payment";
 };
 
-export const useCreatePaymentIntent = (language: Language) =>
-  useMutation<IPaymentIntentReturn, AxiosError, IPaymentIntent>(async (variables) => {
-    const result = await Api.post(endpoint, variables, {
-      headers: { "Accept-Language": language },
-    });
-    return {
-      status: result.status,
-      data: result.data,
-    };
+export async function createSubscription(payload: IPaymentIntent): Promise<IPaymentIntentReturn> {
+  const { data } = await Api.post<IPaymentIntentReturn>(endpoint, payload, {
+    headers: { Cookie: cookies().toString() },
   });
+  return data;
+}

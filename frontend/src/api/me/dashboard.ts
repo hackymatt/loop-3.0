@@ -56,11 +56,6 @@ type ICertificate = {
   completed_at: string;
 };
 
-type IPlan = {
-  type: "free" | "basic" | "premium";
-  license: string;
-};
-
 type IUser = {
   email: string;
   first_name: string;
@@ -69,7 +64,8 @@ type IUser = {
   user_type: "admin" | "instructor" | "student";
   join_type: "email" | "google" | "facebook" | "github";
   is_active: boolean;
-  plan: IPlan;
+  plan_type: "free" | "basic" | "premium";
+  plan_license: string;
 };
 
 type IDashboard = {
@@ -93,7 +89,17 @@ export const dashboardQuery = (language: Language) => {
       profile: {
         daily_streak,
         total_points,
-        user: { first_name, last_name, is_active, join_type, user_type, image, ...restUser },
+        user: {
+          first_name,
+          last_name,
+          is_active,
+          join_type,
+          user_type,
+          image,
+          plan_type,
+          plan_license,
+          ...restUser
+        },
         ...restProfile
       },
       ...rest
@@ -163,6 +169,8 @@ export const dashboardQuery = (language: Language) => {
           isActive: is_active,
           joinType: join_type,
           userType: user_type,
+          planType: plan_type,
+          planLicense: plan_license,
         },
         totalPoints: total_points,
         dailyStreak: daily_streak,
