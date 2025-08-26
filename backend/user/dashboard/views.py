@@ -11,7 +11,7 @@ from project.serializers import ProjectListSerializer
 from certificate.models import Certificate
 from certificate.serializers import CertificateSerializer
 from ..token.utils import get_user_tokens_left
-from ..login.serializers import LoginResponseSerializer
+from .serializers import DashboardUserSerializer
 
 
 class DashboardView(APIView):
@@ -69,7 +69,7 @@ class DashboardView(APIView):
                 certificates, many=True, context={"request": request}
             ).data,
             "profile": {
-                "user": LoginResponseSerializer(
+                "user": DashboardUserSerializer(
                     user, context={"request": request}
                 ).data,
                 "tokens": get_user_tokens_left(user),

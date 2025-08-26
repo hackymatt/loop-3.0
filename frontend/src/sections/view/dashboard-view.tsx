@@ -24,10 +24,11 @@ export function DashboardView({ data }: DashboardProps) {
 
   useEffect(() => {
     const {
-      plan: { type },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      planLicense: _,
       ...rest
     } = profile.user;
-    setState({ ...state, ...{ ...rest, planType: type } });
+    setState({ ...state, ...rest });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.user]);
 

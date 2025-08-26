@@ -41,10 +41,12 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
 
   const isYearly = interval === PLAN_INTERVAL.YEARLY;
 
-  const priceObj = pricingObj.find(
-    (p) =>
-      p.currency === currency &&
-      p.interval === (isYearly ? PLAN_INTERVAL.YEARLY : PLAN_INTERVAL.MONTHLY)
+  const priceObj = pricingObj.find((p) => p.currency === currency && p.interval === interval)!;
+  const monthlyPriceObj = pricingObj.find(
+    (p) => p.currency === currency && p.interval === PLAN_INTERVAL.MONTHLY
+  )!;
+  const yearlyPriceObj = pricingObj.find(
+    (p) => p.currency === currency && p.interval === PLAN_INTERVAL.YEARLY
   )!;
   const price = isYearly ? priceObj.price / 12 : priceObj.price;
 
@@ -77,7 +79,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         {t("summary.yearly.save")}
         <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}>
           <Chip
-            label={fCurrency(priceObj.price * 12 - priceObj.price, {
+            label={fCurrency(monthlyPriceObj.price * 12 - yearlyPriceObj.price, {
               code: locale("code"),
               currency,
             })}
@@ -101,7 +103,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
       <Switch
         checked={isYearly}
         onChange={() =>
-          handleChange("interval", isYearly ? PLAN_INTERVAL.YEARLY : PLAN_INTERVAL.MONTHLY)
+          handleChange("interval", isYearly ? PLAN_INTERVAL.MONTHLY : PLAN_INTERVAL.YEARLY)
         }
         inputProps={{ id: "plan-switch", "aria-label": "Plan switch" }}
       />
@@ -126,7 +128,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         {t("summary.total")}
       </Box>
       <Box component="span">
-        {fCurrency(isYearly ? priceObj.price : priceObj.price, {
+        {fCurrency(priceObj.price, {
           code: locale("code"),
           currency,
         })}

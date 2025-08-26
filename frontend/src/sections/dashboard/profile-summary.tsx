@@ -108,8 +108,8 @@ export function ProfileSummary({ profile }: Props) {
           >
             <Box
               component="img"
-              alt={profile.user.plan.license}
-              src={iconPath(getPlanIcon(profile.user.plan.type))}
+              alt={profile.user.planLicense}
+              src={iconPath(getPlanIcon(profile.user.planType))}
               sx={{ width: 80, height: 80 }}
             />
           </Box>
@@ -119,7 +119,7 @@ export function ProfileSummary({ profile }: Props) {
               {t("profile.plan")}
             </Typography>
             <Typography variant="h6" fontWeight="bold">
-              {profile.user.plan.license}
+              {profile.user.planLicense}
             </Typography>
           </Box>
         </Stack>

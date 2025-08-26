@@ -22,16 +22,13 @@ import Typography from "@mui/material/Typography";
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 
-import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
-import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
-import { useCreatePaymentIntent } from "src/api/plan/payment";
+import { PLAN_TYPE } from "src/consts/plan";
 
 import { useUserContext } from "src/components/user";
 import { Form, Field } from "src/components/hook-form";
-import { SplashScreen } from "src/components/loading-screen";
 
 import { PaymentForm } from "../payment/payment-form";
 import { PaymentSummary } from "../payment/payment-summary";
@@ -43,54 +40,15 @@ const stripePromise = loadStripe(CONFIG.stripePublishableKey);
 
 // ----------------------------------------------------------------------
 
-// ----------------------------------------------------------------------
 type PaymentViewProps = {
-  data: { plan: IPlanProps };
+  data: { plan: IPlanProps; clientSecret: string };
   language: Language;
 };
 
 export function PaymentView({ data, language }: PaymentViewProps) {
-  const { query } = useQueryParams();
   const theme = useTheme();
 
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const { mutateAsync: createPaymentIntent } = useCreatePaymentIntent("pl");
-
-  const {
-    plan: { pricing },
-  } = data;
-
-  const currency = query.currency;
-  const isYearlyPlan = query.interval === PLAN_INTERVAL.YEARLY;
-
-  const priceObj = pricing.find(
-    (p) =>
-      p.currency === currency &&
-      p.interval === (isYearlyPlan ? PLAN_INTERVAL.YEARLY : PLAN_INTERVAL.MONTHLY)
-  )!;
-
-  useEffect(() => {
-    async function fetchPaymentIntent() {
-      try {
-        const {
-          data: { client_secret },
-        } = await createPaymentIntent({
-          amount: priceObj.price * 100,
-          currency,
-        });
-
-        setClientSecret(client_secret);
-      } catch {
-        setClientSecret(null);
-      }
-    }
-
-    fetchPaymentIntent();
-  }, [createPaymentIntent, currency, isYearlyPlan, priceObj.price]);
-
-  if (!clientSecret) {
-    return <SplashScreen />;
-  }
+  const { clientSecret } = data;
 
   return (
     <Elements
@@ -169,18 +127,16 @@ function Payment({ data }: PaymentViewProps) {
       return;
     }
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
+    const { error } = await stripe.confirmSetup({
       elements,
       confirmParams: {
         return_url: localize(`${window.location.origin}${paths.order.completed}`),
       },
-      redirect: "if_required",
     });
 
     if (error) {
       setPaymentError(error.message || null);
-    } else if (paymentIntent) {
-      setPaymentError(null);
+    } else {
       router.push(paths.order.completed);
     }
   });
