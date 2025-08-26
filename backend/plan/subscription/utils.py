@@ -12,18 +12,26 @@ def get_subscription(user):
     ).first()
 
 
-def subscribe(student, plan, end_date, currency):
-    current_plan = get_subscription(student.user)
-    current_plan.end_date = timezone.now()
-    current_plan.save()
-    return PlanSubscription.objects.create(
-        student=student, plan=plan, end_date=end_date, currency=currency
-    )
+def subscribe(student, plan_pricing, end_date=None, stripe_subscription_id=None):
+    """
+    End the student's current plan and create a new subscription.
+    """
+    current = PlanSubscription.objects.filter(
+        student=student, end_date__isnull=True
+    ).order_by('-start_date').first()
 
+    if current:
+        current.end_date = timezone.now()
+        current.save()
+
+    return PlanSubscription.objects.create(
+        student=student,
+        plan_pricing=plan_pricing,
+        end_date=end_date,
+        stripe_subscription_id=stripe_subscription_id,
+    )
 
 def subscribe_free_plan(student):
     plan = get_default_plan()
-    plan_pricing = PlanPricing.get_current_price(
-        plan=plan, currency=Currency.PLN, interval=PaymentInterval.MONTHLY
-    )
-    return PlanSubscription.objects.create(student=student, plan_pricing=plan_pricing)
+    default_pricing = PlanPricing.get_current_price(plan=plan, currency=Currency.PLN, interval=PaymentInterval.MONTHLY)
+    return subscribe(student, default_pricing)
