@@ -15,7 +15,9 @@ import { paths } from "src/routes/paths";
 import { useQueryParams } from "src/hooks/use-query-params";
 
 import { fCurrency } from "src/utils/format-number";
+import { fAdd, fDate } from "src/utils/format-time";
 
+import { CONFIG } from "src/global-config";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 import { Label } from "src/components/label";
@@ -48,7 +50,6 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   const yearlyPriceObj = pricingObj.find(
     (p) => p.currency === currency && p.interval === PLAN_INTERVAL.YEARLY
   )!;
-  const price = isYearly ? priceObj.price / 12 : priceObj.price;
 
   const isFreePlan = plan.type === PLAN_TYPE.FREE;
 
@@ -113,22 +114,43 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   const renderPrices = () => (
     <Box sx={{ gap: 1, display: "flex", justifyContent: "flex-end" }}>
       <Box component="span" sx={{ typography: "h2" }}>
-        {fCurrency(price, { code: locale("code"), currency })}
+        {fCurrency(priceObj.price, { code: locale("code"), currency })}
       </Box>
 
       <Typography component="span" sx={{ mb: 1, alignSelf: "center", color: "text.secondary" }}>
-        /{pricing("monthlyShort")}
+        /{pricing(`${interval}Short`)}
       </Typography>
+    </Box>
+  );
+
+  const renderTotalDue = () => (
+    <Box sx={{ display: "flex", alignItems: "center", typography: "h6" }}>
+      <Box component="span" sx={{ flexGrow: 1 }}>
+        {t("summary.due")}{" "}
+        <Typography variant="body2" color="primary">
+          ({fDate(fAdd({ days: CONFIG.trialDays }))})
+        </Typography>
+      </Box>
+      <Box component="span">
+        {fCurrency(priceObj.price, {
+          code: locale("code"),
+          currency,
+        })}
+      </Box>
     </Box>
   );
 
   const renderTotalBilled = () => (
     <Box sx={{ display: "flex", alignItems: "center", typography: "h6" }}>
       <Box component="span" sx={{ flexGrow: 1 }}>
-        {t("summary.total")}
+        {t("summary.total")}{" "}
+        <Typography variant="body2" color="primary">
+          {t("summary.trial")}
+        </Typography>
       </Box>
+
       <Box component="span">
-        {fCurrency(priceObj.price, {
+        {fCurrency(0, {
           code: locale("code"),
           currency,
         })}
@@ -222,6 +244,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         {!isFreePlan && renderPlanSwitch()}
         {renderPrices()}
         <Divider sx={{ borderStyle: "dashed" }} />
+        {renderTotalDue()}
         {renderTotalBilled()}
         <Divider sx={{ borderStyle: "dashed" }} />
       </Box>

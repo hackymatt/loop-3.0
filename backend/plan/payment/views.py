@@ -33,8 +33,6 @@ class CreateSubscriptionView(APIView):
 
             pricing = PlanPricing.get_current_price(plan=plan, currency=currency, interval=interval)
 
-            print(pricing.stripe_price_id)
-
             subscription = stripe.Subscription.create(
                 customer=customer["id"],
                 items=[{"price": pricing.stripe_price_id}],
@@ -62,5 +60,4 @@ class CreateSubscriptionView(APIView):
             })
 
         except Exception as e:
-            print(e)
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

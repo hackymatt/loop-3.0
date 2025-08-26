@@ -9,7 +9,9 @@
     "label": "Summary",
     "plan": "Plan",
     "yearly": { "save": "Save", "part1": "by choosing", "part2": "annual billing" },
-    "total": "Total",
+    "due": "Due",
+    "total": "Due today",
+    "trial": "(7 days free)",
     "button": { "free": "Subscribe", "other": "Pay and subscribe" },
     "info": "By confirming your subscription, you authorize loop to charge your account for future payments according to its terms. You can cancel anytime.",
     "stripe": {
