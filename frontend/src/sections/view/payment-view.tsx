@@ -10,7 +10,13 @@ import { useTranslation } from "react-i18next";
 import { loadStripe } from "@stripe/stripe-js";
 import { useMemo, useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Elements, useStripe, useElements } from "@stripe/react-stripe-js";
+import {
+  Elements,
+  useStripe,
+  useElements,
+  AddressElement,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
@@ -27,12 +33,11 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
 
+import { Form } from "src/components/hook-form";
 import { useUserContext } from "src/components/user";
-import { Form, Field } from "src/components/hook-form";
 
-import { PaymentForm } from "../payment/payment-form";
+import { usePaymentSchema } from "../payment/schema";
 import { PaymentSummary } from "../payment/payment-summary";
-import { usePaymentSchema, useCustomerSchema } from "../payment/schema";
 
 // ----------------------------------------------------------------------
 
@@ -78,7 +83,6 @@ function Payment({ data }: PaymentViewProps) {
 
   const [paymentError, setPaymentError] = useState<string | null>(null);
 
-  const { t: account } = useTranslation("account");
   const { t } = useTranslation("payment");
 
   const user = useUserContext();
@@ -90,7 +94,6 @@ function Payment({ data }: PaymentViewProps) {
 
   const PaymentSchema = zod.object({
     summary: usePaymentSchema(),
-    customer: useCustomerSchema(),
   });
 
   type PaymentSchemaType = zod.infer<typeof PaymentSchema>;
@@ -98,13 +101,8 @@ function Payment({ data }: PaymentViewProps) {
   const defaultValues: PaymentSchemaType = useMemo(
     () => ({
       summary: { termsAcceptance: false },
-      customer: {
-        email: email || "",
-        firstName: firstName || "",
-        lastName: lastName || "",
-      },
     }),
-    [email, firstName, lastName]
+    []
   );
 
   const methods = useForm<PaymentSchemaType>({
@@ -144,19 +142,13 @@ function Payment({ data }: PaymentViewProps) {
   const renderAccountDetails = () => (
     <>
       <StepLabel title={t("customer.label")} step="1" />
-      <Box sx={{ gap: 5, display: "flex", flexDirection: "column" }}>
-        <Box
-          sx={{
-            rowGap: 2,
-            display: "grid",
-            gridTemplateColumns: "repeat(1, 1fr)",
-          }}
-        >
-          <Field.Text name="customer.email" label={account("email.label")} disabled />
-          <Field.Text name="customer.firstName" label={account("firstName.label")} />
-          <Field.Text name="customer.lastName" label={account("lastName.label")} />
-        </Box>
-      </Box>
+      <AddressElement
+        options={{
+          mode: "billing",
+          defaultValues: { firstName, lastName },
+          display: { name: "split" },
+        }}
+      />
     </>
   );
 
@@ -168,7 +160,21 @@ function Payment({ data }: PaymentViewProps) {
           {paymentError}
         </Typography>
       )}
-      <PaymentForm />
+      <PaymentElement
+        options={{
+          defaultValues: {
+            billingDetails: {
+              name: `${firstName}  ${lastName}`,
+              email: email!,
+            },
+          },
+          layout: {
+            type: "accordion",
+            radios: true,
+            defaultCollapsed: false,
+          },
+        }}
+      />
     </>
   );
 
@@ -179,7 +185,7 @@ function Payment({ data }: PaymentViewProps) {
       </Typography>
 
       <Typography sx={{ textAlign: "center", color: "text.secondary", mb: 5 }}>
-        {t("subtitle").replace("{plan}", plan?.license || "")}
+        {t("subtitle", { plan: plan?.license || "" })}
       </Typography>
 
       <Form methods={methods} onSubmit={onSubmit}>

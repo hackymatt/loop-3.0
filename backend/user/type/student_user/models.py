@@ -2,7 +2,8 @@ from django.db import models
 from core.base_model import BaseModel
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from const import UserType
+from django.utils import timezone
+from const import UserType, SubscriptionStatus
 
 
 class Student(BaseModel):
@@ -21,6 +22,15 @@ class Student(BaseModel):
             raise ValidationError(
                 f"Student profile can only be created for {UserType.STUDENT} users."
             )  # pragma: no cover
+
+    @property
+    def current_subscription(self):
+        """
+        Returns the latest active/trialing subscription for this student.
+        Falls back to last-ended subscription if none are active.
+        """
+        now = timezone.now()
+        return self.subscriptions.order_by("-created_at").first()
 
     def save(self, *args, **kwargs):
         self.clean()

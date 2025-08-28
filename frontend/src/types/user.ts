@@ -1,4 +1,5 @@
 import type { JOIN_TYPE, USER_TYPE } from "src/consts/user";
+import type { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 
 import type { IProjectListProps } from "./project";
 import type { ICertificateProps } from "./certificate";
@@ -42,11 +43,15 @@ export type IDashboardProps = {
   };
 };
 
+export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUS)[keyof typeof SUBSCRIPTION_STATUS];
+
 export type ISubscriptionProps = {
   type: PlanType;
   license: string;
-  interval: PlanInterval;
-  validTo: string;
-  price: number;
-  currency: Currency;
+  interval: PlanInterval | null;
+  nextBillingDate: string | null;
+  price: number | null;
+  currency: Currency | null;
+  isAutoRenew: boolean | null;
+  status: SubscriptionStatus;
 };

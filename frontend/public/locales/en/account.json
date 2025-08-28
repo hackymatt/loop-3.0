@@ -33,7 +33,7 @@
     "placeholder": "Enter your password",
     "errors": {
       "required": "Password is required",
-      "minLength": "Password must be at least minPasswordLength characters long",
+      "minLength": "Password must be at least {{minPasswordLength}} characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
@@ -45,7 +45,7 @@
     "placeholder": "Enter your current password",
     "errors": {
       "required": "This field is required",
-      "minLength": "Password must be at least minPasswordLength characters long",
+      "minLength": "Password must be at least {{minPasswordLength}} characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
@@ -57,7 +57,7 @@
     "placeholder": "Enter your new password",
     "errors": {
       "required": "This field is required",
-      "minLength": "Password must be at least minPasswordLength characters long",
+      "minLength": "Password must be at least {{minPasswordLength}} characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
@@ -90,17 +90,21 @@
     "title": "Subscription",
     "label": "Current plan",
     "billing": {
-      "label": "Billing cycle",
+      "label": "Billing period",
       "monthly": "Monthly",
       "yearly": "Yearly"
     },
-    "renewal": "Renewal amount",
-    "on": "will be charged on",
+    "renewal": {
+      "price": "Amount to be charged",
+      "date": "Next payment date"
+    },
     "button": "Cancel subscription",
     "cancel": "Cancel",
     "description": "Are you sure you want to cancel your subscription? You will lose access to active projects and learning paths.",
     "sell": "Build your portfolio, learn with projects, and earn certificates. Choose a plan and grow with loop.",
-    "error": "Something went wrong. Please try again."
+    "error": "Something went wrong. Please try again.",
+    "trial": "TRIAL",
+    "cancelled": "Your subscription has been cancelled and will remain active until the end of the current billing period {{date}}."
   },
   "logout": {
     "title": "Log out",

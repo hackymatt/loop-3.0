@@ -11,16 +11,3 @@ export const usePaymentSchema = () => {
     }),
   });
 };
-
-export const useCustomerSchema = () => {
-  const { t } = useTranslation("account");
-
-  return zod.object({
-    email: zod
-      .string()
-      .min(1, { message: t("email.errors.required") })
-      .email({ message: t("email.errors.invalid") }),
-    firstName: zod.string().min(1, { message: t("firstName.errors.required") }),
-    lastName: zod.string().min(1, { message: t("lastName.errors.required") }),
-  });
-};

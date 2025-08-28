@@ -36,7 +36,7 @@ export function PricingCardsView({ plans }: PricingCardsViewProps) {
     )!;
     return {
       ...rest,
-      price: setting.state.interval === PLAN_INTERVAL.YEARLY ? priceObj.price / 12 : priceObj.price,
+      price: priceObj.price,
     };
   });
 

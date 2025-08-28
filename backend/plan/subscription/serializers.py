@@ -17,7 +17,7 @@ class SubscriptionSerializer(serializers.Serializer):
 
 
 class UserSubscriptionSerializer(serializers.ModelSerializer):
-    type = serializers.CharField(source="plan_pricing.plan.type")
+    type = serializers.CharField(source="plan.type")
     license = serializers.SerializerMethodField()
     interval = serializers.CharField(source="plan_pricing.interval")
     valid_to = serializers.DateTimeField(source="end_date")
@@ -30,4 +30,4 @@ class UserSubscriptionSerializer(serializers.ModelSerializer):
 
     def get_license(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
-        return obj.plan_pricing.plan.get_translation(lang).license
+        return obj.plan.get_translation(lang).license

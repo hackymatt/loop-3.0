@@ -22,6 +22,11 @@ class Plan(BaseModel):
     def __str__(self):  # pragma: no cover
         return self.type
 
+    @property
+    def is_default_plan(plan):
+        type = CONFIG["default_plan"]
+        return plan.type == type
+
     class Meta:
         db_table = "plan"
 

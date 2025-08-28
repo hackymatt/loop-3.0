@@ -24,17 +24,35 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-    type = serializers.CharField(source="plan_pricing.plan.type")
+    type = serializers.CharField(source="plan.type")
     license = serializers.SerializerMethodField()
-    interval = serializers.CharField(source="plan_pricing.interval")
-    valid_to = serializers.DateTimeField(source="end_date")
-    price = serializers.CharField(source="plan_pricing.price")
-    currency = serializers.CharField(source="plan_pricing.currency")
+    next_billing_date = serializers.DateTimeField(source="end_date")
+    interval = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    currency = serializers.SerializerMethodField()
 
     class Meta:
         model = PlanSubscription
-        fields = ["type", "license", "interval", "valid_to", "price", "currency"]
+        fields = [
+            "type",
+            "license",
+            "interval",
+            "next_billing_date",
+            "price",
+            "currency",
+            "status",
+            "auto_renew",
+        ]
 
     def get_license(self, obj):
         lang = self.context.get("request").LANGUAGE_CODE
-        return obj.plan_pricing.plan.get_translation(lang).license
+        return obj.plan.get_translation(lang).license
+
+    def get_interval(self, obj):
+        return obj.plan_pricing.interval if obj.plan_pricing else None
+
+    def get_price(self, obj):
+        return obj.plan_pricing.price if obj.plan_pricing else None
+
+    def get_currency(self, obj):
+        return obj.plan_pricing.currency if obj.plan_pricing else None

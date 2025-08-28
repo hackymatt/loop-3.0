@@ -67,6 +67,10 @@ Api.interceptors.response.use(
         return Api(originalRequest);
       } catch (err) {
         processQueue(err, false);
+        const serverSide = typeof window === "undefined";
+        if (serverSide) {
+          throw new Error("Access token expired - please re-authenticate");
+        }
         document.cookie = `user=${JSON.stringify(defaultUser)}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
         window.location.href = paths.auth.login;
         return Promise.reject(err);

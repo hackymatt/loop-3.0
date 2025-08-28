@@ -145,7 +145,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
       <Box component="span" sx={{ flexGrow: 1 }}>
         {t("summary.total")}{" "}
         <Typography variant="body2" color="primary">
-          {t("summary.trial")}
+          {t("summary.trial", { days: CONFIG.trialDays })}
         </Typography>
       </Box>
 

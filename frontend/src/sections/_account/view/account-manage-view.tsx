@@ -39,10 +39,9 @@ const useAccountPasswordSchema = () => {
         .string()
         .min(1, { message: t("oldPassword.errors.required") })
         .min(CONFIG.minPasswordLength, {
-          message: t("oldPassword.errors.minLength").replace(
-            "minPasswordLength",
-            String(CONFIG.minPasswordLength)
-          ),
+          message: t("oldPassword.errors.minLength", {
+            minPasswordLength: CONFIG.minPasswordLength,
+          }),
         })
         .regex(/[A-Z]/, { message: t("oldPassword.errors.bigLetter") })
         .regex(/[a-z]/, { message: t("oldPassword.errors.smallLetter") })
@@ -54,10 +53,9 @@ const useAccountPasswordSchema = () => {
         .string()
         .min(1, { message: t("newPassword.errors.required") })
         .min(CONFIG.minPasswordLength, {
-          message: t("newPassword.errors.minLength").replace(
-            "minPasswordLength",
-            String(CONFIG.minPasswordLength)
-          ),
+          message: t("newPassword.errors.minLength", {
+            minPasswordLength: CONFIG.minPasswordLength,
+          }),
         })
         .regex(/[A-Z]/, { message: t("newPassword.errors.bigLetter") })
         .regex(/[a-z]/, { message: t("newPassword.errors.smallLetter") })

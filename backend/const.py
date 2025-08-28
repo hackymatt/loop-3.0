@@ -107,3 +107,23 @@ class PlanType(TextChoices):
 class PaymentInterval(TextChoices):
     MONTHLY = "monthly"
     YEARLY = "yearly"
+
+
+class SubscriptionStatus(TextChoices):
+    TRIALING = "trialing"
+    ACTIVE = "active"
+    CANCELED = "canceled"
+    INCOMPLETE = "incomplete"
+    INCOMPLETE_EXPIRED = "incomplete_expired"
+    PAST_DUE = "past_due"
+    UNPAID = "unpaid"
+
+
+class PaymentStatus(TextChoices):
+    PAID = "Zapłacono"
+    DUE = "Do zapłaty"
+
+
+class PaymentMethod(TextChoices):
+    STRIPE = "Stripe"
+    BANK_TRANSFER = "Przelew"

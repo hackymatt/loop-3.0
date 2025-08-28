@@ -44,7 +44,7 @@ export function HomePricing({ plans, sx, ...other }: HomePricingProps) {
     )!;
     return {
       ...rest,
-      price: setting.state.interval === PLAN_INTERVAL.YEARLY ? priceObj.price / 12 : priceObj.price,
+      price: priceObj.price,
     };
   });
 
