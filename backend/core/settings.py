@@ -114,6 +114,7 @@ INSTALLED_APPS = [
     "plan",
     "plan.subscription",
     "plan.payment",
+    "invoice",
     "certificate",
 ]
 
@@ -426,6 +427,17 @@ else:
                 "default_acl": "public-read",
                 "endpoint_url": "https://objectstore.fra1.civo.com",
                 "location": static_location,
+            },
+        },
+        "invoices": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "access_key": os.getenv("S3_ACCESS_KEY", ""),
+                "secret_key": os.getenv("S3_SECRET_KEY", ""),
+                "bucket_name": "files",
+                "region_name": "FRA1",
+                "endpoint_url": "https://objectstore.fra1.civo.com",
+                "location": f"{ENV}/invoices" if ENV != "PROD" else "invoices",
             },
         },
     }  # pragma: no cover

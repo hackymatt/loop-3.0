@@ -14,10 +14,19 @@ const endpoint = URLS.SUBSCRIPTION;
 type ISubscription = {
   type: "free" | "basic" | "premium";
   license: string;
-  interval: "monthly" | "yearly";
-  valid_to: string;
-  price: number;
-  currency: "PLN" | "EUR" | "GBP" | "USD";
+  interval: "monthly" | "yearly" | null;
+  next_billing_date: string | null;
+  price: number | null;
+  currency: "PLN" | "EUR" | "GBP" | "USD" | null;
+  status:
+    | "trialing"
+    | "active"
+    | "canceled"
+    | "incomplete"
+    | "incomplete_expired"
+    | "past_due"
+    | "unpaid";
+  auto_renew: boolean | null;
 };
 
 export const subscriptionQuery = (language: Language) => {
@@ -29,11 +38,12 @@ export const subscriptionQuery = (language: Language) => {
       headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
-    const { valid_to, ...rest } = data;
+    const { next_billing_date, auto_renew, ...rest } = data;
 
     const modifiedResult: ISubscriptionProps = {
       ...rest,
-      validTo: valid_to,
+      nextBillingDate: next_billing_date,
+      isAutoRenew: auto_renew,
     };
 
     return { results: modifiedResult };

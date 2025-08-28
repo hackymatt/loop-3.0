@@ -33,7 +33,7 @@
     "placeholder": "Wpisz hasło",
     "errors": {
       "required": "Hasło jest wymagane",
-      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "minLength": "Hasło musi mieć co najmniej {{minPasswordLength}} znaków",
       "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
       "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
       "number": "Hasło musi zawierać co najmniej jedną cyfrę",
@@ -45,7 +45,7 @@
     "placeholder": "Wpisz obecne hasło",
     "errors": {
       "required": "To pole jest wymagane",
-      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "minLength": "Hasło musi mieć co najmniej {{minPasswordLength}} znaków",
       "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
       "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
       "number": "Hasło musi zawierać co najmniej jedną cyfrę",
@@ -57,7 +57,7 @@
     "placeholder": "Wpisz nowe hasło",
     "errors": {
       "required": "To pole jest wymagane",
-      "minLength": "Hasło musi mieć co najmniej minPasswordLength znaków",
+      "minLength": "Hasło musi mieć co najmniej {{minPasswordLength}} znaków",
       "bigLetter": "Hasło musi zawierać co najmniej jedną wielką literę",
       "smallLetter": "Hasło musi zawierać co najmniej jedną małą literę",
       "number": "Hasło musi zawierać co najmniej jedną cyfrę",
@@ -91,16 +91,17 @@
     "label": "Obecny plan",
     "billing": {
       "label": "Okres rozliczenia",
-      "monthly": "Miesięcznie",
-      "yearly": "Rocznie"
+      "monthly": "Miesięczny",
+      "yearly": "Roczny"
     },
-    "renewal": "Odnowienie na kwotę",
-    "on": "nastąpi",
+    "renewal": { "price": "Kwota do zapłaty", "date": "Data następnej płatności" },
     "button": "Anuluj subskrypcję",
     "cancel": "Anuluj",
     "description": "Czy na pewno chcesz anulować subskrypcję? Stracisz dostęp do aktywnych projektów i ścieżek rozwoju.",
     "sell": "Zbuduj swoje portfolio, ucz się z projektami i zdobądź certyfikaty. Wybierz plan i rozwijaj się razem z loop.",
-    "error": "Coś poszło nie tak. Spróbuj ponownie."
+    "error": "Coś poszło nie tak. Spróbuj ponownie.",
+    "trial": "OKRES PRÓBNY",
+    "cancelled": "Subskrypcja została anulowana i zakończy się z końcem okresu rozliczeniowego {{date}}."
   },
   "logout": {
     "title": "Wyloguj się",

@@ -9,8 +9,6 @@ from .serializers import (
 )
 from .models import ChannelPost, ChannelPostLike, ChannelPostComment
 from project.models import Project
-from plan.subscription.utils import get_subscription
-from plan.utils import is_default_plan
 from django.shortcuts import get_object_or_404
 from user.type.student_user.models import Student
 
@@ -29,7 +27,7 @@ class ChannelPostViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if is_default_plan(get_subscription(student.user).plan):
+        if student.current_subscription.plan.is_default_plan:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         return super().list(request, *args, **kwargs)
@@ -38,7 +36,7 @@ class ChannelPostViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if is_default_plan(get_subscription(student.user).plan):
+        if student.current_subscription.plan.is_default_plan:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         project_slug = self.kwargs["slug"]
@@ -90,7 +88,7 @@ class ChannelPostCommentViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if is_default_plan(get_subscription(student.user).plan):
+        if student.current_subscription.plan.is_default_plan:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         project_slug = self.kwargs["slug"]
@@ -150,7 +148,7 @@ class ChannelPostLikeViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if is_default_plan(get_subscription(student.user).plan):
+        if student.current_subscription.plan.is_default_plan:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         project_slug = self.kwargs["slug"]

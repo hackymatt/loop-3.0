@@ -4,14 +4,14 @@
     "description": "Complete your payment quickly and securely. Choose your preferred method and start learning to code without delays."
   },
   "title": "Let’s finish upgrading your account!",
-  "subtitle": "The {plan} plan is the perfect choice for you.",
+  "subtitle": "The {{plan}} plan is the perfect choice for you.",
   "summary": {
     "label": "Summary",
     "plan": "Plan",
     "yearly": { "save": "Save", "part1": "by choosing", "part2": "annual billing" },
     "due": "Due",
     "total": "Due today",
-    "trial": "(7 days free)",
+    "trial": "({{days}} days free)",
     "button": { "free": "Subscribe", "other": "Pay and subscribe" },
     "info": "By confirming your subscription, you authorize loop to charge your account for future payments according to its terms. You can cancel anytime.",
     "stripe": {

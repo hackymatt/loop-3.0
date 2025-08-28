@@ -26,7 +26,7 @@ class LoginResponseSerializer(serializers.ModelSerializer):
             return None
 
         subscription = get_subscription(obj)
-        return subscription.plan_pricing.plan.type
+        return subscription.plan.type
 
     def get_image(self, obj):
         request = self.context.get("request")

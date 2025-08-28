@@ -80,7 +80,9 @@ export function PricingColumnHeader({ plan, currency, sx, ...other }: PricingCol
     >
       <Box sx={{ position: "absolute", top: 16, right: 16, display: "flex", gap: 1 }}>
         {plan.popular && <Label color="info">{t("popular")}</Label>}
-        {plan.type !== PLAN_TYPE.FREE && <Label color="success">{t("trial")}</Label>}
+        {plan.type !== PLAN_TYPE.FREE && (
+          <Label color="success">{t("trial", { days: CONFIG.trialDays })}</Label>
+        )}
       </Box>
 
       <Typography variant="overline" sx={{ color: "text.secondary", mt: 2 }}>

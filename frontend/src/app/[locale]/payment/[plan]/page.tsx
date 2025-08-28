@@ -21,24 +21,30 @@ type PageProps = {
 
 const queries = {
   plan: (lang: Language, type: string) => planQuery(lang, type),
-  setupIntent: ({
-    type,
-    interval,
-    currency,
-  }: {
-    type: string;
-    interval: string;
-    currency: string;
-  }) => createSetupIntent({ type, interval, currency }),
+  setupIntent: (
+    {
+      type,
+      interval,
+      currency,
+    }: {
+      type: string;
+      interval: string;
+      currency: string;
+    },
+    lang: Language
+  ) => createSetupIntent({ type, interval, currency }, lang),
 };
 
 async function getData(language: Language, type: string, interval: string, currency: string) {
   const planPromise = queries.plan(language, type).queryFn();
-  const createSubscriptionPromise = queries.setupIntent({
-    type,
-    interval,
-    currency,
-  });
+  const createSubscriptionPromise = queries.setupIntent(
+    {
+      type,
+      interval,
+      currency,
+    },
+    language
+  );
 
   const [plan, subscription] = await Promise.all([planPromise, createSubscriptionPromise]);
 

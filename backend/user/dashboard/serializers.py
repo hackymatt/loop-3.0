@@ -3,6 +3,7 @@ from ..login.serializers import LoginResponseSerializer
 from plan.subscription.utils import get_subscription
 from const import UserType
 
+
 class DashboardUserSerializer(LoginResponseSerializer):
     plan_license = serializers.SerializerMethodField()
 
@@ -15,5 +16,5 @@ class DashboardUserSerializer(LoginResponseSerializer):
 
         subscription = get_subscription(obj)
         lang = self.context.get("request").LANGUAGE_CODE
-        translation = subscription.plan_pricing.plan.get_translation(lang)
+        translation = subscription.plan.get_translation(lang)
         return translation.license if translation else None

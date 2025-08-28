@@ -16,7 +16,10 @@ import { fCurrency } from "src/utils/format-number";
 
 import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
+import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
+
+import { Label } from "src/components/label";
 
 import { CancelSubscriptionForm } from "./cancel-subscription-form";
 
@@ -33,7 +36,9 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
 
   const cancelSubscriptionFormOpen = useBoolean();
 
-  const { type, license, interval, price, currency, validTo } = data;
+  console.log(data);
+
+  const { type, license, interval, price, currency, nextBillingDate, isAutoRenew, status } = data;
 
   const isFreePlan = type === PLAN_TYPE.FREE;
 
@@ -69,9 +74,22 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
               sx={{ width: 80, height: 80 }}
             />
 
-            <Typography variant="h4" sx={{ mt: 1 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                mt: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
               {license}
             </Typography>
+
+            {status === SUBSCRIPTION_STATUS.TRIALING && (
+              <Label color="success">{t("subscription.trial")}</Label>
+            )}
           </Box>
 
           {isFreePlan && (
@@ -80,48 +98,43 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
             </Typography>
           )}
 
-          {!isFreePlan && (
+          {!isFreePlan && currency && (
             <Box
               sx={{
                 mt: 2,
+                display: "flex",
+                flexDirection: "column",
+                gap: 0.5,
                 color: "text.secondary",
                 typography: "body2",
-                display: "flex",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: 0.5,
               }}
             >
-              {t("subscription.billing.label")}
-              <Typography variant="body2" fontWeight="bold">
-                {t(`subscription.billing.${interval}`)}
-              </Typography>
-            </Box>
-          )}
-
-          {!isFreePlan && (
-            <Box
-              sx={{
-                mt: 2,
-                color: "text.secondary",
-                typography: "body2",
-                display: "flex",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: 0.5,
-              }}
-            >
-              {t("subscription.renewal")}
-              <Typography variant="body2" fontWeight="bold">
-                {fCurrency(price, {
-                  code: locale("code"),
-                  currency,
-                })}
-              </Typography>
-              {t("subscription.on")}
-              <Typography variant="body2" fontWeight="bold">
-                {fDate(validTo)}
-              </Typography>
+              {isAutoRenew ? (
+                <>
+                  {[
+                    {
+                      label: t("subscription.billing.label"),
+                      value: t(`subscription.billing.${interval}`),
+                    },
+                    {
+                      label: t("subscription.renewal.price"),
+                      value: fCurrency(price, { code: locale("code"), currency }),
+                    },
+                    { label: t("subscription.renewal.date"), value: fDate(nextBillingDate) },
+                  ].map((item, index) => (
+                    <Box key={index} sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {item.label}:
+                      <Typography variant="body2" fontWeight="bold">
+                        {item.value}
+                      </Typography>
+                    </Box>
+                  ))}
+                </>
+              ) : (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {t("subscription.cancelled", { date: fDate(nextBillingDate) })}
+                </Box>
+              )}
             </Box>
           )}
         </Box>

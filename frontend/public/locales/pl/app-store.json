@@ -7,5 +7,5 @@
     "add": { "iOS": "Do ekranu głownego", "Android": "Dodaj do ekranu głównego" }
   },
   "title": "Zainstaluj aplikację",
-  "subtitle": "Zainstaluj aplikację na swoim urządzeniu, aby mieć łatwy dostęp do nauki w każdej chwili. Bez [platform], bez pobierania, bez problemów."
+  "subtitle": "Zainstaluj aplikację na swoim urządzeniu, aby mieć łatwy dostęp do nauki w każdej chwili. Bez {{platform}}, bez pobierania, bez problemów."
 }

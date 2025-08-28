@@ -4,14 +4,14 @@
     "description": "Zrealizuj płatność szybko i bezpiecznie. Wybierz preferowaną metodę i rozpocznij naukę programowania bez opóźnień."
   },
   "title": "Dokończmy ulepszenie Twojego konta!",
-  "subtitle": "Plan {plan} to idealny wybór dla Ciebie.",
+  "subtitle": "Plan {{plan}} to idealny wybór dla Ciebie.",
   "summary": {
     "label": "Podsumowanie",
     "plan": "Plan",
     "yearly": { "save": "Zaoszczędź", "part1": "wybierając", "part2": "rozliczanie roczne" },
     "due": "Do zapłaty",
     "total": "Do zapłaty dziś",
-    "trial": "(7 dni za darmo)",
+    "trial": "({{days}} dni za darmo)",
     "button": { "free": "Subskrybuj", "other": "Zapłać i subskrybuj" },
     "info": "Zatwierdzając subskrypcję, zezwalasz loop na obciążenie Twojego konta przyszłymi płatnościami zgodnie z jego warunkami. Zawsze możesz anulować subskrypcję.",
     "stripe": {

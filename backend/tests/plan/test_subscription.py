@@ -53,7 +53,7 @@ class SubscribeViewTest(TestCase):
         self.assertEqual(self.student.user.first_name, "New first name")
         self.assertEqual(self.student.user.last_name, "New last name")
 
-        sub = get_subscription(user=self.student.user)
+        sub = self.student.current_subscription
         self.assertIsNotNone(sub.end_date)
         self.assertAlmostEqual(
             sub.end_date.date(),
@@ -73,7 +73,7 @@ class SubscribeViewTest(TestCase):
         response = self.client.post(self.url, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        sub = get_subscription(user=self.student.user)
+        sub = self.student.current_subscription
         self.assertIsNotNone(sub.end_date)
         self.assertAlmostEqual(
             sub.end_date.date(),
@@ -93,7 +93,7 @@ class SubscribeViewTest(TestCase):
         response = self.client.post(self.url, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        sub = get_subscription(user=self.student.user)
+        sub = self.student.current_subscription
         self.assertIsNone(sub.end_date)
 
     def test_invalid_plan(self):

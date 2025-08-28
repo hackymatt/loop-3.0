@@ -30,7 +30,7 @@ export default function CurrencyToggle({ value, onChange }: CurrencyToggleProps)
       }}
     >
       {currencies.map(({ value: v, symbol, label }) => (
-        <ToggleButton value={v}>{`${symbol} ${label}`}</ToggleButton>
+        <ToggleButton key={v} value={v}>{`${symbol} ${label}`}</ToggleButton>
       ))}
     </ToggleButtonGroup>
   );

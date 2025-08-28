@@ -17,7 +17,7 @@
   "yearlyShort": "rok",
   "save": "-",
   "popular": "POPULARNY",
-  "trial": "7 DNI ZA DARMO",
+  "trial": "{{days}} DNI ZA DARMO",
   "current": "Obecny plan",
   "choose": "Wybierz",
   "perYear": "na rok",

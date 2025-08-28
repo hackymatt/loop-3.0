@@ -34,7 +34,9 @@ export default function IntervalToggle({ value, onChange }: IntervalToggleProps)
       }}
     >
       {Object.values(PLAN_INTERVAL).map((v) => (
-        <ToggleButton value={v}>{t(v)}</ToggleButton>
+        <ToggleButton key={v} value={v}>
+          {t(v)}
+        </ToggleButton>
       ))}
     </ToggleButtonGroup>
   );

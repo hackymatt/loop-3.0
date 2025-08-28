@@ -20,4 +20,6 @@ CONFIG = {
     "min_password_length": settings.MIN_PASSWORD_LENGTH,
     "default_plan": PlanType.FREE,
     "free_trial_days": 7,
+    "vat_limit": 11,
+    "vat_rate": 23,
 }

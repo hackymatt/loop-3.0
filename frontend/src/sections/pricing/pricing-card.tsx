@@ -77,7 +77,7 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
       </Typography>
 
       <Typography component="span" variant="subtitle2">
-        /{t("monthlyShort")}
+        /{t(`${interval}Short`)}
       </Typography>
     </Box>
   );
@@ -155,7 +155,9 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
     >
       <Box sx={{ position: "absolute", top: 16, right: 16, display: "flex", gap: 1 }}>
         {plan.popular && <Label color="info">{t("popular")}</Label>}
-        {plan.type !== PLAN_TYPE.FREE && <Label color="success">{t("trial")}</Label>}
+        {plan.type !== PLAN_TYPE.FREE && (
+          <Label color="success">{t("trial", { days: CONFIG.trialDays })}</Label>
+        )}
       </Box>
 
       <Box component="span" sx={{ color: "text.secondary", typography: "overline" }}>

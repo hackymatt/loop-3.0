@@ -17,7 +17,7 @@
   "yearlyShort": "yr",
   "save": "-",
   "popular": "POPULAR",
-  "trial": "7-DAY FREE",
+  "trial": "{{days}}-DAY FREE",
   "current": "Current plan",
   "choose": "Choose",
   "perYear": "per year",

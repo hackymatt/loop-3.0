@@ -6,7 +6,6 @@ from .utils import subscribe
 from ..models import Plan
 from user.type.student_user.models import Student
 from plan.models import Plan
-from plan.utils import is_default_plan
 from django.shortcuts import get_object_or_404
 from dateutil.relativedelta import relativedelta
 from django.utils import timezone
@@ -31,7 +30,7 @@ class SubscribeView(APIView):
         plan = get_object_or_404(Plan, slug=plan_slug)
         student = Student.objects.get(user=user)
 
-        if is_default_plan(plan):
+        if plan.is_default_plan:
             end_date = None
         else:
             if is_yearly:
