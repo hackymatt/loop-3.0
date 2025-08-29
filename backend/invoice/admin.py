@@ -21,7 +21,15 @@ class InvoiceItemInline(admin.TabularInline):
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ("id", "customer", "status", "method", "currency")
+    list_display = (
+        "invoice_number",
+        "invoice_date",
+        "service_date",
+        "customer",
+        "status",
+        "method",
+        "currency",
+    )
     list_filter = ("status", "method", "currency")
     search_fields = ("customer__full_name", "customer__email")
     inlines = [InvoiceItemInline]

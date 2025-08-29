@@ -11,6 +11,10 @@
     "subscription": {
       "title": "Subskrypcja – zarządzaj dostępem do projektów",
       "description": "Sprawdź aktywną subskrypcję i zarządzaj planem. Zyskaj pełen dostęp do projektów, ścieżek i certyfikatów rozwoju na platformie loop."
+    },
+    "invoices": {
+      "title": "Faktury – zarządzaj swoimi płatnościami",
+      "description": "Przeglądaj i pobieraj swoje faktury za subskrypcje. Sprawdź historię płatności na platformie loop."
     }
   },
   "email": {
@@ -102,6 +106,15 @@
     "error": "Coś poszło nie tak. Spróbuj ponownie.",
     "trial": "OKRES PRÓBNY",
     "cancelled": "Subskrypcja została anulowana i zakończy się z końcem okresu rozliczeniowego {{date}}."
+  },
+  "invoices": {
+    "title": "Faktury",
+    "invoice_number": "Numer faktury",
+    "invoice_date": "Data wystawienia",
+    "amount": "Kwota",
+    "all": "Wszystkie",
+    "rows_per_page": "Wierszy na stronę",
+    "button": "Pobierz"
   },
   "logout": {
     "title": "Wyloguj się",

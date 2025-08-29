@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Payment Failed" %}{% endblock %}
+
+{% block content %}
+    <p>{{ message_1|safe }}</p>
+
+    <p>
+        {{ message_2|safe }}
+    </p>
+
+	<p>
+        {{ message_3|safe }}: 
+        <a href="{{ customer_portal_link }}" target="_blank">{{ portal_text }}</a>
+    </p>
+{% endblock %}

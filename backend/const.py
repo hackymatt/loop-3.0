@@ -63,6 +63,7 @@ class Urls:
     PASSWORD_CHANGE = "me/password"
     DELETE_ACCOUNT = "me/delete"
     SUBSCRIPTION = "me/subscription"
+    INVOICES = "me/invoices"
     DASHBOARD = "me/dashboard"
 
 

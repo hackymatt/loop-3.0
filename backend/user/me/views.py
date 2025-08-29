@@ -1,5 +1,6 @@
 from rest_framework.generics import UpdateAPIView
 from rest_framework.views import APIView
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
@@ -9,9 +10,11 @@ from .serializers import (
     UpdateUserSerializer,
     ChangePasswordSerializer,
     SubscriptionSerializer,
+    InvoiceSerializer,
 )
 from const import JoinType
 from plan.subscription.utils import get_subscription
+from invoice.models import StudentInvoice
 
 
 class UpdateUserView(UpdateAPIView):
@@ -122,3 +125,12 @@ class SubscriptionView(APIView):
             SubscriptionSerializer(subscription, context={"request": request}).data,
             status=status.HTTP_200_OK,
         )
+
+
+class InvoicesView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = InvoiceSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return StudentInvoice.objects.filter(student__user=user).select_related("invoice")

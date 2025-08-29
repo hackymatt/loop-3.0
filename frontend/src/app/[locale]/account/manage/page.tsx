@@ -6,7 +6,7 @@ import { createMetadata } from "src/utils/create-metadata";
 
 import { LANGUAGE } from "src/consts/language";
 
-import { AccountManageView } from "src/sections/_account/view/account-manage-view";
+import { AccountManageView } from "src/sections/view/account-manage-view";
 
 // ----------------------------------------------------------------------
 type PageProps = {

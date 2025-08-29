@@ -17,6 +17,7 @@ const AUTHORIZED_PATHS = [
   paths.account.personal,
   paths.account.manage,
   paths.account.subscription,
+  paths.account.invoices,
   paths.payment,
   paths.order.completed,
 ];

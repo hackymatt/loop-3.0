@@ -11,6 +11,10 @@
     "subscription": {
       "title": "Subscription – manage your project access",
       "description": "Check your active subscription and manage your plan. Get full access to projects, paths, and development certificates on the loop platform."
+    },
+    "invoices": {
+      "title": "Invoices – manage your payments",
+      "description": "View and download your subscription invoices. Check your payment history on the LOOP platform."
     }
   },
   "email": {
@@ -105,6 +109,15 @@
     "error": "Something went wrong. Please try again.",
     "trial": "TRIAL",
     "cancelled": "Your subscription has been cancelled and will remain active until the end of the current billing period {{date}}."
+  },
+  "invoices": {
+    "title": "Invoices",
+    "invoice_number": "Invoice number",
+    "invoice_date": "Invoice date",
+    "amount": "Amount",
+    "all": "All",
+    "rows_per_page": "Rows per page",
+    "button": "Download"
   },
   "logout": {
     "title": "Log out",

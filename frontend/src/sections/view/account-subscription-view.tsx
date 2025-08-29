@@ -21,7 +21,7 @@ import { UpgradeButton } from "src/layouts/components/upgrade-button";
 
 import { Label } from "src/components/label";
 
-import { CancelSubscriptionForm } from "./cancel-subscription-form";
+import { CancelSubscriptionForm } from "../account/cancel-subscription-form";
 
 // ----------------------------------------------------------------------
 type AccountSubscriptionViewProps = {
@@ -35,8 +35,6 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
   const { t: locale } = useTranslation("locale");
 
   const cancelSubscriptionFormOpen = useBoolean();
-
-  console.log(data);
 
   const { type, license, interval, price, currency, nextBillingDate, isAutoRenew, status } = data;
 
