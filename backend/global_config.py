@@ -23,4 +23,12 @@ CONFIG = {
     "website_url": "https://loop.edu.pl",
     "vat_limit": 11,
     "vat_rate": 23,
+    "s3": {
+        "access_key": settings.AWS_ACCESS_KEY,
+        "secret_key": settings.AWS_SECRET_KEY,
+        "bucket_name": settings.AWS_STORAGE_BUCKET_NAME,
+        "region_name": settings.AWS_S3_REGION_NAME,
+        "endpoint_url": settings.AWS_S3_ENDPOINT_URL,
+    },
+    "invoice_location": settings.INVOICE_LOCATION,
 }

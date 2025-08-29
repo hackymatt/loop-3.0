@@ -1,9 +1,10 @@
 from django.db import models
+from django.db.models import Q
 from core.base_model import BaseModel
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from const import UserType, SubscriptionStatus
+from const import UserType
 
 
 class Student(BaseModel):
@@ -25,12 +26,15 @@ class Student(BaseModel):
 
     @property
     def current_subscription(self):
-        """
-        Returns the latest active/trialing subscription for this student.
-        Falls back to last-ended subscription if none are active.
-        """
         now = timezone.now()
-        return self.subscriptions.order_by("-created_at").first()
+        return (
+            self.subscriptions.filter(
+                Q(start_date__lte=now)
+                & (Q(end_date__isnull=True) | Q(end_date__gte=now))
+            )
+            .order_by("-start_date", "-created_at")
+            .first()
+        )
 
     def save(self, *args, **kwargs):
         self.clean()

@@ -13,7 +13,7 @@ from .me.views import (
     ChangePasswordView,
     DeleteAccountView,
     SubscriptionView,
-    InvoicesView
+    InvoicesView,
 )
 from .refresh_token.views import RefreshTokenView
 from .dashboard.views import DashboardView
