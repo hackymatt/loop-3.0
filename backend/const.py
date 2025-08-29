@@ -120,10 +120,10 @@ class SubscriptionStatus(TextChoices):
 
 
 class PaymentStatus(TextChoices):
-    PAID = "Zapłacono"
-    DUE = "Do zapłaty"
+    PAID = "Paid"
+    DUE = "Due"
 
 
 class PaymentMethod(TextChoices):
     STRIPE = "Stripe"
-    BANK_TRANSFER = "Przelew"
+    BANK_TRANSFER = "Bank transfer"

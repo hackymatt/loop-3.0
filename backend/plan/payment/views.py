@@ -5,10 +5,11 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from user.type.student_user.models import Student
 from plan.models import Plan, PlanPricing
-from invoice.models import Invoice, InvoiceCustomer, InvoiceItem
-from invoice.utils import InvoiceGenerator
+from invoice.models import Invoice, InvoiceCustomer, InvoiceItem, StudentInvoice
+from invoice.utils import generate_and_send_invoice
 from plan.subscription.utils import (
     subscribe,
     subscribe_free_plan,
@@ -288,6 +289,8 @@ class StripeWebhookView(APIView):
             .get("website_url")
             or Language.PL
         )
+        student = Student.objects.get(stripe_customer_id=data["customer"])
+
         invoice_customer = InvoiceCustomer.objects.create(
             email=data["customer_email"],
             full_name=data["customer_name"],
@@ -329,33 +332,12 @@ class StripeWebhookView(APIView):
             currency=data["currency"],
             status=PaymentStatus.PAID,
             method=PaymentMethod.STRIPE,
+            language=language,
         )
 
-        invoice_generator = InvoiceGenerator(invoice, language, website_url)
-        invoice_path = invoice_generator.create()
+        generate_and_send_invoice(invoice, website_url, student.user.first_name)
 
-        mailer = Mailer(website_url)
-        # mail_data = {
-        #         **{
-        #             "title": "Płatność utworzona",
-        #             "description": "W załączniku dołączono fakturę.",
-        #             "items": items,
-        #             "amount": f"{amount:,.2f} {currency}",
-        #             "status": "Utworzona",
-        #             "method": method,
-        #         }
-        #     }
-
-        #     mailer.send(
-        #     email_template="purchase_confirmation.html",
-        #     to=[invoice_customer.email],
-        #     subject="Podsumowanie zakupu",
-        #     data=mail_data,
-        #     attachments=[invoice_path],
-        # )
-        invoice_generator.remove()
-
-        print("Payment succeeded for actual invoice")
+        StudentInvoice.objects.create(invoice=invoice, student=student)
 
     def handle_invoice_payment_failed(self, data):
         print("Payment failed")

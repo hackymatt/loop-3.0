@@ -76,6 +76,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 "abstract": False,
+                "db_table": "plan_subscription",
             },
         ),
     ]

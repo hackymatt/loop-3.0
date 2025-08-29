@@ -436,6 +436,7 @@ else:
                 "secret_key": os.getenv("S3_SECRET_KEY", ""),
                 "bucket_name": "files",
                 "region_name": "FRA1",
+                "default_acl": "private",
                 "endpoint_url": "https://objectstore.fra1.civo.com",
                 "location": f"{ENV}/invoices" if ENV != "PROD" else "invoices",
             },
