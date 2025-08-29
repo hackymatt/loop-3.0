@@ -45,6 +45,10 @@
           "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Subskrypcja', aby zobaczyć swój aktualny plan oraz zmienić go na inny."
         },
         {
+          "question": "Gdzie mogę pobrać swoje faktury?",
+          "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Faktury'. W tym miejscu możesz przeglądać historię swoich płatności oraz pobierać faktury w formacie PDF za wszystkie subskrypcje."
+        },
+        {
           "question": "Jak usunąć konto?",
           "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Zarządzaj kontem'. Znajdziesz tam opcję usunięcia konta."
         }

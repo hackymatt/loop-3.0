@@ -49,7 +49,7 @@ export function PricingColumnContentMobile({
 
   const redirect = localize(
     plan.type === PLAN_TYPE.FREE
-      ? `${paths.payment}/${plan.type}`
+      ? `${paths.account.dashboard}`
       : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
   );
 
@@ -172,7 +172,7 @@ export function PricingColumnContentDesktop({
 
   const redirect = localize(
     plan.type === PLAN_TYPE.FREE
-      ? `${paths.payment}/${plan.type}`
+      ? `${paths.account.dashboard}`
       : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
   );
 

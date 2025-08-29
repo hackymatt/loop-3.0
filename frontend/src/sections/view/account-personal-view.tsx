@@ -17,7 +17,7 @@ import { useUpdateData } from "src/api/me/data";
 import { useUserContext } from "src/components/user";
 import { Form, Field } from "src/components/hook-form";
 
-import { UserPhoto } from "src/sections/_account/layout";
+import { UserPhoto } from "src/sections/account/layout";
 
 // ----------------------------------------------------------------------
 

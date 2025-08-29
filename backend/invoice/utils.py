@@ -12,6 +12,10 @@ from utils.logger.logger import logger
 from global_config import CONFIG
 
 
+def get_invoice_number(self, id: int):
+    return "LOOPINV{:07d}".format(id)
+
+
 class InvoiceGenerator:
     def __init__(self, invoice, website_url):
         self.url = website_url
@@ -28,7 +32,7 @@ class InvoiceGenerator:
         self.date = date.today()
         self.is_vat = self._is_vat()
         self.vat_rate = CONFIG["vat_rate"] if self.is_vat else 0
-        self.invoice_number = self.get_invoice_number(self.invoice.id)
+        self.invoice_number = get_invoice_number(self.invoice.invoice_number)
 
         self.filename = f"{self.invoice_number}.pdf"
         self.path = os.path.join(self.INVOICE_DIR, self.filename)
@@ -39,8 +43,8 @@ class InvoiceGenerator:
 
         self.data = {
             "vat": self.is_vat,
-            "invoice_date": self.date,
-            "completion_date": self.date,
+            "invoice_date": self.invoice.invoice_date,
+            "service_date": self.invoice.service_date,
             "invoice_number": self.invoice_number,
             "customer": {
                 "full_name": self.customer.full_name,
@@ -83,9 +87,6 @@ class InvoiceGenerator:
         }
 
         os.makedirs(self.INVOICE_DIR, mode=0o777, exist_ok=True)
-
-    def get_invoice_number(self, id: int):
-        return "LOOPINV{:07d}".format(id)
 
     def _format_id(self, id: int):
         return "{:07d}".format(id)
@@ -188,7 +189,7 @@ def generate_and_send_invoice(invoice, website_url, first_name):
             "message_1": message_1,
             "message_2": message_2,
             "message_3": message_3,
-            "invoice_number": invoice_generator.get_invoice_number(invoice.id),
+            "invoice_number": get_invoice_number(invoice.id),
             "message_4": message_4,
             "amount": f"{invoice.amount} {invoice.currency}",
             "message_5": message_5,

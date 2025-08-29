@@ -3,7 +3,7 @@ import type { Language } from "src/locales/types";
 import { MainLayout } from "src/layouts/main";
 import { getData } from "src/layouts/main/data";
 
-import { AccountLayout } from "src/sections/_account/layout";
+import { AccountLayout } from "src/sections/account/layout";
 
 // ----------------------------------------------------------------------
 

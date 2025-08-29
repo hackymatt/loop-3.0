@@ -1,5 +1,5 @@
-from django.urls import path
-
+from core.routers import Router
+from django.urls import path, include
 from .register.views import RegisterView
 from .activate.views import ActivateAccountView, ResendActivationLinkView
 from .login.email.views import LoginView
@@ -13,14 +13,19 @@ from .me.views import (
     ChangePasswordView,
     DeleteAccountView,
     SubscriptionView,
+    InvoicesView
 )
 from .refresh_token.views import RefreshTokenView
 from .dashboard.views import DashboardView
 
 from const import Urls
 
+router = Router(trailing_slash=False)
+router.register(Urls.INVOICES, InvoicesView, basename="invoices")
+
 # Define all your API URL patterns
 urlpatterns = [
+    path("", include(router.urls)),
     # Registration and activation routes
     path(Urls.REGISTER, RegisterView.as_view(), name="register"),
     path(Urls.ACTIVATE, ActivateAccountView.as_view(), name="activate"),

@@ -45,6 +45,10 @@
           "answer": "Log in and go to 'Account settings' → 'Subscription' to view your current plan and switch to another."
         },
         {
+          "question": "Where can I download my invoices?",
+          "answer": "Log in and go to 'Account Settings' → 'Invoices'. Here you can view your payment history and download PDF invoices for all your subscriptions."
+        },
+        {
           "question": "How do I delete my account?",
           "answer": "Log in and go to 'Account settings' → 'Manage account'. You'll find the option to delete your account there."
         }

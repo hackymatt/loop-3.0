@@ -1,7 +1,9 @@
-from django.db import models
+from django.db import models, transaction
+from django.utils import timezone
 from core.base_model import BaseModel
 from user.type.student_user.models import Student
 from const import Currency, PaymentStatus, PaymentMethod, Language
+from global_config import CONFIG
 from .utils import generate_and_send_invoice
 
 
@@ -36,6 +38,9 @@ class InvoiceItem(models.Model):
 class Invoice(BaseModel):
     customer = models.ForeignKey(InvoiceCustomer, on_delete=models.PROTECT)
     items = models.ManyToManyField(InvoiceItem)
+    invoice_number = models.PositiveIntegerField(unique=True, editable=False)
+    invoice_date = models.DateField(default=timezone.now)
+    service_date = models.DateField(default=timezone.now)
     currency = models.CharField(
         max_length=3, choices=Currency.choices, default=Currency.PLN
     )
@@ -45,7 +50,7 @@ class Invoice(BaseModel):
     method = models.CharField(
         max_length=20, choices=PaymentMethod.choices, default=PaymentMethod.STRIPE
     )
-    notes = models.TextField(null=True)
+    notes = models.TextField(null=True, blank=True)
     language = models.CharField(
         max_length=2, choices=Language.choices, default=Language.PL
     )
@@ -59,12 +64,23 @@ class Invoice(BaseModel):
         return sum(item.price * item.quantity for item in self.items.all())
 
     def save(self, *args, **kwargs):
+        if not self.pk:  # only assign a number when creating
+            self.invoice_number = self.get_next_invoice_number()
         super().save(*args, **kwargs)
 
         if self.auto_generate:
             generate_and_send_invoice(
-                self, "https://loop.edu.pl", self.customer.full_name
+                self, CONFIG["website_url"], self.customer.full_name
             )
+
+    @classmethod
+    def get_next_invoice_number(cls):
+        with transaction.atomic():
+            last_invoice = (
+                cls.objects.select_for_update().order_by("-invoice_number").first()
+            )
+            next_number = 1 if not last_invoice else last_invoice.invoice_number + 1
+            return next_number
 
     class Meta:
         db_table = "invoice"

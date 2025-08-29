@@ -17,8 +17,13 @@ from plan.subscription.utils import (
 )
 from const import SubscriptionStatus, PaymentStatus, PaymentMethod, Language
 from global_config import CONFIG
-from mailer.mailer import Mailer
+from .utils import generate_customer_portal_link
 from utils.url.url import get_website_url
+from utils.logger.logger import logger
+from django.template.loader import render_to_string
+from django.utils.translation import gettext as _
+from django.utils import translation
+from mailer.mailer import Mailer
 
 stripe.api_key = CONFIG["stripe_secret_key"]
 
@@ -275,6 +280,12 @@ class StripeWebhookView(APIView):
             )
 
     def handle_invoice_payment_succeeded(self, data):
+        generate_invoice = data.get("amount_due") > 0
+
+        if not generate_invoice:
+            logger.info("Invoice generation has been skipped", exc_info=True)
+            return
+
         language = (
             data.get("parent", {})
             .get("subscription_details", {})
@@ -287,7 +298,7 @@ class StripeWebhookView(APIView):
             .get("subscription_details", {})
             .get("metadata", {})
             .get("website_url")
-            or Language.PL
+            or CONFIG["website_url"]
         )
         student = Student.objects.get(stripe_customer_id=data["customer"])
 
@@ -340,4 +351,51 @@ class StripeWebhookView(APIView):
         StudentInvoice.objects.create(invoice=invoice, student=student)
 
     def handle_invoice_payment_failed(self, data):
-        print("Payment failed")
+        language = (
+            data.get("parent", {})
+            .get("subscription_details", {})
+            .get("metadata", {})
+            .get("language")
+            or Language.PL
+        )
+        website_url = (
+            data.get("parent", {})
+            .get("subscription_details", {})
+            .get("metadata", {})
+            .get("website_url")
+            or CONFIG["website_url"]
+        )
+
+        student = Student.objects.get(stripe_customer_id=data["customer"])
+
+        customer_portal_link = generate_customer_portal_link(student, website_url)
+
+        mailer = Mailer(website_url)
+
+        with translation.override(language):
+            subject = _("Payment Failed")
+            message_1 = _(
+                "Hi %(first_name)s, unfortunately your recent payment has failed."
+            ) % {"first_name": student.first_name}
+            message_2 = _("Please check your payment details and try again.")
+            message_3 = _(
+                "To update your payment method, please visit the customer portal"
+            )
+            portal_text = _("Update Payment Method")
+
+            data = {
+                "message_1": message_1,
+                "message_2": message_2,
+                "message_3": message_3,
+                "customer_portal_link": customer_portal_link,
+                "portal_text": portal_text,
+            }
+
+        mailer.send(
+            email_template="payment_failed.html",
+            to=[data["customer_email"]],
+            subject=subject,
+            data=data,
+            attachments=[],
+            language=language,
+        )

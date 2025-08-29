@@ -150,9 +150,6 @@ msgstr "VAT UE"
 msgid "Poland"
 msgstr "Polska"
 
-msgid "Customer Number: %(customer_id)s"
-msgstr "Numer klienta: %(customer_id)s"
-
 msgid "No."
 msgstr "L.p."
 
@@ -218,3 +215,18 @@ msgstr "Suma podatku VAT"
 
 msgid "Sum Gross Total"
 msgstr "Suma brutto"
+
+msgid "Payment Failed"
+msgstr "Nieudana płatność"
+
+msgid "Hi %(first_name)s, unfortunately your recent payment has failed."
+msgstr "Cześć %(first_name)s, niestety Twoja ostatnia płatność nie powiodła się."
+
+msgid "Please check your payment details and try again."
+msgstr "Sprawdź swoje dane płatności i spróbuj ponownie."
+
+msgid "To update your payment method, please visit the customer portal"
+msgstr "Aby zaktualizować metodę płatności, odwiedź portal klienta"
+
+msgid "Update Payment Method"
+msgstr "Zaktualizuj metodę płatności"

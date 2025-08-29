@@ -1,4 +1,5 @@
 import type { JOIN_TYPE, USER_TYPE } from "src/consts/user";
+import type { DatePickerFormat } from "src/utils/format-time";
 import type { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 
 import type { IProjectListProps } from "./project";
@@ -54,4 +55,12 @@ export type ISubscriptionProps = {
   currency: Currency | null;
   isAutoRenew: boolean | null;
   status: SubscriptionStatus;
+};
+
+export type IInvoiceProps = {
+  invoiceNumber: string;
+  invoiceDate: DatePickerFormat;
+  currency: Currency;
+  amount: number;
+  url: string;
 };

@@ -7,7 +7,7 @@ import { createMetadata } from "src/utils/create-metadata";
 import { LANGUAGE } from "src/consts/language";
 import { subscriptionQuery } from "src/api/me/subscription";
 
-import { AccountSubscriptionView } from "src/sections/_account/view/account-subscription-view";
+import { AccountSubscriptionView } from "src/sections/view/account-subscription-view";
 
 // ----------------------------------------------------------------------
 type PageProps = {

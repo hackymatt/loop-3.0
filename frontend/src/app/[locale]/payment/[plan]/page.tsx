@@ -5,11 +5,13 @@ import { paths } from "src/routes/paths";
 
 import { createMetadata } from "src/utils/create-metadata";
 
+import { PLAN_TYPE } from "src/consts/plan";
 import { planQuery } from "src/api/plan/plan";
 import { LANGUAGE } from "src/consts/language";
 import { createSetupIntent } from "src/api/plan/payment";
 
 import { PaymentView } from "src/sections/view/payment-view";
+import { NotFoundView } from "src/sections/error/not-found-view";
 
 // ----------------------------------------------------------------------
 type SearchParams = { interval: PlanInterval; currency: Currency };
@@ -54,6 +56,14 @@ async function getData(language: Language, type: string, interval: string, curre
   };
 }
 export default async function Page({ params, searchParams }: PageProps) {
+  if (
+    ![PLAN_TYPE.BASIC, PLAN_TYPE.PREMIUM].includes(
+      params.plan as typeof PLAN_TYPE.BASIC | typeof PLAN_TYPE.PREMIUM
+    )
+  ) {
+    return <NotFoundView />;
+  }
+
   const data = await getData(
     params.locale,
     params.plan,

@@ -48,7 +48,7 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
 
   const redirect = localize(
     plan.type === PLAN_TYPE.FREE
-      ? `${paths.payment}/${plan.type}`
+      ? `${paths.account.dashboard}`
       : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
   );
 

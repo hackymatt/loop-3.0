@@ -26,7 +26,7 @@ import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
 import { Form, Field } from "src/components/hook-form";
 
-import { DeleteAccountForm } from "./delete-account-form";
+import { DeleteAccountForm } from "../account/delete-account-form";
 
 // ----------------------------------------------------------------------
 
