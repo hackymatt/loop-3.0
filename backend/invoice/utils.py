@@ -12,7 +12,7 @@ from utils.logger.logger import logger
 from global_config import CONFIG
 
 
-def get_invoice_number(self, id: int):
+def get_invoice_number(id: int):
     return "LOOPINV{:07d}".format(id)
 
 
@@ -146,17 +146,17 @@ class InvoiceGenerator:
             return storage.save(location, f)
 
     def upload(self):
-        bucket_name = datetime.today().strftime("%Y%m%d")
+        folder_name = self.invoice.invoice_date.strftime("%Y/%m")
         invoices_storage_config = CONFIG["storages"].get(
             "invoices",
             {
-                "BACKEND": "storages.backends.s3.S3Storage",
+                "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
                 "OPTIONS": {},
             },
         )
         storage_class = get_storage_class(invoices_storage_config["BACKEND"])
         storage = storage_class(**invoices_storage_config["OPTIONS"])
-        location = f"{bucket_name}/{self.filename}"
+        location = f"{folder_name}/{self.filename}"
 
         file_path = self._upload(storage=storage, location=location)
 
@@ -208,4 +208,5 @@ def generate_and_send_invoice(invoice, website_url, first_name):
         language=invoice.language,
     )
 
+    invoice_generator.upload()
     invoice_generator.remove()

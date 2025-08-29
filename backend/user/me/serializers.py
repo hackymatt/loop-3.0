@@ -1,3 +1,4 @@
+import boto3
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
@@ -62,6 +63,15 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         return obj.plan_pricing.currency if obj.plan_pricing else None
 
 
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=CONFIG["s3"]["access_key"],
+    aws_secret_access_key=CONFIG["s3"]["secret_key"],
+    endpoint_url=CONFIG["s3"]["endpoint_url"],
+    region_name=CONFIG["s3"]["region_name"],
+)
+
+
 class InvoiceSerializer(serializers.ModelSerializer):
     invoice_number = serializers.SerializerMethodField()
     invoice_date = serializers.DateField(source="invoice.invoice_date")
@@ -71,7 +81,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudentInvoice
-        fields = ["invoice_number", "invoice_date", "amount", "currency"]
+        fields = ["invoice_number", "invoice_date", "amount", "currency", "url"]
 
     def get_invoice_number(self, obj):
         return get_number(obj.invoice.invoice_number)
@@ -80,16 +90,14 @@ class InvoiceSerializer(serializers.ModelSerializer):
         return obj.invoice.amount
 
     def get_url(self, obj):
-        invoices_storage_config = CONFIG["storages"].get(
-            "invoices",
-            {
-                "BACKEND": "storages.backends.s3.S3Storage",
-                "OPTIONS": {},
-            },
-        )
-        storage_class = get_storage_class(invoices_storage_config["BACKEND"])
-        storage = storage_class(**invoices_storage_config["OPTIONS"])
+        folder_name = obj.invoice.invoice_date.strftime("%Y/%m")
+        file_path = f'{CONFIG["invoice_location"]}/{folder_name}/{self.get_invoice_number(obj)}.pdf'
 
-        folder_name = obj.invoice.invoice_date.strftime("%Y%m%d")
-        file_path = f"{folder_name}/{self.get_invoice_number(obj)}.pdf"
-        return storage.url(file_path, querystring_auth=True)
+        return s3_client.generate_presigned_url(
+            "get_object",
+            Params={
+                "Bucket": CONFIG["s3"]["bucket_name"],
+                "Key": file_path,
+            },
+            ExpiresIn=3600,
+        )

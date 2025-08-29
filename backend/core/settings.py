@@ -273,16 +273,22 @@ CACHEOPS = {
     },
 }
 
+AWS_ACCESS_KEY = os.getenv("S3_ACCESS_KEY", "")
+AWS_SECRET_KEY = os.getenv("S3_SECRET_KEY", "")
+AWS_STORAGE_BUCKET_NAME = "files"
+AWS_S3_REGION_NAME = "FRA1"
+AWS_S3_ENDPOINT_URL = "https://objectstore.fra1.civo.com"
+
 # Database backup
 DBBACKUP_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 DBBACKUP_STORAGE_OPTIONS = {
-    "access_key": os.getenv("S3_ACCESS_KEY", ""),
-    "secret_key": os.getenv("S3_SECRET_KEY", ""),
+    "access_key": AWS_ACCESS_KEY,
+    "secret_key": AWS_SECRET_KEY,
     "bucket_name": "db-backup",
-    "region_name": "FRA1",
-    "default_acl": "private",
-    "endpoint_url": "https://objectstore.fra1.civo.com",
+    "region_name": AWS_S3_REGION_NAME,
+    "endpoint_url": AWS_S3_ENDPOINT_URL,
     "location": ENV,
+    "default_acl": "private",
 }
 
 DBBACKUP_FREQ = {"DEV": "0 0 * * *", "UAT": "0 0 * * *", "PROD": "0 * * * *"}
@@ -392,56 +398,42 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+MEDIA_LOCATION = f"{ENV}/media" if ENV != "PROD" else "media"
+STATIC_LOCATION = f"{ENV}/static" if ENV != "PROD" else "static"
+INVOICE_LOCATION = f"{ENV}/invoices" if ENV != "PROD" else "invoices"
+
+
 if LOCAL:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     STATIC_URL = "/static/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     MEDIA_URL = "/media/"
 else:
-    media_location = f"{ENV}/media" if ENV != "PROD" else "media"  # pragma: no cover
-    static_location = f"{ENV}/static" if ENV != "PROD" else "static"  # pragma: no cover
-    STATIC_URL = f"https://objectstore.fra1.civo.com/files/{static_location}/"  # pragma: no cover
-    MEDIA_URL = (
-        f"https://objectstore.fra1.civo.com/files/{media_location}/"  # pragma: no cover
-    )
+    STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{STATIC_LOCATION}/"
+    MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{MEDIA_LOCATION}/"
     STORAGES = {
         "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             "OPTIONS": {
-                "access_key": os.getenv("S3_ACCESS_KEY", ""),
-                "secret_key": os.getenv("S3_SECRET_KEY", ""),
-                "bucket_name": "files",
-                "region_name": "FRA1",
+                "location": MEDIA_LOCATION,
                 "default_acl": "public-read",
-                "endpoint_url": "https://objectstore.fra1.civo.com",
-                "location": media_location,
             },
         },
         "staticfiles": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             "OPTIONS": {
-                "access_key": os.getenv("S3_ACCESS_KEY", ""),
-                "secret_key": os.getenv("S3_SECRET_KEY", ""),
-                "bucket_name": "files",
-                "region_name": "FRA1",
+                "location": STATIC_LOCATION,
                 "default_acl": "public-read",
-                "endpoint_url": "https://objectstore.fra1.civo.com",
-                "location": static_location,
             },
         },
         "invoices": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             "OPTIONS": {
-                "access_key": os.getenv("S3_ACCESS_KEY", ""),
-                "secret_key": os.getenv("S3_SECRET_KEY", ""),
-                "bucket_name": "files",
-                "region_name": "FRA1",
+                "location": INVOICE_LOCATION,
                 "default_acl": "private",
-                "endpoint_url": "https://objectstore.fra1.civo.com",
-                "location": f"{ENV}/invoices" if ENV != "PROD" else "invoices",
             },
         },
-    }  # pragma: no cover
+    }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

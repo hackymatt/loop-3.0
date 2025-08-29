@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import InvoiceCustomer, InvoiceItem, Invoice
+from .models import InvoiceCustomer, InvoiceItem, Invoice, StudentInvoice
 
 
 @admin.register(InvoiceCustomer)
@@ -34,3 +34,15 @@ class InvoiceAdmin(admin.ModelAdmin):
     search_fields = ("customer__full_name", "customer__email")
     inlines = [InvoiceItemInline]
     exclude = ("items",)  # items będą dodawane przez inline
+
+
+@admin.register(StudentInvoice)
+class StudentInvoiceAdmin(admin.ModelAdmin):
+    list_display = ("student", "invoice")
+    search_fields = (
+        "student__user__email",
+        "student__first_name",
+        "student__last_name",
+        "invoice__invoice_number",
+    )
+    list_filter = ("invoice__status", "invoice__currency")

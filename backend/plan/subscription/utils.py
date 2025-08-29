@@ -32,9 +32,9 @@ def subscribe(
     )
 
 
-def subscribe_free_plan(student):
+def subscribe_free_plan(student, start_date=timezone.now()):
     plan = get_default_plan()
-    return subscribe(student, plan, timezone.now(), SubscriptionStatus.ACTIVE)
+    return subscribe(student, plan, start_date, SubscriptionStatus.ACTIVE)
 
 
 def unsubscribe_free_plan(student):

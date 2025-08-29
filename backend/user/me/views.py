@@ -133,4 +133,8 @@ class InvoicesView(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return StudentInvoice.objects.filter(student__user=user).select_related("invoice")
+        return (
+            StudentInvoice.objects.filter(student__user=user)
+            .select_related("invoice")
+            .order_by("-invoice__invoice_date")
+        )
