@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Payment confirmation" %}{% endblock %}
+
+{% block content %}
+    <p>{{ message_1|safe }}</p>
+
+    <p>
+        {{ message_2|safe }}
+    </p>
+    <ul>
+        <li>{{ message_3|safe }} {{ invoice_number }}</li>
+        <li>{{ message_4|safe }} {{ amount }}</li>
+        <li>{{ message_5|safe }} {{ payment_method }}</li>
+        <li>{{ message_6|safe }} {{ payment_status }}</li>
+    </ul>
+
+    <p>{{ message_7|safe }}</p>
+{% endblock %}

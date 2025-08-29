@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import InvoiceCustomer, InvoiceItem, InvoicePayment, Invoice
+from .models import InvoiceCustomer, InvoiceItem, Invoice
 
 
 @admin.register(InvoiceCustomer)
@@ -10,12 +10,6 @@ class InvoiceCustomerAdmin(admin.ModelAdmin):
 
 @admin.register(InvoiceItem)
 class InvoiceItemAdmin(admin.ModelAdmin):
-    list_display = ("item_id", "name", "price", "quantity")
-    search_fields = ("item_id", "name")
-
-
-@admin.register(InvoicePayment)
-class InvoicePaymentAdmin(admin.ModelAdmin):
     list_display = ("item_id", "name", "price", "quantity")
     search_fields = ("item_id", "name")
 

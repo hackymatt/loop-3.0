@@ -1,6 +1,8 @@
 from django.db import models
 from core.base_model import BaseModel
-from const import Currency, PaymentStatus, PaymentMethod
+from user.type.student_user.models import Student
+from const import Currency, PaymentStatus, PaymentMethod, Language
+from .utils import generate_and_send_invoice
 
 
 class InvoiceCustomer(models.Model):
@@ -44,6 +46,9 @@ class Invoice(BaseModel):
         max_length=20, choices=PaymentMethod.choices, default=PaymentMethod.STRIPE
     )
     notes = models.TextField(null=True)
+    language = models.CharField(
+        max_length=2, choices=Language.choices, default=Language.PL
+    )
     auto_generate = models.BooleanField(default=False)
 
     def __str__(self):  # pragma: no cover
@@ -53,5 +58,26 @@ class Invoice(BaseModel):
     def amount(self):
         return sum(item.price * item.quantity for item in self.items.all())
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.auto_generate:
+            generate_and_send_invoice(
+                self, "https://loop.edu.pl", self.customer.full_name
+            )
+
     class Meta:
         db_table = "invoice"
+
+
+class StudentInvoice(BaseModel):
+    student = models.ForeignKey(
+        Student, on_delete=models.CASCADE, related_name="invoices"
+    )
+    invoice = models.ForeignKey(
+        Invoice, on_delete=models.CASCADE, related_name="students"
+    )
+
+    class Meta:
+        db_table = "student_invoice"
+        unique_together = ("student", "invoice")

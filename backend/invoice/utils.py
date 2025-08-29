@@ -2,23 +2,22 @@ import os
 from weasyprint import HTML
 
 from django.template.loader import render_to_string
+from django.utils.translation import gettext as _
+from django.utils import translation
+from mailer.mailer import Mailer
 from datetime import date, datetime, timedelta
 
-from invoice.models import Invoice
 from django.core.files.storage import get_storage_class
 from utils.logger.logger import logger
-from const import PaymentMethod
 from global_config import CONFIG
 
 
 class InvoiceGenerator:
-    def __init__(self, invoice: Invoice, language, website_url):
-        self.language = language
+    def __init__(self, invoice, website_url):
         self.url = website_url
+        self.language = invoice.language
 
-        self.PRODUCT_TYPE = "szt."
         self.INVOICE_DIR = "invoices"
-        self.NOTES = "Dostawa towarów lub świadczenie usług zwolnionych od podatku VAT na podstawie art. 113 ust. 1 i 9 ustawy o VAT. reverse charge"
 
         self.invoice = invoice
         self.customer = invoice.customer
@@ -29,10 +28,14 @@ class InvoiceGenerator:
         self.date = date.today()
         self.is_vat = self._is_vat()
         self.vat_rate = CONFIG["vat_rate"] if self.is_vat else 0
-        self.invoice_number = self.get_invoice_number(self.invoice["id"])
+        self.invoice_number = self.get_invoice_number(self.invoice.id)
 
         self.filename = f"{self.invoice_number}.pdf"
         self.path = os.path.join(self.INVOICE_DIR, self.filename)
+
+        with translation.override(invoice.language):
+            self.payment_method = _(self.invoice.method)
+            self.payment_status = _(self.invoice.status)
 
         self.data = {
             "vat": self.is_vat,
@@ -41,7 +44,6 @@ class InvoiceGenerator:
             "invoice_number": self.invoice_number,
             "customer": {
                 "full_name": self.customer.full_name,
-                "id": self._format_id(id=self.customer.id),
                 "street": self.customer.street_address,
                 "city": self.customer.city,
                 "zip_code": self.customer.zip_code,
@@ -50,24 +52,21 @@ class InvoiceGenerator:
             "products": [
                 {
                     "id": self._format_id(id=item.id),
-                    "name": item["name"],
-                    "type": self.PRODUCT_TYPE,
-                    "quantity": item["quantity"],
+                    "name": item.name,
+                    "quantity": item.quantity,
                     "price_netto": self._format_number(
-                        number=self._calc_net_price(price=item["price"])
+                        number=self._calc_net_price(price=item.price)
                     ),
                     "subtotal_netto": self._format_number(
                         number=self._calc_net_subtotal(
-                            price=item["price"], quantity=item["quantity"]
+                            price=item.price, quantity=item.quantity
                         )
                     ),
                     "vat_percent": f"{self.vat_rate}%",
-                    "vat": self._format_number(
-                        number=self._calc_vat(price=item["price"])
-                    ),
-                    "price_brutto": self._format_number(number=item["price"]),
+                    "vat": self._format_number(number=self._calc_vat(price=item.price)),
+                    "price_brutto": self._format_number(number=item.price),
                     "subtotal_brutto": self._format_number(
-                        number=item["price"] * item["quantity"]
+                        number=item.price * item.quantity
                     ),
                 }
                 for item in self.items
@@ -78,14 +77,9 @@ class InvoiceGenerator:
             "total_vat": self._format_price(price=self._calc_vat(price=self.amount)),
             "total_brutto": self._format_price(price=self.amount),
             "payment_due": self.date + timedelta(days=14),
-            "payment_method": self.invoice.method,
-            "payment_status": self.invoice.status,
-            "payment_account": CONFIG["account"]
-            if self.invoice.method == PaymentMethod.BANK_TRANSFER
-            else None,
-            "notes": self.invoice.notes
-            if self.is_vat
-            else f"{self.NOTES} {self.invoice.notes}".strip(),
+            "payment_method": self.payment_method,
+            "payment_status": self.payment_status,
+            "notes": self.invoice.notes,
         }
 
         os.makedirs(self.INVOICE_DIR, mode=0o777, exist_ok=True)
@@ -113,6 +107,8 @@ class InvoiceGenerator:
         return f"{float(price):,.2f} {currency}"
 
     def _calc_sales(self):
+        from invoice.models import Invoice
+
         current_year = datetime.now().year
         previous_year = current_year - 1
         start_date = date(previous_year, 1, 1)
@@ -125,15 +121,14 @@ class InvoiceGenerator:
         return self._calc_sales() > CONFIG["vat_limit"]
 
     def create(self):
-        html_content = render_to_string(
-            "invoice.html",
-            {
-                **self.data,
-                **{
+        with translation.override(self.language):
+            html_content = render_to_string(
+                "invoice.html",
+                {
+                    **self.data,
                     "company": "loop",
                 },
-            },
-        )
+            )
 
         HTML(string=html_content, base_url=self.url).write_pdf(
             self.path, presentational_hints=True
@@ -169,3 +164,47 @@ class InvoiceGenerator:
     def remove(self):
         if os.path.exists(self.path):
             os.remove(self.path)
+
+
+def generate_and_send_invoice(invoice, website_url, first_name):
+    invoice_generator = InvoiceGenerator(invoice, website_url)
+    invoice_path = invoice_generator.create()
+
+    mailer = Mailer(website_url)
+
+    with translation.override(invoice.language):
+        subject = _("Payment confirmation")
+        message_1 = _(
+            "Hi %(first_name)s, we have successfully received your payment."
+        ) % {"first_name": first_name}
+        message_2 = _("Payment details:")
+        message_3 = _("Invoice Number:")
+        message_4 = _("Amount:")
+        message_5 = _("Payment Method:")
+        message_6 = _("Status:")
+        message_7 = _("The invoice is attached.")
+
+        data = {
+            "message_1": message_1,
+            "message_2": message_2,
+            "message_3": message_3,
+            "invoice_number": invoice_generator.get_invoice_number(invoice.id),
+            "message_4": message_4,
+            "amount": f"{invoice.amount} {invoice.currency}",
+            "message_5": message_5,
+            "payment_method": _(invoice.method),
+            "message_6": message_6,
+            "payment_status": _(invoice.status),
+            "message_7": message_7,
+        }
+
+    mailer.send(
+        email_template="payment_confirmation.html",
+        to=[invoice.customer.email],
+        subject=subject,
+        data=data,
+        attachments=[invoice_path],
+        language=invoice.language,
+    )
+
+    invoice_generator.remove()
