@@ -5,11 +5,12 @@ import { useTranslation } from "react-i18next";
 import { varAlpha } from "minimal-shared/utils";
 
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import { paths } from "src/routes/paths";
+import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
@@ -19,6 +20,7 @@ import { fCurrency, fShortenNumber } from "src/utils/format-number";
 import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
+import { useCreateCustomerPortalLink } from "src/api/me/customer-portal-link";
 
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
@@ -40,17 +42,30 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const router = useRouter();
+
+  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
   const { isLoggedIn, planType } = user.state;
 
   const isCurrentPlan = isLoggedIn && plan.type === planType;
 
-  const redirect = localize(
-    plan.type === PLAN_TYPE.FREE
-      ? `${paths.account.dashboard}`
-      : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
-  );
+  const handleRedirect = async () => {
+    if (!isLoggedIn) {
+      user.setField("redirect", `${paths.account.dashboard}`);
+      router.push(localize(paths.auth.register));
+      return;
+    }
+    if (plan.type === PLAN_TYPE.FREE) {
+      const {
+        data: { url },
+      } = await createCustomerPortalLink({});
+      router.push(url);
+      return;
+    }
+    router.push(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`);
+  };
 
   const { trackEvent } = useAnalytics();
 
@@ -170,22 +185,20 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
 
       {renderList()}
 
-      <Button
+      <LoadingButton
         fullWidth
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        href={isLoggedIn ? redirect : localize(paths.auth.register)}
         disabled={isCurrentPlan}
-        onClick={() => {
-          if (!isLoggedIn) {
-            user.setField("redirect", redirect);
-          }
+        loading={isLoading}
+        onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
+          await handleRedirect();
         }}
       >
         {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
-      </Button>
+      </LoadingButton>
     </Paper>
   );
 }

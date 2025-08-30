@@ -14,6 +14,7 @@ from .me.views import (
     DeleteAccountView,
     SubscriptionView,
     InvoicesView,
+    CustomerPortalLinkView,
 )
 from .refresh_token.views import RefreshTokenView
 from .dashboard.views import DashboardView
@@ -51,5 +52,10 @@ urlpatterns = [
     path(Urls.PASSWORD_CHANGE, ChangePasswordView.as_view(), name="password"),
     path(Urls.DELETE_ACCOUNT, DeleteAccountView.as_view(), name="delete-account"),
     path(Urls.SUBSCRIPTION, SubscriptionView.as_view(), name="subscription"),
+    path(
+        Urls.CUSTOMER_PORTAL_LINK,
+        CustomerPortalLinkView.as_view(),
+        name="customer-portal-link",
+    ),
     path(Urls.DASHBOARD, DashboardView.as_view(), name="dashboard"),
 ]

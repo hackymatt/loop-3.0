@@ -125,13 +125,15 @@ class StripeWebhookView(APIView):
 
         stripe.Subscription.create(
             customer=customer_id,
-            items=[
-                {"price": price_id, "language": language, "website_url": website_url}
-            ],
+            items=[{"price": price_id}],
             trial_period_days=7,
             payment_behavior="default_incomplete",
             expand=["latest_invoice.payment_intent"],
-            metadata={"price_id": price_id},
+            metadata={
+                "price_id": price_id,
+                "language": language,
+                "website_url": website_url,
+            },
         )
 
     def handle_subscription_created(self, data):
@@ -177,24 +179,40 @@ class StripeWebhookView(APIView):
                 auto_renew=True,
             )
 
+
     def handle_subscription_updated(self, data):
         subscription_id = data["id"]
         customer_id = data["customer"]
         price_id = data["metadata"]["price_id"]
         status = data["status"]
+        cancel_at_period_end = data.get("cancel_at_period_end", False)
         current_period_start = data["items"]["data"][0]["current_period_start"]
         current_period_end = data["items"]["data"][0]["current_period_end"]
-        start_date = timezone.datetime.fromtimestamp(
-            current_period_start, tz=timezone.utc
-        )
+        start_date = timezone.datetime.fromtimestamp(current_period_start, tz=timezone.utc)
         end_date = timezone.datetime.fromtimestamp(current_period_end, tz=timezone.utc)
 
         plan_pricing = PlanPricing.objects.get(stripe_price_id=price_id)
-
         student = Student.objects.get(stripe_customer_id=customer_id)
 
-        if status == "active":
-            # Paid subscription is active
+        if status == "trialing":
+            unsubscribe_free_plan(student)
+            auto_renew = not cancel_at_period_end
+            subscribe(
+                student,
+                plan_pricing.plan,
+                plan_pricing=plan_pricing,
+                start_date=start_date,
+                end_date=end_date,
+                status=SubscriptionStatus.TRIALING,
+                stripe_subscription_id=subscription_id,
+                auto_renew=auto_renew,
+            )
+
+            if cancel_at_period_end:
+                subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
+
+        elif status == "active":
+            auto_renew = not cancel_at_period_end
             subscribe(
                 student,
                 plan_pricing.plan,
@@ -203,11 +221,12 @@ class StripeWebhookView(APIView):
                 end_date=end_date,
                 status=SubscriptionStatus.ACTIVE,
                 stripe_subscription_id=subscription_id,
-                auto_renew=True,
+                auto_renew=auto_renew,
             )
+            if cancel_at_period_end:
+                subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
 
         elif status == "past_due":
-            # Payment failed, subscription still exists
             subscribe(
                 student,
                 plan_pricing.plan,
@@ -219,8 +238,19 @@ class StripeWebhookView(APIView):
                 auto_renew=False,
             )
 
+        elif status == "unpaid":
+            subscribe(
+                student,
+                plan_pricing.plan,
+                plan_pricing=plan_pricing,
+                start_date=start_date,
+                end_date=end_date,
+                status=SubscriptionStatus.UNPAID,
+                stripe_subscription_id=subscription_id,
+            )
+            subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
+
         elif status == "canceled":
-            # Immediate cancellation
             subscribe(
                 student,
                 plan_pricing.plan,
@@ -234,7 +264,6 @@ class StripeWebhookView(APIView):
             subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
 
         elif status == "incomplete_expired":
-            # Subscription never completed
             subscribe(
                 student,
                 plan_pricing.plan,
@@ -247,38 +276,11 @@ class StripeWebhookView(APIView):
             )
             subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
 
-        elif status == "unpaid":
-            # Stripe marks subscription as unpaid after grace period
-            subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=SubscriptionStatus.UNPAID,
-                stripe_subscription_id=subscription_id,
-            )
-            subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
-
-        elif status == "cancel_at_period_end":
-            # User requested cancel at period end
-            subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=student.current_subscription.status,
-                stripe_subscription_id=subscription_id,
-                auto_renew=False,
-            )
-            subscribe_free_plan(student, end_date + timedelta(days=1))
-
     def handle_invoice_payment_succeeded(self, data):
         generate_invoice = (data.get("amount_due") or 0) > 0
 
         if not generate_invoice:
-            logger.info("Invoice generation has been skipped", exc_info=True)
+            logger.info("Invoice generation has been skipped")
             return
 
         language = (

@@ -204,4 +204,4 @@ def download_and_assign_image(instance, image_url):
             file_name = os.path.basename(urlparse(image_url).path)
             instance.image.save(file_name, ContentFile(response.content), save=True)
     except Exception as e:
-        logger.warning(f"Could not download or assign image: {e}")
+        logger.warning(f"Could not download or assign image: {e}", exc_info=True)

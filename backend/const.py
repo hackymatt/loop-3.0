@@ -51,7 +51,6 @@ class Urls:
     FEATURED_POST = "featured-post"
     # PLAN
     PLAN = "plans"
-    SUBSCRIBE = "subscribe"
     CREATE_SETUP_INTENT = "create-setup-intent"
     STRIPE_WEBHOOK = "stripe-webhook"
     # CONTACT
@@ -63,6 +62,7 @@ class Urls:
     PASSWORD_CHANGE = "me/password"
     DELETE_ACCOUNT = "me/delete"
     SUBSCRIPTION = "me/subscription"
+    CUSTOMER_PORTAL_LINK = "me/customer-portal-link"
     INVOICES = "me/invoices"
     DASHBOARD = "me/dashboard"
 

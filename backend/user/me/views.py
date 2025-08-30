@@ -15,6 +15,10 @@ from .serializers import (
 from const import JoinType
 from plan.subscription.utils import get_subscription
 from invoice.models import StudentInvoice
+from global_config import CONFIG
+from plan.payment.utils import generate_customer_portal_link
+from utils.url.url import get_website_url
+from user.type.student_user.models import Student
 
 
 class UpdateUserView(UpdateAPIView):
@@ -138,3 +142,13 @@ class InvoicesView(viewsets.ReadOnlyModelViewSet):
             .select_related("invoice")
             .order_by("-invoice__invoice_date")
         )
+
+
+class CustomerPortalLinkView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        student = Student.objects.get(user=request.user)
+        website_url = get_website_url(request)
+        url = generate_customer_portal_link(student, website_url)
+        return Response({"url": url}, status=status.HTTP_200_OK)
