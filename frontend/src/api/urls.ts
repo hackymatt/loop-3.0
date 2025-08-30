@@ -43,7 +43,6 @@ export const URLS = {
   FEATURED_POST: "/featured-post",
   // PLAN
   PLANS: "/plans",
-  SUBSCRIBE: "/subscribe",
   CREATE_SETUP_INTENT: "/create-setup-intent",
   // CERTIFICATES
   CERTIFICATES: "/certificates",
@@ -52,6 +51,7 @@ export const URLS = {
   PASSWORD_CHANGE: "/me/password",
   DELETE_ACCOUNT: "/me/delete",
   SUBSCRIPTION: "/me/subscription",
+  CUSTOMER_PORTAL_LINK: "/me/customer-portal-link",
   INVOICES: "/me/invoices",
   DASHBOARD: "/me/dashboard",
 } as const;

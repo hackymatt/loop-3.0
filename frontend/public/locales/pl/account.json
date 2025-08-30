@@ -99,7 +99,7 @@
       "yearly": "Roczny"
     },
     "renewal": { "price": "Kwota do zapłaty", "date": "Data następnej płatności" },
-    "button": "Anuluj subskrypcję",
+    "button": "Zarządzaj subskrypcją",
     "cancel": "Anuluj",
     "description": "Czy na pewno chcesz anulować subskrypcję? Stracisz dostęp do aktywnych projektów i ścieżek rozwoju.",
     "sell": "Zbuduj swoje portfolio, ucz się z projektami i zdobądź certyfikaty. Wybierz plan i rozwijaj się razem z loop.",

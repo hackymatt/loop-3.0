@@ -139,7 +139,7 @@ class InvoiceGenerator:
 
     def _upload(self, storage, location):  # pragma: no cover
         if CONFIG["is_local"]:
-            logger.warning("Invoice upload has been skipped", exc_info=True)
+            logger.warning("Invoice upload has been skipped")
             return None
 
         with open(self.path, "rb") as f:

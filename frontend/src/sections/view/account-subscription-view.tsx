@@ -4,11 +4,12 @@ import type { Language } from "src/locales/types";
 import type { ISubscriptionProps } from "src/types/user";
 
 import { useTranslation } from "react-i18next";
-import { useBoolean } from "minimal-shared/hooks";
 
 import { Box, Card } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
+
+import { useRouter } from "src/routes/hooks";
 
 import { fDate } from "src/utils/format-time";
 import { getPlanIcon } from "src/utils/plan-icon";
@@ -18,10 +19,9 @@ import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
 import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
+import { useCreateCustomerPortalLink } from "src/api/me/customer-portal-link";
 
 import { Label } from "src/components/label";
-
-import { CancelSubscriptionForm } from "../account/cancel-subscription-form";
 
 // ----------------------------------------------------------------------
 type AccountSubscriptionViewProps = {
@@ -33,12 +33,24 @@ const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${nam
 export function AccountSubscriptionView({ data, language }: AccountSubscriptionViewProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
+  const router = useRouter();
 
-  const cancelSubscriptionFormOpen = useBoolean();
+  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const { type, license, interval, price, currency, nextBillingDate, isAutoRenew, status } = data;
 
   const isFreePlan = type === PLAN_TYPE.FREE;
+
+  const handleCustomerPortalLink = async () => {
+    try {
+      const {
+        data: { url },
+      } = await createCustomerPortalLink({});
+      router.push(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -159,20 +171,15 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
             <LoadingButton
               variant="text"
               size="large"
-              color="error"
-              onClick={cancelSubscriptionFormOpen.onToggle}
+              color="secondary"
+              loading={isLoading}
+              onClick={handleCustomerPortalLink}
             >
               {t("subscription.button")}
             </LoadingButton>
           )}
         </Box>
       </Card>
-
-      <CancelSubscriptionForm
-        open={cancelSubscriptionFormOpen.value}
-        onClose={cancelSubscriptionFormOpen.onFalse}
-        language={language}
-      />
     </>
   );
 }

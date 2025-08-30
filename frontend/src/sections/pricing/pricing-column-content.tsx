@@ -6,10 +6,11 @@ import { useBoolean } from "minimal-shared/hooks";
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Collapse, { collapseClasses } from "@mui/material/Collapse";
 
 import { paths } from "src/routes/paths";
+import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
@@ -17,6 +18,7 @@ import { fShortenNumber } from "src/utils/format-number";
 
 import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
+import { useCreateCustomerPortalLink } from "src/api/me/customer-portal-link";
 
 import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
@@ -41,17 +43,30 @@ export function PricingColumnContentMobile({
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const router = useRouter();
+
+  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
   const { isLoggedIn, planType } = user.state;
 
   const isCurrentPlan = isLoggedIn && plan.type === planType;
 
-  const redirect = localize(
-    plan.type === PLAN_TYPE.FREE
-      ? `${paths.account.dashboard}`
-      : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
-  );
+  const handleRedirect = async () => {
+    if (!isLoggedIn) {
+      user.setField("redirect", `${paths.account.dashboard}`);
+      router.push(localize(paths.auth.register));
+      return;
+    }
+    if (plan.type === PLAN_TYPE.FREE) {
+      const {
+        data: { url },
+      } = await createCustomerPortalLink({});
+      router.push(url);
+      return;
+    }
+    router.push(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`);
+  };
 
   const { trackEvent } = useAnalytics();
 
@@ -131,23 +146,21 @@ export function PricingColumnContentMobile({
         {renderList()}
       </div>
 
-      <Button
+      <LoadingButton
         fullWidth
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        href={isLoggedIn ? redirect : localize(paths.auth.register)}
         disabled={isCurrentPlan}
-        onClick={() => {
-          if (!isLoggedIn) {
-            user.setField("redirect", redirect);
-          }
+        loading={isLoading}
+        onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
+          await handleRedirect();
         }}
         sx={{ mt: 5 }}
       >
         {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
-      </Button>
+      </LoadingButton>
     </Box>
   );
 }
@@ -164,17 +177,30 @@ export function PricingColumnContentDesktop({
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const router = useRouter();
+
+  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
   const { isLoggedIn, planType } = user.state;
 
   const isCurrentPlan = isLoggedIn && plan.type === planType;
 
-  const redirect = localize(
-    plan.type === PLAN_TYPE.FREE
-      ? `${paths.account.dashboard}`
-      : `${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`
-  );
+  const handleRedirect = async () => {
+    if (!isLoggedIn) {
+      user.setField("redirect", `${paths.account.dashboard}`);
+      router.push(localize(paths.auth.register));
+      return;
+    }
+    if (plan.type === PLAN_TYPE.FREE) {
+      const {
+        data: { url },
+      } = await createCustomerPortalLink({});
+      router.push(url);
+      return;
+    }
+    router.push(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`);
+  };
 
   const { trackEvent } = useAnalytics();
 
@@ -224,21 +250,19 @@ export function PricingColumnContentDesktop({
           }),
         }}
       >
-        <Button
+        <LoadingButton
           size="large"
           variant={isCurrentPlan ? "outlined" : "contained"}
           color={plan.popular ? "primary" : "inherit"}
-          href={isLoggedIn ? redirect : paths.auth.register}
           disabled={isCurrentPlan}
-          onClick={() => {
-            if (!isLoggedIn) {
-              user.setField("redirect", redirect);
-            }
+          loading={isLoading}
+          onClick={async () => {
             trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
+            await handleRedirect();
           }}
         >
           {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );
