@@ -60,7 +60,5 @@ export const paths = {
     invoices: "/account/invoices",
   },
 
-  order: {
-    completed: "/order-completed",
-  },
+  orderStatus: "/order-status",
 };

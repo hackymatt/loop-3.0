@@ -128,14 +128,14 @@ function Payment({ data }: PaymentViewProps) {
     const { error } = await stripe.confirmSetup({
       elements,
       confirmParams: {
-        return_url: localize(`${window.location.origin}${paths.order.completed}`),
+        return_url: localize(`${window.location.origin}${paths.orderStatus}`),
       },
     });
 
     if (error) {
       setPaymentError(error.message || null);
     } else {
-      router.push(paths.order.completed);
+      router.push(paths.orderStatus);
     }
   });
 

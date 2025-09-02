@@ -11,7 +11,9 @@ type CurrencyToggleProps = {
 
 export default function CurrencyToggle({ value, onChange }: CurrencyToggleProps) {
   const handleChange = (event: React.MouseEvent<HTMLElement>, newCurrency: Currency) => {
-    onChange(newCurrency);
+    if (newCurrency) {
+      onChange(newCurrency);
+    }
   };
 
   return (

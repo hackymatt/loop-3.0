@@ -16,7 +16,7 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const data = (await subscriptionQuery(params.locale).queryFn()).results;
-  return <AccountSubscriptionView data={data} language={params.locale} />;
+  return <AccountSubscriptionView data={data} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

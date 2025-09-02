@@ -1,15 +1,11 @@
 "use client";
 
-import type { Language } from "src/locales/types";
 import type { ISubscriptionProps } from "src/types/user";
 
 import { useTranslation } from "react-i18next";
 
 import { Box, Card } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import LoadingButton from "@mui/lab/LoadingButton";
-
-import { useRouter } from "src/routes/hooks";
 
 import { fDate } from "src/utils/format-time";
 import { getPlanIcon } from "src/utils/plan-icon";
@@ -18,39 +14,26 @@ import { fCurrency } from "src/utils/format-number";
 import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
 import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
-import { UpgradeButton } from "src/layouts/components/upgrade-button";
-import { useCreateCustomerPortalLink } from "src/api/me/customer-portal-link";
+import { ManageButton } from "src/layouts/components/manage-button";
 
 import { Label } from "src/components/label";
 
 // ----------------------------------------------------------------------
 type AccountSubscriptionViewProps = {
   data: ISubscriptionProps;
-  language: Language;
 };
 
 const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${name}`;
-export function AccountSubscriptionView({ data, language }: AccountSubscriptionViewProps) {
+export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
-  const router = useRouter();
 
-  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
+  const { type, license, interval, price, currency, nextBillingDate, isCancelAtPeriodEnd, status } =
+    data;
 
-  const { type, license, interval, price, currency, nextBillingDate, isAutoRenew, status } = data;
+  console.log(isCancelAtPeriodEnd);
 
   const isFreePlan = type === PLAN_TYPE.FREE;
-
-  const handleCustomerPortalLink = async () => {
-    try {
-      const {
-        data: { url },
-      } = await createCustomerPortalLink({});
-      router.push(url);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <>
@@ -119,7 +102,7 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
                 typography: "body2",
               }}
             >
-              {isAutoRenew ? (
+              {!isCancelAtPeriodEnd ? (
                 <>
                   {[
                     {
@@ -159,7 +142,7 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
             gap: 1,
           }}
         >
-          <UpgradeButton
+          <ManageButton
             slotProps={{
               button: {
                 size: "large",
@@ -167,17 +150,6 @@ export function AccountSubscriptionView({ data, language }: AccountSubscriptionV
               },
             }}
           />
-          {!isFreePlan && (
-            <LoadingButton
-              variant="text"
-              size="large"
-              color="secondary"
-              loading={isLoading}
-              onClick={handleCustomerPortalLink}
-            >
-              {t("subscription.button")}
-            </LoadingButton>
-          )}
         </Box>
       </Card>
     </>

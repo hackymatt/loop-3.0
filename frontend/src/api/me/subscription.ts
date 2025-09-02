@@ -26,7 +26,7 @@ type ISubscription = {
     | "incomplete_expired"
     | "past_due"
     | "unpaid";
-  auto_renew: boolean | null;
+  cancel_at_period_end: boolean | null;
 };
 
 export const subscriptionQuery = (language: Language) => {
@@ -38,12 +38,12 @@ export const subscriptionQuery = (language: Language) => {
       headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
-    const { next_billing_date, auto_renew, ...rest } = data;
+    const { next_billing_date, cancel_at_period_end, ...rest } = data;
 
     const modifiedResult: ISubscriptionProps = {
       ...rest,
       nextBillingDate: next_billing_date,
-      isAutoRenew: auto_renew,
+      isCancelAtPeriodEnd: cancel_at_period_end,
     };
 
     return { results: modifiedResult };

@@ -15,7 +15,9 @@ export default function IntervalToggle({ value, onChange }: IntervalToggleProps)
   const { t } = useTranslation("pricing");
 
   const handleChange = (event: React.MouseEvent<HTMLElement>, newInterval: PlanInterval) => {
-    onChange(newInterval);
+    if (newInterval) {
+      onChange(newInterval);
+    }
   };
 
   return (

@@ -51,21 +51,33 @@ export function PricingColumnContentMobile({
   const { isLoggedIn, planType } = user.state;
 
   const isCurrentPlan = isLoggedIn && plan.type === planType;
+  const isFreePlan = planType === PLAN_TYPE.FREE;
 
   const handleRedirect = async () => {
     if (!isLoggedIn) {
-      user.setField("redirect", `${paths.account.dashboard}`);
-      router.push(localize(paths.auth.register));
+      if (plan.type === PLAN_TYPE.FREE) {
+        user.setField("redirect", localize(paths.account.dashboard));
+      } else {
+        user.setField(
+          "redirect",
+          localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+        );
+      }
+      router.push(localize(paths.account.dashboard));
       return;
     }
-    if (plan.type === PLAN_TYPE.FREE) {
-      const {
-        data: { url },
-      } = await createCustomerPortalLink({});
-      router.push(url);
+
+    if (isFreePlan) {
+      router.push(
+        localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+      );
       return;
     }
-    router.push(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`);
+
+    const {
+      data: { url },
+    } = await createCustomerPortalLink({});
+    router.push(url);
   };
 
   const { trackEvent } = useAnalytics();
@@ -151,7 +163,7 @@ export function PricingColumnContentMobile({
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        disabled={isCurrentPlan}
+        disabled={isCurrentPlan && isFreePlan}
         loading={isLoading}
         onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
@@ -159,7 +171,11 @@ export function PricingColumnContentMobile({
         }}
         sx={{ mt: 5 }}
       >
-        {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
+        {isCurrentPlan && isFreePlan
+          ? t("current")
+          : isCurrentPlan && !isFreePlan
+            ? t("manage")
+            : `${t("choose")} ${plan.license}`}
       </LoadingButton>
     </Box>
   );
@@ -185,21 +201,33 @@ export function PricingColumnContentDesktop({
   const { isLoggedIn, planType } = user.state;
 
   const isCurrentPlan = isLoggedIn && plan.type === planType;
+  const isFreePlan = planType === PLAN_TYPE.FREE;
 
   const handleRedirect = async () => {
     if (!isLoggedIn) {
-      user.setField("redirect", `${paths.account.dashboard}`);
-      router.push(localize(paths.auth.register));
+      if (plan.type === PLAN_TYPE.FREE) {
+        user.setField("redirect", localize(paths.account.dashboard));
+      } else {
+        user.setField(
+          "redirect",
+          localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+        );
+      }
+      router.push(localize(paths.account.dashboard));
       return;
     }
-    if (plan.type === PLAN_TYPE.FREE) {
-      const {
-        data: { url },
-      } = await createCustomerPortalLink({});
-      router.push(url);
+
+    if (isFreePlan) {
+      router.push(
+        localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+      );
       return;
     }
-    router.push(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`);
+
+    const {
+      data: { url },
+    } = await createCustomerPortalLink({});
+    router.push(url);
   };
 
   const { trackEvent } = useAnalytics();
@@ -254,14 +282,18 @@ export function PricingColumnContentDesktop({
           size="large"
           variant={isCurrentPlan ? "outlined" : "contained"}
           color={plan.popular ? "primary" : "inherit"}
-          disabled={isCurrentPlan}
+          disabled={isCurrentPlan && isFreePlan}
           loading={isLoading}
           onClick={async () => {
             trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
             await handleRedirect();
           }}
         >
-          {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
+          {isCurrentPlan && isFreePlan
+            ? t("current")
+            : isCurrentPlan && !isFreePlan
+              ? t("manage")
+              : `${t("choose")} ${plan.license}`}
         </LoadingButton>
       </Box>
     </Box>
