@@ -21,8 +21,12 @@ import { varBounce, MotionContainer } from "src/components/animate";
 
 const variants: Variants = varBounce("in");
 
-export default function OrderCompletedView() {
-  const { t } = useTranslation("order-completed");
+type OrderStatusViewProps = {
+  status: "succeeded" | "failed";
+};
+
+export default function OrderStatusView({ status }: OrderStatusViewProps) {
+  const { t } = useTranslation("order-status");
   return (
     <Container
       component={MotionContainer}
@@ -33,25 +37,25 @@ export default function OrderCompletedView() {
       }}
     >
       <m.div variants={variants}>
-        <Box sx={{ fontSize: 128 }}>🎉</Box>
+        <Box sx={{ fontSize: 128 }}>{status === "succeeded" ? "🎉" : "😞"}</Box>
       </m.div>
 
       <Stack spacing={1} sx={{ my: 5 }}>
-        <Typography variant="h3">{t("title")}</Typography>
+        <Typography variant="h3">{t(`${status}.title`)}</Typography>
         <Typography variant="body1" sx={{ mb: 0.5, display: "block", color: "text.disabled" }}>
-          {t("subtitle")}
+          {t(`${status}.subtitle`)}
         </Typography>
       </Stack>
 
       <Button
         component={RouterLink}
-        href={paths.account.dashboard}
+        href={status === "succeeded" ? paths.account.dashboard : paths.pricing}
         size="large"
         color="inherit"
         variant="contained"
         endIcon={<Iconify icon="carbon:chevron-right" />}
       >
-        {t("button")}
+        {t(`${status}.button`)}
       </Button>
     </Container>
   );

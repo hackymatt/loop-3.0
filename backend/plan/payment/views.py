@@ -5,17 +5,12 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from datetime import timedelta
 from django.utils.translation import gettext as _
 from user.type.student_user.models import Student
 from plan.models import Plan, PlanPricing
 from invoice.models import Invoice, InvoiceCustomer, InvoiceItem, StudentInvoice
 from invoice.utils import generate_and_send_invoice
-from plan.subscription.utils import (
-    subscribe,
-    subscribe_free_plan,
-    unsubscribe_free_plan,
-)
+from plan.subscription.utils import subscribe, subscribe_free_plan
 from const import SubscriptionStatus, PaymentStatus, PaymentMethod, Language
 from global_config import CONFIG
 from .utils import generate_customer_portal_link
@@ -56,7 +51,6 @@ class CreateSetupIntentView(APIView):
             setup_intent = stripe.SetupIntent.create(
                 customer=customer["id"],
                 metadata={
-                    "price_id": pricing.stripe_price_id,
                     "language": language,
                     "website_url": website_url,
                 },
@@ -104,10 +98,10 @@ class StripeWebhookView(APIView):
             self.handle_setup_intent_succeeded(data)
 
         return Response(status=status.HTTP_200_OK)
-
+    
     def handle_setup_intent_succeeded(self, data):
         customer_id = data["customer"]
-        price_id = data["metadata"]["price_id"]
+        price_id = data["items"]["data"][0]["price"]["id"]
         language = data["metadata"]["language"]
         website_url = data["metadata"]["website_url"]
         payment_method_id = data.get("payment_method")
@@ -126,11 +120,10 @@ class StripeWebhookView(APIView):
         stripe.Subscription.create(
             customer=customer_id,
             items=[{"price": price_id}],
-            trial_period_days=7,
+            trial_period_days=CONFIG["free_trial_days"],
             payment_behavior="default_incomplete",
             expand=["latest_invoice.payment_intent"],
             metadata={
-                "price_id": price_id,
                 "language": language,
                 "website_url": website_url,
             },
@@ -139,7 +132,7 @@ class StripeWebhookView(APIView):
     def handle_subscription_created(self, data):
         subscription_id = data["id"]
         customer_id = data["customer"]
-        price_id = data["metadata"]["price_id"]
+        price_id = data["items"]["data"][0]["price"]["id"]
         status = data["status"]
         current_period_start = data["items"]["data"][0]["current_period_start"]
         current_period_end = data["items"]["data"][0]["current_period_end"]
@@ -152,9 +145,7 @@ class StripeWebhookView(APIView):
 
         student = Student.objects.get(stripe_customer_id=customer_id)
 
-        if status == "trialing":
-            # User started trial
-            unsubscribe_free_plan(student)
+        if status == SubscriptionStatus.TRIALING:
             subscribe(
                 student,
                 plan_pricing.plan,
@@ -163,11 +154,10 @@ class StripeWebhookView(APIView):
                 end_date=end_date,
                 status=SubscriptionStatus.TRIALING,
                 stripe_subscription_id=subscription_id,
-                auto_renew=True,
+                cancel_at_period_end=True,
             )
 
-        elif status == "active":
-            # Paid subscription is active
+        elif status == SubscriptionStatus.ACTIVE:
             subscribe(
                 student,
                 plan_pricing.plan,
@@ -176,105 +166,49 @@ class StripeWebhookView(APIView):
                 end_date=end_date,
                 status=SubscriptionStatus.ACTIVE,
                 stripe_subscription_id=subscription_id,
-                auto_renew=True,
+                cancel_at_period_end=True,
             )
-
 
     def handle_subscription_updated(self, data):
         subscription_id = data["id"]
         customer_id = data["customer"]
-        price_id = data["metadata"]["price_id"]
+        price_id = data["items"]["data"][0]["price"]["id"]
         status = data["status"]
         cancel_at_period_end = data.get("cancel_at_period_end", False)
         current_period_start = data["items"]["data"][0]["current_period_start"]
         current_period_end = data["items"]["data"][0]["current_period_end"]
-        start_date = timezone.datetime.fromtimestamp(current_period_start, tz=timezone.utc)
+        start_date = timezone.datetime.fromtimestamp(
+            current_period_start, tz=timezone.utc
+        )
         end_date = timezone.datetime.fromtimestamp(current_period_end, tz=timezone.utc)
 
         plan_pricing = PlanPricing.objects.get(stripe_price_id=price_id)
         student = Student.objects.get(stripe_customer_id=customer_id)
 
-        if status == "trialing":
-            unsubscribe_free_plan(student)
-            auto_renew = not cancel_at_period_end
+        if status in [
+            SubscriptionStatus.TRIALING,
+            SubscriptionStatus.ACTIVE,
+            SubscriptionStatus.PAST_DUE,
+        ]:
             subscribe(
                 student,
                 plan_pricing.plan,
                 plan_pricing=plan_pricing,
                 start_date=start_date,
                 end_date=end_date,
-                status=SubscriptionStatus.TRIALING,
+                status=status,
                 stripe_subscription_id=subscription_id,
-                auto_renew=auto_renew,
+                cancel_at_period_end=False
+                if status == SubscriptionStatus.PAST_DUE
+                else cancel_at_period_end,
             )
 
-            if cancel_at_period_end:
-                subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
-
-        elif status == "active":
-            auto_renew = not cancel_at_period_end
-            subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=SubscriptionStatus.ACTIVE,
-                stripe_subscription_id=subscription_id,
-                auto_renew=auto_renew,
-            )
-            if cancel_at_period_end:
-                subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
-
-        elif status == "past_due":
-            subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=SubscriptionStatus.PAST_DUE,
-                stripe_subscription_id=subscription_id,
-                auto_renew=False,
-            )
-
-        elif status == "unpaid":
-            subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=SubscriptionStatus.UNPAID,
-                stripe_subscription_id=subscription_id,
-            )
-            subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
-
-        elif status == "canceled":
-            subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=SubscriptionStatus.CANCELED,
-                stripe_subscription_id=subscription_id,
-                auto_renew=False,
-            )
-            subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
-
-        elif status == "incomplete_expired":
-            subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=SubscriptionStatus.INCOMPLETE_EXPIRED,
-                stripe_subscription_id=subscription_id,
-                auto_renew=False,
-            )
-            subscribe_free_plan(student, start_date=end_date + timedelta(days=1))
+        elif status in [
+            SubscriptionStatus.UNPAID,
+            SubscriptionStatus.CANCELED,
+            SubscriptionStatus.INCOMPLETE_EXPIRED,
+        ]:
+            subscribe_free_plan(student, start_date=end_date)
 
     def handle_invoice_payment_succeeded(self, data):
         generate_invoice = (data.get("amount_due") or 0) > 0
@@ -283,6 +217,7 @@ class StripeWebhookView(APIView):
             logger.info("Invoice generation has been skipped")
             return
 
+        price_id = data["items"]["data"][0]["price"]["id"]
         language = (
             data.get("parent", {})
             .get("subscription_details", {})
@@ -326,7 +261,7 @@ class StripeWebhookView(APIView):
         invoice_items = [
             InvoiceItem.objects.create(
                 item_id=PlanPricing.objects.get(
-                    stripe_price_id=item["metadata"]["price_id"]
+                    stripe_price_id=price_id
                 ).plan.pk,
                 name=item["description"],
                 price=item["amount"],
@@ -336,12 +271,13 @@ class StripeWebhookView(APIView):
         ]
         invoice = Invoice.objects.create(
             customer=invoice_customer,
-            items=invoice_items,
             currency=data["currency"],
             status=PaymentStatus.PAID,
             method=PaymentMethod.STRIPE,
             language=language,
         )
+        invoice.items.set(invoice_items)
+        invoice.save()
 
         generate_and_send_invoice(invoice, website_url, student.user.first_name)
 
@@ -373,7 +309,7 @@ class StripeWebhookView(APIView):
             subject = _("Payment Failed")
             message_1 = _(
                 "Hi %(first_name)s, unfortunately your recent payment has failed."
-            ) % {"first_name": student.first_name}
+            ) % {"first_name": student.user.first_name}
             message_2 = _("Please check your payment details and try again.")
             message_3 = _(
                 "To update your payment method, please visit the customer portal"

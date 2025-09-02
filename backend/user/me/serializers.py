@@ -46,7 +46,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             "price",
             "currency",
             "status",
-            "auto_renew",
+            "cancel_at_period_end",
         ]
 
     def get_license(self, obj):

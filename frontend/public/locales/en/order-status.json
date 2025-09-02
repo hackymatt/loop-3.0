@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "succeeded": {
+      "title": "Your purchase is complete",
+      "description": "Your payment has been successfully processed. You can now access all features and materials. We wish you fruitful learning!"
+    },
+    "failed": {
+      "title": "Payment failed",
+      "description": "Your payment could not be processed. Please check your payment details or try again. If the issue persists, contact our support team."
+    }
+  },
+  "succeeded": {
+    "title": "Thank you for your purchase!",
+    "subtitle": "Your payment has been confirmed. You can now start learning and enjoy the materials available in your account.",
+    "button": "Go to your dashboard"
+  },
+  "failed": {
+    "title": "Oops, something went wrong!",
+    "subtitle": "Your payment could not be completed. Please try again or choose another payment method.",
+    "button": "Back to payment"
+  }
+}

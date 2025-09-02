@@ -102,9 +102,6 @@
       "price": "Amount to be charged",
       "date": "Next payment date"
     },
-    "button": "Manage subscription",
-    "cancel": "Cancel",
-    "description": "Are you sure you want to cancel your subscription? You will lose access to active projects and learning paths.",
     "sell": "Build your portfolio, learn with projects, and earn certificates. Choose a plan and grow with loop.",
     "error": "Something went wrong. Please try again.",
     "trial": "TRIAL",

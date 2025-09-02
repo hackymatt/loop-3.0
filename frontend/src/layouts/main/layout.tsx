@@ -25,7 +25,7 @@ import { MenuButton } from "../components/menu-button";
 import { LayoutSection } from "../core/layout-section";
 import { HeaderSection } from "../core/header-section";
 import { LoginButton } from "../components/login-button";
-import { UpgradeButton } from "../components/upgrade-button";
+import { ManageButton } from "../components/manage-button";
 import { RegisterButton } from "../components/register-button";
 import { SettingsButton } from "../components/settings-button";
 import { NavAccountPopover } from "./nav/components/nav-account";
@@ -104,8 +104,8 @@ export function MainLayout({
                 <Box sx={{ py: 3, px: 2.5, display: "flex", flexDirection: "column", gap: 2 }}>
                   {isLoggedIn ? (
                     <>
-                      {/* @slot Upgrade button */}
-                      <UpgradeButton
+                      {/* @slot Manage button */}
+                      <ManageButton
                         sx={{ width: 1 }}
                         slotProps={{
                           button: {
@@ -188,8 +188,8 @@ export function MainLayout({
 
           {isLoggedIn ? (
             <>
-              {/* @slot Upgrade button */}
-              <UpgradeButton sx={{ display: { xs: "none", [layoutQuery]: "inline-flex" } }} />
+              {/* @slot Manage button */}
+              <ManageButton sx={{ display: { xs: "none", [layoutQuery]: "inline-flex" } }} />
               {/* @slot Account button */}
               <NavAccountPopover />
             </>

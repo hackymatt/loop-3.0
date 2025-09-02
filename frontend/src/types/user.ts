@@ -53,7 +53,7 @@ export type ISubscriptionProps = {
   nextBillingDate: string | null;
   price: number | null;
   currency: Currency | null;
-  isAutoRenew: boolean | null;
+  isCancelAtPeriodEnd: boolean | null;
   status: SubscriptionStatus;
 };
 
