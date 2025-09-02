@@ -14,6 +14,7 @@ class PersonalDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = [
+            "email",
             "first_name",
             "last_name",
             "image",
@@ -142,4 +143,6 @@ class PaymentMethodSerializer(serializers.Serializer):
             return CardSerializer(obj).data
         elif obj.get("type") == "paypal":
             return PaypalSerializer(obj).data
+        elif obj.get("type") == "revolut_pay":
+            return {}
         return {}

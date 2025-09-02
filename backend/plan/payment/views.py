@@ -18,6 +18,8 @@ from utils.url.url import get_website_url
 from utils.logger.logger import logger
 from django.utils import translation
 from mailer.mailer import Mailer
+from utils.stripe.customer import create_customer
+from utils.stripe.setup_intent import create_setup_intent
 
 stripe.api_key = CONFIG["stripe_secret_key"]
 
@@ -28,38 +30,20 @@ class CreateSetupIntentView(APIView):
     def post(self, request, *args, **kwargs):
         try:
             student = Student.objects.get(user=request.user)
-
-            plan_type = request.data.get("type")
-            interval = request.data.get("interval")
-            currency = request.data.get("currency")
-            language = request.LANGUAGE_CODE
-            website_url = get_website_url(request)
-
-            plan = get_object_or_404(Plan, type=plan_type)
-
-            pricing = PlanPricing.get_current_price(
-                plan=plan, currency=currency, interval=interval
-            )
-
             if not student.stripe_customer_id:
-                customer = stripe.Customer.create(email=student.user.email)
+                customer = create_customer(email=student.user.email)
                 student.stripe_customer_id = customer.id
                 student.save()
             else:
                 customer = {"id": student.stripe_customer_id}
 
-            setup_intent = stripe.SetupIntent.create(
-                customer=customer["id"],
-                metadata={
-                    "language": language,
-                    "website_url": website_url,
-                },
+            setup_intent = create_setup_intent(
+                customer_id=customer["id"],
             )
-            client_secret = setup_intent.client_secret
 
             return Response(
                 {
-                    "client_secret": client_secret,
+                    "client_secret": setup_intent.client_secret,
                 }
             )
 

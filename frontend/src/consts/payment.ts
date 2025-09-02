@@ -1,6 +1,7 @@
 export const PAYMENT_METHODS = {
   CARD: "card",
   PAYPAL: "paypal",
+  REVOLUT_PAY: "revolut_pay",
 } as const;
 
 export const WALLET_TYPES = {

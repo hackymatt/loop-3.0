@@ -14,6 +14,7 @@ export type UserType = (typeof USER_TYPE)[keyof typeof USER_TYPE];
 export type JoinType = (typeof JOIN_TYPE)[keyof typeof JOIN_TYPE];
 
 export type IPersonalDataProps = {
+  email: string;
   firstName: string | null;
   lastName: string | null;
   avatarUrl: string | null;
