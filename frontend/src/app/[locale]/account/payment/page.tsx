@@ -5,9 +5,9 @@ import { paths } from "src/routes/paths";
 import { createMetadata } from "src/utils/create-metadata";
 
 import { LANGUAGE } from "src/consts/language";
-import { dataQuery } from "src/api/me/personal";
+import { paymentMethodsQuery } from "src/api/me/payment-methods";
 
-import { AccountPersonalView } from "src/sections/view/account-personal-view";
+import { AccountPaymentView } from "src/sections/view/account-payment-view";
 
 // ----------------------------------------------------------------------
 type PageProps = {
@@ -15,8 +15,8 @@ type PageProps = {
 };
 
 export default async function Page() {
-  const data = (await dataQuery().queryFn()).results;
-  return <AccountPersonalView data={data} />;
+  const data = (await paymentMethodsQuery().queryFn()).results;
+  return <AccountPaymentView data={data} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -24,12 +24,12 @@ export async function generateMetadata({ params }: PageProps) {
 
   const path =
     params.locale === LANGUAGE.PL
-      ? paths.account.personal
-      : `/${LANGUAGE.EN}${paths.account.personal}`;
+      ? paths.account.payment
+      : `/${LANGUAGE.EN}${paths.account.payment}`;
 
   return createMetadata({
-    title: translations.meta.personal.title,
-    description: translations.meta.personal.description,
+    title: translations.meta.payment.title,
+    description: translations.meta.payment.description,
     path,
   });
 }

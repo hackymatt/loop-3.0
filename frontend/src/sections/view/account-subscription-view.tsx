@@ -31,8 +31,6 @@ export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) 
   const { type, license, interval, price, currency, nextBillingDate, isCancelAtPeriodEnd, status } =
     data;
 
-  console.log(isCancelAtPeriodEnd);
-
   const isFreePlan = type === PLAN_TYPE.FREE;
 
   return (

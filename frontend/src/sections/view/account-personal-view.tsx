@@ -1,5 +1,7 @@
 "use client";
 
+import type { IPersonalDataProps } from "src/types/user";
+
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -15,7 +17,7 @@ import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 import { useUpdateData } from "src/api/me/data";
 
 import { useUserContext } from "src/components/user";
-import { Form, Field } from "src/components/hook-form";
+import { Form, Field, schemaHelper } from "src/components/hook-form";
 
 import { UserPhoto } from "src/sections/account/layout";
 
@@ -25,24 +27,33 @@ const useAccountPersonalSchema = () => {
   const { t } = useTranslation("account");
 
   return zod.object({
-    email: zod
-      .string()
-      .min(1, { message: t("email.errors.required") })
-      .email({ message: t("email.errors.invalid") }),
     firstName: zod.string().min(1, { message: t("firstName.errors.required") }),
     lastName: zod.string().min(1, { message: t("lastName.errors.required") }),
+    streetAddress: zod.string().min(1, { message: t("streetAddress.errors.required") }),
+    zipCode: zod.string().min(1, { message: t("zipCode.errors.required") }),
+    city: zod.string().min(1, { message: t("city.errors.required") }),
+    country: schemaHelper.nullableInput(
+      zod.string().min(1, { message: t("country.errors.required") }),
+      {
+        message: t("country.errors.required"),
+      }
+    ),
   });
 };
 
 type AccountPersonalSchemaType = zod.infer<ReturnType<typeof useAccountPersonalSchema>>;
 
 // ----------------------------------------------------------------------
+type AccountPersonalViewProps = {
+  data: IPersonalDataProps;
+};
 
-export function AccountPersonalView() {
+export function AccountPersonalView({ data }: AccountPersonalViewProps) {
   const { t } = useTranslation("account");
+  const { t: locale } = useTranslation("locale");
 
   const user = useUserContext();
-  const { email, firstName, lastName } = user.state;
+  const { firstName, lastName, streetAddress, zipCode, city, country } = data;
 
   const { mutateAsync: updateData } = useUpdateData();
 
@@ -52,7 +63,10 @@ export function AccountPersonalView() {
     defaultValues: {
       firstName: firstName || "",
       lastName: lastName || "",
-      email: email || "",
+      streetAddress: streetAddress || "",
+      zipCode: zipCode || "",
+      city: city || "",
+      country: country || locale("country"),
     },
   });
 
@@ -66,10 +80,16 @@ export function AccountPersonalView() {
     last_name: "lastName",
   });
 
-  const onSubmitPersonal = handleSubmit(async (data) => {
-    const { firstName: first_name, lastName: last_name } = data;
+  const onSubmitPersonal = handleSubmit(async (newData) => {
+    const {
+      firstName: first_name,
+      lastName: last_name,
+      streetAddress: street_address,
+      zipCode: zip_code,
+      ...rest
+    } = newData;
     try {
-      await updateData({ first_name, last_name });
+      await updateData({ first_name, last_name, street_address, zip_code, ...rest });
       user.setState({ firstName: first_name, lastName: last_name });
     } catch (error) {
       handleFormError(error);
@@ -78,9 +98,17 @@ export function AccountPersonalView() {
 
   const renderPersonalForm = () => (
     <>
-      <Field.Text name="email" label={t("email.label")} disabled />
       <Field.Text name="firstName" label={t("firstName.label")} />
       <Field.Text name="lastName" label={t("lastName.label")} />
+      <Field.Text name="streetAddress" label={t("streetAddress.label")} />
+      <Field.Text name="zipCode" label={t("zipCode.label")} />
+      <Field.Text name="city" label={t("city.label")} />
+      <Field.CountrySelect
+        fullWidth
+        name="country"
+        label={t("country.label")}
+        placeholder={t("country.placeholder")}
+      />
     </>
   );
 
@@ -107,7 +135,7 @@ export function AccountPersonalView() {
             rowGap: 2.5,
             columnGap: 2,
             display: "grid",
-            gridTemplateColumns: "repeat(1, 1fr)",
+            gridTemplateColumns: { xs: "repeat(1, 1fr)", md: "repeat(2, 1fr)" },
           }}
         >
           {renderPersonalForm()}

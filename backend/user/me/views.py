@@ -7,26 +7,55 @@ from rest_framework.response import Response
 from django.utils.translation import gettext as _
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import (
-    UpdateUserSerializer,
+    PersonalDataSerializer,
     ChangePasswordSerializer,
     SubscriptionSerializer,
+    PaymentMethodSerializer,
     InvoiceSerializer,
 )
-from const import JoinType
+from const import JoinType, UserType
 from plan.subscription.utils import get_subscription
 from invoice.models import StudentInvoice
-from global_config import CONFIG
 from plan.payment.utils import generate_customer_portal_link
 from utils.url.url import get_website_url
 from user.type.student_user.models import Student
+from utils.stripe.customer import (
+    retrieve_customer,
+    update_customer,
+    get_payment_methods,
+)
+from utils.stripe.payment_method import retrieve_payment_method, detach_payment_method
 
 
-class UpdateUserView(UpdateAPIView):
-    serializer_class = UpdateUserSerializer
+class PersonalDataView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
+
+    def get(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = PersonalDataSerializer(user, context={"request": request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = PersonalDataSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        stripe_customer_id = Student.objects.get(user=user).stripe_customer_id
+        if stripe_customer_id:
+            update_customer(
+                stripe_customer_id,
+                name=f"{serializer.data['first_name']} {serializer.data['last_name']}",
+                address={
+                    "line1": serializer.data.get("street_address", ""),
+                    "postal_code": serializer.data.get("zip_code", ""),
+                    "city": serializer.data.get("city", ""),
+                    "country": serializer.data.get("country", ""),
+                },
+            )
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ChangePasswordView(APIView):
@@ -129,6 +158,73 @@ class SubscriptionView(APIView):
             SubscriptionSerializer(subscription, context={"request": request}).data,
             status=status.HTTP_200_OK,
         )
+
+
+class PaymentMethodsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+
+        stripe_customer_id = Student.objects.get(user=user).stripe_customer_id
+        if stripe_customer_id:
+            default_payment_method = (
+                retrieve_customer(stripe_customer_id)
+                .get("invoice_settings", {})
+                .get("default_payment_method")
+            )
+            payment_methods = get_payment_methods(stripe_customer_id)
+            serializer = PaymentMethodSerializer(
+                payment_methods["data"],
+                many=True,
+                context={"default_payment_method": default_payment_method},
+            )
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(
+            [],
+            status=status.HTTP_200_OK,
+        )
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        payment_method_id = request.data.get("payment_method_id")
+        stripe_customer_id = Student.objects.get(user=user).stripe_customer_id
+        payment_method = retrieve_payment_method(payment_method_id)
+        if payment_method.customer != stripe_customer_id:
+            return Response(
+                {"error": _("This payment method does not belong to your account.")},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        update_customer(
+            stripe_customer_id,
+            invoice_settings={"default_payment_method": payment_method_id},
+        )
+        return Response({}, status=status.HTTP_200_OK)
+
+    def delete(self, request, payment_method_id, *args, **kwargs):
+        user = request.user
+        stripe_customer_id = Student.objects.get(user=user).stripe_customer_id
+
+        payment_method = retrieve_payment_method(payment_method_id)
+        if payment_method.customer != stripe_customer_id:
+            return Response(
+                {"error": _("This payment method does not belong to your account.")},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        default_payment_method = retrieve_customer(
+            stripe_customer_id
+        ).invoice_settings.get("default_payment_method")
+        if payment_method_id == default_payment_method:
+            return Response(
+                {"error": _("Cannot delete the default payment method.")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        detach_payment_method(payment_method_id)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
 
 class InvoicesView(viewsets.ReadOnlyModelViewSet):

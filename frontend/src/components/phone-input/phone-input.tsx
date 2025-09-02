@@ -1,6 +1,7 @@
 import type { TextFieldProps } from "@mui/material/TextField";
 import type { Value, Country } from "react-phone-number-input/input";
 
+import { useTranslation } from "react-i18next";
 import { parsePhoneNumber } from "react-phone-number-input";
 import PhoneNumberInput from "react-phone-number-input/input";
 import { useState, useEffect, forwardRef, useCallback, startTransition } from "react";
@@ -10,8 +11,6 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import { inputBaseClasses } from "@mui/material/InputBase";
-
-import { countries } from "src/assets/data/countries";
 
 import { Iconify } from "../iconify";
 import { CountryListPopover } from "./list-popover";
@@ -33,6 +32,16 @@ export const PhoneInput = forwardRef<HTMLDivElement, PhoneInputProps>((props, re
     country: inputCountryCode,
     ...other
   } = props;
+
+  const { t } = useTranslation("countries");
+
+  const countries = (
+    t("countries", { returnObjects: true }) as {
+      code: string;
+      label: string;
+      phone: string;
+    }[]
+  ).sort((a, b) => a.label.localeCompare(b.label));
 
   const defaultCountryCode = getCountryCode(value, inputCountryCode);
 

@@ -12,6 +12,10 @@
       "title": "Subskrypcja – zarządzaj dostępem do projektów",
       "description": "Sprawdź aktywną subskrypcję i zarządzaj planem. Zyskaj pełen dostęp do projektów, ścieżek i certyfikatów rozwoju na platformie loop."
     },
+    "payment": {
+      "title": "Metody płatności – zarządzaj swoimi metodami płatności",
+      "description": "Sprawdź swoje aktywne metody płatności, dodaj nową i zarządzaj domyślną metodą płatności na platformie loop."
+    },
     "invoices": {
       "title": "Faktury – zarządzaj swoimi płatnościami",
       "description": "Przeglądaj i pobieraj swoje faktury za subskrypcje. Sprawdź historię płatności na platformie loop."
@@ -31,6 +35,23 @@
   "lastName": {
     "label": "Nazwisko",
     "errors": { "required": "Nazwisko jest wymagane" }
+  },
+  "streetAddress": {
+    "label": "Adres",
+    "errors": { "required": "Adres jest wymagany" }
+  },
+  "zipCode": {
+    "label": "Kod pocztowy",
+    "errors": { "required": "Kod pocztowy jest wymagany" }
+  },
+  "city": {
+    "label": "Miasto",
+    "errors": { "required": "Miasto jest wymagane" }
+  },
+  "country": {
+    "label": "Kraj",
+    "placeholder": "Wybierz kraj",
+    "errors": { "required": "Kraj jest wymagany" }
   },
   "password": {
     "label": "Hasło",
@@ -103,6 +124,17 @@
     "error": "Coś poszło nie tak. Spróbuj ponownie.",
     "trial": "OKRES PRÓBNY",
     "cancelled": "Subskrypcja została anulowana i zakończy się z końcem okresu rozliczeniowego {{date}}."
+  },
+  "payment": {
+    "title": "Metody płatności",
+    "card": {
+      "holder": "Właściciel karty",
+      "expiration": "Data ważności"
+    },
+    "default": "Domyślna",
+    "setDefault": "Ustaw jako domyślną",
+    "add": "Dodaj metodę płatności",
+    "delete": "Usuń metodę płatności"
   },
   "invoices": {
     "title": "Faktury",

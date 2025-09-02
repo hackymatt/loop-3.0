@@ -230,3 +230,9 @@ msgstr "Aby zaktualizować metodę płatności, odwiedź portal klienta"
 
 msgid "Update Payment Method"
 msgstr "Zaktualizuj metodę płatności"
+
+msgid "This payment method does not belong to your account."
+msgstr "Ta metoda płatności nie należy do Twojego konta."
+
+msgid "Cannot delete the default payment method."
+msgstr "Nie można usunąć domyślnej metody płatności."

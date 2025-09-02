@@ -57,6 +57,7 @@ export const paths = {
     personal: "/account/personal",
     manage: "/account/manage",
     subscription: "/account/subscription",
+    payment: "/account/payment",
     invoices: "/account/invoices",
   },
 

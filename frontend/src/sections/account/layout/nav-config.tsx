@@ -28,6 +28,11 @@ export const useNavData = () => {
     {
       title: t("subscription.title"),
       path: localize(paths.account.subscription),
+      icon: <Iconify icon="solar:cart-3-outline" />,
+    },
+    {
+      title: t("payment.title"),
+      path: localize(paths.account.payment),
       icon: <Iconify icon="solar:card-outline" />,
     },
     {

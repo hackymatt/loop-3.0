@@ -1,0 +1,16 @@
+import stripe
+from global_config import CONFIG
+
+stripe.api_key = CONFIG["stripe_secret_key"]
+
+
+def retrieve_customer(stripe_id):
+    return stripe.Customer.retrieve(stripe_id)
+
+
+def update_customer(stripe_id, **kwargs):
+    return stripe.Customer.modify(stripe_id, **kwargs)
+
+
+def get_payment_methods(stripe_id):
+    return stripe.Customer.list_payment_methods(customer=stripe_id)

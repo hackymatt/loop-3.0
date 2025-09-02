@@ -6,6 +6,7 @@ import type {
 } from "@mui/material/Autocomplete";
 
 import { useMemo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
@@ -13,8 +14,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import InputAdornment from "@mui/material/InputAdornment";
 import { filledInputClasses } from "@mui/material/FilledInput";
 import { outlinedInputClasses } from "@mui/material/OutlinedInput";
-
-import { countries } from "src/assets/data";
 
 import { FlagIcon, flagIconClasses } from "src/components/flag-icon";
 
@@ -49,21 +48,34 @@ export function CountrySelect({
   getValue = "label",
   ...other
 }: CountrySelectProps) {
+  const { t } = useTranslation("countries");
+
+  const countries = (
+    t("countries", { returnObjects: true }) as {
+      code: string;
+      label: string;
+      phone: string;
+    }[]
+  ).sort((a, b) => a.label.localeCompare(b.label));
+
   const options = useMemo(
     () => countries.map((country) => (getValue === "label" ? country.label : country.code)),
-    [getValue]
+    [countries, getValue]
   );
 
-  const getCountry = useCallback((inputValue: string) => {
-    const country = countries.find(
-      (op) => op.label === inputValue || op.code === inputValue || op.phone === inputValue
-    );
-    return {
-      code: country?.code || "",
-      label: country?.label || "",
-      phone: country?.phone || "",
-    };
-  }, []);
+  const getCountry = useCallback(
+    (inputValue: string) => {
+      const country = countries.find(
+        (op) => op.label === inputValue || op.code === inputValue || op.phone === inputValue
+      );
+      return {
+        code: country?.code || "",
+        label: country?.label || "",
+        phone: country?.phone || "",
+      };
+    },
+    [countries]
+  );
 
   const renderOption = useCallback(
     (props: React.HTMLAttributes<HTMLLIElement>, option: Value) => {
@@ -81,7 +93,7 @@ export function CountrySelect({
               borderRadius: "50%",
             }}
           />
-          {country.label} ({country.code}) +{country.phone}
+          {country.label} ({country.code})
         </li>
       );
     },
@@ -171,7 +183,7 @@ export function CountrySelect({
       }
       return option;
     },
-    [getValue]
+    [countries, getValue]
   );
 
   return (
