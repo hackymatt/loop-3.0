@@ -7,32 +7,45 @@ import { useRouter } from "src/routes/hooks";
 import { URLS } from "../urls";
 import { Api } from "../service";
 
-const endpoint = URLS.DATA;
+const endpoint = URLS.PAYMENT_METHODS;
 
 type IData = {
-  first_name?: string | null;
-  last_name?: string | null;
-  image?: File | null;
-  street_address?: string | null;
-  zip_code?: string | null;
-  city?: string | null;
-  country?: string | null;
+  payment_method_id: string;
 };
 
 type IDataReturn = {
-  data: Omit<IData, "image"> & { image: string | null };
+  data: {};
   status: number;
 };
 
-export const useUpdateData = () => {
+export const useSetDefaultPaymentMethod = () => {
   const router = useRouter();
   return useMutation<IDataReturn, AxiosError, IData>(
     async (variables) => {
-      const result = await Api.patch(endpoint, variables, {
+      const result = await Api.post(endpoint, variables, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      return {
+        status: result.status,
+        data: result.data,
+      };
+    },
+    {
+      onSuccess: () => {
+        router.refresh();
+      },
+    }
+  );
+};
+
+export const useDeletePaymentMethod = (id: string) => {
+  const router = useRouter();
+  const url = `${endpoint}/${id}`;
+  return useMutation<IDataReturn, AxiosError, Omit<IData, "payment_method_id">>(
+    async () => {
+      const result = await Api.delete(url);
       return {
         status: result.status,
         data: result.data,

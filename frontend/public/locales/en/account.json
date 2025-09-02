@@ -12,6 +12,10 @@
       "title": "Subscription – manage your project access",
       "description": "Check your active subscription and manage your plan. Get full access to projects, paths, and development certificates on the loop platform."
     },
+    "payment": {
+      "title": "Payment methods – manage your payment options",
+      "description": "View your active payment methods, add a new one, and manage your default payment method on the LOOP platform."
+    },
     "invoices": {
       "title": "Invoices – manage your payments",
       "description": "View and download your subscription invoices. Check your payment history on the LOOP platform."
@@ -31,6 +35,23 @@
   "lastName": {
     "label": "Last name",
     "errors": { "required": "Last name is required" }
+  },
+  "streetAddress": {
+    "label": "Street address",
+    "errors": { "required": "Street address is required" }
+  },
+  "zipCode": {
+    "label": "Zip code",
+    "errors": { "required": "Zip code is required" }
+  },
+  "city": {
+    "label": "City",
+    "errors": { "required": "City is required" }
+  },
+  "country": {
+    "label": "Country",
+    "placeholder": "Choose a country",
+    "errors": { "required": "Country is required" }
   },
   "password": {
     "label": "Password",
@@ -106,6 +127,17 @@
     "error": "Something went wrong. Please try again.",
     "trial": "TRIAL",
     "cancelled": "Your subscription has been cancelled and will remain active until the end of the current billing period {{date}}."
+  },
+  "payment": {
+    "title": "Payment Methods",
+    "card": {
+      "holder": "Card Holder",
+      "expiration": "Expiration Date"
+    },
+    "default": "Default",
+    "setDefault": "Set as Default",
+    "add": "Add Payment Method",
+    "delete": "Delete Payment Method"
   },
   "invoices": {
     "title": "Invoices",

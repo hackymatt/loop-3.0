@@ -1,6 +1,7 @@
 import type { JOIN_TYPE, USER_TYPE } from "src/consts/user";
 import type { DatePickerFormat } from "src/utils/format-time";
 import type { SUBSCRIPTION_STATUS } from "src/consts/subscription";
+import type { WALLET_TYPES, PAYMENT_METHODS } from "src/consts/payment";
 
 import type { IProjectListProps } from "./project";
 import type { ICertificateProps } from "./certificate";
@@ -11,6 +12,16 @@ import type { Currency, PlanType, PlanInterval } from "./plan";
 export type UserType = (typeof USER_TYPE)[keyof typeof USER_TYPE];
 
 export type JoinType = (typeof JOIN_TYPE)[keyof typeof JOIN_TYPE];
+
+export type IPersonalDataProps = {
+  firstName: string | null;
+  lastName: string | null;
+  avatarUrl: string | null;
+  streetAddress: string | null;
+  zipCode: string | null;
+  city: string | null;
+  country: string | null;
+};
 
 type IUserProps = {
   name: string;
@@ -55,6 +66,30 @@ export type ISubscriptionProps = {
   currency: Currency | null;
   isCancelAtPeriodEnd: boolean | null;
   status: SubscriptionStatus;
+};
+
+export type PaymentMethod = (typeof PAYMENT_METHODS)[keyof typeof PAYMENT_METHODS];
+export type WalletType = (typeof WALLET_TYPES)[keyof typeof WALLET_TYPES];
+
+export type ICardProps = {
+  brand: string;
+  displayBrand: string;
+  last4: string;
+  expMonth: number;
+  expYear: number;
+  holder: string;
+  wallet: WalletType | null;
+};
+
+export type IPaypalProps = {
+  payerEmail: string;
+};
+
+export type IPaymentMethodProps = {
+  id: string;
+  type: PaymentMethod;
+  isDefault: boolean;
+  details: ICardProps | IPaypalProps;
 };
 
 export type IInvoiceProps = {

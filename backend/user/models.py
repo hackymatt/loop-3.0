@@ -21,6 +21,10 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)  # Unique and required
     first_name = models.CharField(blank=True, null=True)  # Optional
     last_name = models.CharField(blank=True, null=True)  # Optional
+    street_address = models.CharField(blank=True, null=True)  # Optional
+    zip_code = models.CharField(blank=True, null=True)  # Optional
+    city = models.CharField(blank=True, null=True)  # Optional
+    country = models.CharField(blank=True, null=True)  # Optional
     image = models.ImageField(
         upload_to=user_directory_path, blank=True, null=True, max_length=500
     )

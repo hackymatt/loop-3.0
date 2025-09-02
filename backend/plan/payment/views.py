@@ -98,7 +98,7 @@ class StripeWebhookView(APIView):
             self.handle_setup_intent_succeeded(data)
 
         return Response(status=status.HTTP_200_OK)
-    
+
     def handle_setup_intent_succeeded(self, data):
         customer_id = data["customer"]
         price_id = data["items"]["data"][0]["price"]["id"]
@@ -260,9 +260,7 @@ class StripeWebhookView(APIView):
         )
         invoice_items = [
             InvoiceItem.objects.create(
-                item_id=PlanPricing.objects.get(
-                    stripe_price_id=price_id
-                ).plan.pk,
+                item_id=PlanPricing.objects.get(stripe_price_id=price_id).plan.pk,
                 name=item["description"],
                 price=item["amount"],
                 quantity=item["quantity"],

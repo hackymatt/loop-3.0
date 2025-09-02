@@ -9,10 +9,11 @@ from .login.facebook.views import FacebookLoginView
 from .logout.views import LogoutView
 from .reset_password.views import PasswordResetView, PasswordResetConfirmView
 from .me.views import (
-    UpdateUserView,
+    PersonalDataView,
     ChangePasswordView,
     DeleteAccountView,
     SubscriptionView,
+    PaymentMethodsView,
     InvoicesView,
     CustomerPortalLinkView,
 )
@@ -48,10 +49,20 @@ urlpatterns = [
     # Auth helpers
     path(Urls.REFRESH_TOKEN, RefreshTokenView.as_view(), name="refresh-token"),
     # User routes
-    path(Urls.DATA, UpdateUserView.as_view(), name="data"),
+    path(Urls.DATA, PersonalDataView.as_view(), name="data"),
     path(Urls.PASSWORD_CHANGE, ChangePasswordView.as_view(), name="password"),
     path(Urls.DELETE_ACCOUNT, DeleteAccountView.as_view(), name="delete-account"),
     path(Urls.SUBSCRIPTION, SubscriptionView.as_view(), name="subscription"),
+    path(
+        Urls.PAYMENT_METHODS,
+        PaymentMethodsView.as_view(),
+        name="payment-methods",
+    ),
+    path(
+        f"{Urls.PAYMENT_METHODS}/<str:payment_method_id>",
+        PaymentMethodsView.as_view(),
+        name="payment-method-detail",
+    ),
     path(
         Urls.CUSTOMER_PORTAL_LINK,
         CustomerPortalLinkView.as_view(),
