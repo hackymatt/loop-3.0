@@ -11,6 +11,7 @@ import type { GetQueryResponse } from "../types";
 const endpoint = URLS.DATA;
 
 type IPersonalData = {
+  email: string;
   first_name: string | null;
   last_name: string | null;
   image: string | null;

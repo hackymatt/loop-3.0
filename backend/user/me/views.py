@@ -1,4 +1,3 @@
-from rest_framework.generics import UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -13,7 +12,7 @@ from .serializers import (
     PaymentMethodSerializer,
     InvoiceSerializer,
 )
-from const import JoinType, UserType
+from const import JoinType
 from plan.subscription.utils import get_subscription
 from invoice.models import StudentInvoice
 from plan.payment.utils import generate_customer_portal_link

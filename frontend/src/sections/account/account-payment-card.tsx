@@ -51,7 +51,7 @@ export function AccountPaymentCard({ id, card, sx, ...other }: Props) {
         {...other}
       >
         <Box sx={{ display: "flex", alignItems: "center", typography: "subtitle1" }}>
-          {card.label}
+          {card.label.charAt(0).toUpperCase() + card.label.slice(1)}
 
           {card.isPrimary && (
             <Label color="info" startIcon={<Iconify icon="eva:star-fill" />} sx={{ ml: 1 }}>
