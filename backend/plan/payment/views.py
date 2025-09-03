@@ -78,40 +78,8 @@ class StripeWebhookView(APIView):
             self.handle_invoice_payment_succeeded(data)
         elif event_type == "invoice.payment_failed":
             self.handle_invoice_payment_failed(data)
-        elif event_type == "setup_intent.succeeded":
-            self.handle_setup_intent_succeeded(data)
 
         return Response(status=status.HTTP_200_OK)
-
-    def handle_setup_intent_succeeded(self, data):
-        customer_id = data["customer"]
-        price_id = data["items"]["data"][0]["price"]["id"]
-        language = data["metadata"]["language"]
-        website_url = data["metadata"]["website_url"]
-        payment_method_id = data.get("payment_method")
-
-        payment_method = stripe.PaymentMethod.retrieve(payment_method_id)
-        billing_details = payment_method.get("billing_details", {})
-
-        stripe.Customer.modify(
-            customer_id,
-            name=billing_details.get("name"),
-            address=billing_details.get("address"),
-            phone=billing_details.get("phone"),
-            tax_id=billing_details.get("tax_id"),
-        )
-
-        stripe.Subscription.create(
-            customer=customer_id,
-            items=[{"price": price_id}],
-            trial_period_days=CONFIG["free_trial_days"],
-            payment_behavior="default_incomplete",
-            expand=["latest_invoice.payment_intent"],
-            metadata={
-                "language": language,
-                "website_url": website_url,
-            },
-        )
 
     def handle_subscription_created(self, data):
         subscription_id = data["id"]
