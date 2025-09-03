@@ -13,7 +13,7 @@
       "description": "Sprawdź aktywną subskrypcję i zarządzaj planem. Zyskaj pełen dostęp do projektów, ścieżek i certyfikatów rozwoju na platformie loop."
     },
     "payment": {
-      "title": "Metody płatności – zarządzaj swoimi metodami płatności",
+      "title": "Płatność – zarządzaj swoimi metodami płatności",
       "description": "Sprawdź swoje aktywne metody płatności, dodaj nową i zarządzaj domyślną metodą płatności na platformie loop."
     },
     "invoices": {
@@ -126,15 +126,19 @@
     "cancelled": "Subskrypcja została anulowana i zakończy się z końcem okresu rozliczeniowego {{date}}."
   },
   "payment": {
-    "title": "Metody płatności",
+    "title": "Płatność",
     "card": {
-      "holder": "Właściciel karty",
+      "holder": "Posiadacz karty",
       "expiration": "Data ważności"
+    },
+    "revolut": {
+      "info": "Połączone konto Revolut Pay"
     },
     "default": "Domyślna",
     "setDefault": "Ustaw jako domyślną",
     "add": "Dodaj metodę płatności",
-    "delete": "Usuń metodę płatności"
+    "delete": "Usuń metodę płatności",
+    "error": "Coś poszło nie tak. Spróbuj ponownie."
   },
   "invoices": {
     "title": "Faktury",

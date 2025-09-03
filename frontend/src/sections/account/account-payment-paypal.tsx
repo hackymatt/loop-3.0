@@ -1,9 +1,12 @@
 import type { PaperProps } from "@mui/material/Paper";
 
+import { useTranslation } from "react-i18next";
 import { usePopover } from "minimal-shared/hooks";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import { Divider } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 
 import { Label } from "src/components/label";
@@ -22,6 +25,7 @@ type Props = PaperProps & {
 };
 
 export function AccountPaymentPaypal({ id, paypal, sx, ...other }: Props) {
+  const { t } = useTranslation("account");
   const openOptions = usePopover();
 
   return (
@@ -37,27 +41,42 @@ export function AccountPaymentPaypal({ id, paypal, sx, ...other }: Props) {
             display: "flex",
             bgcolor: "transparent",
             flexDirection: "column",
+            minHeight: 210,
           },
           ...(Array.isArray(sx) ? sx : [sx]),
         ]}
         {...other}
       >
-        <Box sx={{ display: "flex", alignItems: "center", typography: "subtitle1" }}>
-          PayPal
+        {/* Header Row */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            Paypal
+          </Typography>
+
           {paypal.isPrimary && (
-            <Label color="info" startIcon={<Iconify icon="eva:star-fill" />} sx={{ ml: 1 }}>
-              Primary
+            <Label
+              color="info"
+              startIcon={<Iconify icon="eva:star-fill" />}
+              sx={{ ml: 2, borderRadius: 10, fontSize: "0.75rem", px: 1.5 }}
+            >
+              {t("payment.default")}
             </Label>
           )}
+
           <Box sx={{ flexGrow: 1 }} />
           <Iconify width={24} icon="logos:paypal" />
-          <IconButton onClick={openOptions.onOpen}>
+          <IconButton onClick={openOptions.onOpen} size="small">
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </Box>
 
-        <Box sx={{ gap: 1, display: "flex", alignItems: "center", typography: "h6" }}>
-          {paypal.email}
+        <Divider />
+
+        {/* Details */}
+        <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            {paypal.email}
+          </Typography>
         </Box>
       </Paper>
 

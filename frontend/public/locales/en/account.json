@@ -13,7 +13,7 @@
       "description": "Check your active subscription and manage your plan. Get full access to projects, paths, and development certificates on the loop platform."
     },
     "payment": {
-      "title": "Payment methods – manage your payment options",
+      "title": "Payment – manage your payment options",
       "description": "View your active payment methods, add a new one, and manage your default payment method on the LOOP platform."
     },
     "invoices": {
@@ -129,15 +129,19 @@
     "cancelled": "Your subscription has been cancelled and will remain active until the end of the current billing period {{date}}."
   },
   "payment": {
-    "title": "Payment Methods",
+    "title": "Payment",
     "card": {
       "holder": "Card Holder",
       "expiration": "Expiration Date"
     },
+    "revolut": {
+      "info": "Linked Revolut Pay account"
+    },
     "default": "Default",
     "setDefault": "Set as Default",
     "add": "Add Payment Method",
-    "delete": "Delete Payment Method"
+    "delete": "Delete Payment Method",
+    "error": "Something went wrong. Please try again."
   },
   "invoices": {
     "title": "Invoices",

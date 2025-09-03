@@ -7,7 +7,7 @@ import type {
   IPaymentMethodProps,
 } from "src/types/user";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
@@ -20,8 +20,8 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
 
+import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
@@ -41,6 +41,7 @@ type AccountPaymentViewProps = {
 export function AccountPaymentView({ data }: AccountPaymentViewProps) {
   const { t } = useTranslation("account");
   const theme = useTheme();
+  const { query } = useQueryParams();
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
@@ -56,7 +57,7 @@ export function AccountPaymentView({ data }: AccountPaymentViewProps) {
     }
   };
 
-  const getDisplayCard = (paymentMethod: IPaymentMethodProps) => {
+  const getDisplayCard = useCallback((paymentMethod: IPaymentMethodProps) => {
     const { id, type, isDefault, details } = paymentMethod;
     switch (type) {
       case PAYMENT_METHODS.CARD:
@@ -87,7 +88,7 @@ export function AccountPaymentView({ data }: AccountPaymentViewProps) {
       default:
         return null;
     }
-  };
+  }, []);
 
   return (
     <>
@@ -113,6 +114,12 @@ export function AccountPaymentView({ data }: AccountPaymentViewProps) {
           </LoadingButton>
         )}
 
+        {query?.redirect_status === "failed" && (
+          <Typography color="error" variant="body2">
+            {t("payment.error")}
+          </Typography>
+        )}
+
         {clientSecret && (
           <Elements
             stripe={stripePromise}
@@ -122,7 +129,7 @@ export function AccountPaymentView({ data }: AccountPaymentViewProps) {
                 theme: "flat",
                 variables: {
                   borderRadius: "8px",
-                  colorBackground: "#919eab14",
+                  colorBackground: theme.palette.background.defaultChannel,
                   colorPrimary: theme.palette.primary.main,
                   spacingUnit: "4px",
                 },
@@ -145,38 +152,21 @@ function AddNewPaymentMethod({ personal }: AddNewPaymentMethodProps) {
   const { t } = useTranslation("account");
 
   const localize = useLocalizedPath();
-  const router = useRouter();
 
   const stripe = useStripe();
   const elements = useElements();
 
-  console.log(localize(`${window.location.origin}${paths.account.payment}`));
-
-  const [paymentError, setPaymentError] = useState<string | null>(null);
-
   const handleSavePaymentMethod = async () => {
     if (!stripe || !elements) return;
 
-    const { error } = await stripe.confirmSetup({
+    await stripe.confirmSetup({
       elements,
       confirmParams: { return_url: localize(`${window.location.origin}${paths.account.payment}`) },
     });
-    if (error) {
-      setPaymentError(error.message || null);
-      return;
-    } else {
-      router.push(localize(`${window.location.origin}${paths.account.payment}`));
-    }
   };
 
   return (
     <>
-      {paymentError && (
-        <Typography variant="body2" color="error" sx={{ width: 1, p: 1 }}>
-          {paymentError}
-        </Typography>
-      )}
-
       <PaymentElement
         options={{
           defaultValues: {
