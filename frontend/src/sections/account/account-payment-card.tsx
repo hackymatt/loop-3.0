@@ -29,7 +29,6 @@ type Props = PaperProps & {
 
 export function AccountPaymentCard({ id, card, sx, ...other }: Props) {
   const { t } = useTranslation("account");
-
   const openOptions = usePopover();
 
   return (
@@ -45,57 +44,75 @@ export function AccountPaymentCard({ id, card, sx, ...other }: Props) {
             display: "flex",
             bgcolor: "transparent",
             flexDirection: "column",
+            minHeight: 210,
           },
           ...(Array.isArray(sx) ? sx : [sx]),
         ]}
         {...other}
       >
-        <Box sx={{ display: "flex", alignItems: "center", typography: "subtitle1" }}>
-          {card.label.charAt(0).toUpperCase() + card.label.slice(1)}
+        {/* Header */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            {card.label.charAt(0).toUpperCase() + card.label.slice(1)}
+          </Typography>
 
           {card.isPrimary && (
-            <Label color="info" startIcon={<Iconify icon="eva:star-fill" />} sx={{ ml: 1 }}>
+            <Label
+              color="info"
+              startIcon={<Iconify icon="eva:star-fill" />}
+              sx={{ ml: 1, fontWeight: "medium" }}
+            >
               {t("payment.default")}
             </Label>
           )}
 
           <Box sx={{ flexGrow: 1 }} />
-
-          <Iconify width={24} icon={`logos:${card.value.replace("_", "-")}`} />
-
+          <Iconify width={28} icon={`logos:${card.value.replace("_", "-")}`} />
           <IconButton onClick={openOptions.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </Box>
 
+        {/* Card Number */}
         <Box sx={{ gap: 1, display: "flex", alignItems: "center", typography: "h6" }}>
           {`**** **** **** ${card.number}`}
         </Box>
 
+        {/* Card Details */}
         <Box
-          sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", typography: "subtitle2" }}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: 2,
+          }}
         >
-          <div>
+          <Box>
             <Typography
               variant="caption"
-              sx={{ mb: 0.5, color: "text.disabled", display: "block" }}
+              sx={{ mb: 0.5, color: "text.secondary", display: "block" }}
             >
               {t("payment.card.holder")}
             </Typography>
-            {card.holder}
-          </div>
+            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+              {card.holder}
+            </Typography>
+          </Box>
 
-          <div>
+          <Box>
             <Typography
               variant="caption"
-              sx={{ mb: 0.5, color: "text.disabled", display: "block" }}
+              sx={{ mb: 0.5, color: "text.secondary", display: "block" }}
             >
               {t("payment.card.expiration")}
             </Typography>
-            {card.expired}
-          </div>
+            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+              {card.expired}
+            </Typography>
+          </Box>
         </Box>
       </Paper>
+
+      {/* Popover Menu */}
       <AccountPaymentPopover openOptions={openOptions} id={id} isPrimary={card.isPrimary} />
     </>
   );
