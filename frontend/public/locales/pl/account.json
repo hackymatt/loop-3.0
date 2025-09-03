@@ -113,17 +113,37 @@
   },
   "subscription": {
     "title": "Subskrypcja",
-    "label": "Obecny plan",
+    "label": "Bieżąca subskrypcja",
+    "license": "Plan {{plan}}",
     "billing": {
-      "label": "Okres rozliczenia",
-      "monthly": "Miesięczny",
-      "yearly": "Roczny"
+      "label": "Twoja subskrypcja odnawia się w dniu {{date}}.",
+      "monthly": "miesięcznie",
+      "yearly": "rocznie"
     },
-    "renewal": { "price": "Kwota do zapłaty", "date": "Data następnej płatności" },
     "sell": "Zbuduj swoje portfolio, ucz się z projektami i zdobądź certyfikaty. Wybierz plan i rozwijaj się razem z loop.",
     "error": "Coś poszło nie tak. Spróbuj ponownie.",
     "trial": "OKRES PRÓBNY",
-    "cancelled": "Subskrypcja została anulowana i zakończy się z końcem okresu rozliczeniowego {{date}}."
+    "cancelled": "Subskrypcja została anulowana i zakończy się z końcem okresu rozliczeniowego {{date}}.",
+    "buttons": {
+      "change": "Zaktualizuj subskrypcję",
+      "cancel": "Anuluj subskrypcję",
+      "renew": "Odnów subskrypcję"
+    },
+    "cancel": {
+      "title": "Anuluj subskrypcję",
+      "description": {
+        "part_1": "Twoja subskrypcja zostanie anulowana, ale będzie dostępna do końca Twojego okresu rozliczeniowego, który przypada na {{date}}.",
+        "part_2": "Jeśli zmienisz zdanie, możesz odnowić subskrypcję."
+      },
+      "approve": "Anuluj subskrypcję",
+      "cancel": "Anuluj"
+    },
+    "renew": {
+      "title": "Odnów subskrypcję",
+      "description": "Ta subskrypcja nie zostanie anulowana. Zostanie odnowiona w dniu {{date}}.",
+      "approve": "Odnów subskrypcję",
+      "cancel": "Anuluj"
+    }
   },
   "payment": {
     "title": "Płatność",

@@ -113,20 +113,37 @@
   },
   "subscription": {
     "title": "Subscription",
-    "label": "Current plan",
+    "label": "Current subscription",
+    "license": "Plan {{plan}}",
     "billing": {
-      "label": "Billing period",
-      "monthly": "Monthly",
-      "yearly": "Yearly"
+      "label": "Your subscription will renew on {{date}}.",
+      "monthly": "monthly",
+      "yearly": "yearly"
     },
-    "renewal": {
-      "price": "Amount to be charged",
-      "date": "Next payment date"
-    },
-    "sell": "Build your portfolio, learn with projects, and earn certificates. Choose a plan and grow with loop.",
+    "sell": "Build your portfolio, learn with projects, and earn certificates. Choose a plan and grow with Loop.",
     "error": "Something went wrong. Please try again.",
-    "trial": "TRIAL",
-    "cancelled": "Your subscription has been cancelled and will remain active until the end of the current billing period {{date}}."
+    "trial": "TRIAL PERIOD",
+    "cancelled": "The subscription has been cancelled and will end at the end of the billing period on {{date}}.",
+    "buttons": {
+      "change": "Update subscription",
+      "cancel": "Cancel subscription",
+      "renew": "Renew subscription"
+    },
+    "cancel": {
+      "title": "Cancel subscription",
+      "description": {
+        "part_1": "Your subscription will be cancelled but will remain active until the end of your billing period on {{date}}.",
+        "part_2": "If you change your mind, you can renew the subscription."
+      },
+      "approve": "Cancel subscription",
+      "cancel": "Cancel"
+    },
+    "renew": {
+      "title": "Renew subscription",
+      "description": "This subscription will not be cancelled. It will be renewed on {{date}}.",
+      "approve": "Renew subscription",
+      "cancel": "Cancel"
+    }
   },
   "payment": {
     "title": "Payment",

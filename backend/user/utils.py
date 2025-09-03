@@ -171,7 +171,7 @@ def set_cookies(response, access_token, refresh_token):
         httponly=True,
         secure=True,
         max_age=60 * 60,  # 1 hour expiration for access token
-        samesite="None", 
+        samesite="None",
     )
 
     # Set the refresh token cookie (HTTP-only)

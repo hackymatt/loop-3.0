@@ -3,30 +3,33 @@
 import type { ISubscriptionProps } from "src/types/user";
 
 import { useTranslation } from "react-i18next";
+import { useBoolean } from "minimal-shared/hooks";
 
-import { Box, Card } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
 import { fDate } from "src/utils/format-time";
-import { getPlanIcon } from "src/utils/plan-icon";
 import { fCurrency } from "src/utils/format-number";
 
-import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
 import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
-import { ManageButton } from "src/layouts/components/manage-button";
 
 import { Label } from "src/components/label";
+
+import { AccountSubscriptionRenewForm } from "../account/account-subscription-renew-form";
+import { AccountSubscriptionCancelForm } from "../account/account-subscription-cancel-form";
 
 // ----------------------------------------------------------------------
 type AccountSubscriptionViewProps = {
   data: ISubscriptionProps;
 };
 
-const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${name}`;
 export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
+
+  const cancelFormOpen = useBoolean();
+  const renewFormOpen = useBoolean();
 
   const { type, license, interval, price, currency, nextBillingDate, isCancelAtPeriodEnd, status } =
     data;
@@ -39,43 +42,30 @@ export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) 
         {t("subscription.title")}
       </Typography>
 
-      <Card
+      <Box
         sx={{
-          p: 5,
-          maxWidth: 420,
-          mx: "auto",
           display: "flex",
-          flexDirection: "column",
+          flexDirection: { xs: "column", md: "row" },
           alignItems: "center",
-          textAlign: "center",
-          gap: 2,
+          justifyContent: "space-between",
+          mt: 5,
         }}
       >
-        {/* Subscription Info */}
         <Box>
           <Typography variant="overline" sx={{ color: "text.disabled" }}>
             {t("subscription.label")}
           </Typography>
 
           <Box>
-            <Box
-              component="img"
-              alt={license}
-              src={iconPath(getPlanIcon(type || PLAN_TYPE.FREE))}
-              sx={{ width: 80, height: 80 }}
-            />
-
             <Typography
-              variant="h4"
+              variant="h5"
               sx={{
                 mt: 1,
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
                 gap: 1,
               }}
             >
-              {license}
+              {t("subscription.license", { plan: license })}
             </Typography>
 
             {status === SUBSCRIPTION_STATUS.TRIALING && (
@@ -83,50 +73,33 @@ export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) 
             )}
           </Box>
 
+          {currency && (
+            <>
+              <Typography
+                variant="h3"
+                sx={{
+                  display: "flex",
+                }}
+              >
+                {fCurrency(price, { code: locale("code"), currency })}{" "}
+                {t(`subscription.billing.${interval}`)}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  display: "flex",
+                  mt: 2,
+                }}
+              >
+                {t("subscription.billing.label", { date: fDate(nextBillingDate, "DD MMMM YYYY") })}
+              </Typography>
+            </>
+          )}
+
           {isFreePlan && (
             <Typography variant="body2" sx={{ mt: 2, color: "text.secondary" }}>
               {t("subscription.sell")}
             </Typography>
-          )}
-
-          {!isFreePlan && currency && (
-            <Box
-              sx={{
-                mt: 2,
-                display: "flex",
-                flexDirection: "column",
-                gap: 0.5,
-                color: "text.secondary",
-                typography: "body2",
-              }}
-            >
-              {!isCancelAtPeriodEnd ? (
-                <>
-                  {[
-                    {
-                      label: t("subscription.billing.label"),
-                      value: t(`subscription.billing.${interval}`),
-                    },
-                    {
-                      label: t("subscription.renewal.price"),
-                      value: fCurrency(price, { code: locale("code"), currency }),
-                    },
-                    { label: t("subscription.renewal.date"), value: fDate(nextBillingDate) },
-                  ].map((item, index) => (
-                    <Box key={index} sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {item.label}:
-                      <Typography variant="body2" fontWeight="bold">
-                        {item.value}
-                      </Typography>
-                    </Box>
-                  ))}
-                </>
-              ) : (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {t("subscription.cancelled", { date: fDate(nextBillingDate) })}
-                </Box>
-              )}
-            </Box>
           )}
         </Box>
 
@@ -136,20 +109,37 @@ export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) 
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            mt: 2,
+            mt: 5,
             gap: 1,
+            width: { xs: 1, md: "auto" },
           }}
         >
-          <ManageButton
-            slotProps={{
-              button: {
-                size: "large",
-                sx: { width: { xs: 200, md: 300 } },
-              },
-            }}
-          />
+          <Button variant="contained" color="primary" size="large" fullWidth>
+            {t("subscription.buttons.change")}
+          </Button>
+          {isCancelAtPeriodEnd ? (
+            <Button variant="outlined" size="large" fullWidth onClick={renewFormOpen.onToggle}>
+              {t("subscription.buttons.renew")}
+            </Button>
+          ) : (
+            <Button variant="outlined" size="large" fullWidth onClick={cancelFormOpen.onToggle}>
+              {t("subscription.buttons.cancel")}
+            </Button>
+          )}
         </Box>
-      </Card>
+      </Box>
+
+      <AccountSubscriptionCancelForm
+        nextBillingDate={nextBillingDate}
+        open={cancelFormOpen.value}
+        onClose={cancelFormOpen.onFalse}
+      />
+
+      <AccountSubscriptionRenewForm
+        nextBillingDate={nextBillingDate}
+        open={renewFormOpen.value}
+        onClose={renewFormOpen.onFalse}
+      />
     </>
   );
 }

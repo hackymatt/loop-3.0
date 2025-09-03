@@ -3,6 +3,7 @@ from global_config import CONFIG
 
 stripe.api_key = CONFIG["stripe_secret_key"]
 
+
 def create_customer(email, **kwargs):
     return stripe.Customer.create(email=email, **kwargs)
 
