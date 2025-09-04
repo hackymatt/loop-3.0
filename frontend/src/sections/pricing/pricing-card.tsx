@@ -202,18 +202,14 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        disabled={isCurrentPlan && isFreePlan}
+        disabled={isCurrentPlan}
         loading={isLoading}
         onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
           await handleRedirect();
         }}
       >
-        {isCurrentPlan && isFreePlan
-          ? t("current")
-          : isCurrentPlan && !isFreePlan
-            ? t("manage")
-            : `${t("choose")} ${plan.license}`}
+        {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
       </LoadingButton>
     </Paper>
   );

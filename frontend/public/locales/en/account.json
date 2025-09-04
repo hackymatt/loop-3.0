@@ -136,13 +136,13 @@
         "part_2": "If you change your mind, you can renew the subscription."
       },
       "approve": "Cancel subscription",
-      "cancel": "Cancel"
+      "cancel": "Back"
     },
     "renew": {
       "title": "Renew subscription",
       "description": "This subscription will not be cancelled. It will be renewed on {{date}}.",
       "approve": "Renew subscription",
-      "cancel": "Cancel"
+      "cancel": "Back"
     }
   },
   "payment": {

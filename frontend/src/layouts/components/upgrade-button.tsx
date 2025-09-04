@@ -16,14 +16,14 @@ import { AnimateBorder } from "src/components/animate";
 
 // ----------------------------------------------------------------------
 
-export type ManageButtonProps = {
+export type UpgradeButtonProps = {
   sx?: SxProps<Theme>;
   slotProps?: {
     button?: ButtonProps<"a">;
   };
 };
 
-export function ManageButton({ slotProps, sx }: ManageButtonProps) {
+export function UpgradeButton({ slotProps, sx }: UpgradeButtonProps) {
   const { t } = useTranslation("navigation");
   const localize = useLocalizedPath();
 

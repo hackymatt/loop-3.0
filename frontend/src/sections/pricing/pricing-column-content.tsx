@@ -163,7 +163,7 @@ export function PricingColumnContentMobile({
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        disabled={isCurrentPlan && isFreePlan}
+        disabled={isCurrentPlan}
         loading={isLoading}
         onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
@@ -171,11 +171,7 @@ export function PricingColumnContentMobile({
         }}
         sx={{ mt: 5 }}
       >
-        {isCurrentPlan && isFreePlan
-          ? t("current")
-          : isCurrentPlan && !isFreePlan
-            ? t("manage")
-            : `${t("choose")} ${plan.license}`}
+        {isCurrentPlan && isFreePlan ? t("current") : `${t("choose")} ${plan.license}`}
       </LoadingButton>
     </Box>
   );
@@ -282,18 +278,14 @@ export function PricingColumnContentDesktop({
           size="large"
           variant={isCurrentPlan ? "outlined" : "contained"}
           color={plan.popular ? "primary" : "inherit"}
-          disabled={isCurrentPlan && isFreePlan}
+          disabled={isCurrentPlan}
           loading={isLoading}
           onClick={async () => {
             trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
             await handleRedirect();
           }}
         >
-          {isCurrentPlan && isFreePlan
-            ? t("current")
-            : isCurrentPlan && !isFreePlan
-              ? t("manage")
-              : `${t("choose")} ${plan.license}`}
+          {isCurrentPlan && isFreePlan ? t("current") : `${t("choose")} ${plan.license}`}
         </LoadingButton>
       </Box>
     </Box>
