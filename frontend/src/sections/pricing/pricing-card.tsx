@@ -47,10 +47,14 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
   const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
-  const { isLoggedIn, planType } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type, interval: userInterval, currency: userCurrency },
+  } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.type === planType;
-  const isFreePlan = planType === PLAN_TYPE.FREE;
+  const isCurrentPlan =
+    isLoggedIn && plan.type === type && interval === userInterval && currency === userCurrency;
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
   const handleRedirect = async () => {
     if (!isLoggedIn) {
@@ -208,6 +212,7 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
           await handleRedirect();
         }}
+        sx={{ textWrap: "nowrap" }}
       >
         {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
       </LoadingButton>

@@ -10,7 +10,7 @@ from project.enrollment.models import ProjectEnrollment
 from project.serializers import ProjectListSerializer
 from certificate.models import Certificate
 from certificate.serializers import CertificateSerializer
-from ..token.utils import get_user_tokens_left
+from ...token.utils import get_user_tokens_left
 from .serializers import DashboardUserSerializer
 
 

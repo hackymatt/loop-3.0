@@ -167,10 +167,14 @@ export function SubscriptionOption({
   const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
-  const { isLoggedIn, planType } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type, currency: userCurrency, interval: userInterval },
+  } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.type === planType;
-  const isFreePlan = planType === PLAN_TYPE.FREE;
+  const isCurrentPlan =
+    isLoggedIn && plan.type === type && interval === userInterval && currency === userCurrency;
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
   const handleRedirect = async () => {
     if (!isLoggedIn) {
@@ -219,47 +223,6 @@ export function SubscriptionOption({
     </Box>
   );
 
-  const renderList = () => (
-    <Box
-      sx={{
-        gap: 1,
-        display: "flex",
-        typography: "body2",
-        textAlign: "left",
-        flexDirection: "column",
-      }}
-    >
-      <Box
-        sx={{
-          gap: 1.5,
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Iconify icon="logos:openai-icon" />
-        {fShortenNumber(plan.tokensLimit, { code: locale("code") })} {t("token")}
-      </Box>
-      {plan.options.map((option) => (
-        <Box
-          key={option.title}
-          sx={{
-            gap: 1.5,
-            display: "flex",
-            alignItems: "center",
-            ...(option.disabled && { color: "text.disabled" }),
-          }}
-        >
-          <Iconify
-            width={20}
-            icon={option.disabled ? "eva:close-outline" : "eva:checkmark-fill"}
-            sx={{ color: "primary.main", ...(option.disabled && { color: "text.disabled" }) }}
-          />
-          {option.title}
-        </Box>
-      ))}
-    </Box>
-  );
-
   return (
     <Paper
       variant="outlined"
@@ -286,8 +249,6 @@ export function SubscriptionOption({
 
       {renderPrices()}
 
-      {renderList()}
-
       <LoadingButton
         fullWidth
         size="large"
@@ -299,6 +260,7 @@ export function SubscriptionOption({
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
           await handleRedirect();
         }}
+        sx={{ textWrap: "nowrap" }}
       >
         {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
       </LoadingButton>
@@ -364,7 +326,7 @@ function ChangeStep({ data, onClose }: ChangeStepProps) {
           mt: 5,
         }}
       >
-        <Box>
+        <Box sx={{ width: 1 }}>
           <Typography variant="overline" sx={{ color: "text.disabled" }}>
             {t("subscription.change.title")}
           </Typography>
@@ -393,6 +355,34 @@ function ChangeStep({ data, onClose }: ChangeStepProps) {
                 />
               ))}
             </Box>
+          </Box>
+
+          {/* Action Buttons */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row-reverse" },
+              alignItems: "center",
+              mt: 5,
+              gap: 1,
+              width: { xs: 1, md: "auto" },
+            }}
+          >
+            <LoadingButton
+              fullWidth
+              color="primary"
+              type="submit"
+              variant="contained"
+              size="large"
+              loading={isSubmitting}
+              sx={{ textWrap: "nowrap" }}
+            >
+              {t("subscription.change.approve")}
+            </LoadingButton>
+
+            <Button variant="outlined" size="large" onClick={onClose} color="inherit" fullWidth>
+              {t("subscription.change.cancel")}
+            </Button>
           </Box>
         </Box>
       </Box>

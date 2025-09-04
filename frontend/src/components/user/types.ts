@@ -1,5 +1,5 @@
-import type { PlanType } from "src/types/plan";
 import type { JoinType, UserType } from "src/types/user";
+import type { Currency, PlanType, PlanInterval } from "src/types/plan";
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ export type UserState = {
   joinType: JoinType;
   isActive: boolean;
   isLoggedIn: boolean;
-  planType: PlanType;
+  plan: { type: PlanType; currency: string | null; interval: string | null };
   redirect: string | null;
 };
 

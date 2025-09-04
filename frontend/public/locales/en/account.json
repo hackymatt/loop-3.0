@@ -114,33 +114,39 @@
   "subscription": {
     "title": "Subscription",
     "label": "Current subscription",
-    "license": "Plan {{plan}}",
+    "license": "{{plan}} plan",
     "billing": {
-      "label": "Your subscription will renew on {{date}}.",
+      "label": "Your subscription renews on {{date}}.",
       "monthly": "monthly",
       "yearly": "yearly"
     },
-    "sell": "Build your portfolio, learn with projects, and earn certificates. Choose a plan and grow with Loop.",
+    "sell": "Build your portfolio, learn through projects, and earn certificates. Choose a plan and grow with Loop.",
     "error": "Something went wrong. Please try again.",
-    "trial": "TRIAL PERIOD",
-    "cancelled": "The subscription has been cancelled and will end at the end of the billing period on {{date}}.",
+    "trial": "TRIAL",
+    "cancelled": "Your subscription has been cancelled and will end at the end of the billing period on {{date}}.",
     "buttons": {
       "change": "Update subscription",
       "cancel": "Cancel subscription",
       "renew": "Renew subscription"
     },
+    "change": {
+      "title": "Update your subscription",
+      "button": "Continue",
+      "approve": "Continue",
+      "cancel": "Back"
+    },
     "cancel": {
       "title": "Cancel subscription",
       "description": {
-        "part_1": "Your subscription will be cancelled but will remain active until the end of your billing period on {{date}}.",
-        "part_2": "If you change your mind, you can renew the subscription."
+        "part_1": "Your subscription will be cancelled but remain active until the end of your billing period, which ends on {{date}}.",
+        "part_2": "If you change your mind, you can renew your subscription."
       },
       "approve": "Cancel subscription",
       "cancel": "Back"
     },
     "renew": {
       "title": "Renew subscription",
-      "description": "This subscription will not be cancelled. It will be renewed on {{date}}.",
+      "description": "This subscription will not be cancelled. It will renew on {{date}}.",
       "approve": "Renew subscription",
       "cancel": "Back"
     }

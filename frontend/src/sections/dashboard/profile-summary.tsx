@@ -109,7 +109,7 @@ export function ProfileSummary({ profile }: Props) {
             <Box
               component="img"
               alt={profile.user.planLicense}
-              src={iconPath(getPlanIcon(profile.user.planType))}
+              src={iconPath(getPlanIcon(profile.user.plan.type))}
               sx={{ width: 80, height: 80 }}
             />
           </Box>

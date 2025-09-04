@@ -1,7 +1,7 @@
 import type { Language } from "src/locales/types";
 import type { LevelType } from "src/types/project";
 import type { GetQueryResponse } from "src/api/types";
-import type { IDashboardProps } from "src/types/user";
+import type { IUserPlan, IDashboardProps } from "src/types/user";
 
 import { compact } from "lodash-es";
 import { cookies } from "next/headers";
@@ -56,6 +56,12 @@ type ICertificate = {
   completed_at: string;
 };
 
+type IPlan = {
+  type: "free" | "basic" | "premium";
+  currency: string | null;
+  interval: "month" | "year" | null;
+};
+
 type IUser = {
   email: string;
   first_name: string;
@@ -64,7 +70,7 @@ type IUser = {
   user_type: "admin" | "instructor" | "student";
   join_type: "email" | "google" | "facebook" | "github";
   is_active: boolean;
-  plan_type: "free" | "basic" | "premium";
+  plan: IPlan;
   plan_license: string;
 };
 
@@ -96,7 +102,7 @@ export const dashboardQuery = (language: Language) => {
           join_type,
           user_type,
           image,
-          plan_type,
+          plan,
           plan_license,
           ...restUser
         },
@@ -169,7 +175,7 @@ export const dashboardQuery = (language: Language) => {
           isActive: is_active,
           joinType: join_type,
           userType: user_type,
-          planType: plan_type,
+          plan: plan as IUserPlan,
           planLicense: plan_license,
         },
         totalPoints: total_points,
