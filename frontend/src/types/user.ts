@@ -35,6 +35,12 @@ export type IInstructorProps = IUserProps & {
   role: string;
 };
 
+export type IUserPlan = {
+  type: PlanType;
+  currency: Currency | null;
+  interval: PlanInterval | null;
+};
+
 export type IDashboardProps = {
   projects: IProjectListProps[];
   certificates: ICertificateProps[];
@@ -47,7 +53,7 @@ export type IDashboardProps = {
       userType: UserType;
       joinType: JoinType;
       isActive: boolean;
-      planType: PlanType;
+      plan: IUserPlan;
       planLicense: string;
     };
     tokens: number;

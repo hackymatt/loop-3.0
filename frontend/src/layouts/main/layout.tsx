@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import { Toolbar, Container } from "@mui/material";
 
 import { CONFIG } from "src/global-config";
+import { PLAN_TYPE } from "src/consts/plan";
 
 import { Logo } from "src/components/logo";
 import { useUserContext } from "src/components/user";
@@ -67,8 +68,11 @@ export function MainLayout({
   layoutQuery = "md",
 }: MainLayoutProps) {
   const user = useUserContext();
-  const { isLoggedIn, planType } = user.state;
-  const isFreePlan = planType === "free";
+  const {
+    isLoggedIn,
+    plan: { type },
+  } = user.state;
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
   const navData = useNavData(data);
 

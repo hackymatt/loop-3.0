@@ -48,10 +48,14 @@ export function PricingColumnContentMobile({
   const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
-  const { isLoggedIn, planType } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type, interval: userInterval, currency: userCurrency },
+  } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.type === planType;
-  const isFreePlan = planType === PLAN_TYPE.FREE;
+  const isCurrentPlan =
+    isLoggedIn && plan.type === type && interval === userInterval && currency === userCurrency;
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
   const handleRedirect = async () => {
     if (!isLoggedIn) {
@@ -169,9 +173,9 @@ export function PricingColumnContentMobile({
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
           await handleRedirect();
         }}
-        sx={{ mt: 5 }}
+        sx={{ mt: 5, textWrap: "nowrap" }}
       >
-        {isCurrentPlan && isFreePlan ? t("current") : `${t("choose")} ${plan.license}`}
+        {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
       </LoadingButton>
     </Box>
   );
@@ -194,10 +198,14 @@ export function PricingColumnContentDesktop({
   const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
-  const { isLoggedIn, planType } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type, interval: userInterval, currency: userCurrency },
+  } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.type === planType;
-  const isFreePlan = planType === PLAN_TYPE.FREE;
+  const isCurrentPlan =
+    isLoggedIn && plan.type === type && interval === userInterval && currency === userCurrency;
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
   const handleRedirect = async () => {
     if (!isLoggedIn) {
@@ -266,7 +274,7 @@ export function PricingColumnContentDesktop({
 
       <Box
         sx={{
-          py: 5,
+          p: 5,
           textAlign: "center",
           ...(plan.popular && {
             bgcolor: "background.neutral",
@@ -275,6 +283,7 @@ export function PricingColumnContentDesktop({
         }}
       >
         <LoadingButton
+          fullWidth
           size="large"
           variant={isCurrentPlan ? "outlined" : "contained"}
           color={plan.popular ? "primary" : "inherit"}
@@ -284,8 +293,9 @@ export function PricingColumnContentDesktop({
             trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
             await handleRedirect();
           }}
+          sx={{ textWrap: "nowrap" }}
         >
-          {isCurrentPlan && isFreePlan ? t("current") : `${t("choose")} ${plan.license}`}
+          {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
         </LoadingButton>
       </Box>
     </Box>

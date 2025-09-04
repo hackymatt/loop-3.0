@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..login.serializers import LoginResponseSerializer
+from ...login.serializers import LoginResponseSerializer
 from plan.subscription.utils import get_subscription
 from const import UserType
 

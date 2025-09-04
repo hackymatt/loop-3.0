@@ -6,11 +6,10 @@ from .payment.urls import urlpatterns as payment_urls
 from .invoice.urls import urlpatterns as invoice_urls
 from .subscription.urls import urlpatterns as subscription_urls
 from .customer_portal.urls import urlpatterns as customer_portal_urls
-
-
-from const import Urls
+from .dashboard.urls import urlpatterns as dashboard_urls
 
 urlpatterns = [
+    path("", include(dashboard_urls)),
     path("", include(personal_urls)),
     path("", include(password_urls)),
     path("", include(account_urls)),

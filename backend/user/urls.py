@@ -2,7 +2,6 @@ from django.urls import path, include
 
 from const import Urls
 from .me.urls import urlpatterns as me_urls
-from .dashboard.urls import urlpatterns as dashboard_urls
 from .activate.urls import urlpatterns as activate_urls
 from .register.urls import urlpatterns as register_urls
 from .login.urls import urlpatterns as login_urls
@@ -26,5 +25,4 @@ urlpatterns = [
     path("", include(refresh_token_urls)),
     # User routes
     path("", include(me_urls)),
-    path("", include(dashboard_urls)),
 ]

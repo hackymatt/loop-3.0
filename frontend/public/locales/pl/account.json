@@ -131,7 +131,9 @@
     },
     "change": {
       "title": "Zaktualizuj swoją subskrypcję",
-      "button": "Kontynuuj"
+      "button": "Kontynuuj",
+      "approve": "Kontynuuj",
+      "cancel": "Wstecz"
     },
     "cancel": {
       "title": "Anuluj subskrypcję",

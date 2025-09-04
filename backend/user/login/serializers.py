@@ -1,12 +1,21 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from plan.subscription.models import PlanSubscription
 from plan.subscription.utils import get_subscription
 from const import UserType
 
 
+class PlanSubscriptionSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(source="plan.type")
+    currency = serializers.CharField(source="plan_pricing.currency", default=None)
+    interval = serializers.CharField(source="plan_pricing.interval", default=None)
+    class Meta:
+        model = PlanSubscription
+        fields = ["type", "currency", "interval"]  
+
 class LoginResponseSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
-    plan_type = serializers.SerializerMethodField()
+    plan = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
@@ -18,15 +27,15 @@ class LoginResponseSerializer(serializers.ModelSerializer):
             "user_type",
             "is_active",
             "join_type",
-            "plan_type",
+            "plan",
         ]
 
-    def get_plan_type(self, obj):
+    def get_plan(self, obj):
         if obj.user_type != UserType.STUDENT:
             return None
 
         subscription = get_subscription(obj)
-        return subscription.plan.type
+        return PlanSubscriptionSerializer(subscription).data
 
     def get_image(self, obj):
         request = self.context.get("request")
