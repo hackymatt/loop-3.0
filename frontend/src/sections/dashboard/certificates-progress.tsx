@@ -13,7 +13,7 @@ import { RouterLink } from "src/routes/components";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { PLAN_TYPE } from "src/consts/plan";
-import { ManageButton } from "src/layouts/components/manage-button";
+import { UpgradeButton } from "src/layouts/components/upgrade-button";
 
 import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
@@ -111,7 +111,7 @@ export function CertificatesProgress({ certificates }: Props) {
         </Grid>
       </Box>
 
-      <ManageButton
+      <UpgradeButton
         slotProps={{
           button: { size: "large", startIcon: <Iconify icon="solar:lock-unlocked-outline" /> },
         }}

@@ -129,6 +129,10 @@
       "cancel": "Anuluj subskrypcję",
       "renew": "Odnów subskrypcję"
     },
+    "change": {
+      "title": "Zaktualizuj swoją subskrypcję",
+      "button": "Kontynuuj"
+    },
     "cancel": {
       "title": "Anuluj subskrypcję",
       "description": {
@@ -136,13 +140,13 @@
         "part_2": "Jeśli zmienisz zdanie, możesz odnowić subskrypcję."
       },
       "approve": "Anuluj subskrypcję",
-      "cancel": "Anuluj"
+      "cancel": "Wstecz"
     },
     "renew": {
       "title": "Odnów subskrypcję",
       "description": "Ta subskrypcja nie zostanie anulowana. Zostanie odnowiona w dniu {{date}}.",
       "approve": "Odnów subskrypcję",
-      "cancel": "Anuluj"
+      "cancel": "Wstecz"
     }
   },
   "payment": {

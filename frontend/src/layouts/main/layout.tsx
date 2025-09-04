@@ -25,7 +25,7 @@ import { MenuButton } from "../components/menu-button";
 import { LayoutSection } from "../core/layout-section";
 import { HeaderSection } from "../core/header-section";
 import { LoginButton } from "../components/login-button";
-import { ManageButton } from "../components/manage-button";
+import { UpgradeButton } from "../components/upgrade-button";
 import { RegisterButton } from "../components/register-button";
 import { SettingsButton } from "../components/settings-button";
 import { NavAccountPopover } from "./nav/components/nav-account";
@@ -67,7 +67,8 @@ export function MainLayout({
   layoutQuery = "md",
 }: MainLayoutProps) {
   const user = useUserContext();
-  const { isLoggedIn } = user.state;
+  const { isLoggedIn, planType } = user.state;
+  const isFreePlan = planType === "free";
 
   const navData = useNavData(data);
 
@@ -102,10 +103,10 @@ export function MainLayout({
               ),
               bottomArea: (
                 <Box sx={{ py: 3, px: 2.5, display: "flex", flexDirection: "column", gap: 2 }}>
-                  {isLoggedIn ? (
+                  {isLoggedIn && isFreePlan ? (
                     <>
-                      {/* @slot Manage button */}
-                      <ManageButton
+                      {/* @slot Upgrade button */}
+                      <UpgradeButton
                         sx={{ width: 1 }}
                         slotProps={{
                           button: {
@@ -188,8 +189,10 @@ export function MainLayout({
 
           {isLoggedIn ? (
             <>
-              {/* @slot Manage button */}
-              <ManageButton sx={{ display: { xs: "none", [layoutQuery]: "inline-flex" } }} />
+              {isFreePlan && (
+                // @slot Upgrade button
+                <UpgradeButton sx={{ display: { xs: "none", [layoutQuery]: "inline-flex" } }} />
+              )}
               {/* @slot Account button */}
               <NavAccountPopover />
             </>

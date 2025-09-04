@@ -10,7 +10,7 @@ import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
-import { ManageButton } from "src/layouts/components/manage-button";
+import { UpgradeButton } from "src/layouts/components/upgrade-button";
 
 import { Iconify } from "src/components/iconify";
 
@@ -112,7 +112,7 @@ export function UpgradeBanner({ slug, ...other }: Props) {
             gap: 1,
           }}
         >
-          <ManageButton
+          <UpgradeButton
             slotProps={{
               button: {
                 size: "large",
