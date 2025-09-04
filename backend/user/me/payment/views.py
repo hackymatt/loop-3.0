@@ -12,6 +12,7 @@ from utils.stripe.customer import (
     get_payment_methods,
 )
 from utils.stripe.payment_method import retrieve_payment_method, detach_payment_method
+from utils.stripe.setup_intent import retrieve_setup_intent
 
 
 class PaymentMethodsView(APIView):
@@ -46,7 +47,9 @@ class PaymentMethodsView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
+
         payment_method_id = request.data.get("payment_method_id")
+
         stripe_customer_id = Student.objects.get(user=user).stripe_customer_id
         try:
             payment_method = retrieve_payment_method(payment_method_id)

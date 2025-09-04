@@ -18,3 +18,10 @@ def update_customer(stripe_id, **kwargs):
 
 def get_payment_methods(stripe_id):
     return stripe.Customer.list_payment_methods(customer=stripe_id)
+
+
+def create_customer_session(stripe_id, **kwargs):
+    return stripe.CustomerSession.create(
+                customer=stripe_id,
+                **kwargs,
+            )

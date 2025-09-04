@@ -177,7 +177,9 @@ export function SubscriptionOption({
   } = user.state;
 
   const isCurrentPlan =
-    isLoggedIn && plan.type === type && interval === userInterval && currency === userCurrency;
+    isLoggedIn &&
+    plan.type === type &&
+    ((interval === userInterval && currency === userCurrency) || plan.type === PLAN_TYPE.FREE);
   const isFreePlan = type === PLAN_TYPE.FREE;
 
   const handleRedirect = async () => {

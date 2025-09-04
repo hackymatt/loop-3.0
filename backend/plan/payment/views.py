@@ -18,8 +18,9 @@ from utils.url.url import get_website_url
 from utils.logger.logger import logger
 from django.utils import translation
 from mailer.mailer import Mailer
-from utils.stripe.customer import create_customer
+from utils.stripe.customer import create_customer, create_customer_session, update_customer
 from utils.stripe.setup_intent import create_setup_intent
+from utils.stripe.payment_method import modify_payment_method
 
 stripe.api_key = CONFIG["stripe_secret_key"]
 
@@ -40,10 +41,22 @@ class CreateSetupIntentView(APIView):
             setup_intent = create_setup_intent(
                 customer_id=customer["id"],
             )
+            customer_session = create_customer_session(
+                stripe_id=customer["id"],
+                components={
+                "payment_element": {
+                    "enabled": True,
+                    "features": {
+                    "payment_method_redisplay": "enabled",
+                    },
+                },
+                },
+            )
 
             return Response(
                 {
                     "client_secret": setup_intent.client_secret,
+                    "customer_session_client_secret": customer_session.client_secret
                 }
             )
 
@@ -78,6 +91,8 @@ class StripeWebhookView(APIView):
             self.handle_invoice_payment_succeeded(data)
         elif event_type == "invoice.payment_failed":
             self.handle_invoice_payment_failed(data)
+        elif event_type == "setup_intent.succeeded":
+            self.handle_setup_intent_succeeded(data)
 
         return Response(status=status.HTTP_200_OK)
 
@@ -282,3 +297,19 @@ class StripeWebhookView(APIView):
             attachments=[],
             language=language,
         )
+
+    def handle_setup_intent_succeeded(self, data):
+        customer_id = data["customer"]
+        payment_method_id = data["payment_method"]
+        update_customer(
+                customer_id,
+                invoice_settings={"default_payment_method": payment_method_id},
+            )
+        try:
+            modify_payment_method(
+                payment_method_id,
+                allow_redisplay="always"
+            )
+        except stripe.error.InvalidRequestError as e:
+            logger.info(f"Skipping modify_payment_method for unsupported type: {e}")
+

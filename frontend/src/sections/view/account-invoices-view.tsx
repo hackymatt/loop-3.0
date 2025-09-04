@@ -16,8 +16,8 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import { useQueryParams } from "src/hooks/use-query-params";
 
-import { AccountInvoicesTableRow } from "../account/account-invoices-table-row";
-import { AccountInvoicesTableHead } from "../account/account-invoices-table-head";
+import { AccountInvoicesTableRow } from "../account/invoices/account-invoices-table-row";
+import { AccountInvoicesTableHead } from "../account/invoices/account-invoices-table-head";
 
 // ----------------------------------------------------------------------
 type AccountInvoicesViewProps = {

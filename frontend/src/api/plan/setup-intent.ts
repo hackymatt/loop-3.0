@@ -11,6 +11,7 @@ type ISetupIntent = {};
 
 type ISetupIntentReturn = {
   client_secret: string;
+  customer_session_client_secret: string;
 };
 
 export const useCreateSetupIntent = () =>
