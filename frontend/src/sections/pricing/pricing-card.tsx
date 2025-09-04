@@ -66,7 +66,7 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
           localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
         );
       }
-      router.push(localize(paths.account.dashboard));
+      router.push(localize(paths.auth.register));
       return;
     }
 

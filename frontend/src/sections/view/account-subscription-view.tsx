@@ -20,16 +20,16 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
 import { fDate } from "src/utils/format-time";
-import { fCurrency, fShortenNumber } from "src/utils/format-number";
+import { fCurrency } from "src/utils/format-number";
 
 import { useAnalytics } from "src/app/analytics-provider";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
+import { UpgradeButton } from "src/layouts/components/upgrade-button";
 import { useCreateCustomerPortalLink } from "src/api/me/customer-portal-link";
 
 import { Label } from "src/components/label";
 import { Form } from "src/components/hook-form";
-import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
 
 import IntervalToggle from "../pricing/interval-toogle";
@@ -117,29 +117,33 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
       </Box>
 
       {/* Action Buttons */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          mt: 5,
-          gap: 1,
-          width: { xs: 1, md: "auto" },
-        }}
-      >
-        <Button variant="contained" color="primary" size="large" fullWidth onClick={onChange}>
-          {t("subscription.buttons.change")}
-        </Button>
-        {isCancelAtPeriodEnd ? (
-          <Button variant="outlined" size="large" fullWidth onClick={onRenew}>
-            {t("subscription.buttons.renew")}
+      {isFreePlan ? (
+        <UpgradeButton slotProps={{ button: { size: "large" } }} />
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mt: 5,
+            gap: 1,
+            width: { xs: 1, md: "auto" },
+          }}
+        >
+          <Button variant="contained" color="primary" size="large" fullWidth onClick={onChange}>
+            {t("subscription.buttons.change")}
           </Button>
-        ) : (
-          <Button variant="outlined" size="large" fullWidth onClick={onCancel}>
-            {t("subscription.buttons.cancel")}
-          </Button>
-        )}
-      </Box>
+          {isCancelAtPeriodEnd ? (
+            <Button variant="outlined" size="large" fullWidth onClick={onRenew}>
+              {t("subscription.buttons.renew")}
+            </Button>
+          ) : (
+            <Button variant="outlined" size="large" fullWidth onClick={onCancel}>
+              {t("subscription.buttons.cancel")}
+            </Button>
+          )}
+        </Box>
+      )}
     </Box>
   );
 }

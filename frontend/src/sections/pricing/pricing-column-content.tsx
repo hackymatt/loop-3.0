@@ -67,7 +67,7 @@ export function PricingColumnContentMobile({
           localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
         );
       }
-      router.push(localize(paths.account.dashboard));
+      router.push(localize(paths.auth.register));
       return;
     }
 
@@ -217,7 +217,7 @@ export function PricingColumnContentDesktop({
           localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
         );
       }
-      router.push(localize(paths.account.dashboard));
+      router.push(localize(paths.auth.register));
       return;
     }
 
