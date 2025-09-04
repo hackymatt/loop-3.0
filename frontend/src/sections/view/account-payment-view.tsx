@@ -28,9 +28,9 @@ import { CONFIG } from "src/global-config";
 import { PAYMENT_METHODS } from "src/consts/payment";
 import { useCreateSetupIntent } from "src/api/plan/setup-intent";
 
-import { AccountPaymentCard } from "../account/account-payment-card";
-import { AccountPaymentPaypal } from "../account/account-payment-paypal";
-import { AccountPaymentRevolutPay } from "../account/account-payment-revolutpay";
+import { AccountPaymentCard } from "../account/payment/account-payment-card";
+import { AccountPaymentPaypal } from "../account/payment/account-payment-paypal";
+import { AccountPaymentRevolutPay } from "../account/payment/account-payment-revolutpay";
 
 const stripePromise = loadStripe(CONFIG.stripePublishableKey);
 
@@ -105,7 +105,7 @@ export function AccountPaymentView({ data }: AccountPaymentViewProps) {
         {paymentMethods.map((paymentMethod) => getDisplayCard(paymentMethod))}
       </Box>
 
-      <Divider sx={{ my: 5, borderStyle: "dashed" }} />
+      {paymentMethods.length > 0 && <Divider sx={{ my: 5, borderStyle: "dashed" }} />}
 
       <Box sx={{ gap: 3, display: "flex", flexDirection: "column" }}>
         {!clientSecret && (

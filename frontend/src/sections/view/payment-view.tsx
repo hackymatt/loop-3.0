@@ -3,6 +3,7 @@
 import type { IPlanProps } from "src/types/plan";
 import type { BoxProps } from "@mui/material/Box";
 import type { Language } from "src/locales/types";
+import type { IPersonalDataProps } from "src/types/user";
 
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
@@ -34,7 +35,6 @@ import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
 
 import { Form } from "src/components/hook-form";
-import { useUserContext } from "src/components/user";
 
 import { usePaymentSchema } from "../payment/schema";
 import { PaymentSummary } from "../payment/payment-summary";
@@ -46,21 +46,25 @@ const stripePromise = loadStripe(CONFIG.stripePublishableKey);
 // ----------------------------------------------------------------------
 
 type PaymentViewProps = {
-  data: { plan: IPlanProps; clientSecret: string };
+  data: {
+    plan: IPlanProps;
+    personal: IPersonalDataProps;
+    clientSecret: string;
+    customerSessionClientSecret: string;
+  };
   language: Language;
 };
 
 export function PaymentView({ data, language }: PaymentViewProps) {
   const theme = useTheme();
-
-  const { clientSecret } = data;
+  const { clientSecret, customerSessionClientSecret } = data;
 
   return (
     <Elements
-      key={clientSecret}
       stripe={stripePromise}
       options={{
         clientSecret,
+        customerSessionClientSecret,
         appearance: {
           theme: "flat",
           variables: {
@@ -84,11 +88,17 @@ function Payment({ data }: PaymentViewProps) {
   const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const { t } = useTranslation("payment");
+  const { t: locale } = useTranslation("locale");
+  const { t: countries } = useTranslation("countries");
 
-  const user = useUserContext();
-  const { email, firstName, lastName } = user.state;
+  const countriesList = countries("countries", { returnObjects: true }) as {
+    code: string;
+    label: string;
+    phone: string;
+  }[];
 
-  const { plan } = data;
+  const { plan, personal } = data;
+  const { email, firstName, lastName, streetAddress, zipCode, city, country } = personal;
 
   const isFreePlan = (plan.type || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
 
@@ -139,14 +149,30 @@ function Payment({ data }: PaymentViewProps) {
     }
   });
 
+  function findCountryCode(countryLabel: string) {
+    return countriesList.find((countryObj) => countryObj.label === countryLabel)?.code;
+  }
+
   const renderAccountDetails = () => (
     <>
       <StepLabel title={t("customer.label")} step="1" />
       <AddressElement
         options={{
           mode: "billing",
-          defaultValues: { firstName, lastName },
-          display: { name: "split" },
+          defaultValues: {
+            name: `${firstName} ${lastName}`,
+            address: {
+              line1: streetAddress,
+              line2: "",
+              city,
+              postal_code: zipCode,
+              state: "",
+              country: findCountryCode(country || locale("country")) || "PL",
+            },
+          },
+        }}
+        onChange={(event) => {
+          console.log("Address changed:", event.value);
         }}
       />
     </>
