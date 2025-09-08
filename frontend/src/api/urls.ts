@@ -44,6 +44,7 @@ export const URLS = {
   // PLAN
   PLANS: "/plans",
   CREATE_SETUP_INTENT: "/create-setup-intent",
+  CREATE_SUBSCRIPTION: "/create-subscription",
   // CERTIFICATES
   CERTIFICATES: "/certificates",
   // ME

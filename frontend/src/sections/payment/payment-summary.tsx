@@ -22,6 +22,7 @@ import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
+import { useUserContext } from "src/components/user";
 
 import { PaymentTerms } from "./payment-terms";
 
@@ -33,6 +34,10 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   const { t } = useTranslation("payment");
   const { t: pricing } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
+
+  const {
+    state: { trialUsed },
+  } = useUserContext();
 
   const { query, handleChange } = useQueryParams();
 
@@ -144,13 +149,15 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
     <Box sx={{ display: "flex", alignItems: "center", typography: "h6" }}>
       <Box component="span" sx={{ flexGrow: 1 }}>
         {t("summary.total")}{" "}
-        <Typography variant="body2" color="primary">
-          {t("summary.trial", { days: CONFIG.trialDays })}
-        </Typography>
+        {!trialUsed && (
+          <Typography variant="body2" color="primary">
+            {t("summary.trial", { days: CONFIG.trialDays })}
+          </Typography>
+        )}
       </Box>
 
       <Box component="span">
-        {fCurrency(0, {
+        {fCurrency(!trialUsed ? 0 : priceObj.price, {
           code: locale("code"),
           currency,
         })}
@@ -244,7 +251,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         {!isFreePlan && renderPlanSwitch()}
         {renderPrices()}
         <Divider sx={{ borderStyle: "dashed" }} />
-        {renderTotalDue()}
+        {!trialUsed && renderTotalDue()}
         {renderTotalBilled()}
         <Divider sx={{ borderStyle: "dashed" }} />
       </Box>

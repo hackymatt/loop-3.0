@@ -1,7 +1,7 @@
 import type { JOIN_TYPE, USER_TYPE } from "src/consts/user";
 import type { DatePickerFormat } from "src/utils/format-time";
-import type { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 import type { WALLET_TYPES, PAYMENT_METHODS } from "src/consts/payment";
+import type { SUBSCRIPTION_RESULT, SUBSCRIPTION_STATUS } from "src/consts/subscription";
 
 import type { IProjectListProps } from "./project";
 import type { ICertificateProps } from "./certificate";
@@ -54,6 +54,7 @@ export type IDashboardProps = {
       joinType: JoinType;
       isActive: boolean;
       plan: IUserPlan;
+      trialUsed: boolean;
       planLicense: string;
     };
     tokens: number;
@@ -63,6 +64,8 @@ export type IDashboardProps = {
 };
 
 export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUS)[keyof typeof SUBSCRIPTION_STATUS];
+
+export type SubscriptionResult = (typeof SUBSCRIPTION_RESULT)[keyof typeof SUBSCRIPTION_RESULT];
 
 export type ISubscriptionProps = {
   type: PlanType;

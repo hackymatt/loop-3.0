@@ -52,6 +52,7 @@ class Urls:
     # PLAN
     PLAN = "plans"
     CREATE_SETUP_INTENT = "create-setup-intent"
+    CREATE_SUBSCRIPTION = "create-subscription"
     STRIPE_WEBHOOK = "stripe-webhook"
     # CONTACT
     CONTACT = "contact"

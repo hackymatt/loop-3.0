@@ -29,10 +29,12 @@ import Typography from "@mui/material/Typography";
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 
+import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
-import { PLAN_TYPE } from "src/consts/plan";
+import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
+import { useCreateSubscription } from "src/api/plan/subscription";
 
 import { Form } from "src/components/hook-form";
 
@@ -69,7 +71,6 @@ export function PaymentView({ data, language }: PaymentViewProps) {
           theme: "flat",
           variables: {
             borderRadius: "8px",
-            colorBackground: "#919eab14",
             colorPrimary: theme.palette.primary.main,
             spacingUnit: "4px",
           },
@@ -82,20 +83,26 @@ export function PaymentView({ data, language }: PaymentViewProps) {
 }
 
 function Payment({ data }: PaymentViewProps) {
-  const localize = useLocalizedPath();
-  const router = useRouter();
-
-  const [paymentError, setPaymentError] = useState<string | null>(null);
-
   const { t } = useTranslation("payment");
   const { t: locale } = useTranslation("locale");
-  const { t: countries } = useTranslation("countries");
+  const { t: c } = useTranslation("countries");
 
-  const countriesList = countries("countries", { returnObjects: true }) as {
+  const countries = c("countries", { returnObjects: true }) as {
     code: string;
     label: string;
     phone: string;
   }[];
+
+  const localize = useLocalizedPath();
+  const router = useRouter();
+  const { query } = useQueryParams();
+
+  const interval = query?.interval ?? PLAN_INTERVAL.YEARLY;
+  const currency = query?.currency ?? locale("currency");
+
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+
+  const { mutateAsync: createSubscription } = useCreateSubscription();
 
   const { plan, personal } = data;
   const { email, firstName, lastName, streetAddress, zipCode, city, country } = personal;
@@ -137,21 +144,23 @@ function Payment({ data }: PaymentViewProps) {
 
     const { error } = await stripe.confirmSetup({
       elements,
-      confirmParams: {
-        return_url: localize(`${window.location.origin}${paths.orderStatus}`),
-      },
+      redirect: "if_required",
     });
 
     if (error) {
-      setPaymentError(error.message || null);
-    } else {
-      router.push(paths.orderStatus);
+      setPaymentError(error.message || "Something went wrong");
+      return;
+    }
+
+    try {
+      const {
+        data: { status },
+      } = await createSubscription({ plan: plan.type, currency, interval });
+      router.push(localize(`${paths.orderStatus}?status=${status}`));
+    } catch (err) {
+      setPaymentError((err as Error).message || "Something went wrong");
     }
   });
-
-  function findCountryCode(countryLabel: string) {
-    return countriesList.find((countryObj) => countryObj.label === countryLabel)?.code;
-  }
 
   const renderAccountDetails = () => (
     <>
@@ -162,17 +171,12 @@ function Payment({ data }: PaymentViewProps) {
           defaultValues: {
             name: `${firstName} ${lastName}`,
             address: {
-              line1: streetAddress,
-              line2: "",
-              city,
-              postal_code: zipCode,
-              state: "",
-              country: findCountryCode(country || locale("country")) || "PL",
+              line1: streetAddress || undefined,
+              postal_code: zipCode || undefined,
+              city: city || undefined,
+              country: countries.find(({ label }) => label === country)?.code || locale("country"),
             },
           },
-        }}
-        onChange={(event) => {
-          console.log("Address changed:", event.value);
         }}
       />
     </>
@@ -190,8 +194,14 @@ function Payment({ data }: PaymentViewProps) {
         options={{
           defaultValues: {
             billingDetails: {
-              name: `${firstName}  ${lastName}`,
-              email: email!,
+              name: `${firstName} ${lastName}`,
+              email: email || undefined,
+              address: {
+                line1: streetAddress || undefined,
+                postal_code: zipCode || undefined,
+                city: city || undefined,
+                country: country || undefined,
+              },
             },
           },
           layout: {

@@ -7,3 +7,8 @@ export const SUBSCRIPTION_STATUS = {
   PAST_DUE: "past_due",
   UNPAID: "unpaid",
 } as const;
+
+export const SUBSCRIPTION_RESULT = {
+  SUCCESS: "succeeded",
+  FAILED: "failed",
+} as const;

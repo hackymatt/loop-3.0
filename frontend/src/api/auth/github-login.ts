@@ -28,6 +28,7 @@ type ILoginReturn = {
     join_type: "email" | "google" | "facebook" | "github";
     is_active: boolean;
     plan: IPlan;
+    trial_used: boolean;
   };
   status: number;
 };

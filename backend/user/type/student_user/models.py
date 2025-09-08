@@ -15,6 +15,7 @@ class Student(BaseModel):
         blank=True,
         null=True,
     )
+    trial_used = models.BooleanField(default=False)
 
     def clean(self):
         """Ensure only users with user_type=STUDENT can be assigned"""
