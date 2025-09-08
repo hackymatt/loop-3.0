@@ -9,6 +9,7 @@ from plan.subscription.utils import get_subscription
 from user.type.student_user.models import Student
 from utils.stripe.subscription import modify_subscription
 
+
 class SubscriptionView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -75,11 +76,13 @@ class ChangeSubscriptionView(APIView):
             stripe.Subscription.modify(
                 subscription_id,
                 cancel_at_period_end=False,
-                items=[{
-                    "id": current_item_id,
-                    "price": pricing.stripe_price_id,
-                }],
-                proration_behavior="create_prorations"
+                items=[
+                    {
+                        "id": current_item_id,
+                        "price": pricing.stripe_price_id,
+                    }
+                ],
+                proration_behavior="create_prorations",
             )
             return Response({}, status=status.HTTP_200_OK)
         except stripe.error.StripeError as e:

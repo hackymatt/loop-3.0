@@ -8,14 +8,22 @@ from django.utils.translation import gettext as _
 from user.type.student_user.models import Student
 from plan.models import Plan, PlanPricing
 from invoice.models import Invoice, InvoiceCustomer, InvoiceItem, StudentInvoice
-from invoice.utils import generate_and_send_invoice, send_payment_failed_email, send_cancel_email
+from invoice.utils import (
+    generate_and_send_invoice,
+    send_payment_failed_email,
+    send_cancel_email,
+)
 from plan.subscription.utils import subscribe, subscribe_free_plan
 from const import SubscriptionStatus, PaymentStatus, PaymentMethod, Language
 from utils.logger.logger import logger
 from django.utils import translation
 from mailer.mailer import Mailer
 from utils.url.url import get_website_url
-from utils.stripe.customer import create_customer, create_customer_session, update_customer
+from utils.stripe.customer import (
+    create_customer,
+    create_customer_session,
+    update_customer,
+)
 from utils.stripe.setup_intent import create_setup_intent
 from utils.stripe.payment_method import modify_payment_method
 from utils.stripe.subscription import create_subscription
@@ -42,25 +50,26 @@ class CreateSetupIntentView(APIView):
             customer_session = create_customer_session(
                 customer_id=customer["id"],
                 components={
-                "payment_element": {
-                    "enabled": True,
-                    "features": {
-                    "payment_method_redisplay": "enabled",
+                    "payment_element": {
+                        "enabled": True,
+                        "features": {
+                            "payment_method_redisplay": "enabled",
+                        },
                     },
-                },
                 },
             )
 
             return Response(
                 {
                     "client_secret": setup_intent.client_secret,
-                    "customer_session_client_secret": customer_session.client_secret
-                }, status=status.HTTP_200_OK
+                    "customer_session_client_secret": customer_session.client_secret,
+                },
+                status=status.HTTP_200_OK,
             )
 
         except stripe.error.StripeError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
+
 
 class CreateSubscriptionView(APIView):
     permission_classes = [IsAuthenticated]
@@ -94,7 +103,9 @@ class CreateSubscriptionView(APIView):
                 trial_period_days=trial_days,
             )
 
-            payment_intent = getattr(subscription.latest_invoice, "payment_intent", None)
+            payment_intent = getattr(
+                subscription.latest_invoice, "payment_intent", None
+            )
             if subscription.status == SubscriptionStatus.TRIALING:
                 status_flag = "succeeded"
             elif payment_intent and payment_intent.status == "succeeded":
@@ -159,15 +170,15 @@ class StripeWebhookView(APIView):
         student.save()
 
         subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=status,
-                stripe_subscription_id=subscription_id,
-                cancel_at_period_end=False,
-            )
+            student,
+            plan_pricing.plan,
+            plan_pricing=plan_pricing,
+            start_date=start_date,
+            end_date=end_date,
+            status=status,
+            stripe_subscription_id=subscription_id,
+            cancel_at_period_end=False,
+        )
 
     def handle_subscription_updated(self, data):
         subscription_id = data["id"]
@@ -212,7 +223,6 @@ class StripeWebhookView(APIView):
         ]:
             subscribe_free_plan(student, start_date=end_date)
             send_cancel_email(student, student.user.email, website_url, language)
-
 
     def handle_invoice_payment_succeeded(self, data):
         generate_invoice = (data.get("amount_due") or 0) > 0
@@ -304,20 +314,14 @@ class StripeWebhookView(APIView):
         student = Student.objects.get(stripe_customer_id=data["customer"])
         send_payment_failed_email(student, data["customer"], website_url, language)
 
-
     def handle_setup_intent_succeeded(self, data):
         customer_id = data["customer"]
         payment_method_id = data["payment_method"]
         update_customer(
-                customer_id,
-                invoice_settings={"default_payment_method": payment_method_id},
-            )
+            customer_id,
+            invoice_settings={"default_payment_method": payment_method_id},
+        )
         try:
-            modify_payment_method(
-                payment_method_id,
-                allow_redisplay="always"
-            )
+            modify_payment_method(payment_method_id, allow_redisplay="always")
         except stripe.error.InvalidRequestError as e:
             logger.info(f"Skipping modify_payment_method for unsupported type: {e}")
-
-

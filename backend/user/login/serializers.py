@@ -10,9 +10,11 @@ class PlanSubscriptionSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source="plan.type")
     currency = serializers.CharField(source="plan_pricing.currency", default=None)
     interval = serializers.CharField(source="plan_pricing.interval", default=None)
+
     class Meta:
         model = PlanSubscription
-        fields = ["type", "currency", "interval"]  
+        fields = ["type", "currency", "interval"]
+
 
 class LoginResponseSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
@@ -38,7 +40,7 @@ class LoginResponseSerializer(serializers.ModelSerializer):
 
         subscription = get_subscription(obj)
         return PlanSubscriptionSerializer(subscription).data
-    
+
     def trial_used(self, obj):
         if obj.user_type != UserType.STUDENT:
             return None

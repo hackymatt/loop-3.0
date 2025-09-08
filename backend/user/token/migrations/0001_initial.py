@@ -5,26 +5,40 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('student_user', '0001_initial'),
+        ("student_user", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TokenUsage',
+            name="TokenUsage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('endpoint', models.CharField(blank=True, max_length=255, null=True)),
-                ('tokens', models.PositiveIntegerField()),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tokens_usage', to='student_user.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("endpoint", models.CharField(blank=True, max_length=255, null=True)),
+                ("tokens", models.PositiveIntegerField()),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tokens_usage",
+                        to="student_user.student",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'token_usage',
+                "db_table": "token_usage",
             },
         ),
     ]

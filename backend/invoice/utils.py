@@ -221,9 +221,7 @@ def send_payment_failed_email(student, email, website_url, language):
             "Hi %(first_name)s, unfortunately your recent payment has failed."
         ) % {"first_name": student.user.first_name}
         message_2 = _("Please check your payment details and try again.")
-        message_3 = _(
-            "To update your payment method, please visit your account"
-        )
+        message_3 = _("To update your payment method, please visit your account")
         account = _("Update Payment Method")
 
         data = {
@@ -249,13 +247,11 @@ def send_cancel_email(student, email, website_url, language):
 
     with translation.override(language):
         subject = _("Subscription Canceled")
-        message_1 = _(
-            "Hi %(first_name)s, your subscription has been canceled."
-        ) % {"first_name": student.user.first_name}
+        message_1 = _("Hi %(first_name)s, your subscription has been canceled.") % {
+            "first_name": student.user.first_name
+        }
         message_2 = _("You no longer have access to premium features.")
-        message_3 = _(
-            "If this was a mistake, you can manage your subscription in"
-        )
+        message_3 = _("If this was a mistake, you can manage your subscription in")
         account = _("your account")
 
         data = {

@@ -6,76 +6,164 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('student_user', '0001_initial'),
+        ("student_user", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='InvoiceCustomer',
+            name="InvoiceCustomer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254)),
-                ('full_name', models.CharField(max_length=255)),
-                ('street_address', models.CharField(max_length=255)),
-                ('city', models.CharField(max_length=255)),
-                ('zip_code', models.CharField(max_length=20)),
-                ('country', models.CharField(max_length=64)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254)),
+                ("full_name", models.CharField(max_length=255)),
+                ("street_address", models.CharField(max_length=255)),
+                ("city", models.CharField(max_length=255)),
+                ("zip_code", models.CharField(max_length=20)),
+                ("country", models.CharField(max_length=64)),
             ],
             options={
-                'db_table': 'invoice_customer',
+                "db_table": "invoice_customer",
             },
         ),
         migrations.CreateModel(
-            name='InvoiceItem',
+            name="InvoiceItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('item_id', models.IntegerField()),
-                ('name', models.CharField(max_length=255)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('quantity', models.IntegerField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("item_id", models.IntegerField()),
+                ("name", models.CharField(max_length=255)),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("quantity", models.IntegerField()),
             ],
             options={
-                'db_table': 'invoice_item',
+                "db_table": "invoice_item",
             },
         ),
         migrations.CreateModel(
-            name='Invoice',
+            name="Invoice",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('invoice_number', models.PositiveIntegerField(editable=False, unique=True)),
-                ('invoice_date', models.DateField(default=django.utils.timezone.now)),
-                ('service_date', models.DateField(default=django.utils.timezone.now)),
-                ('currency', models.CharField(choices=[('PLN', 'Pln'), ('EUR', 'Eur'), ('USD', 'Usd'), ('GBP', 'Gbp')], default='PLN', max_length=3)),
-                ('status', models.CharField(choices=[('Paid', 'Paid'), ('Due', 'Due')], default='Paid', max_length=10)),
-                ('method', models.CharField(choices=[('Stripe', 'Stripe'), ('Bank transfer', 'Bank Transfer')], default='Stripe', max_length=20)),
-                ('notes', models.TextField(blank=True, null=True)),
-                ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], default='pl', max_length=2)),
-                ('auto_generate', models.BooleanField(default=False)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='invoice.invoicecustomer')),
-                ('items', models.ManyToManyField(to='invoice.invoiceitem')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "invoice_number",
+                    models.PositiveIntegerField(editable=False, unique=True),
+                ),
+                ("invoice_date", models.DateField(default=django.utils.timezone.now)),
+                ("service_date", models.DateField(default=django.utils.timezone.now)),
+                (
+                    "currency",
+                    models.CharField(
+                        choices=[
+                            ("PLN", "Pln"),
+                            ("EUR", "Eur"),
+                            ("USD", "Usd"),
+                            ("GBP", "Gbp"),
+                        ],
+                        default="PLN",
+                        max_length=3,
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("Paid", "Paid"), ("Due", "Due")],
+                        default="Paid",
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "method",
+                    models.CharField(
+                        choices=[
+                            ("Stripe", "Stripe"),
+                            ("Bank transfer", "Bank Transfer"),
+                        ],
+                        default="Stripe",
+                        max_length=20,
+                    ),
+                ),
+                ("notes", models.TextField(blank=True, null=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "En"), ("pl", "Pl")], default="pl", max_length=2
+                    ),
+                ),
+                ("auto_generate", models.BooleanField(default=False)),
+                (
+                    "customer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="invoice.invoicecustomer",
+                    ),
+                ),
+                ("items", models.ManyToManyField(to="invoice.invoiceitem")),
             ],
             options={
-                'db_table': 'invoice',
+                "db_table": "invoice",
             },
         ),
         migrations.CreateModel(
-            name='StudentInvoice',
+            name="StudentInvoice",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('invoice', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='students', to='invoice.invoice')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invoices', to='student_user.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "invoice",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="students",
+                        to="invoice.invoice",
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="invoices",
+                        to="student_user.student",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'student_invoice',
-                'unique_together': {('student', 'invoice')},
+                "db_table": "student_invoice",
+                "unique_together": {("student", "invoice")},
             },
         ),
     ]
