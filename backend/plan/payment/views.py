@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from user.type.student_user.models import Student
@@ -12,17 +11,17 @@ from invoice.models import Invoice, InvoiceCustomer, InvoiceItem, StudentInvoice
 from invoice.utils import generate_and_send_invoice
 from plan.subscription.utils import subscribe, subscribe_free_plan
 from const import SubscriptionStatus, PaymentStatus, PaymentMethod, Language
-from global_config import CONFIG
 from .utils import generate_customer_portal_link
-from utils.url.url import get_website_url
 from utils.logger.logger import logger
 from django.utils import translation
 from mailer.mailer import Mailer
+from utils.url.url import get_website_url
 from utils.stripe.customer import create_customer, create_customer_session, update_customer
 from utils.stripe.setup_intent import create_setup_intent
 from utils.stripe.payment_method import modify_payment_method
-
-stripe.api_key = CONFIG["stripe_secret_key"]
+from utils.stripe.subscription import create_subscription
+from utils.stripe.webhook import construct_event
+from global_config import CONFIG
 
 
 class CreateSetupIntentView(APIView):
@@ -42,7 +41,7 @@ class CreateSetupIntentView(APIView):
                 customer_id=customer["id"],
             )
             customer_session = create_customer_session(
-                stripe_id=customer["id"],
+                customer_id=customer["id"],
                 components={
                 "payment_element": {
                     "enabled": True,
@@ -57,10 +56,56 @@ class CreateSetupIntentView(APIView):
                 {
                     "client_secret": setup_intent.client_secret,
                     "customer_session_client_secret": customer_session.client_secret
-                }
+                }, status=status.HTTP_200_OK
             )
 
-        except Exception as e:
+        except stripe.error.StripeError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class CreateSubscriptionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            website_url = get_website_url(request)
+            language = request.LANGUAGE_CODE
+
+            type = request.data.get("plan")
+            interval = request.data.get("interval")
+            currency = request.data.get("currency")
+
+            plan = Plan.objects.get(type=type)
+            pricing = PlanPricing.get_current_price(plan, currency, interval)
+
+            student = Student.objects.get(user=request.user)
+            if not student.stripe_customer_id:
+                customer = create_customer(email=student.user.email)
+                student.stripe_customer_id = customer.id
+                student.save()
+
+            trial_days = 0 if student.trial_used else CONFIG["free_trial_days"]
+
+            subscription = create_subscription(
+                customer_id=student.stripe_customer_id,
+                items=[{"price": pricing.stripe_price_id}],
+                metadata={"website_url": website_url, "language": language},
+                payment_behavior="default_incomplete",
+                expand=["latest_invoice.payment_intent"],
+                trial_period_days=trial_days,
+            )
+
+            payment_intent = getattr(subscription.latest_invoice, "payment_intent", None)
+            if subscription.status == SubscriptionStatus.TRIALING:
+                status_flag = "succeeded"
+            elif payment_intent and payment_intent.status == "succeeded":
+                status_flag = "succeeded"
+            else:
+                status_flag = "failed"
+
+            return Response({"status": status_flag}, status=status.HTTP_200_OK)
+
+        except stripe.error.StripeError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -71,10 +116,9 @@ class StripeWebhookView(APIView):
     def post(self, request, *args, **kwargs):
         payload = request.body
         sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
-        endpoint_secret = CONFIG["stripe_webhook_secret"]
 
         try:
-            event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+            event = construct_event(payload, sig_header)
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except stripe.error.SignatureVerificationError:
@@ -112,28 +156,18 @@ class StripeWebhookView(APIView):
 
         student = Student.objects.get(stripe_customer_id=customer_id)
 
-        if status == SubscriptionStatus.TRIALING:
-            subscribe(
-                student,
-                plan_pricing.plan,
-                plan_pricing=plan_pricing,
-                start_date=start_date,
-                end_date=end_date,
-                status=SubscriptionStatus.TRIALING,
-                stripe_subscription_id=subscription_id,
-                cancel_at_period_end=True,
-            )
+        student.trial_used = True
+        student.save()
 
-        elif status == SubscriptionStatus.ACTIVE:
-            subscribe(
+        subscribe(
                 student,
                 plan_pricing.plan,
                 plan_pricing=plan_pricing,
                 start_date=start_date,
                 end_date=end_date,
-                status=SubscriptionStatus.ACTIVE,
+                status=status,
                 stripe_subscription_id=subscription_id,
-                cancel_at_period_end=True,
+                cancel_at_period_end=False,
             )
 
     def handle_subscription_updated(self, data):

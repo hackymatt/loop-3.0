@@ -71,6 +71,7 @@ type IUser = {
   join_type: "email" | "google" | "facebook" | "github";
   is_active: boolean;
   plan: IPlan;
+  trial_used: boolean;
   plan_license: string;
 };
 
@@ -103,6 +104,7 @@ export const dashboardQuery = (language: Language) => {
           user_type,
           image,
           plan,
+          trial_used,
           plan_license,
           ...restUser
         },
@@ -176,6 +178,7 @@ export const dashboardQuery = (language: Language) => {
           joinType: join_type,
           userType: user_type,
           plan: plan as IUserPlan,
+          trialUsed: trial_used,
           planLicense: plan_license,
         },
         totalPoints: total_points,

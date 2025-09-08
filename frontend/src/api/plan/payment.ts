@@ -13,19 +13,12 @@ type ISetupIntentReturn = {
 };
 
 export async function createSetupIntent(language: Language): Promise<ISetupIntentReturn> {
-  try {
-    const { data } = await Api.post<ISetupIntentReturn>(
-      endpoint,
-      {},
-      {
-        headers: { "Accept-Language": language, Cookie: cookies().toString() },
-      }
-    );
-    return data;
-  } catch (err) {
-    if (err instanceof Error && err.message.includes("Access token expired")) {
-      return Promise.reject({ code: "TOKEN_EXPIRED" });
+  const { data } = await Api.post<ISetupIntentReturn>(
+    endpoint,
+    {},
+    {
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
     }
-    return Promise.reject(err);
-  }
+  );
+  return data;
 }

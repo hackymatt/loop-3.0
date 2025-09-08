@@ -1,6 +1,7 @@
 "use client";
 
 import type { Variants } from "framer-motion";
+import type { SubscriptionResult } from "src/types/user";
 
 import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -14,6 +15,8 @@ import Typography from "@mui/material/Typography";
 import { paths } from "src/routes/paths";
 import { RouterLink } from "src/routes/components";
 
+import { SUBSCRIPTION_RESULT } from "src/consts/subscription";
+
 import { Iconify } from "src/components/iconify";
 import { varBounce, MotionContainer } from "src/components/animate";
 
@@ -22,7 +25,7 @@ import { varBounce, MotionContainer } from "src/components/animate";
 const variants: Variants = varBounce("in");
 
 type OrderStatusViewProps = {
-  status: "succeeded" | "failed";
+  status: SubscriptionResult;
 };
 
 export default function OrderStatusView({ status }: OrderStatusViewProps) {
@@ -37,7 +40,7 @@ export default function OrderStatusView({ status }: OrderStatusViewProps) {
       }}
     >
       <m.div variants={variants}>
-        <Box sx={{ fontSize: 128 }}>{status === "succeeded" ? "🎉" : "😞"}</Box>
+        <Box sx={{ fontSize: 128 }}>{status === SUBSCRIPTION_RESULT.SUCCESS ? "🎉" : "😞"}</Box>
       </m.div>
 
       <Stack spacing={1} sx={{ my: 5 }}>
@@ -49,7 +52,7 @@ export default function OrderStatusView({ status }: OrderStatusViewProps) {
 
       <Button
         component={RouterLink}
-        href={status === "succeeded" ? paths.account.dashboard : paths.pricing}
+        href={status === SUBSCRIPTION_RESULT.SUCCESS ? paths.account.dashboard : paths.pricing}
         size="large"
         color="inherit"
         variant="contained"

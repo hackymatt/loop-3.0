@@ -1,4 +1,5 @@
 import type { Language } from "src/locales/types";
+import type { SubscriptionResult } from "src/types/user";
 
 import { paths } from "src/routes/paths";
 
@@ -6,11 +7,11 @@ import { createMetadata } from "src/utils/create-metadata";
 
 import { LANGUAGE } from "src/consts/language";
 
-import OrderStatusView from "src/sections/view/order-status";
+import OrderStatusView from "src/sections/view/order-status-view";
 
 // ----------------------------------------------------------------------
 
-type SearchParams = { redirect_status: "succeeded" | "failed" };
+type SearchParams = { status: SubscriptionResult };
 
 type PageProps = {
   params: { locale: Language };
@@ -18,7 +19,7 @@ type PageProps = {
 };
 
 export default async function Page({ searchParams }: PageProps) {
-  return <OrderStatusView status={searchParams.redirect_status} />;
+  return <OrderStatusView status={searchParams.status} />;
 }
 
 export async function generateMetadata({ params, searchParams }: PageProps) {
@@ -28,8 +29,8 @@ export async function generateMetadata({ params, searchParams }: PageProps) {
     params.locale === LANGUAGE.PL ? paths.orderStatus : `/${LANGUAGE.EN}${paths.orderStatus}`;
 
   return createMetadata({
-    title: translations.meta[searchParams.redirect_status].title,
-    description: translations.meta[searchParams.redirect_status].description,
+    title: translations.meta[searchParams.status].title,
+    description: translations.meta[searchParams.status].description,
     path,
   });
 }

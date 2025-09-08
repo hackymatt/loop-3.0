@@ -17,5 +17,6 @@ export const defaultUser: UserState = {
   isActive: false,
   isLoggedIn: false,
   plan: { type: PLAN_TYPE.FREE, currency: null, interval: null },
+  trialUsed: false,
   redirect: null,
 };

@@ -69,7 +69,7 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
           {t("subscription.label")}
         </Typography>
 
-        <Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography
             variant="h5"
             sx={{
@@ -442,7 +442,7 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
             {t("subscription.cancel.title")}
           </Typography>
 
-          <Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Typography
               variant="h5"
               sx={{
@@ -572,7 +572,7 @@ function RenewStep({ subscription, onClose }: RenewStepProps) {
             {t("subscription.renew.title")}
           </Typography>
 
-          <Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Typography
               variant="h5"
               sx={{

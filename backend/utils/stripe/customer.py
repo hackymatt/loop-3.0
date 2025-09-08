@@ -8,20 +8,20 @@ def create_customer(email, **kwargs):
     return stripe.Customer.create(email=email, **kwargs)
 
 
-def retrieve_customer(stripe_id):
-    return stripe.Customer.retrieve(stripe_id)
+def retrieve_customer(customer_id):
+    return stripe.Customer.retrieve(customer_id)
 
 
-def update_customer(stripe_id, **kwargs):
-    return stripe.Customer.modify(stripe_id, **kwargs)
+def update_customer(customer_id, **kwargs):
+    return stripe.Customer.modify(customer_id, **kwargs)
 
 
-def get_payment_methods(stripe_id):
-    return stripe.Customer.list_payment_methods(customer=stripe_id)
+def get_payment_methods(customer_id):
+    return stripe.Customer.list_payment_methods(customer=customer_id)
 
 
-def create_customer_session(stripe_id, **kwargs):
+def create_customer_session(customer_id, **kwargs):
     return stripe.CustomerSession.create(
-                customer=stripe_id,
+                customer=customer_id,
                 **kwargs,
             )

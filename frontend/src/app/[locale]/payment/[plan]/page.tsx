@@ -1,5 +1,6 @@
 import type { Language } from "src/locales/types";
-import type { Currency, PlanInterval } from "src/types/plan";
+
+import { redirect } from "next/navigation";
 
 import { paths } from "src/routes/paths";
 
@@ -15,11 +16,9 @@ import { PaymentView } from "src/sections/view/payment-view";
 import { NotFoundView } from "src/sections/error/not-found-view";
 
 // ----------------------------------------------------------------------
-type SearchParams = { interval: PlanInterval; currency: Currency };
 
 type PageProps = {
   params: { locale: Language; plan: string };
-  searchParams: SearchParams;
 };
 
 const queries = {
@@ -28,7 +27,7 @@ const queries = {
   setupIntent: (lang: Language) => createSetupIntent(lang),
 };
 
-async function getData(language: Language, type: string, interval: string, currency: string) {
+async function getData(language: Language, type: string) {
   const planPromise = queries.plan(language, type).queryFn();
   const personalPromise = queries.personal().queryFn();
   const createSetupIntentPromise = queries.setupIntent(language);
@@ -45,7 +44,7 @@ async function getData(language: Language, type: string, interval: string, curre
     customerSessionClientSecret: setupIntent.customer_session_client_secret,
   };
 }
-export default async function Page({ params, searchParams }: PageProps) {
+export default async function Page({ params }: PageProps) {
   if (
     ![PLAN_TYPE.BASIC, PLAN_TYPE.PREMIUM].includes(
       params.plan as typeof PLAN_TYPE.BASIC | typeof PLAN_TYPE.PREMIUM
@@ -54,13 +53,12 @@ export default async function Page({ params, searchParams }: PageProps) {
     return <NotFoundView />;
   }
 
-  const data = await getData(
-    params.locale,
-    params.plan,
-    searchParams.interval,
-    searchParams.currency
-  );
-  return <PaymentView data={data} language={params.locale} />;
+  try {
+    const data = await getData(params.locale, params.plan);
+    return <PaymentView data={data} language={params.locale} />;
+  } catch {
+    return redirect(paths.account.dashboard);
+  }
 }
 
 export async function generateMetadata({ params }: PageProps) {
