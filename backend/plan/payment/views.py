@@ -8,10 +8,9 @@ from django.utils.translation import gettext as _
 from user.type.student_user.models import Student
 from plan.models import Plan, PlanPricing
 from invoice.models import Invoice, InvoiceCustomer, InvoiceItem, StudentInvoice
-from invoice.utils import generate_and_send_invoice
+from invoice.utils import generate_and_send_invoice, send_payment_failed_email, send_cancel_email
 from plan.subscription.utils import subscribe, subscribe_free_plan
 from const import SubscriptionStatus, PaymentStatus, PaymentMethod, Language
-from .utils import generate_customer_portal_link
 from utils.logger.logger import logger
 from django.utils import translation
 from mailer.mailer import Mailer
@@ -182,6 +181,8 @@ class StripeWebhookView(APIView):
             current_period_start, tz=timezone.utc
         )
         end_date = timezone.datetime.fromtimestamp(current_period_end, tz=timezone.utc)
+        website_url = data["items"]["data"][0]["metadata"]["website_url"]
+        language = data["items"]["data"][0]["metadata"]["language"]
 
         plan_pricing = PlanPricing.objects.get(stripe_price_id=price_id)
         student = Student.objects.get(stripe_customer_id=customer_id)
@@ -210,6 +211,8 @@ class StripeWebhookView(APIView):
             SubscriptionStatus.INCOMPLETE_EXPIRED,
         ]:
             subscribe_free_plan(student, start_date=end_date)
+            send_cancel_email(student, student.user.email, website_url, language)
+
 
     def handle_invoice_payment_succeeded(self, data):
         generate_invoice = (data.get("amount_due") or 0) > 0
@@ -299,38 +302,8 @@ class StripeWebhookView(APIView):
         )
 
         student = Student.objects.get(stripe_customer_id=data["customer"])
+        send_payment_failed_email(student, data["customer"], website_url, language)
 
-        customer_portal_link = generate_customer_portal_link(student, website_url)
-
-        mailer = Mailer(website_url)
-
-        with translation.override(language):
-            subject = _("Payment Failed")
-            message_1 = _(
-                "Hi %(first_name)s, unfortunately your recent payment has failed."
-            ) % {"first_name": student.user.first_name}
-            message_2 = _("Please check your payment details and try again.")
-            message_3 = _(
-                "To update your payment method, please visit the customer portal"
-            )
-            portal_text = _("Update Payment Method")
-
-            data = {
-                "message_1": message_1,
-                "message_2": message_2,
-                "message_3": message_3,
-                "customer_portal_link": customer_portal_link,
-                "portal_text": portal_text,
-            }
-
-        mailer.send(
-            email_template="payment_failed.html",
-            to=[data["customer_email"]],
-            subject=subject,
-            data=data,
-            attachments=[],
-            language=language,
-        )
 
     def handle_setup_intent_succeeded(self, data):
         customer_id = data["customer"]
@@ -346,4 +319,5 @@ class StripeWebhookView(APIView):
             )
         except stripe.error.InvalidRequestError as e:
             logger.info(f"Skipping modify_payment_method for unsupported type: {e}")
+
 

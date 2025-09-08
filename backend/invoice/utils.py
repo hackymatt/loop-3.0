@@ -210,3 +210,67 @@ def generate_and_send_invoice(invoice, website_url, first_name):
 
     invoice_generator.upload()
     invoice_generator.remove()
+
+
+def send_payment_failed_email(student, email, website_url, language):
+    mailer = Mailer(website_url)
+
+    with translation.override(language):
+        subject = _("Payment Failed")
+        message_1 = _(
+            "Hi %(first_name)s, unfortunately your recent payment has failed."
+        ) % {"first_name": student.user.first_name}
+        message_2 = _("Please check your payment details and try again.")
+        message_3 = _(
+            "To update your payment method, please visit your account"
+        )
+        account = _("Update Payment Method")
+
+        data = {
+            "message_1": message_1,
+            "message_2": message_2,
+            "message_3": message_3,
+            "link": f"{website_url}/account/payment",
+            "account": account,
+        }
+
+    mailer.send(
+        email_template="payment_failed.html",
+        to=[email],
+        subject=subject,
+        data=data,
+        attachments=[],
+        language=language,
+    )
+
+
+def send_cancel_email(student, email, website_url, language):
+    mailer = Mailer(website_url)
+
+    with translation.override(language):
+        subject = _("Subscription Canceled")
+        message_1 = _(
+            "Hi %(first_name)s, your subscription has been canceled."
+        ) % {"first_name": student.user.first_name}
+        message_2 = _("You no longer have access to premium features.")
+        message_3 = _(
+            "If this was a mistake, you can manage your subscription in"
+        )
+        account = _("your account")
+
+        data = {
+            "message_1": message_1,
+            "message_2": message_2,
+            "message_3": message_3,
+            "link": f"{website_url}/account/subscription",
+            "account": account,
+        }
+
+    mailer.send(
+        email_template="subscription_cancelled.html",
+        to=[email],
+        subject=subject,
+        data=data,
+        attachments=[],
+        language=language,
+    )

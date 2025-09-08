@@ -1,6 +1,5 @@
 from django.urls import path, include
 
-from const import Urls
 from .me.urls import urlpatterns as me_urls
 from .activate.urls import urlpatterns as activate_urls
 from .register.urls import urlpatterns as register_urls

@@ -20,7 +20,6 @@ import { fCurrency, fShortenNumber } from "src/utils/format-number";
 import { CONFIG } from "src/global-config";
 import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
-import { useCreateCustomerPortalLink } from "src/api/me/customer-portal-link";
 
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
@@ -43,8 +42,6 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
   const router = useRouter();
-
-  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
   const {
@@ -78,11 +75,6 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
       );
       return;
     }
-
-    const {
-      data: { url },
-    } = await createCustomerPortalLink({});
-    router.push(url);
   };
 
   const { trackEvent } = useAnalytics();
@@ -209,7 +201,6 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
         disabled={isCurrentPlan}
-        loading={isLoading}
         onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
           await handleRedirect();

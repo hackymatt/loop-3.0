@@ -26,7 +26,6 @@ import { useAnalytics } from "src/app/analytics-provider";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
-import { useCreateCustomerPortalLink } from "src/api/me/customer-portal-link";
 
 import { Label } from "src/components/label";
 import { Form } from "src/components/hook-form";
@@ -168,8 +167,6 @@ export function SubscriptionOption({
   const localize = useLocalizedPath();
   const router = useRouter();
 
-  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
-
   const user = useUserContext();
   const {
     isLoggedIn,
@@ -202,11 +199,6 @@ export function SubscriptionOption({
       );
       return;
     }
-
-    const {
-      data: { url },
-    } = await createCustomerPortalLink({});
-    router.push(url);
   };
 
   const { trackEvent } = useAnalytics();
@@ -261,7 +253,6 @@ export function SubscriptionOption({
         variant={isCurrentPlan ? "outlined" : "contained"}
         color="inherit"
         disabled={isCurrentPlan}
-        loading={isLoading}
         onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
           await handleRedirect();
