@@ -53,7 +53,6 @@ export const URLS = {
   DELETE_ACCOUNT: "/me/delete",
   SUBSCRIPTION: "/me/subscription",
   PAYMENT_METHODS: "/me/payment-methods",
-  CUSTOMER_PORTAL_LINK: "/me/customer-portal-link",
   INVOICES: "/me/invoices",
   DASHBOARD: "/me/dashboard",
 } as const;

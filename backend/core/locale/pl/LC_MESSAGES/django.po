@@ -225,7 +225,7 @@ msgstr "Cześć %(first_name)s, niestety Twoja ostatnia płatność nie powiodł
 msgid "Please check your payment details and try again."
 msgstr "Sprawdź swoje dane płatności i spróbuj ponownie."
 
-msgid "To update your payment method, please visit the customer portal"
+msgid "To update your payment method, please visit your account"
 msgstr "Aby zaktualizować metodę płatności, odwiedź portal klienta"
 
 msgid "Update Payment Method"
@@ -236,3 +236,18 @@ msgstr "Ta metoda płatności nie należy do Twojego konta."
 
 msgid "Cannot delete the default payment method."
 msgstr "Nie można usunąć domyślnej metody płatności."
+
+msgid "Subscription Canceled"
+msgstr "Subskrypcja została anulowana"
+
+msgid "Hi %(first_name)s, your subscription has been canceled."
+msgstr "Cześć %(first_name)s, Twoja subskrypcja została anulowana."
+
+msgid "You no longer have access to premium features."
+msgstr "Nie masz już dostępu do funkcji premium."
+
+msgid "If this was a mistake, you can manage your subscription in"
+msgstr "Jeśli to pomyłka, możesz zarządzać swoją subskrypcją w"
+
+msgid "your account"
+msgstr "swoim koncie"

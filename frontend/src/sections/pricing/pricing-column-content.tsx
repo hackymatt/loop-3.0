@@ -18,7 +18,6 @@ import { fShortenNumber } from "src/utils/format-number";
 
 import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
-import { useCreateCustomerPortalLink } from "src/api/me/customer-portal-link";
 
 import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
@@ -44,8 +43,6 @@ export function PricingColumnContentMobile({
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
   const router = useRouter();
-
-  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
   const {
@@ -79,11 +76,6 @@ export function PricingColumnContentMobile({
       );
       return;
     }
-
-    const {
-      data: { url },
-    } = await createCustomerPortalLink({});
-    router.push(url);
   };
 
   const { trackEvent } = useAnalytics();
@@ -170,7 +162,6 @@ export function PricingColumnContentMobile({
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
         disabled={isCurrentPlan}
-        loading={isLoading}
         onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
           await handleRedirect();
@@ -196,8 +187,6 @@ export function PricingColumnContentDesktop({
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
   const router = useRouter();
-
-  const { mutateAsync: createCustomerPortalLink, isLoading } = useCreateCustomerPortalLink();
 
   const user = useUserContext();
   const {
@@ -231,11 +220,6 @@ export function PricingColumnContentDesktop({
       );
       return;
     }
-
-    const {
-      data: { url },
-    } = await createCustomerPortalLink({});
-    router.push(url);
   };
 
   const { trackEvent } = useAnalytics();
@@ -292,7 +276,6 @@ export function PricingColumnContentDesktop({
           variant={isCurrentPlan ? "outlined" : "contained"}
           color={plan.popular ? "primary" : "inherit"}
           disabled={isCurrentPlan}
-          loading={isLoading}
           onClick={async () => {
             trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
             await handleRedirect();
