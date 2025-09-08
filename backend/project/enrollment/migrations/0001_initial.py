@@ -6,27 +6,50 @@ import project.enrollment.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('project', '0001_initial'),
-        ('student_user', '0001_initial'),
+        ("project", "0001_initial"),
+        ("student_user", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ProjectEnrollment',
+            name="ProjectEnrollment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='enrollments', to='project.project')),
-                ('student', models.ForeignKey(on_delete=models.SET(project.enrollment.models.get_dummy_student), related_name='enrollments', to='student_user.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "project",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="enrollments",
+                        to="project.project",
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=models.SET(
+                            project.enrollment.models.get_dummy_student
+                        ),
+                        related_name="enrollments",
+                        to="student_user.student",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'project_enrollment',
-                'unique_together': {('student', 'project')},
+                "db_table": "project_enrollment",
+                "unique_together": {("student", "project")},
             },
         ),
     ]

@@ -22,6 +22,6 @@ def get_payment_methods(customer_id):
 
 def create_customer_session(customer_id, **kwargs):
     return stripe.CustomerSession.create(
-                customer=customer_id,
-                **kwargs,
-            )
+        customer=customer_id,
+        **kwargs,
+    )

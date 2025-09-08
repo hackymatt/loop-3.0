@@ -6,60 +6,130 @@ import mdeditor.fields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('project', '0001_initial'),
-        ('student_user', '0001_initial'),
+        ("project", "0001_initial"),
+        ("student_user", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ChannelPost',
+            name="ChannelPost",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('language', models.CharField(choices=[('en', 'En'), ('pl', 'Pl')], max_length=2)),
-                ('title', models.CharField(max_length=255)),
-                ('message', mdeditor.fields.MDTextField()),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='channel_posts', to='project.project')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='channel_posts', to='student_user.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[("en", "En"), ("pl", "Pl")], max_length=2
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("message", mdeditor.fields.MDTextField()),
+                (
+                    "project",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="channel_posts",
+                        to="project.project",
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="channel_posts",
+                        to="student_user.student",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Channel posts',
-                'db_table': 'channel_post',
+                "verbose_name_plural": "Channel posts",
+                "db_table": "channel_post",
             },
         ),
         migrations.CreateModel(
-            name='ChannelPostComment',
+            name="ChannelPostComment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('message', mdeditor.fields.MDTextField()),
-                ('channel_post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='channel.channelpost')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='student_user.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("message", mdeditor.fields.MDTextField()),
+                (
+                    "channel_post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to="channel.channelpost",
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to="student_user.student",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Channel post comments',
-                'db_table': 'channel_post_comment',
+                "verbose_name_plural": "Channel post comments",
+                "db_table": "channel_post_comment",
             },
         ),
         migrations.CreateModel(
-            name='ChannelPostLike',
+            name="ChannelPostLike",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('channel_post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='likes', to='channel.channelpost')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='liked_posts', to='student_user.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "channel_post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="likes",
+                        to="channel.channelpost",
+                    ),
+                ),
+                (
+                    "student",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="liked_posts",
+                        to="student_user.student",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Channel post likes',
-                'db_table': 'channel_post_like',
-                'unique_together': {('channel_post', 'student')},
+                "verbose_name_plural": "Channel post likes",
+                "db_table": "channel_post_like",
+                "unique_together": {("channel_post", "student")},
             },
         ),
     ]

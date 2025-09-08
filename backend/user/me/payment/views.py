@@ -55,7 +55,11 @@ class PaymentMethodsView(APIView):
             payment_method = retrieve_payment_method(payment_method_id)
             if payment_method.customer != stripe_customer_id:
                 return Response(
-                    {"error": _("This payment method does not belong to your account.")},
+                    {
+                        "error": _(
+                            "This payment method does not belong to your account."
+                        )
+                    },
                     status=status.HTTP_403_FORBIDDEN,
                 )
 
@@ -74,7 +78,11 @@ class PaymentMethodsView(APIView):
             payment_method = retrieve_payment_method(payment_method_id)
             if payment_method.customer != stripe_customer_id:
                 return Response(
-                    {"error": _("This payment method does not belong to your account.")},
+                    {
+                        "error": _(
+                            "This payment method does not belong to your account."
+                        )
+                    },
                     status=status.HTTP_403_FORBIDDEN,
                 )
 
