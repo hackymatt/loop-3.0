@@ -4,9 +4,9 @@ import { compact } from "lodash-es";
 import { cookies } from "next/headers";
 
 import { URLS } from "../urls";
-import { getData } from "../utils";
+import { getListData, formatQueryParams } from "../utils";
 
-import type { GetQueryResponse } from "../types";
+import type { QueryType, GetQueryResponse } from "../types";
 
 const endpoint = URLS.PAYMENT_METHODS;
 
@@ -30,16 +30,19 @@ type IPaymentMethod = {
   is_default: boolean;
   details: ICard | IPaypal;
 };
-export const paymentMethodsQuery = () => {
+export const paymentMethodsQuery = (query?: QueryType) => {
   const url = endpoint;
-  const queryUrl = url;
+  const urlParams = formatQueryParams(query);
+  const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<GetQueryResponse<IPaymentMethodProps[]>> => {
-    const { data } = await getData<IPaymentMethod[]>(queryUrl, {
+    const {
+      data: { results },
+    } = await getListData<IPaymentMethod>(queryUrl, {
       headers: { Cookie: cookies().toString() },
     });
 
-    const modifiedResults: IPaymentMethodProps[] = (data || []).map((method) => {
+    const modifiedResults: IPaymentMethodProps[] = (results || []).map((method) => {
       const { id, type, is_default, details } = method;
 
       return {

@@ -116,13 +116,16 @@
     "label": "Bieżąca subskrypcja",
     "license": "Plan {{plan}}",
     "billing": {
-      "label": "Twoja subskrypcja odnawia się w dniu {{date}}.",
+      "label": {
+        "trial": "Po zakończeniu bezpłatnego okresu próbnego w dniu {{date}} ta subskrypcja będzie kontynuowana automatycznie.",
+        "standard": "Twoja subskrypcja odnawia się w dniu {{date}}."
+      },
       "monthly": "miesięcznie",
       "yearly": "rocznie"
     },
     "sell": "Zbuduj swoje portfolio, ucz się z projektami i zdobądź certyfikaty. Wybierz plan i rozwijaj się razem z loop.",
     "error": "Coś poszło nie tak. Spróbuj ponownie.",
-    "trial": "OKRES PRÓBNY",
+    "trial": "Okres próbny kończy się {{date}}",
     "cancelled": "Subskrypcja została anulowana i zakończy się z końcem okresu rozliczeniowego {{date}}.",
     "buttons": {
       "change": "Zaktualizuj subskrypcję",
@@ -131,9 +134,18 @@
     },
     "change": {
       "title": "Zaktualizuj swoją subskrypcję",
-      "button": "Kontynuuj",
       "approve": "Kontynuuj",
-      "cancel": "Wstecz"
+      "cancel": "Wstecz",
+      "summary": "Podsumowanie"
+    },
+    "confirm": {
+      "title": "Potwierdź aktualizacje",
+      "approve": "Subskrybuj i zapłać",
+      "cancel": "Wstecz",
+      "license": "Plan {{plan}}",
+      "frequency": { "monthly": "miesięczna", "yearly": "roczna" },
+      "summary": "Opłata {{frequency}} od {{date}}",
+      "payNow": "Kwota do zapłaty do dzisiaj"
     },
     "cancel": {
       "title": "Anuluj subskrypcję",

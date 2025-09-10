@@ -7,7 +7,7 @@ import Popover from "@mui/material/Popover";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 
-import { useDeletePaymentMethod, useSetDefaultPaymentMethod } from "src/api/me/payment-method";
+import { useEditPaymentMethod, useDeletePaymentMethod } from "src/api/me/payment-method";
 
 import { Iconify } from "src/components/iconify";
 
@@ -23,12 +23,12 @@ export function AccountPaymentPopover({ id, isPrimary, openOptions }: Props) {
   const { t } = useTranslation("account");
   const { enqueueSnackbar } = useSnackbar();
 
-  const { mutateAsync: setDefaultMethod } = useSetDefaultPaymentMethod();
-  const { mutateAsync: deleteMethod } = useDeletePaymentMethod(id);
+  const { mutateAsync: editPaymentMethod } = useEditPaymentMethod(id);
+  const { mutateAsync: deletePaymentMethod } = useDeletePaymentMethod(id);
 
   const handleSetDefault = async () => {
     try {
-      await setDefaultMethod({ payment_method_id: id });
+      await editPaymentMethod({});
       openOptions.onClose();
     } catch (error) {
       enqueueSnackbar((error as Error).message, { variant: "error" });
@@ -37,7 +37,7 @@ export function AccountPaymentPopover({ id, isPrimary, openOptions }: Props) {
 
   const handleDelete = async () => {
     try {
-      await deleteMethod({});
+      await deletePaymentMethod({});
       openOptions.onClose();
     } catch (error) {
       enqueueSnackbar((error as Error).message, { variant: "error" });

@@ -14,10 +14,20 @@ from invoice.utils import (
     send_cancel_email,
 )
 from plan.subscription.utils import subscribe, subscribe_free_plan
-from const import SubscriptionStatus, PaymentStatus, PaymentMethod, Language
+from const import (
+    SubscriptionStatus,
+    PaymentStatus,
+    PaymentMethod,
+    Language,
+    PaymentType,
+)
 from utils.logger.logger import logger
-from django.utils import translation
-from mailer.mailer import Mailer
+from .models import (
+    PaymentMethod,
+    CardPaymentMethod,
+    PayPalPaymentMethod,
+    RevolutPaymentMethod,
+)
 from utils.url.url import get_website_url
 from utils.stripe.customer import (
     create_customer,
@@ -25,7 +35,7 @@ from utils.stripe.customer import (
     update_customer,
 )
 from utils.stripe.setup_intent import create_setup_intent
-from utils.stripe.payment_method import modify_payment_method
+from utils.stripe.payment_method import modify_payment_method, retrieve_payment_method
 from utils.stripe.subscription import create_subscription
 from utils.stripe.webhook import construct_event
 from global_config import CONFIG
@@ -317,6 +327,43 @@ class StripeWebhookView(APIView):
     def handle_setup_intent_succeeded(self, data):
         customer_id = data["customer"]
         payment_method_id = data["payment_method"]
+        payment_method = retrieve_payment_method(payment_method_id)
+
+        student = Student.objects.get(stripe_customer_id=customer_id)
+        type = payment_method["type"]
+        PaymentMethod.objects.filter(student=student).update(is_default=False)
+        obj = PaymentMethod.objects.create(
+            student=student,
+            stripe_payment_method_id=payment_method_id,
+            is_default=True,
+            type=type,
+        )
+
+        if type == PaymentType.CARD:
+            CardPaymentMethod.objects.create(
+                payment_method=obj,
+                brand=payment_method["card"]["brand"],
+                display_brand=payment_method["card"]["display_brand"],
+                last4=payment_method["card"]["last4"],
+                exp_month=payment_method["card"]["exp_month"],
+                exp_year=payment_method["card"]["exp_year"],
+                holder=payment_method["billing_details"]["name"],
+                wallet=payment_method["card"]["wallet"]["type"]
+                if payment_method["card"]["wallet"]
+                else None,
+            )
+
+        elif type == PaymentType.PAYPAL:
+            PayPalPaymentMethod.objects.create(
+                payment_method=obj, payer_email=payment_method["paypal"]["payer_email"]
+            )
+        elif type == PaymentType.REVOLUT:
+            RevolutPaymentMethod.objects.create(payment_method=obj)
+        else:
+            logger.error(
+                f"Could not save payment method of type: {type}. Payload: {payment_method}"
+            )
+
         update_customer(
             customer_id,
             invoice_settings={"default_payment_method": payment_method_id},

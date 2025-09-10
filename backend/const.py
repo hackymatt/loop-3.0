@@ -133,3 +133,9 @@ class PaymentStatus(TextChoices):
 class PaymentMethod(TextChoices):
     STRIPE = "Stripe"
     BANK_TRANSFER = "Bank transfer"
+
+
+class PaymentType(TextChoices):
+    CARD = "card"
+    PAYPAL = "paypal"
+    REVOLUT = "revolut_pay"

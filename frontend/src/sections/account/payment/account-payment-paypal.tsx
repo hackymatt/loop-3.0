@@ -57,7 +57,7 @@ export function AccountPaymentPaypal({ id, paypal, sx, ...other }: Props) {
             <Label
               color="info"
               startIcon={<Iconify icon="eva:star-fill" />}
-              sx={{ ml: 2, borderRadius: 10, fontSize: "0.75rem", px: 1.5 }}
+              sx={{ ml: 1, fontWeight: "medium" }}
             >
               {t("payment.default")}
             </Label>

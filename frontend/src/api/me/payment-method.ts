@@ -9,20 +9,19 @@ import { Api } from "../service";
 
 const endpoint = URLS.PAYMENT_METHODS;
 
-type IData = {
-  payment_method_id: string;
-};
+type IData = {};
 
 type IDataReturn = {
   data: {};
   status: number;
 };
 
-export const useSetDefaultPaymentMethod = () => {
+export const useEditPaymentMethod = (id: string) => {
   const router = useRouter();
+  const url = `${endpoint}/${id}`;
   return useMutation<IDataReturn, AxiosError, IData>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables, {
+      const result = await Api.put(url, variables, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -34,7 +33,9 @@ export const useSetDefaultPaymentMethod = () => {
     },
     {
       onSuccess: () => {
-        router.refresh();
+        setTimeout(() => {
+          router.refresh();
+        }, 3000);
       },
     }
   );
