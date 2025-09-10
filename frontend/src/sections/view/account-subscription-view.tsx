@@ -2,7 +2,7 @@
 
 import type { PaperProps } from "@mui/material";
 import type { ISubscriptionProps } from "src/types/user";
-import type { Currency, IPlanProps, PlanInterval } from "src/types/plan";
+import type { Currency, PlanType, IPlanProps, PlanInterval } from "src/types/plan";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,13 +13,9 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Paper, Button } from "@mui/material";
 
-import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
-
-import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
-import { fDate } from "src/utils/format-time";
+import { fAdd, fDate } from "src/utils/format-time";
 import { fCurrency } from "src/utils/format-number";
 
 import { useAnalytics } from "src/app/analytics-provider";
@@ -29,6 +25,7 @@ import { UpgradeButton } from "src/layouts/components/upgrade-button";
 
 import { Label } from "src/components/label";
 import { Form } from "src/components/hook-form";
+import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
 
 import IntervalToggle from "../pricing/interval-toogle";
@@ -68,21 +65,14 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
           {t("subscription.label")}
         </Typography>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography
-            variant="h5"
-            sx={{
-              mt: 1,
-              display: "flex",
-              gap: 1,
-            }}
-          >
-            {t("subscription.license", { plan: license })}
-          </Typography>
-
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 2 }}>
           {status === SUBSCRIPTION_STATUS.TRIALING && (
-            <Label color="success">{t("subscription.trial")}</Label>
+            <Label color="warning">
+              <Iconify icon="solar:clock-circle-outline" width={16} />
+              {t("subscription.trial", { date: fDate(nextBillingDate, "DD MMM") })}
+            </Label>
           )}
+          <Typography variant="h5">{t("subscription.license", { plan: license })}</Typography>
         </Box>
 
         {currency && (
@@ -103,7 +93,12 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
                 mt: 2,
               }}
             >
-              {t("subscription.billing.label", { date: fDate(nextBillingDate, "DD MMMM YYYY") })}
+              {t(
+                status === SUBSCRIPTION_STATUS.TRIALING
+                  ? "subscription.billing.label.trial"
+                  : "subscription.billing.label.standard",
+                { date: fDate(nextBillingDate, "D MMMM YYYY") }
+              )}
             </Typography>
           </>
         )}
@@ -127,6 +122,7 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
             mt: 5,
             gap: 1,
             width: { xs: 1, md: "auto" },
+            minWidth: 220,
           }}
         >
           <Button variant="contained" color="primary" size="large" fullWidth onClick={onChange}>
@@ -153,55 +149,33 @@ type SubscriptionOptionProps = PaperProps & {
   plan: PricingCardProps;
   interval: PlanInterval;
   currency: Currency;
+  selected: boolean;
+  onSelected: VoidFunction;
 };
 
 export function SubscriptionOption({
   plan,
   interval,
   currency,
+  selected,
+  onSelected,
   sx,
   ...other
 }: SubscriptionOptionProps) {
   const { t } = useTranslation("pricing");
+  const { t: account } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
-  const localize = useLocalizedPath();
-  const router = useRouter();
+
+  const { trackEvent } = useAnalytics();
 
   const user = useUserContext();
   const {
-    isLoggedIn,
     plan: { type, currency: userCurrency, interval: userInterval },
   } = user.state;
 
   const isCurrentPlan =
-    isLoggedIn &&
     plan.type === type &&
     ((interval === userInterval && currency === userCurrency) || plan.type === PLAN_TYPE.FREE);
-  const isFreePlan = type === PLAN_TYPE.FREE;
-
-  const handleRedirect = async () => {
-    if (!isLoggedIn) {
-      if (plan.type === PLAN_TYPE.FREE) {
-        user.setField("redirect", localize(paths.account.dashboard));
-      } else {
-        user.setField(
-          "redirect",
-          localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
-        );
-      }
-      router.push(localize(paths.account.dashboard));
-      return;
-    }
-
-    if (isFreePlan) {
-      router.push(
-        localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
-      );
-      return;
-    }
-  };
-
-  const { trackEvent } = useAnalytics();
 
   const renderPrices = () => (
     <Box
@@ -229,61 +203,94 @@ export function SubscriptionOption({
           p: 5,
           gap: 5,
           display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
           borderRadius: 2,
           position: "relative",
-          alignItems: "center",
           bgcolor: "transparent",
-          flexDirection: "column",
           boxShadow: theme.vars.customShadows.card,
           [theme.breakpoints.up("md")]: { boxShadow: "none" },
+          ...(selected && { borderColor: "primary.main" }),
         }),
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
       {...other}
     >
+      {/* Label on top */}
+      {isCurrentPlan && (
+        <Label
+          color="primary"
+          sx={{
+            position: "absolute",
+            top: -12,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 1,
+            px: 2,
+            py: 0.5,
+            bgcolor: "background.paper",
+            ...(selected && { borderColor: "primary.main" }),
+          }}
+        >
+          {account("subscription.label")}
+        </Label>
+      )}
+
+      {/* Plan license */}
       <Box component="span" sx={{ color: "text.secondary", typography: "overline" }}>
         {plan.license}
       </Box>
 
       {renderPrices()}
 
-      <LoadingButton
+      <Button
         fullWidth
-        size="large"
-        variant={isCurrentPlan ? "outlined" : "contained"}
-        color="inherit"
-        disabled={isCurrentPlan}
-        onClick={async () => {
-          trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
-          await handleRedirect();
-        }}
+        variant="outlined"
+        color={selected ? "primary" : "inherit"}
+        onClick={onSelected}
         sx={{ textWrap: "nowrap" }}
       >
-        {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
-      </LoadingButton>
+        {selected && <Iconify icon="solar:check-circle-outline" style={{ marginRight: 8 }} />}
+        {selected ? t("chosen") : t("choose")}
+      </Button>
     </Paper>
   );
 }
 
 // ----------------------------------------------------------------------
 
+type SettingState = {
+  interval: PlanInterval;
+  type: PlanType;
+};
+
 type ChangeStepProps = {
   data: { subscription: ISubscriptionProps; plans: IPlanProps[] };
+  onChange: (setting: SettingState & { currency: Currency }) => void;
+  onCancel: VoidFunction;
   onClose: VoidFunction;
 };
 
-type SettingState = {
-  interval: PlanInterval;
-};
-
-function ChangeStep({ data, onClose }: ChangeStepProps) {
+function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
+  const {
+    state: {
+      plan: { type, interval: userInterval },
+    },
+  } = useUserContext();
 
   const { subscription, plans } = data;
   const { interval, currency } = subscription;
 
-  const setting = useSetState<SettingState>({ interval: interval || PLAN_INTERVAL.YEARLY });
+  const setting = useSetState<SettingState>({
+    interval: interval || PLAN_INTERVAL.YEARLY,
+    type,
+  });
+
+  const isCurrentPlanSelected =
+    setting.state.type === type && setting.state.interval === userInterval;
 
   const options = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
     const priceObj = pricing.find(
@@ -304,9 +311,13 @@ function ChangeStep({ data, onClose }: ChangeStepProps) {
 
   const handleFormError = useFormErrorHandler(methods);
 
-  const onSubmit = handleSubmit(async (newData) => {
+  const onSubmit = handleSubmit(async () => {
     try {
-      onClose();
+      if (setting.state.type === PLAN_TYPE.FREE) {
+        onCancel();
+        return;
+      }
+      onChange({ ...setting.state, currency: currency! });
     } catch (error) {
       handleFormError(error);
     }
@@ -349,9 +360,190 @@ function ChangeStep({ data, onClose }: ChangeStepProps) {
                   plan={plan}
                   interval={setting.state.interval}
                   currency={currency || (locale("currency") as Currency)}
+                  selected={plan.type === setting.state.type}
+                  onSelected={() => setting.setField("type", plan.type)}
                 />
               ))}
             </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mt: 3,
+              typography: "h6",
+            }}
+          >
+            <Typography>{t("subscription.change.summary")}:</Typography>
+
+            <Box
+              sx={{
+                gap: 0.5,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Typography component="span">
+                {fCurrency(options.find((x) => x.type === setting.state.type)?.price, {
+                  code: locale("code"),
+                  currency: currency!,
+                })}
+              </Typography>
+
+              <Typography component="span">
+                {t(`subscription.billing.${setting.state.interval}`)}
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Action Buttons */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row-reverse" },
+              alignItems: "center",
+              mt: 5,
+              gap: 1,
+              width: { xs: 1, md: "auto" },
+            }}
+          >
+            <LoadingButton
+              fullWidth
+              color="primary"
+              type="submit"
+              variant="contained"
+              size="large"
+              loading={isSubmitting}
+              disabled={isCurrentPlanSelected}
+              sx={{ textWrap: "nowrap" }}
+            >
+              {t("subscription.change.approve")}
+            </LoadingButton>
+
+            <Button variant="outlined" size="large" onClick={onClose} color="inherit" fullWidth>
+              {t("subscription.change.cancel")}
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </Form>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+type ConfirmStepProps = {
+  data: { subscription: ISubscriptionProps; plans: IPlanProps[] };
+  newSubscription: NewSubscription;
+  onClose: VoidFunction;
+};
+
+function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
+  const { t } = useTranslation("account");
+  const { t: locale } = useTranslation("locale");
+
+  const { plans } = data;
+
+  const options = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
+    const priceObj = pricing.find(
+      (p) => p.currency === newSubscription.currency && p.interval === newSubscription.interval
+    )!;
+    return {
+      ...rest,
+      price: priceObj.price,
+    };
+  });
+
+  const option = options.find((o) => o.type === newSubscription.type);
+
+  const methods = useForm();
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleFormError = useFormErrorHandler(methods);
+
+  const onSubmit = handleSubmit(async () => {
+    try {
+      // if (setting.state.selected === PLAN_TYPE.FREE) {
+      //   onCancel();
+      //   return;
+      // }
+      // onChange({ ...setting.state, currency: currency! });
+    } catch (error) {
+      handleFormError(error);
+    }
+  });
+
+  return (
+    <Form methods={methods} onSubmit={onSubmit}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          justifyContent: "space-between",
+          mt: 5,
+        }}
+      >
+        <Box sx={{ width: 1 }}>
+          <Typography variant="overline" sx={{ color: "text.disabled" }}>
+            {t("subscription.confirm.title")}
+          </Typography>
+
+          <Typography variant="h5">
+            {t("subscription.license", { plan: option?.license })}
+          </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mt: 3,
+            }}
+          >
+            <Typography>
+              {t("subscription.confirm.summary", {
+                frequency: t(`subscription.confirm.frequency.${newSubscription.interval}`),
+                date: fDate(
+                  fAdd({
+                    months: newSubscription.interval === PLAN_INTERVAL.MONTHLY ? 1 : 0,
+                    years: newSubscription.interval === PLAN_INTERVAL.YEARLY ? 1 : 0,
+                  }),
+                  "D MMMM YYYY"
+                ),
+              })}
+            </Typography>
+
+            <Typography component="span" variant="h5">
+              {fCurrency(option?.price, {
+                code: locale("code"),
+                currency: newSubscription.currency,
+              })}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mt: 3,
+            }}
+          >
+            <Typography>{t("subscription.confirm.payNow")}</Typography>
+
+            <Typography component="span" variant="h5">
+              {fCurrency(option?.price, {
+                code: locale("code"),
+                currency: newSubscription.currency,
+              })}
+            </Typography>
           </Box>
 
           {/* Action Buttons */}
@@ -374,11 +566,11 @@ function ChangeStep({ data, onClose }: ChangeStepProps) {
               loading={isSubmitting}
               sx={{ textWrap: "nowrap" }}
             >
-              {t("subscription.change.approve")}
+              {t("subscription.confirm.approve")}
             </LoadingButton>
 
             <Button variant="outlined" size="large" onClick={onClose} color="inherit" fullWidth>
-              {t("subscription.change.cancel")}
+              {t("subscription.confirm.cancel")}
             </Button>
           </Box>
         </Box>
@@ -433,21 +625,14 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
             {t("subscription.cancel.title")}
           </Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Typography
-              variant="h5"
-              sx={{
-                mt: 1,
-                display: "flex",
-                gap: 1,
-              }}
-            >
-              {t("subscription.license", { plan: license })}
-            </Typography>
-
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 2 }}>
             {status === SUBSCRIPTION_STATUS.TRIALING && (
-              <Label color="success">{t("subscription.trial")}</Label>
+              <Label color="warning">
+                <Iconify icon="solar:clock-circle-outline" width={16} />
+                {t("subscription.trial", { date: fDate(nextBillingDate, "DD MMM") })}
+              </Label>
             )}
+            <Typography variant="h5">{t("subscription.license", { plan: license })}</Typography>
           </Box>
 
           {currency && (
@@ -470,7 +655,7 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
             }}
           >
             {t("subscription.cancel.description.part_1", {
-              date: fDate(nextBillingDate, "DD MMMM YYYY"),
+              date: fDate(nextBillingDate, "D MMMM YYYY"),
             })}
           </Typography>
 
@@ -563,21 +748,14 @@ function RenewStep({ subscription, onClose }: RenewStepProps) {
             {t("subscription.renew.title")}
           </Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Typography
-              variant="h5"
-              sx={{
-                mt: 1,
-                display: "flex",
-                gap: 1,
-              }}
-            >
-              {t("subscription.license", { plan: license })}
-            </Typography>
-
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 2 }}>
             {status === SUBSCRIPTION_STATUS.TRIALING && (
-              <Label color="success">{t("subscription.trial")}</Label>
+              <Label color="warning">
+                <Iconify icon="solar:clock-circle-outline" width={16} />
+                {t("subscription.trial", { date: fDate(nextBillingDate, "DD MMM") })}
+              </Label>
             )}
+            <Typography variant="h5">{t("subscription.license", { plan: license })}</Typography>
           </Box>
 
           {currency && (
@@ -600,7 +778,7 @@ function RenewStep({ subscription, onClose }: RenewStepProps) {
             }}
           >
             {t("subscription.renew.description", {
-              date: fDate(nextBillingDate, "DD MMMM YYYY"),
+              date: fDate(nextBillingDate, "D MMMM YYYY"),
             })}
           </Typography>
         </Box>
@@ -643,21 +821,41 @@ type AccountSubscriptionViewProps = {
   data: { subscription: ISubscriptionProps; plans: IPlanProps[] };
 };
 
+type NewSubscription = {
+  type: PlanType;
+  interval: PlanInterval;
+  currency: Currency;
+};
+
 export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) {
   const { t } = useTranslation("account");
 
   const { subscription } = data;
 
   const [activeStep, setActiveStep] = useState(0);
+  const newSubscription = useSetState<NewSubscription>();
 
   const STEPS = [
     <MainStep
       subscription={subscription}
       onChange={() => setActiveStep(1)}
-      onCancel={() => setActiveStep(2)}
-      onRenew={() => setActiveStep(3)}
+      onCancel={() => setActiveStep(3)}
+      onRenew={() => setActiveStep(4)}
     />,
-    <ChangeStep data={data} onClose={() => setActiveStep(0)} />,
+    <ChangeStep
+      data={data}
+      onChange={(selection) => {
+        newSubscription.setState(selection);
+        setActiveStep(2);
+      }}
+      onCancel={() => setActiveStep(3)}
+      onClose={() => setActiveStep(0)}
+    />,
+    <ConfirmStep
+      data={data}
+      newSubscription={newSubscription.state}
+      onClose={() => setActiveStep(0)}
+    />,
     <CancelStep subscription={subscription} onClose={() => setActiveStep(0)} />,
     <RenewStep subscription={subscription} onClose={() => setActiveStep(0)} />,
   ];

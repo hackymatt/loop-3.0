@@ -16,7 +16,7 @@ type PageProps = {
 };
 
 const queries = {
-  paymentMethods: () => paymentMethodsQuery(),
+  paymentMethods: () => paymentMethodsQuery({ page_size: "-1" }),
   personal: () => dataQuery(),
 };
 

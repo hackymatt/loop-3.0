@@ -7,9 +7,9 @@ import type {
   IPaymentMethodProps,
 } from "src/types/user";
 
-import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { loadStripe } from "@stripe/stripe-js";
+import { useState, useEffect, useCallback } from "react";
 import { Elements, useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
 
 import Box from "@mui/material/Box";
@@ -20,13 +20,14 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import { paths } from "src/routes/paths";
+import { useRouter } from "src/routes/hooks";
 
 import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
-import { PAYMENT_METHODS } from "src/consts/payment";
 import { useCreateSetupIntent } from "src/api/plan/setup-intent";
+import { PAYMENT_RESULT, PAYMENT_METHODS } from "src/consts/payment";
 
 import { AccountPaymentCard } from "../account/payment/account-payment-card";
 import { AccountPaymentPaypal } from "../account/payment/account-payment-paypal";
@@ -41,12 +42,24 @@ type AccountPaymentViewProps = {
 export function AccountPaymentView({ data }: AccountPaymentViewProps) {
   const { t } = useTranslation("account");
   const theme = useTheme();
+  const router = useRouter();
   const { query } = useQueryParams();
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
   const { paymentMethods, personal } = data;
   const { mutateAsync: createSetupIntent, isLoading } = useCreateSetupIntent();
+
+  useEffect(() => {
+    if (query?.redirect_status === PAYMENT_RESULT.SUCCESS) {
+      const timeout = setTimeout(() => {
+        router.refresh();
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+    return undefined;
+  }, [query?.redirect_status, router]);
 
   const handleAddPaymentMethod = async () => {
     try {
@@ -114,7 +127,7 @@ export function AccountPaymentView({ data }: AccountPaymentViewProps) {
           </LoadingButton>
         )}
 
-        {query?.redirect_status === "failed" && (
+        {query?.redirect_status === PAYMENT_RESULT.FAILED && (
           <Typography color="error" variant="body2">
             {t("payment.error")}
           </Typography>

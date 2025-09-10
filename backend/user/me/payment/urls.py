@@ -1,18 +1,11 @@
-from django.urls import path
-from .views import PaymentMethodsView
-
-
+from django.urls import path, include
+from core.routers import Router
+from .views import PaymentMethodViewSet
 from const import Urls
 
+router = Router(trailing_slash=False)
+router.register(Urls.PAYMENT_METHODS, PaymentMethodViewSet, basename="payment-methods")
+
 urlpatterns = [
-    path(
-        Urls.PAYMENT_METHODS,
-        PaymentMethodsView.as_view(),
-        name="payment-methods",
-    ),
-    path(
-        f"{Urls.PAYMENT_METHODS}/<str:payment_method_id>",
-        PaymentMethodsView.as_view(),
-        name="payment-method-detail",
-    ),
+    path("", include(router.urls)),
 ]
