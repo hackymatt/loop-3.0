@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { PaperProps } from "@mui/material/Paper";
 
 import { useTranslation } from "react-i18next";
@@ -22,9 +23,10 @@ type Props = PaperProps & {
     email: string;
     isPrimary: boolean;
   };
+  language: Language;
 };
 
-export function AccountPaymentPaypal({ id, paypal, sx, ...other }: Props) {
+export function AccountPaymentPaypal({ id, paypal, language, sx, ...other }: Props) {
   const { t } = useTranslation("account");
   const openOptions = usePopover();
 
@@ -80,7 +82,12 @@ export function AccountPaymentPaypal({ id, paypal, sx, ...other }: Props) {
         </Box>
       </Paper>
 
-      <AccountPaymentPopover openOptions={openOptions} id={id} isPrimary={paypal.isPrimary} />
+      <AccountPaymentPopover
+        openOptions={openOptions}
+        id={id}
+        isPrimary={paypal.isPrimary}
+        language={language}
+      />
     </>
   );
 }

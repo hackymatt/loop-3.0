@@ -1,4 +1,4 @@
-export const PAYMENT_METHODS = {
+export const PAYMENT_METHOD = {
   CARD: "card",
   PAYPAL: "paypal",
   REVOLUT_PAY: "revolut_pay",

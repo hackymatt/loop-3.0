@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -41,12 +42,16 @@ export const useEditPaymentMethod = (id: string) => {
   );
 };
 
-export const useDeletePaymentMethod = (id: string) => {
+export const useDeletePaymentMethod = (id: string, language: Language) => {
   const router = useRouter();
   const url = `${endpoint}/${id}`;
-  return useMutation<IDataReturn, AxiosError, Omit<IData, "payment_method_id">>(
+  return useMutation<IDataReturn, AxiosError, IData>(
     async () => {
-      const result = await Api.delete(url);
+      const result = await Api.delete(url, {
+        headers: {
+          "Accept-Language": language,
+        },
+      });
       return {
         status: result.status,
         data: result.data,
