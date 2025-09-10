@@ -202,8 +202,8 @@ class StripeWebhookView(APIView):
             current_period_start, tz=timezone.utc
         )
         end_date = timezone.datetime.fromtimestamp(current_period_end, tz=timezone.utc)
-        website_url = data["items"]["data"][0]["metadata"]["website_url"]
-        language = data["items"]["data"][0]["metadata"]["language"]
+        website_url = data["metadata"]["website_url"]
+        language = data["metadata"]["language"]
 
         plan_pricing = PlanPricing.objects.get(stripe_price_id=price_id)
         student = Student.objects.get(stripe_customer_id=customer_id)

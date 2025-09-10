@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { PaperProps } from "@mui/material/Paper";
 
 import { useTranslation } from "react-i18next";
@@ -25,9 +26,10 @@ type Props = PaperProps & {
     expired: string;
     isPrimary: boolean;
   };
+  language: Language;
 };
 
-export function AccountPaymentCard({ id, card, sx, ...other }: Props) {
+export function AccountPaymentCard({ id, card, language, sx, ...other }: Props) {
   const { t } = useTranslation("account");
   const openOptions = usePopover();
 
@@ -53,7 +55,7 @@ export function AccountPaymentCard({ id, card, sx, ...other }: Props) {
         {/* Header */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-            {card.label.charAt(0).toUpperCase() + card.label.slice(1)}
+            {`${card.label.charAt(0).toUpperCase()}${card.label.slice(1)}`}
           </Typography>
 
           {card.isPrimary && (
@@ -113,7 +115,12 @@ export function AccountPaymentCard({ id, card, sx, ...other }: Props) {
       </Paper>
 
       {/* Popover Menu */}
-      <AccountPaymentPopover openOptions={openOptions} id={id} isPrimary={card.isPrimary} />
+      <AccountPaymentPopover
+        openOptions={openOptions}
+        id={id}
+        isPrimary={card.isPrimary}
+        language={language}
+      />
     </>
   );
 }

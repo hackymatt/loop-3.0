@@ -34,6 +34,8 @@ class CancelSubscriptionView(APIView):
 
         try:
             modify_subscription(subscription_id, cancel_at_period_end=True)
+            student.current_subscription.cancel_at_period_end = True
+            student.current_subscription.save()
             return Response({}, status=status.HTTP_200_OK)
         except stripe.error.StripeError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -49,6 +51,8 @@ class RenewSubscriptionView(APIView):
 
         try:
             modify_subscription(subscription_id, cancel_at_period_end=False)
+            student.current_subscription.cancel_at_period_end = False
+            student.current_subscription.save()
             return Response({}, status=status.HTTP_200_OK)
         except stripe.error.StripeError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

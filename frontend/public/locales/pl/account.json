@@ -118,6 +118,7 @@
     "billing": {
       "label": {
         "trial": "Po zakończeniu bezpłatnego okresu próbnego w dniu {{date}} ta subskrypcja będzie kontynuowana automatycznie.",
+        "cancel": "Po zakończeniu bezpłatnego okresu próbnego w dniu {{date}} ta subskrypcja nie będzie już dostępna.",
         "standard": "Twoja subskrypcja odnawia się w dniu {{date}}."
       },
       "monthly": "miesięcznie",
@@ -126,11 +127,12 @@
     "sell": "Zbuduj swoje portfolio, ucz się z projektami i zdobądź certyfikaty. Wybierz plan i rozwijaj się razem z loop.",
     "error": "Coś poszło nie tak. Spróbuj ponownie.",
     "trial": "Okres próbny kończy się {{date}}",
+    "ending": "Anuluje się {{date}}",
     "cancelled": "Subskrypcja została anulowana i zakończy się z końcem okresu rozliczeniowego {{date}}.",
     "buttons": {
       "change": "Zaktualizuj subskrypcję",
       "cancel": "Anuluj subskrypcję",
-      "renew": "Odnów subskrypcję"
+      "renew": "Nie anuluj subskrypcji"
     },
     "change": {
       "title": "Zaktualizuj swoją subskrypcję",

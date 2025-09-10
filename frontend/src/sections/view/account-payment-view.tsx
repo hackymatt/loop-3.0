@@ -1,5 +1,6 @@
 "use client";
 
+import type { Language } from "src/locales/types";
 import type {
   ICardProps,
   IPaypalProps,
@@ -27,7 +28,7 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
 import { useCreateSetupIntent } from "src/api/plan/setup-intent";
-import { PAYMENT_RESULT, PAYMENT_METHODS } from "src/consts/payment";
+import { PAYMENT_RESULT, PAYMENT_METHOD } from "src/consts/payment";
 
 import { AccountPaymentCard } from "../account/payment/account-payment-card";
 import { AccountPaymentPaypal } from "../account/payment/account-payment-paypal";
@@ -37,9 +38,10 @@ const stripePromise = loadStripe(CONFIG.stripePublishableKey);
 
 type AccountPaymentViewProps = {
   data: { paymentMethods: IPaymentMethodProps[]; personal: IPersonalDataProps };
+  language: Language;
 };
 
-export function AccountPaymentView({ data }: AccountPaymentViewProps) {
+export function AccountPaymentView({ data, language }: AccountPaymentViewProps) {
   const { t } = useTranslation("account");
   const theme = useTheme();
   const router = useRouter();
@@ -70,38 +72,50 @@ export function AccountPaymentView({ data }: AccountPaymentViewProps) {
     }
   };
 
-  const getDisplayCard = useCallback((paymentMethod: IPaymentMethodProps) => {
-    const { id, type, isDefault, details } = paymentMethod;
-    switch (type) {
-      case PAYMENT_METHODS.CARD:
-        return (
-          <AccountPaymentCard
-            key={id}
-            id={id}
-            card={{
-              value: (details as ICardProps).wallet || (details as ICardProps).brand,
-              label: (details as ICardProps).displayBrand,
-              number: (details as ICardProps).last4,
-              expired: `${(details as ICardProps).expMonth || "--"}/${(details as ICardProps).expYear || "--"}`,
-              holder: (details as ICardProps).holder || "---",
-              isPrimary: isDefault,
-            }}
-          />
-        );
-      case PAYMENT_METHODS.PAYPAL:
-        return (
-          <AccountPaymentPaypal
-            key={id}
-            id={id}
-            paypal={{ email: (details as IPaypalProps).payerEmail, isPrimary: isDefault }}
-          />
-        );
-      case PAYMENT_METHODS.REVOLUT_PAY:
-        return <AccountPaymentRevolutPay key={id} id={id} revolutPay={{ isPrimary: isDefault }} />;
-      default:
-        return null;
-    }
-  }, []);
+  const getDisplayCard = useCallback(
+    (paymentMethod: IPaymentMethodProps) => {
+      const { id, type, isDefault, details } = paymentMethod;
+      switch (type) {
+        case PAYMENT_METHOD.CARD:
+          return (
+            <AccountPaymentCard
+              key={id}
+              id={id}
+              card={{
+                value: (details as ICardProps).wallet || (details as ICardProps).brand,
+                label: (details as ICardProps).displayBrand,
+                number: (details as ICardProps).last4,
+                expired: `${(details as ICardProps).expMonth || "--"}/${(details as ICardProps).expYear || "--"}`,
+                holder: (details as ICardProps).holder || "---",
+                isPrimary: isDefault,
+              }}
+              language={language}
+            />
+          );
+        case PAYMENT_METHOD.PAYPAL:
+          return (
+            <AccountPaymentPaypal
+              key={id}
+              id={id}
+              paypal={{ email: (details as IPaypalProps).payerEmail, isPrimary: isDefault }}
+              language={language}
+            />
+          );
+        case PAYMENT_METHOD.REVOLUT_PAY:
+          return (
+            <AccountPaymentRevolutPay
+              key={id}
+              id={id}
+              revolutPay={{ isPrimary: isDefault }}
+              language={language}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [language]
+  );
 
   return (
     <>

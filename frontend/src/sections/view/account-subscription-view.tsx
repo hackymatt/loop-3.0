@@ -1,27 +1,32 @@
 "use client";
 
 import type { PaperProps } from "@mui/material";
-import type { ISubscriptionProps } from "src/types/user";
 import type { Currency, PlanType, IPlanProps, PlanInterval } from "src/types/plan";
+import type { ICardProps, ISubscriptionProps, IPaymentMethodProps } from "src/types/user";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useSetState } from "minimal-shared/hooks";
 
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, Paper, Button } from "@mui/material";
+import { Box, Link, Paper, Button } from "@mui/material";
 
+import { paths } from "src/routes/paths";
+import { RouterLink } from "src/routes/components";
+
+import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
 import { fAdd, fDate } from "src/utils/format-time";
 import { fCurrency } from "src/utils/format-number";
 
-import { useAnalytics } from "src/app/analytics-provider";
+import { PAYMENT_METHOD } from "src/consts/payment";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
+import { useRenewSubscription, useCancelSubscription } from "src/api/me/manage-subscription";
 
 import { Label } from "src/components/label";
 import { Form } from "src/components/hook-form";
@@ -67,9 +72,11 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
 
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 2 }}>
           {status === SUBSCRIPTION_STATUS.TRIALING && (
-            <Label color="warning">
-              <Iconify icon="solar:clock-circle-outline" width={16} />
-              {t("subscription.trial", { date: fDate(nextBillingDate, "DD MMM") })}
+            <Label color={isCancelAtPeriodEnd ? "default" : "warning"}>
+              {!isCancelAtPeriodEnd && <Iconify icon="solar:clock-circle-outline" width={16} />}
+              {t(`subscription.${isCancelAtPeriodEnd ? "ending" : "trial"}`, {
+                date: fDate(nextBillingDate, "DD MMM"),
+              })}
             </Label>
           )}
           <Typography variant="h5">{t("subscription.license", { plan: license })}</Typography>
@@ -94,9 +101,11 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
               }}
             >
               {t(
-                status === SUBSCRIPTION_STATUS.TRIALING
-                  ? "subscription.billing.label.trial"
-                  : "subscription.billing.label.standard",
+                isCancelAtPeriodEnd
+                  ? "subscription.billing.label.cancel"
+                  : status === SUBSCRIPTION_STATUS.TRIALING
+                    ? "subscription.billing.label.trial"
+                    : "subscription.billing.label.standard",
                 { date: fDate(nextBillingDate, "D MMMM YYYY") }
               )}
             </Typography>
@@ -165,8 +174,6 @@ export function SubscriptionOption({
   const { t } = useTranslation("pricing");
   const { t: account } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
-
-  const { trackEvent } = useAnalytics();
 
   const user = useUserContext();
   const {
@@ -266,7 +273,11 @@ type SettingState = {
 };
 
 type ChangeStepProps = {
-  data: { subscription: ISubscriptionProps; plans: IPlanProps[] };
+  data: {
+    subscription: ISubscriptionProps;
+    plans: IPlanProps[];
+    paymentMethods: IPaymentMethodProps[];
+  };
   onChange: (setting: SettingState & { currency: Currency }) => void;
   onCancel: VoidFunction;
   onClose: VoidFunction;
@@ -410,19 +421,24 @@ function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
             }}
           >
             <LoadingButton
-              fullWidth
               color="primary"
               type="submit"
               variant="contained"
               size="large"
               loading={isSubmitting}
               disabled={isCurrentPlanSelected}
-              sx={{ textWrap: "nowrap" }}
+              sx={{ textWrap: "nowrap", width: { xs: "100%", md: "auto" } }}
             >
               {t("subscription.change.approve")}
             </LoadingButton>
 
-            <Button variant="outlined" size="large" onClick={onClose} color="inherit" fullWidth>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={onClose}
+              color="inherit"
+              sx={{ width: { xs: "100%", md: "auto" } }}
+            >
               {t("subscription.change.cancel")}
             </Button>
           </Box>
@@ -435,7 +451,11 @@ function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
 // ----------------------------------------------------------------------
 
 type ConfirmStepProps = {
-  data: { subscription: ISubscriptionProps; plans: IPlanProps[] };
+  data: {
+    subscription: ISubscriptionProps;
+    plans: IPlanProps[];
+    paymentMethods: IPaymentMethodProps[];
+  };
   newSubscription: NewSubscription;
   onClose: VoidFunction;
 };
@@ -443,8 +463,35 @@ type ConfirmStepProps = {
 function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
+  const localize = useLocalizedPath();
 
-  const { plans } = data;
+  const { plans, paymentMethods } = data;
+
+  const defaultPaymentMethod = paymentMethods.find((method) => method.isDefault);
+
+  const payment = useMemo(() => {
+    if (!defaultPaymentMethod) return "";
+
+    const { type, details } = defaultPaymentMethod;
+
+    switch (type) {
+      case PAYMENT_METHOD.CARD: {
+        const card = details as ICardProps;
+        if (!card.displayBrand || !card.last4) return "";
+        const brand = card.displayBrand.charAt(0).toUpperCase() + card.displayBrand.slice(1);
+        return `${brand} •••• ${card.last4}`;
+      }
+
+      case PAYMENT_METHOD.PAYPAL:
+        return "PayPal";
+
+      case PAYMENT_METHOD.REVOLUT_PAY:
+        return "Revolut Pay";
+
+      default:
+        return "";
+    }
+  }, [defaultPaymentMethod]);
 
   const options = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
     const priceObj = pricing.find(
@@ -546,6 +593,30 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
             </Typography>
           </Box>
 
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              mt: 3,
+            }}
+          >
+            <Link
+              component={RouterLink}
+              href={localize(paths.account.payment)}
+              sx={{
+                color: "primary.main",
+                textDecoration: "none",
+                typography: "body2",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.5,
+              }}
+            >
+              {payment || t("payment.add")}
+              {payment && <Iconify icon="solar:pen-new-square-outline" width={14} />}
+            </Link>
+          </Box>
+
           {/* Action Buttons */}
           <Box
             sx={{
@@ -554,22 +625,29 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
               alignItems: "center",
               mt: 5,
               gap: 1,
-              width: { xs: 1, md: "auto" },
             }}
           >
             <LoadingButton
-              fullWidth
               color="primary"
               type="submit"
               variant="contained"
               size="large"
               loading={isSubmitting}
-              sx={{ textWrap: "nowrap" }}
+              sx={{
+                width: { xs: "100%", md: "auto" },
+                textTransform: "none",
+              }}
             >
               {t("subscription.confirm.approve")}
             </LoadingButton>
 
-            <Button variant="outlined" size="large" onClick={onClose} color="inherit" fullWidth>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={onClose}
+              color="inherit"
+              sx={{ width: { xs: "100%", md: "auto" } }}
+            >
               {t("subscription.confirm.cancel")}
             </Button>
           </Box>
@@ -590,7 +668,9 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
-  const { license, interval, price, currency, nextBillingDate, status } = subscription;
+  const { license, interval, price, currency, nextBillingDate } = subscription;
+
+  const { mutateAsync: cancelSubscription } = useCancelSubscription();
 
   const methods = useForm();
 
@@ -601,8 +681,9 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
 
   const handleFormError = useFormErrorHandler(methods);
 
-  const onSubmit = handleSubmit(async (newData) => {
+  const onSubmit = handleSubmit(async () => {
     try {
+      await cancelSubscription({});
       onClose();
     } catch (error) {
       handleFormError(error);
@@ -626,12 +707,6 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
           </Typography>
 
           <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 2 }}>
-            {status === SUBSCRIPTION_STATUS.TRIALING && (
-              <Label color="warning">
-                <Iconify icon="solar:clock-circle-outline" width={16} />
-                {t("subscription.trial", { date: fDate(nextBillingDate, "DD MMM") })}
-              </Label>
-            )}
             <Typography variant="h5">{t("subscription.license", { plan: license })}</Typography>
           </Box>
 
@@ -713,7 +788,9 @@ function RenewStep({ subscription, onClose }: RenewStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
-  const { license, interval, price, currency, nextBillingDate, status } = subscription;
+  const { license, interval, price, currency, nextBillingDate } = subscription;
+
+  const { mutateAsync: renewSubscription } = useRenewSubscription();
 
   const methods = useForm();
 
@@ -726,6 +803,7 @@ function RenewStep({ subscription, onClose }: RenewStepProps) {
 
   const onSubmit = handleSubmit(async (newData) => {
     try {
+      await renewSubscription({});
       onClose();
     } catch (error) {
       handleFormError(error);
@@ -749,12 +827,6 @@ function RenewStep({ subscription, onClose }: RenewStepProps) {
           </Typography>
 
           <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 2 }}>
-            {status === SUBSCRIPTION_STATUS.TRIALING && (
-              <Label color="warning">
-                <Iconify icon="solar:clock-circle-outline" width={16} />
-                {t("subscription.trial", { date: fDate(nextBillingDate, "DD MMM") })}
-              </Label>
-            )}
             <Typography variant="h5">{t("subscription.license", { plan: license })}</Typography>
           </Box>
 
@@ -818,7 +890,11 @@ function RenewStep({ subscription, onClose }: RenewStepProps) {
 // ----------------------------------------------------------------------
 
 type AccountSubscriptionViewProps = {
-  data: { subscription: ISubscriptionProps; plans: IPlanProps[] };
+  data: {
+    subscription: ISubscriptionProps;
+    plans: IPlanProps[];
+    paymentMethods: IPaymentMethodProps[];
+  };
 };
 
 type NewSubscription = {

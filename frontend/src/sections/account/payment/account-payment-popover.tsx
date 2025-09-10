@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { usePopover } from "minimal-shared/hooks";
 
 import { useSnackbar } from "notistack";
@@ -17,14 +18,15 @@ type Props = {
   id: string;
   isPrimary: boolean;
   openOptions: ReturnType<typeof usePopover>;
+  language: Language;
 };
 
-export function AccountPaymentPopover({ id, isPrimary, openOptions }: Props) {
+export function AccountPaymentPopover({ id, isPrimary, openOptions, language }: Props) {
   const { t } = useTranslation("account");
   const { enqueueSnackbar } = useSnackbar();
 
   const { mutateAsync: editPaymentMethod } = useEditPaymentMethod(id);
-  const { mutateAsync: deletePaymentMethod } = useDeletePaymentMethod(id);
+  const { mutateAsync: deletePaymentMethod } = useDeletePaymentMethod(id, language);
 
   const handleSetDefault = async () => {
     try {

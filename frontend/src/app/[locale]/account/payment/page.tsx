@@ -32,9 +32,9 @@ async function getData() {
   };
 }
 
-export default async function Page() {
+export default async function Page({ params }: PageProps) {
   const data = await getData();
-  return <AccountPaymentView data={data} />;
+  return <AccountPaymentView data={data} language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

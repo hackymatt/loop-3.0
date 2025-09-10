@@ -118,6 +118,7 @@
     "billing": {
       "label": {
         "trial": "After the free trial ends on {{date}}, this subscription will continue automatically.",
+        "cancel": "After the free trial ends on {{date}}, this subscription will no longer be available.",
         "standard": "Your subscription renews on {{date}}."
       },
       "monthly": "monthly",
@@ -126,11 +127,12 @@
     "sell": "Build your portfolio, learn through projects, and earn certificates. Choose a plan and grow with Loop.",
     "error": "Something went wrong. Please try again.",
     "trial": "Trial ends on {{date}}",
+    "ending": "Cancels on {{date}}",
     "cancelled": "Your subscription has been cancelled and will end at the end of the billing period on {{date}}.",
     "buttons": {
       "change": "Update subscription",
       "cancel": "Cancel subscription",
-      "renew": "Renew subscription"
+      "renew": "Do not cancel subscription"
     },
     "change": {
       "title": "Update your subscription",

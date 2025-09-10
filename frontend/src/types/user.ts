@@ -1,6 +1,6 @@
 import type { JOIN_TYPE, USER_TYPE } from "src/consts/user";
 import type { DatePickerFormat } from "src/utils/format-time";
-import type { WALLET_TYPES, PAYMENT_METHODS } from "src/consts/payment";
+import type { WALLET_TYPES, PAYMENT_METHOD } from "src/consts/payment";
 import type { SUBSCRIPTION_RESULT, SUBSCRIPTION_STATUS } from "src/consts/subscription";
 
 import type { IProjectListProps } from "./project";
@@ -78,7 +78,7 @@ export type ISubscriptionProps = {
   status: SubscriptionStatus;
 };
 
-export type PaymentMethod = (typeof PAYMENT_METHODS)[keyof typeof PAYMENT_METHODS];
+export type PaymentMethod = (typeof PAYMENT_METHOD)[keyof typeof PAYMENT_METHOD];
 export type WalletType = (typeof WALLET_TYPES)[keyof typeof WALLET_TYPES];
 
 export type ICardProps = {
