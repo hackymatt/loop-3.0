@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "@mui/material/Link";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
 import { RouterLink } from "src/routes/components";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
@@ -18,7 +17,6 @@ import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 import { useLogin } from "src/api/auth/login";
 
 import { Form } from "src/components/hook-form";
-import { useUserContext } from "src/components/user/context";
 
 import { FormHead } from "./components/form-head";
 import { useSignInSchema } from "./components/schema";
@@ -37,11 +35,7 @@ export function SignInView({ locale }: SignInViewProps) {
   const { t } = useTranslation("sign-in");
   const localize = useLocalizedPath();
 
-  const router = useRouter();
-  const user = useUserContext();
-  const { redirect } = user.state;
-
-  const { mutateAsync: login } = useLogin();
+  const { mutateAsync: login } = useLogin(locale);
 
   const defaultValues: SignInSchemaType = { email: "", password: "" };
 
@@ -55,41 +49,7 @@ export function SignInView({ locale }: SignInViewProps) {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const { data: responseData, status } = await login(data);
-      if (status === 401) {
-        user.setState({
-          isActive: false,
-          isLoggedIn: false,
-          email: data.email,
-        });
-        router.push(localize(paths.auth.activate));
-      } else {
-        const {
-          email,
-          first_name,
-          last_name,
-          image,
-          user_type,
-          join_type,
-          is_active,
-          plan,
-          trial_used,
-        } = responseData;
-        user.setState({
-          isActive: is_active,
-          isLoggedIn: true,
-          email,
-          firstName: first_name,
-          lastName: last_name,
-          avatarUrl: image,
-          userType: user_type,
-          joinType: join_type,
-          plan,
-          trialUsed: trial_used,
-          redirect: null,
-        });
-        router.push(localize(redirect || paths.account.dashboard));
-      }
+      await login(data);
       reset();
     } catch (error) {
       handleFormError(error);

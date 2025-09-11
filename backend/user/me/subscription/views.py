@@ -7,7 +7,8 @@ from .serializers import SubscriptionSerializer
 from plan.models import Plan, PlanPricing
 from plan.subscription.utils import get_subscription
 from user.type.student_user.models import Student
-from utils.stripe.subscription import modify_subscription
+from utils.stripe.subscription import modify_subscription, retrieve_subscription
+from const import SubscriptionStatus
 
 
 class SubscriptionView(APIView):
@@ -74,20 +75,25 @@ class ChangeSubscriptionView(APIView):
         pricing = PlanPricing.get_current_price(plan, currency, interval)
 
         try:
-            subscription = stripe.Subscription.retrieve(subscription_id)
+            subscription = retrieve_subscription(subscription_id)
             current_item_id = subscription["items"]["data"][0].id
 
-            stripe.Subscription.modify(
-                subscription_id,
-                cancel_at_period_end=False,
-                items=[
+            modify_kwargs = {
+                "cancel_at_period_end": False,
+                "items": [
                     {
                         "id": current_item_id,
                         "price": pricing.stripe_price_id,
                     }
                 ],
-                proration_behavior="create_prorations",
-            )
+                "proration_behavior": "create_prorations",
+            }
+
+            if subscription.get("trial_end") and subscription["status"] == SubscriptionStatus.TRIALING:
+                modify_kwargs["trial_end"] = subscription["trial_end"]
+
+            modify_subscription(subscription_id, **modify_kwargs)
+
             return Response({}, status=status.HTTP_200_OK)
         except stripe.error.StripeError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

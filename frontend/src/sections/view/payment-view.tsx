@@ -26,11 +26,7 @@ import Container from "@mui/material/Container";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
-import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
-
 import { useQueryParams } from "src/hooks/use-query-params";
-import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
@@ -93,8 +89,6 @@ function Payment({ data }: PaymentViewProps) {
     phone: string;
   }[];
 
-  const localize = useLocalizedPath();
-  const router = useRouter();
   const { query } = useQueryParams();
 
   const interval = query?.interval ?? PLAN_INTERVAL.YEARLY;
@@ -153,10 +147,7 @@ function Payment({ data }: PaymentViewProps) {
     }
 
     try {
-      const {
-        data: { status },
-      } = await createSubscription({ plan: plan.type, currency, interval });
-      router.push(localize(`${paths.orderStatus}?status=${status}`));
+      await createSubscription({ plan: plan.type, currency, interval });
     } catch (err) {
       setPaymentError((err as Error).message || "Something went wrong");
     }

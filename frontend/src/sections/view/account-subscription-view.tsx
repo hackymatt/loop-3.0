@@ -4,6 +4,7 @@ import type { PaperProps } from "@mui/material";
 import type { Currency, PlanType, IPlanProps, PlanInterval } from "src/types/plan";
 import type { ICardProps, ISubscriptionProps, IPaymentMethodProps } from "src/types/user";
 
+import { useSnackbar } from "notistack";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -17,7 +18,6 @@ import { paths } from "src/routes/paths";
 import { RouterLink } from "src/routes/components";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
-import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
 import { fAdd, fDate } from "src/utils/format-time";
 import { fCurrency } from "src/utils/format-number";
@@ -26,12 +26,15 @@ import { PAYMENT_METHOD } from "src/consts/payment";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
-import { useRenewSubscription, useCancelSubscription } from "src/api/me/manage-subscription";
+import {
+  useRenewSubscription,
+  useCancelSubscription,
+  useChangeSubscription,
+} from "src/api/me/manage-subscription";
 
 import { Label } from "src/components/label";
 import { Form } from "src/components/hook-form";
 import { Iconify } from "src/components/iconify";
-import { useUserContext } from "src/components/user";
 
 import IntervalToggle from "../pricing/interval-toogle";
 
@@ -155,6 +158,7 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
 // ----------------------------------------------------------------------
 
 type SubscriptionOptionProps = PaperProps & {
+  subscription: ISubscriptionProps;
   plan: PricingCardProps;
   interval: PlanInterval;
   currency: Currency;
@@ -163,6 +167,7 @@ type SubscriptionOptionProps = PaperProps & {
 };
 
 export function SubscriptionOption({
+  subscription,
   plan,
   interval,
   currency,
@@ -175,14 +180,12 @@ export function SubscriptionOption({
   const { t: account } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
-  const user = useUserContext();
-  const {
-    plan: { type, currency: userCurrency, interval: userInterval },
-  } = user.state;
+  const { type, interval: currentInterval, currency: currentCurrency } = subscription;
 
   const isCurrentPlan =
     plan.type === type &&
-    ((interval === userInterval && currency === userCurrency) || plan.type === PLAN_TYPE.FREE);
+    ((interval === currentInterval && currency === currentCurrency) ||
+      plan.type === PLAN_TYPE.FREE);
 
   const renderPrices = () => (
     <Box
@@ -286,22 +289,17 @@ type ChangeStepProps = {
 function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
-  const {
-    state: {
-      plan: { type, interval: userInterval },
-    },
-  } = useUserContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { subscription, plans } = data;
-  const { interval, currency } = subscription;
+  const { interval, currency, type } = subscription;
 
   const setting = useSetState<SettingState>({
     interval: interval || PLAN_INTERVAL.YEARLY,
     type,
   });
 
-  const isCurrentPlanSelected =
-    setting.state.type === type && setting.state.interval === userInterval;
+  const isCurrentPlanSelected = setting.state.type === type && setting.state.interval === interval;
 
   const options = (plans || []).map(({ pricing, ...rest }: IPlanProps) => {
     const priceObj = pricing.find(
@@ -320,8 +318,6 @@ function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const handleFormError = useFormErrorHandler(methods);
-
   const onSubmit = handleSubmit(async () => {
     try {
       if (setting.state.type === PLAN_TYPE.FREE) {
@@ -329,8 +325,8 @@ function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
         return;
       }
       onChange({ ...setting.state, currency: currency! });
-    } catch (error) {
-      handleFormError(error);
+    } catch {
+      enqueueSnackbar(t("subscription.error"), { variant: "error" });
     }
   });
 
@@ -368,6 +364,7 @@ function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
               {options.map((plan) => (
                 <SubscriptionOption
                   key={plan.license}
+                  subscription={subscription}
                   plan={plan}
                   interval={setting.state.interval}
                   currency={currency || (locale("currency") as Currency)}
@@ -464,8 +461,13 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const { plans, paymentMethods } = data;
+  const { subscription, plans, paymentMethods } = data;
+
+  const { status, nextBillingDate } = subscription;
+
+  const { mutateAsync: changeSubscription } = useChangeSubscription();
 
   const defaultPaymentMethod = paymentMethods.find((method) => method.isDefault);
 
@@ -512,17 +514,13 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const handleFormError = useFormErrorHandler(methods);
-
   const onSubmit = handleSubmit(async () => {
     try {
-      // if (setting.state.selected === PLAN_TYPE.FREE) {
-      //   onCancel();
-      //   return;
-      // }
-      // onChange({ ...setting.state, currency: currency! });
-    } catch (error) {
-      handleFormError(error);
+      const { type: plan, ...rest } = newSubscription;
+      await changeSubscription({ ...rest, plan });
+      onClose();
+    } catch {
+      enqueueSnackbar(t("subscription.error"), { variant: "error" });
     }
   });
 
@@ -561,6 +559,7 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
                   fAdd({
                     months: newSubscription.interval === PLAN_INTERVAL.MONTHLY ? 1 : 0,
                     years: newSubscription.interval === PLAN_INTERVAL.YEARLY ? 1 : 0,
+                    date: nextBillingDate,
                   }),
                   "D MMMM YYYY"
                 ),
@@ -583,7 +582,13 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
               mt: 3,
             }}
           >
-            <Typography>{t("subscription.confirm.payNow")}</Typography>
+            <Typography>
+              {status === SUBSCRIPTION_STATUS.TRIALING
+                ? t("subscription.confirm.payAfterTrial", {
+                    date: fDate(nextBillingDate, "D MMMM YYYY"),
+                  })
+                : t("subscription.confirm.payNow")}
+            </Typography>
 
             <Typography component="span" variant="h5">
               {fCurrency(option?.price, {
@@ -668,6 +673,8 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const { license, interval, price, currency, nextBillingDate } = subscription;
 
   const { mutateAsync: cancelSubscription } = useCancelSubscription();
@@ -679,14 +686,12 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const handleFormError = useFormErrorHandler(methods);
-
   const onSubmit = handleSubmit(async () => {
     try {
       await cancelSubscription({});
       onClose();
-    } catch (error) {
-      handleFormError(error);
+    } catch {
+      enqueueSnackbar(t("subscription.error"), { variant: "error" });
     }
   });
 
@@ -787,6 +792,7 @@ type RenewStepProps = {
 function RenewStep({ subscription, onClose }: RenewStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
+  const { enqueueSnackbar } = useSnackbar();
 
   const { license, interval, price, currency, nextBillingDate } = subscription;
 
@@ -799,14 +805,12 @@ function RenewStep({ subscription, onClose }: RenewStepProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const handleFormError = useFormErrorHandler(methods);
-
   const onSubmit = handleSubmit(async (newData) => {
     try {
       await renewSubscription({});
       onClose();
-    } catch (error) {
-      handleFormError(error);
+    } catch {
+      enqueueSnackbar(t("subscription.error"), { variant: "error" });
     }
   });
 

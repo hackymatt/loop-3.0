@@ -15,10 +15,6 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 
-import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
-
-import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
 import { CONFIG } from "src/global-config";
@@ -26,8 +22,6 @@ import { useLoginGithub } from "src/api/auth/github-login";
 import { useLoginGoogle } from "src/api/auth/google-login";
 import { useLoginFacebook } from "src/api/auth/facebook-login";
 import { GithubIcon, GoogleIcon, FacebookIcon } from "src/assets/icons";
-
-import { useUserContext } from "src/components/user";
 
 // ----------------------------------------------------------------------
 
@@ -52,12 +46,6 @@ export function FormSocials({ methods, locale, sx, ...other }: FormSocialsProps)
 }
 
 function GoogleSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
-  const router = useRouter();
-  const user = useUserContext();
-  const { redirect } = user.state;
-
-  const localize = useLocalizedPath();
-
   const { mutateAsync: googleLogin } = useLoginGoogle(locale);
 
   const handleFormError = useFormErrorHandler(methods);
@@ -68,32 +56,7 @@ function GoogleSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
     const { access_token: token } = response;
 
     try {
-      const { data: responseData } = await googleLogin({ token });
-      const {
-        email,
-        first_name,
-        last_name,
-        image,
-        user_type,
-        join_type,
-        is_active,
-        plan,
-        trial_used,
-      } = responseData;
-      user.setState({
-        isActive: is_active,
-        isLoggedIn: true,
-        email,
-        firstName: first_name,
-        lastName: last_name,
-        avatarUrl: image,
-        userType: user_type,
-        joinType: join_type,
-        plan,
-        trialUsed: trial_used,
-        redirect: null,
-      });
-      router.push(localize(redirect || paths.account.dashboard));
+      await googleLogin({ token });
     } catch (error) {
       handleFormError(error);
     }
@@ -111,12 +74,6 @@ function GoogleSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
 }
 
 function GithubSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
-  const router = useRouter();
-  const user = useUserContext();
-  const { redirect } = user.state;
-
-  const localize = useLocalizedPath();
-
   const { mutateAsync: githubLogin } = useLoginGithub(locale);
 
   const handleFormError = useFormErrorHandler(methods);
@@ -125,32 +82,7 @@ function GithubSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
     const { code } = response;
 
     try {
-      const { data: responseData } = await githubLogin({ code });
-      const {
-        email,
-        first_name,
-        last_name,
-        image,
-        user_type,
-        join_type,
-        is_active,
-        plan,
-        trial_used,
-      } = responseData;
-      user.setState({
-        isActive: is_active,
-        isLoggedIn: true,
-        email,
-        firstName: first_name,
-        lastName: last_name,
-        avatarUrl: image,
-        userType: user_type,
-        joinType: join_type,
-        plan,
-        trialUsed: trial_used,
-        redirect: null,
-      });
-      router.push(localize(redirect || paths.account.dashboard));
+      await githubLogin({ code });
     } catch (error) {
       handleFormError(error);
     }
@@ -170,12 +102,6 @@ function GithubSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
 }
 
 function FacebookSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
-  const router = useRouter();
-  const user = useUserContext();
-  const { redirect } = user.state;
-
-  const localize = useLocalizedPath();
-
   const { mutateAsync: facebookLogin } = useLoginFacebook(locale);
 
   const handleFormError = useFormErrorHandler(methods);
@@ -184,32 +110,7 @@ function FacebookSignIn({ methods, locale }: { methods: UseFormReturn<any>; loca
     const { accessToken: access_token } = response;
 
     try {
-      const { data: responseData } = await facebookLogin({ access_token });
-      const {
-        email,
-        first_name,
-        last_name,
-        image,
-        user_type,
-        join_type,
-        is_active,
-        plan,
-        trial_used,
-      } = responseData;
-      user.setState({
-        isActive: is_active,
-        isLoggedIn: true,
-        email,
-        firstName: first_name,
-        lastName: last_name,
-        avatarUrl: image,
-        userType: user_type,
-        joinType: join_type,
-        plan,
-        trialUsed: trial_used,
-        redirect: null,
-      });
-      router.push(localize(redirect || paths.account.dashboard));
+      await facebookLogin({ access_token });
     } catch (error) {
       handleFormError(error);
     }

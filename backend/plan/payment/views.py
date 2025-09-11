@@ -241,7 +241,7 @@ class StripeWebhookView(APIView):
             logger.info("Invoice generation has been skipped")
             return
 
-        price_id = data["items"]["data"][0]["price"]["id"]
+        price_id = data["lines"]["data"][0]["pricing"]["price_details"]["price"]
         language = (
             data.get("parent", {})
             .get("subscription_details", {})

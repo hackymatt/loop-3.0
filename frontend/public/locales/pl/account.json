@@ -147,7 +147,8 @@
       "license": "Plan {{plan}}",
       "frequency": { "monthly": "miesięczna", "yearly": "roczna" },
       "summary": "Opłata {{frequency}} od {{date}}",
-      "payNow": "Kwota do zapłaty do dzisiaj"
+      "payNow": "Kwota do zapłaty do dzisiaj",
+      "payAfterTrial": "Kwota do zapłaty {{date}}"
     },
     "cancel": {
       "title": "Anuluj subskrypcję",
