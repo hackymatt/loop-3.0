@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@mui/material";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
 import { RouterLink } from "src/routes/components";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
@@ -18,7 +17,6 @@ import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 import { useRegister } from "src/api/auth/register";
 
 import { Form } from "src/components/hook-form";
-import { useUserContext } from "src/components/user/context";
 
 import { FormHead } from "./components/form-head";
 import { SignUpForm } from "./components/sign-up-form";
@@ -38,10 +36,6 @@ export function SignUpView({ header, buttonText = "Utwórz konto", locale }: Pro
   const { t } = useTranslation("sign-up");
 
   const localize = useLocalizedPath();
-
-  const router = useRouter();
-
-  const user = useUserContext();
 
   const { mutateAsync: register } = useRegister();
 
@@ -65,8 +59,6 @@ export function SignUpView({ header, buttonText = "Utwórz konto", locale }: Pro
     try {
       const { email, password } = data;
       await register({ email, password });
-      user.setState({ email });
-      router.push(localize(paths.auth.activate));
       reset();
     } catch (error) {
       handleFormError(error);

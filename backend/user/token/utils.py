@@ -1,48 +1,49 @@
 import tiktoken
 
 from plan.subscription.utils import get_subscription
-from calendar import monthrange
 from user.token.models import TokenUsage
 from django.db.models import Sum
-from datetime import datetime, time
-from django.utils.timezone import now, make_aware
+from dateutil.relativedelta import relativedelta
+from calendar import monthrange
 
 
-def calculate_tokens_limit(start_date, today, plan_limit):
-    total_days_in_month = monthrange(start_date.year, start_date.month)[1]
-    days_remaining = total_days_in_month - start_date.day + 1
-    tokens_limit = (
-        int((days_remaining / total_days_in_month) * plan_limit)
-        if start_date.year == today.year and start_date.month == today.month
-        else plan_limit
-    )
-    return tokens_limit
+def months_fraction_or_full(start_date, end_date):
+    if start_date > end_date:
+        return 0
+
+    delta = relativedelta(end_date, start_date)
+    total_months = delta.years * 12 + delta.months
+
+    if total_months == 0:
+        days_in_month = monthrange(start_date.year, start_date.month)[1]
+        fraction = delta.days / days_in_month
+        return round(fraction, 2)
+    else:
+        if delta.days >= 0:
+            total_months += 1
+        return total_months
 
 
 def get_user_tokens_left(user):
     subscription = get_subscription(user)
+
     plan_limit = subscription.plan.tokens_limit
     start_date = subscription.start_date.date()
+    end_date = subscription.end_date.date() if subscription.end_date else start_date
+    months = months_fraction_or_full(start_date, end_date)
 
-    today = now().date()
-
-    tokens_limit = calculate_tokens_limit(start_date, today, plan_limit)
-
-    first_day_of_month = make_aware(datetime.combine(today.replace(day=1), time.min))
-    _, last_day = monthrange(today.year, today.month)
-    last_day_of_month = make_aware(
-        datetime.combine(today.replace(day=last_day), time.max)
-    )
+    token_limit = plan_limit * months
 
     tokens_used = (
         TokenUsage.objects.filter(
-            created_at__range=(first_day_of_month, last_day_of_month),
+            created_at__date__gte=start_date,
+            created_at__date__lt=end_date,
             student__user=user,
         ).aggregate(total_tokens=Sum("tokens"))["total_tokens"]
         or 0
     )
 
-    tokens_left = tokens_limit - tokens_used
+    tokens_left = token_limit - tokens_used
     return max(tokens_left, 0)
 
 

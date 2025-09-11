@@ -11,7 +11,6 @@ import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
@@ -31,8 +30,6 @@ export function ActivateView({ token }: { token: string | undefined }) {
   const { t } = useTranslation("activate");
   const localize = useLocalizedPath();
 
-  const router = useRouter();
-
   const { state, setState } = useSetState<{ error: string }>({ error: "" });
 
   const user = useUserContext();
@@ -45,8 +42,6 @@ export function ActivateView({ token }: { token: string | undefined }) {
       if (token) {
         try {
           await activate({ token });
-          user.setField("isActive", true);
-          router.push(localize(paths.auth.login));
         } catch (error) {
           setState({ error: ((error as AxiosError).response?.data as { error: string }).error });
         }
@@ -63,11 +58,7 @@ export function ActivateView({ token }: { token: string | undefined }) {
   const handleResendCode = async () => {
     countdownSeconds.start();
     try {
-      const { status } = await resend({ token, email: user.state.email || "" });
-      user.setField("isActive", true);
-      if (status === 200) {
-        router.push(localize(paths.auth.login));
-      }
+      await resend({ token, email: user.state.email || "" });
     } catch (error) {
       setState({ error: ((error as AxiosError).response?.data as { root: string }).root });
     }

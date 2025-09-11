@@ -46,7 +46,7 @@ class LoginResponseSerializer(serializers.ModelSerializer):
             return None
 
         student = Student.objects.get(user=obj)
-        return student.trial_user
+        return student.trial_used
 
     def get_image(self, obj):
         request = self.context.get("request")

@@ -11,7 +11,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
@@ -32,8 +31,6 @@ import type { UpdatePasswordSchemaType } from "./components/schema";
 
 export function UpdatePasswordView({ token }: { token: string }) {
   const showPassword = useBoolean();
-
-  const router = useRouter();
 
   const { t } = useTranslation("update-password");
   const { t: account } = useTranslation("account");
@@ -64,7 +61,6 @@ export function UpdatePasswordView({ token }: { token: string }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await updatePassword({ ...data, token });
-      router.push(localize(paths.auth.login));
       reset();
     } catch (error) {
       handleFormError(error);

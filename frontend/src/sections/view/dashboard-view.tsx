@@ -28,6 +28,8 @@ export function DashboardView({ data }: DashboardProps) {
       planLicense: _,
       ...rest
     } = profile.user;
+    console.log(state);
+    console.log(rest);
     setState({ ...state, ...rest });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.user]);
