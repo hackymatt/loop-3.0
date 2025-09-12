@@ -168,7 +168,11 @@ export function PricingColumnsView({ plans }: PricingColumnsViewProps) {
             })}
             size={{ xs: 12, md: 3 }}
           >
-            <PricingColumnHeader plan={plan} currency={setting.state.currency} />
+            <PricingColumnHeader
+              plan={plan}
+              interval={setting.state.interval}
+              currency={setting.state.currency}
+            />
             <PricingColumnContentMobile
               plan={plan}
               interval={setting.state.interval}

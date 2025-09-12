@@ -15,6 +15,7 @@
   "yearly": "Yearly",
   "monthlyShort": "mo",
   "yearlyShort": "yr",
+  "billed": "billed annually",
   "save": "-",
   "popular": "POPULAR",
   "trial": "{{days}}-DAY FREE",

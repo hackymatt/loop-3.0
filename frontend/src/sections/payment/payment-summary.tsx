@@ -1,14 +1,16 @@
 import type { IPlanProps } from "src/types/plan";
 import type { BoxProps } from "@mui/material/Box";
 
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSetState } from "minimal-shared/hooks";
 
 import Box from "@mui/material/Box";
 import Switch from "@mui/material/Switch";
-import { Chip, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { Chip, Link, TextField, InputAdornment } from "@mui/material";
 
 import { paths } from "src/routes/paths";
 
@@ -30,6 +32,12 @@ import { PaymentTerms } from "./payment-terms";
 
 type PaymentSummaryProps = BoxProps & { plan: IPlanProps };
 
+type DiscountProps = {
+  code: string;
+  details: { isPercentage: boolean; value: number } | null;
+  error: string;
+};
+
 export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   const { t } = useTranslation("payment");
   const { t: pricing } = useTranslation("pricing");
@@ -38,6 +46,12 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   const {
     state: { trialUsed },
   } = useUserContext();
+
+  const discount = useSetState<DiscountProps>({
+    code: "",
+    details: null,
+    error: "",
+  });
 
   const { query, handleChange } = useQueryParams();
 
@@ -57,6 +71,33 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   )!;
 
   const isFreePlan = plan.type === PLAN_TYPE.FREE;
+
+  const price = useMemo(() => {
+    const { details } = discount.state;
+    if (!details) return priceObj.price;
+
+    const { isPercentage, value } = details;
+    const baseAmount = Math.round(priceObj.price * 100);
+
+    return (
+      (isPercentage
+        ? Math.floor(baseAmount * (1 - value / 100))
+        : Math.max(baseAmount - Math.round(value * 100), 0)) / 100
+    );
+  }, [discount.state, priceObj.price]);
+
+  const handleApplyDiscount = () => {
+    discount.setField("error", "");
+    if (discount.state.code === "") {
+      discount.resetState();
+      return;
+    }
+    try {
+      discount.setField("details", { isPercentage: true, value: 20 });
+    } catch (error) {
+      discount.setField("error", (error as Error).message);
+    }
+  };
 
   const renderSubscription = () => (
     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -128,6 +169,31 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
     </Box>
   );
 
+  const renderDiscount = () => (
+    <>
+      <TextField
+        hiddenLabel
+        value={discount.state.code}
+        onChange={(event) => discount.setField("code", event.target.value)}
+        placeholder={t("discount.placeholder")}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <LoadingButton onClick={handleApplyDiscount}>{t("discount.button")}</LoadingButton>
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
+      {discount.state.error && (
+        <Typography variant="body2" color="error" sx={{ width: 1, p: 1 }}>
+          {discount.state.error}
+        </Typography>
+      )}
+    </>
+  );
+
   const renderTotalDue = () => (
     <Box sx={{ display: "flex", alignItems: "center", typography: "h6" }}>
       <Box component="span" sx={{ flexGrow: 1 }}>
@@ -137,7 +203,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         </Typography>
       </Box>
       <Box component="span">
-        {fCurrency(priceObj.price, {
+        {fCurrency(!trialUsed ? price : priceObj.price, {
           code: locale("code"),
           currency,
         })}
@@ -157,7 +223,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
       </Box>
 
       <Box component="span">
-        {fCurrency(!trialUsed ? 0 : priceObj.price, {
+        {fCurrency(!trialUsed ? 0 : price, {
           code: locale("code"),
           currency,
         })}
@@ -250,6 +316,8 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         {renderSubscription()}
         {!isFreePlan && renderPlanSwitch()}
         {renderPrices()}
+        <Divider sx={{ borderStyle: "dashed" }} />
+        {renderDiscount()}
         <Divider sx={{ borderStyle: "dashed" }} />
         {!trialUsed && renderTotalDue()}
         {renderTotalBilled()}

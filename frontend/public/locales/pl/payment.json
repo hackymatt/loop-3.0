@@ -23,5 +23,9 @@
   "customer": { "label": "Dane konta" },
   "paymentMethods": {
     "label": "Metody płatności"
+  },
+  "discount": {
+    "placeholder": "Kod rabatowy",
+    "button": "Zastosuj"
   }
 }

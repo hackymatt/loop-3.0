@@ -190,17 +190,36 @@ export function SubscriptionOption({
   const renderPrices = () => (
     <Box
       sx={{
-        gap: 0.5,
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
+        lineHeight: 1,
+        ...(plan.popular && { color: "primary.main" }),
       }}
     >
-      <Typography component="span" variant="h3">
-        {fCurrency(plan.price, { code: locale("code"), currency })}
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "baseline" }}>
+        <Typography component="span" variant="h3">
+          {fCurrency(interval === PLAN_INTERVAL.YEARLY ? plan.price / 12 : plan.price, {
+            code: locale("code"),
+            currency,
+          })}
+        </Typography>
 
-      <Typography component="span" variant="subtitle2">
-        /{t(`${interval}Short`)}
+        <Typography component="span" variant="subtitle2">
+          /{t("monthlyShort")}
+        </Typography>
+      </Box>
+
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{
+          mt: "-2px",
+          lineHeight: 1,
+          visibility: interval === PLAN_INTERVAL.YEARLY ? "visible" : "hidden",
+        }}
+      >
+        {t("billed")}
       </Typography>
     </Box>
   );
