@@ -19,7 +19,7 @@ type DashboardProps = {
 };
 
 export function DashboardView({ data }: DashboardProps) {
-  const { state, setState } = useUserContext();
+  const { setState } = useUserContext();
   const { projects, certificates, profile } = data;
 
   useEffect(() => {
@@ -28,11 +28,8 @@ export function DashboardView({ data }: DashboardProps) {
       planLicense: _,
       ...rest
     } = profile.user;
-    console.log(state);
-    console.log(rest);
-    setState({ ...state, ...rest });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile.user]);
+    setState(rest);
+  }, [profile.user, setState]);
 
   const renderContent = () => (
     <Box

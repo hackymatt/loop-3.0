@@ -23,5 +23,9 @@
   "customer": { "label": "Account details" },
   "paymentMethods": {
     "label": "Payment methods"
+  },
+  "discount": {
+    "placeholder": "Discount code",
+    "button": "Apply"
   }
 }

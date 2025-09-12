@@ -35,8 +35,8 @@ export const useLogout = () => {
     },
     {
       onSuccess: () => {
-        router.push(localize(paths.home));
         user.resetState();
+        router.push(localize(paths.home));
       },
     }
   );
