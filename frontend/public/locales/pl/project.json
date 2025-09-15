@@ -81,6 +81,11 @@
     "subtitle": "Dołącz do kanału projektowego, aby uzyskać wsparcie i wymieniać się doświadczeniami z innymi uczestnikami.",
     "button": "Dołącz do dyskusji"
   },
+  "consult": {
+    "title": "Konsultacja 1:1",
+    "subtitle": "Umów się na rozmowę z mentorem, aby omówić swój projekt programistyczny, uzyskać wskazówki i spersonalizowane wsparcie.",
+    "button": "Umów konsultację"
+  },
   "preview": "Podgląd projektu",
   "prerequisites": {
     "title": "Wymagania wstępne",
@@ -94,7 +99,8 @@
   },
   "included": {
     "start": "Dostępne w planie",
-    "plans": "Podstawowym oraz Premium"
+    "plans": { "basic": "Podstawowym", "premium": "Premium" },
+    "and": "oraz"
   },
   "overview": "Opis projektu",
   "similar": "Podobne projekty",

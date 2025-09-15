@@ -82,6 +82,11 @@
     "subtitle": "Join the project channel to get support and share experiences with other participants.",
     "button": "Join the discussion"
   },
+  "consult": {
+    "title": "1:1 Consultation",
+    "subtitle": "Book a session with a mentor to discuss your programming project, get guidance, and receive personalized support.",
+    "button": "Book a consultation"
+  },
   "preview": "Project preview",
   "prerequisites": {
     "title": "Prerequisites",
