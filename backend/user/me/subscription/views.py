@@ -89,7 +89,10 @@ class ChangeSubscriptionView(APIView):
                 "proration_behavior": "create_prorations",
             }
 
-            if subscription.get("trial_end") and subscription["status"] == SubscriptionStatus.TRIALING:
+            if (
+                subscription.get("trial_end")
+                and subscription["status"] == SubscriptionStatus.TRIALING
+            ):
                 modify_kwargs["trial_end"] = subscription["trial_end"]
 
             modify_subscription(subscription_id, **modify_kwargs)

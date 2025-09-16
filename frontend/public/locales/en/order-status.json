@@ -1,5 +1,9 @@
 {
   "meta": {
+    "pending": {
+      "title": "Your payment is being processed",
+      "description": "Your payment has been initiated and is currently being processed. Once it is completed, you will gain access to all features and materials."
+    },
     "succeeded": {
       "title": "Your purchase is complete",
       "description": "Your payment has been successfully processed. You can now access all features and materials. We wish you fruitful learning!"
@@ -8,6 +12,11 @@
       "title": "Payment failed",
       "description": "Your payment could not be processed. Please check your payment details or try again. If the issue persists, contact our support team."
     }
+  },
+  "pending": {
+    "title": "Your payment is being processed",
+    "subtitle": "Your payment has been initiated and is currently being processed. Once it is completed, you will gain access to the materials on your account.",
+    "button": "Back to payment"
   },
   "succeeded": {
     "title": "Thank you for your purchase!",

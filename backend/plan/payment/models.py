@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from core.base_model import BaseModel
 from user.type.student_user.models import Student
 from const import PaymentType
@@ -69,3 +70,30 @@ class RevolutPaymentMethod(BaseModel):
 
     def __str__(self):
         return f"{self.payment_method.student.user.email} {self.pk}"
+
+
+class PaymentDiscount(BaseModel):
+    code = models.CharField(max_length=50, unique=True)
+    stripe_promotion_code_id = models.CharField(max_length=100)
+    stripe_coupon_id = models.CharField(max_length=100)
+    percent_off = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True
+    )
+    amount_off = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    expires_at = models.DateTimeField(null=True, blank=True)
+    max_redemptions = models.IntegerField(null=True, blank=True)
+    active = models.BooleanField(default=False)
+    restrictions = models.JSONField(null=True, blank=True)
+
+    class Meta:
+        db_table = "payment_discount"
+        verbose_name = "Payment Discount"
+        verbose_name_plural = "Payment Discounts"
+
+    def __str__(self):
+        return self.code
+
+    def is_expired(self):
+        return self.expires_at and self.expires_at < timezone.now()

@@ -17,6 +17,7 @@ def subscribe(
     status,
     plan_pricing=None,
     end_date=None,
+    amount_due=None,
     stripe_subscription_id=None,
     cancel_at_period_end=None,
 ):
@@ -27,6 +28,7 @@ def subscribe(
             "plan_pricing": plan_pricing,
             "start_date": start_date,
             "end_date": end_date,
+            "amount_due": amount_due,
             "status": status,
             "stripe_subscription_id": stripe_subscription_id,
             "cancel_at_period_end": cancel_at_period_end,

@@ -251,3 +251,24 @@ msgstr "Jeśli to pomyłka, możesz zarządzać swoją subskrypcją w"
 
 msgid "your account"
 msgstr "swoim koncie"
+
+msgid "Invalid promotion code"
+msgstr "Nieprawidłowy kod promocyjny"
+
+msgid "Coupon is inactive"
+msgstr "Kupon nieaktywny"
+
+msgid "Coupon has expired"
+msgstr "Kupon wygasł"
+
+msgid "Coupon has already been used"
+msgstr "Kupon został już wykorzystany"
+
+msgid "Coupon does not apply to this product"
+msgstr "Kupon nie dotyczy tego produktu"
+
+msgid "Coupon is only for first-time purchase"
+msgstr "Kupon tylko dla pierwszego zakupu"
+
+msgid "Coupon cannot be used by this customer"
+msgstr "Nie można wykorzystać tego kuponu"

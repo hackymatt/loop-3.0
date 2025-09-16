@@ -53,8 +53,17 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
-  const { type, license, interval, price, currency, nextBillingDate, isCancelAtPeriodEnd, status } =
-    subscription;
+  const {
+    type,
+    license,
+    interval,
+    price,
+    amountDue,
+    currency,
+    nextBillingDate,
+    isCancelAtPeriodEnd,
+    status,
+  } = subscription;
 
   const isFreePlan = type === PLAN_TYPE.FREE;
 
@@ -111,6 +120,20 @@ function MainStep({ subscription, onChange, onCancel, onRenew }: MainStepProps) 
                     : "subscription.billing.label.standard",
                 { date: fDate(nextBillingDate, "D MMMM YYYY") }
               )}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                display: "flex",
+                mt: 2,
+                alignItems: "center",
+              }}
+            >
+              {t("subscription.invoice")}&nbsp;
+              <Box component="span" fontWeight="bold">
+                {fCurrency(amountDue, { code: locale("code"), currency })}
+              </Box>
+              .
             </Typography>
           </>
         )}

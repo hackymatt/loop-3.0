@@ -1,5 +1,10 @@
 from django.urls import path
-from .views import CreateSetupIntentView, CreateSubscriptionView, StripeWebhookView
+from .views import (
+    CreateSetupIntentView,
+    CreateSubscriptionView,
+    ValidateCouponView,
+    StripeWebhookView,
+)
 from const import Urls
 
 urlpatterns = [
@@ -13,6 +18,7 @@ urlpatterns = [
         CreateSubscriptionView.as_view(),
         name="create-subscription",
     ),
+    path(Urls.VALIDATE_COUPON, ValidateCouponView.as_view(), name="validate_coupon"),
     path(
         Urls.STRIPE_WEBHOOK,
         StripeWebhookView.as_view(),

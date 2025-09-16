@@ -73,6 +73,7 @@ export type ISubscriptionProps = {
   interval: PlanInterval | null;
   nextBillingDate: string | null;
   price: number | null;
+  amountDue: number | null;
   currency: Currency | null;
   isCancelAtPeriodEnd: boolean | null;
   status: SubscriptionStatus;

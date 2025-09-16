@@ -18,6 +18,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             "interval",
             "next_billing_date",
             "price",
+            "amount_due",
             "currency",
             "status",
             "cancel_at_period_end",

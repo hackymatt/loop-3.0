@@ -124,6 +124,7 @@
       "monthly": "miesięcznie",
       "yearly": "rocznie"
     },
+    "invoice": "Twoja kolejna szacowana płatność będzie wynosić",
     "sell": "Zbuduj swoje portfolio, ucz się z projektami i zdobądź certyfikaty. Wybierz plan i rozwijaj się razem z loop.",
     "error": "Coś poszło nie tak. Spróbuj ponownie.",
     "trial": "Okres próbny kończy się {{date}}",

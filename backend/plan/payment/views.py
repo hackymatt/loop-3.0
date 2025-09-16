@@ -1,4 +1,5 @@
 import stripe
+from decimal import Decimal
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -27,6 +28,7 @@ from .models import (
     CardPaymentMethod,
     PayPalPaymentMethod,
     RevolutPaymentMethod,
+    PaymentDiscount,
 )
 from utils.url.url import get_website_url
 from utils.stripe.customer import (
@@ -38,6 +40,8 @@ from utils.stripe.setup_intent import create_setup_intent
 from utils.stripe.payment_method import modify_payment_method, retrieve_payment_method
 from utils.stripe.subscription import create_subscription
 from utils.stripe.webhook import construct_event
+from utils.stripe.promotion_code import retrieve_promotion_code
+from utils.stripe.invoice import upcoming_invoice
 from global_config import CONFIG
 
 
@@ -92,9 +96,18 @@ class CreateSubscriptionView(APIView):
             type = request.data.get("plan")
             interval = request.data.get("interval")
             currency = request.data.get("currency")
+            code = request.data.get("code", None)
 
             plan = Plan.objects.get(type=type)
             pricing = PlanPricing.get_current_price(plan, currency, interval)
+
+            if code:
+                discount = PaymentDiscount.objects.filter(code=code).first()
+                if not discount:
+                    return Response(
+                        {"discount": _("Invalid promotion code.")},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
 
             student = Student.objects.get(user=request.user)
             if not student.stripe_customer_id:
@@ -102,16 +115,23 @@ class CreateSubscriptionView(APIView):
                 student.stripe_customer_id = customer.id
                 student.save()
 
-            trial_days = 0 if student.trial_used else CONFIG["free_trial_days"]
+            trial_days = 0 if student.trial_used else CONFIG.get("free_trial_days", 0)
 
-            subscription = create_subscription(
-                customer_id=student.stripe_customer_id,
-                items=[{"price": pricing.stripe_price_id}],
-                metadata={"website_url": website_url, "language": language},
-                payment_behavior="default_incomplete",
-                expand=["latest_invoice.payment_intent"],
-                trial_period_days=trial_days,
-            )
+            subscription_params = {
+                "customer_id": student.stripe_customer_id,
+                "items": [{"price": pricing.stripe_price_id}],
+                "metadata": {"website_url": website_url, "language": language},
+                "payment_behavior": "default_incomplete",
+                "expand": ["latest_invoice.payment_intent"],
+                "trial_period_days": trial_days,
+            }
+
+            if discount:
+                subscription_params["discounts"] = [
+                    {"promotion_code": discount.stripe_promotion_code_id}
+                ]
+
+            subscription = create_subscription(**subscription_params)
 
             payment_intent = getattr(
                 subscription.latest_invoice, "payment_intent", None
@@ -127,6 +147,79 @@ class CreateSubscriptionView(APIView):
 
         except stripe.error.StripeError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ValidateCouponView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        code = request.data.get("code")
+        type = request.data.get("plan")
+
+        plan = Plan.objects.get(type=type)
+
+        student = Student.objects.get(user=request.user)
+
+        discount = PaymentDiscount.objects.filter(code=code).first()
+        if not discount:
+            return Response(
+                {"discount": _("Invalid promotion code")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if not discount.active:
+            return Response(
+                {"discount": _("Coupon is inactive")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if discount.is_expired():
+            return Response(
+                {"discount": _("Coupon has expired")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if (
+            discount.max_redemptions
+            and retrieve_promotion_code(
+                discount.stripe_promotion_code_id
+            ).times_redeemed
+            >= discount.max_redemptions
+        ):
+            return Response(
+                {"discount": _("Coupon has already been used")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        restrictions = discount.restrictions or {}
+        allowed_products = restrictions.get("applies_to", {}).get("products", [])
+        if allowed_products and plan.stripe_product_id not in allowed_products:
+            return Response(
+                {"discount": _("Coupon does not apply to this product")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if restrictions.get("first_time_transaction") and not student.first_purchase:
+            return Response(
+                {"discount": _("Coupon is only for first-time purchase")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        allowed_customer = restrictions.get("customer")
+        if allowed_customer and student.stripe_customer_id != allowed_customer:
+            return Response(
+                {"discount": _("Coupon cannot be used by this customer")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        return Response(
+            {
+                "value": discount.percent_off
+                if discount.percent_off
+                else discount.amount_off,
+                "is_percentage": discount.percent_off is not None,
+            }
+        )
 
 
 class StripeWebhookView(APIView):
@@ -235,6 +328,23 @@ class StripeWebhookView(APIView):
             send_cancel_email(student, student.user.email, website_url, language)
 
     def handle_invoice_payment_succeeded(self, data):
+        student = Student.objects.get(stripe_customer_id=data["customer"])
+
+        if student.first_purchase:
+            student.first_purchase = False
+            student.save(update_fields=["first_purchase"])
+
+        invoice = upcoming_invoice(
+            student.stripe_customer_id,
+            student.current_subscription.stripe_subscription_id,
+        )
+
+        if invoice and invoice.get("amount_due") is not None:
+            student.current_subscription.amount_due = Decimal(
+                invoice["amount_due"]
+            ) / Decimal("100")
+            student.current_subscription.save(update_fields=["amount_due"])
+
         generate_invoice = (data.get("amount_due") or 0) > 0
 
         if not generate_invoice:
@@ -256,7 +366,6 @@ class StripeWebhookView(APIView):
             .get("website_url")
             or CONFIG["website_url"]
         )
-        student = Student.objects.get(stripe_customer_id=data["customer"])
 
         invoice_customer = InvoiceCustomer.objects.create(
             email=data["customer_email"],

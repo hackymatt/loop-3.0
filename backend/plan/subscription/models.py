@@ -15,6 +15,12 @@ class PlanSubscription(BaseModel):
     )
     start_date = models.DateTimeField()
     end_date = models.DateTimeField(blank=True, null=True)
+    amount_due = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
     status = models.CharField(
         max_length=20,
         choices=SubscriptionStatus.choices,
