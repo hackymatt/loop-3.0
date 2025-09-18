@@ -5,8 +5,8 @@ import type { Currency, PlanType, IPlanProps, PlanInterval } from "src/types/pla
 import type { ICardProps, ISubscriptionProps, IPaymentMethodProps } from "src/types/user";
 
 import { useSnackbar } from "notistack";
-import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSetState } from "minimal-shared/hooks";
 
@@ -19,10 +19,11 @@ import { RouterLink } from "src/routes/components";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
-import { fAdd, fDate } from "src/utils/format-time";
+import { fDate } from "src/utils/format-time";
 import { fCurrency } from "src/utils/format-number";
 
 import { PAYMENT_METHOD } from "src/consts/payment";
+import { useInvoicePreview } from "src/api/plan/invoice";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 import { SUBSCRIPTION_STATUS } from "src/consts/subscription";
 import { UpgradeButton } from "src/layouts/components/upgrade-button";
@@ -217,7 +218,6 @@ export function SubscriptionOption({
         flexDirection: "column",
         alignItems: "center",
         lineHeight: 1,
-        ...(plan.popular && { color: "primary.main" }),
       }}
     >
       <Box sx={{ display: "flex", alignItems: "baseline" }}>
@@ -317,13 +317,18 @@ type SettingState = {
   type: PlanType;
 };
 
+type InvoicePreviewProps = {
+  amountDue: number;
+  billingDate: DatePickerFormat;
+};
+
 type ChangeStepProps = {
   data: {
     subscription: ISubscriptionProps;
     plans: IPlanProps[];
     paymentMethods: IPaymentMethodProps[];
   };
-  onChange: (setting: SettingState & { currency: Currency }) => void;
+  onChange: (setting: SettingState & { currency: Currency; invoice: InvoicePreviewProps }) => void;
   onCancel: VoidFunction;
   onClose: VoidFunction;
 };
@@ -332,6 +337,8 @@ function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
   const { enqueueSnackbar } = useSnackbar();
+
+  const { mutateAsync: previewInvoice } = useInvoicePreview();
 
   const { subscription, plans } = data;
   const { interval, currency, type } = subscription;
@@ -366,7 +373,14 @@ function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
         onCancel();
         return;
       }
-      onChange({ ...setting.state, currency: currency! });
+      const {
+        data: { amount_due: amountDue, billing_date: billingDate },
+      } = await previewInvoice({
+        plan: setting.state.type,
+        interval: setting.state.interval,
+        currency: currency!,
+      });
+      onChange({ ...setting.state, currency: currency!, invoice: { amountDue, billingDate } });
     } catch {
       enqueueSnackbar(t("subscription.error"), { variant: "error" });
     }
@@ -495,7 +509,7 @@ type ConfirmStepProps = {
     plans: IPlanProps[];
     paymentMethods: IPaymentMethodProps[];
   };
-  newSubscription: NewSubscription;
+  newSubscription: NewSubscriptionProps;
   onClose: VoidFunction;
 };
 
@@ -597,14 +611,7 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
             <Typography>
               {t("subscription.confirm.summary", {
                 frequency: t(`subscription.confirm.frequency.${newSubscription.interval}`),
-                date: fDate(
-                  fAdd({
-                    months: newSubscription.interval === PLAN_INTERVAL.MONTHLY ? 1 : 0,
-                    years: newSubscription.interval === PLAN_INTERVAL.YEARLY ? 1 : 0,
-                    date: nextBillingDate,
-                  }),
-                  "D MMMM YYYY"
-                ),
+                date: fDate(newSubscription.invoice.billingDate, "D MMMM YYYY"),
               })}
             </Typography>
 
@@ -633,7 +640,7 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
             </Typography>
 
             <Typography component="span" variant="h5">
-              {fCurrency(option?.price, {
+              {fCurrency(Math.max(newSubscription.invoice.amountDue, 0), {
                 code: locale("code"),
                 currency: newSubscription.currency,
               })}
@@ -943,10 +950,11 @@ type AccountSubscriptionViewProps = {
   };
 };
 
-type NewSubscription = {
+type NewSubscriptionProps = {
   type: PlanType;
   interval: PlanInterval;
   currency: Currency;
+  invoice: InvoicePreviewProps;
 };
 
 export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) {
@@ -955,7 +963,7 @@ export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) 
   const { subscription } = data;
 
   const [activeStep, setActiveStep] = useState(0);
-  const newSubscription = useSetState<NewSubscription>();
+  const newSubscription = useSetState<NewSubscriptionProps>();
 
   const STEPS = [
     <MainStep

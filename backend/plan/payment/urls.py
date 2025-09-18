@@ -3,6 +3,7 @@ from .views import (
     CreateSetupIntentView,
     CreateSubscriptionView,
     ValidateCouponView,
+    PreviewInvoiceView,
     StripeWebhookView,
 )
 from const import Urls
@@ -19,6 +20,7 @@ urlpatterns = [
         name="create-subscription",
     ),
     path(Urls.VALIDATE_COUPON, ValidateCouponView.as_view(), name="validate_coupon"),
+    path(Urls.PREVIEW_INVOICE, PreviewInvoiceView.as_view(), name="preview_invoice"),
     path(
         Urls.STRIPE_WEBHOOK,
         StripeWebhookView.as_view(),

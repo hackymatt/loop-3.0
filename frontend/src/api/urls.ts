@@ -46,6 +46,7 @@ export const URLS = {
   CREATE_SETUP_INTENT: "/create-setup-intent",
   CREATE_SUBSCRIPTION: "/create-subscription",
   VALIDATE_COUPON: "/validate-coupon",
+  PREVIEW_INVOICE: "/preview-invoice",
   // CERTIFICATES
   CERTIFICATES: "/certificates",
   // ME

@@ -235,6 +235,48 @@ class ValidateCouponView(APIView):
         )
 
 
+class PreviewInvoiceView(APIView):
+    def post(self, request, *args, **kwargs):
+        type = request.data.get("plan")
+        interval = request.data.get("interval")
+        currency = request.data.get("currency")
+
+        plan = Plan.objects.get(type=type)
+        pricing = PlanPricing.get_current_price(plan, currency, interval)
+
+        student = Student.objects.get(user=request.user)
+        subscription = student.current_subscription
+
+        try:
+            invoice = preview_invoice(
+                customer_id=student.stripe_customer_id,
+                subscription=subscription.stripe_subscription_id,
+                subscription_details={
+                    "items": [
+                        {
+                            "id": subscription.stripe_subscription_item_id,
+                            "price": pricing.stripe_price_id,
+                        }
+                    ]
+                },
+            )
+
+            old_plan = invoice["lines"]["data"][0]
+            new_plan = invoice["lines"]["data"][1]
+
+            response_data = {
+                "amount_due": (new_plan["amount"] + old_plan["amount"]) / 100,
+                "billing_date": timezone.datetime.fromtimestamp(
+                    new_plan["period"]["end"], tz=timezone.utc
+                ).isoformat(),
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class StripeWebhookView(APIView):
     authentication_classes = []
     permission_classes = []
@@ -272,6 +314,7 @@ class StripeWebhookView(APIView):
         subscription_id = data["id"]
         customer_id = data["customer"]
         price_id = data["items"]["data"][0]["price"]["id"]
+        subscription_item_id = data["items"]["data"][0]["id"]
         status = data["status"]
         current_period_start = data["items"]["data"][0]["current_period_start"]
         current_period_end = data["items"]["data"][0]["current_period_end"]
@@ -296,6 +339,7 @@ class StripeWebhookView(APIView):
             end_date=end_date,
             status=status,
             stripe_subscription_id=subscription_id,
+            stripe_subscription_item_id=subscription_item_id,
             stripe_promotion_code_id=promotion_code_id,
             cancel_at_period_end=False,
         )
@@ -304,6 +348,7 @@ class StripeWebhookView(APIView):
         subscription_id = data["id"]
         customer_id = data["customer"]
         price_id = data["items"]["data"][0]["price"]["id"]
+        subscription_item_id = data["items"]["data"][0]["id"]
         status = data["status"]
         cancel_at_period_end = data.get("cancel_at_period_end", False)
         current_period_start = data["items"]["data"][0]["current_period_start"]
@@ -331,6 +376,7 @@ class StripeWebhookView(APIView):
                 end_date=end_date,
                 status=status,
                 stripe_subscription_id=subscription_id,
+                stripe_subscription_item_id=subscription_item_id,
                 cancel_at_period_end=False
                 if status == SubscriptionStatus.PAST_DUE
                 else cancel_at_period_end,
@@ -439,7 +485,7 @@ class StripeWebhookView(APIView):
                 stripe_price_id=price_id
             )
 
-            invoice_item, _ = InvoiceItem.objects.get_or_create(
+            invoice_item, created = InvoiceItem.objects.get_or_create(
                 item_id=plan_pricing.plan.pk,
                 name=f"{plan_label}: {plan_pricing.plan.get_translation(language).license}",
                 price=plan_pricing.price,
@@ -449,7 +495,7 @@ class StripeWebhookView(APIView):
             invoice_items.append(invoice_item)
 
         if discount:
-            invoice_item, _ = InvoiceItem.objects.get_or_create(
+            invoice_item, created = InvoiceItem.objects.get_or_create(
                 item_id=discount.id,
                 name=f"{discount_label}: {discount.code}",
                 price=-data["total_discount_amounts"][0]["amount"] / 100,
