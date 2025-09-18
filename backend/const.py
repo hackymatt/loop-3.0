@@ -140,3 +140,9 @@ class PaymentType(TextChoices):
     CARD = "card"
     PAYPAL = "paypal"
     REVOLUT = "revolut_pay"
+
+
+class PaymentDiscountDuration(TextChoices):
+    ONCE = "once"
+    REPEATING = "repeating"
+    FOREVER = "forever"

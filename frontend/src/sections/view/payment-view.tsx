@@ -34,6 +34,7 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
 import { PLAN_INTERVAL } from "src/consts/plan";
+import { useUpdateData } from "src/api/me/data";
 import { SUBSCRIPTION_RESULT } from "src/consts/subscription";
 import { useCreateSubscription } from "src/api/plan/subscription";
 
@@ -114,6 +115,7 @@ function Payment({ data }: PaymentViewProps) {
 
   const [paymentError, setPaymentError] = useState<string | null>(null);
 
+  const { mutateAsync: updateData } = useUpdateData();
   const { mutateAsync: createSubscription } = useCreateSubscription();
 
   const { plan, personal } = data;
@@ -151,6 +153,22 @@ function Payment({ data }: PaymentViewProps) {
     if (!stripe || !elements) {
       return;
     }
+
+    const addressElement = elements.getElement(AddressElement);
+    const {
+      value: { name, address },
+    } = await addressElement!.getValue();
+
+    const nameParts = name?.trim().split(" ") || [];
+
+    await updateData({
+      first_name: nameParts[0] || "",
+      last_name: nameParts.slice(1).join(" ") || "",
+      street_address: [address.line1, address.line2].filter(Boolean).join(", "),
+      zip_code: address.postal_code || "",
+      city: address.city || "",
+      country: countries.find(({ code }) => code === address.country)?.label || "",
+    });
 
     const baseUrl = `${window.location.origin}${paths.orderStatus}?status=${SUBSCRIPTION_RESULT.PENDING}&plan=${plan.type}&currency=${currency}&interval=${interval}`;
     const redirectUrl = discount.state.details ? `${baseUrl}&code=${discount.state.code}` : baseUrl;

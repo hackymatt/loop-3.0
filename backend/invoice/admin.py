@@ -2,15 +2,23 @@ from django.contrib import admin
 from .models import InvoiceCustomer, InvoiceItem, Invoice, StudentInvoice
 
 
+def get_all_fields(model):
+    return [
+        field.name
+        for field in model._meta.get_fields()
+        if not field.many_to_many and not field.one_to_many
+    ]
+
+
 @admin.register(InvoiceCustomer)
 class InvoiceCustomerAdmin(admin.ModelAdmin):
-    list_display = ("full_name", "email", "city", "country")
+    list_display = get_all_fields(InvoiceCustomer)
     search_fields = ("full_name", "email", "city", "zip_code", "country")
 
 
 @admin.register(InvoiceItem)
 class InvoiceItemAdmin(admin.ModelAdmin):
-    list_display = ("item_id", "name", "price", "quantity")
+    list_display = get_all_fields(InvoiceItem)
     search_fields = ("item_id", "name")
 
 
@@ -30,7 +38,7 @@ class InvoiceAdmin(admin.ModelAdmin):
         "method",
         "currency",
     )
-    list_filter = ("status", "method", "currency")
+    list_filter = get_all_fields(Invoice)
     search_fields = ("customer__full_name", "customer__email")
     inlines = [InvoiceItemInline]
     exclude = ("items",)  # items będą dodawane przez inline
@@ -38,7 +46,7 @@ class InvoiceAdmin(admin.ModelAdmin):
 
 @admin.register(StudentInvoice)
 class StudentInvoiceAdmin(admin.ModelAdmin):
-    list_display = ("student", "invoice")
+    list_display = get_all_fields(StudentInvoice)
     search_fields = (
         "student__user__email",
         "student__first_name",

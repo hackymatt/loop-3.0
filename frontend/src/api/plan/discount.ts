@@ -10,6 +10,7 @@ const endpoint = URLS.VALIDATE_COUPON;
 type ICoupon = {
   code: string;
   plan: string;
+  currency: string;
 };
 
 type ICouponReturn = {

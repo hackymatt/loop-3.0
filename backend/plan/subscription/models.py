@@ -28,6 +28,7 @@ class PlanSubscription(BaseModel):
     )
     cancel_at_period_end = models.BooleanField(null=True)
     stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_promotion_code_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):  # pragma: no cover
         pricing_str = (

@@ -93,7 +93,7 @@ export function PaymentSummary({ plan, discount, sx, ...other }: PaymentSummaryP
     try {
       const {
         data: { value, is_percentage },
-      } = await validateCoupon({ code: discount.state.code || "", plan: plan.type });
+      } = await validateCoupon({ code: discount.state.code || "", plan: plan.type, currency });
       discount.setField("details", { isPercentage: is_percentage, value });
     } catch (error) {
       console.log(error as Error);

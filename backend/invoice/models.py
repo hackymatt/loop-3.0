@@ -7,7 +7,7 @@ from global_config import CONFIG
 from .utils import generate_and_send_invoice
 
 
-class InvoiceCustomer(models.Model):
+class InvoiceCustomer(BaseModel):
     email = models.EmailField()
     full_name = models.CharField(max_length=255)
     street_address = models.CharField(max_length=255)
@@ -22,7 +22,7 @@ class InvoiceCustomer(models.Model):
         db_table = "invoice_customer"
 
 
-class InvoiceItem(models.Model):
+class InvoiceItem(BaseModel):
     item_id = models.IntegerField()
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)

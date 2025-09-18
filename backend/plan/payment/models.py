@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from core.base_model import BaseModel
 from user.type.student_user.models import Student
-from const import PaymentType
+from const import PaymentType, PaymentDiscountDuration, Currency
 
 
 class PaymentMethod(BaseModel):
@@ -82,10 +82,22 @@ class PaymentDiscount(BaseModel):
     amount_off = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
+    currency = models.CharField(
+        max_length=3, choices=Currency.choices, null=True, blank=True
+    )
     expires_at = models.DateTimeField(null=True, blank=True)
     max_redemptions = models.IntegerField(null=True, blank=True)
     active = models.BooleanField(default=False)
     restrictions = models.JSONField(null=True, blank=True)
+    duration = models.CharField(
+        max_length=20,
+        choices=PaymentDiscountDuration.choices,
+        default=PaymentDiscountDuration.ONCE,
+    )
+    duration_in_months = models.IntegerField(
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         db_table = "payment_discount"

@@ -53,28 +53,34 @@ class InvoiceGenerator:
                 "zip_code": self.customer.zip_code,
                 "country": self.customer.country,
             },
-            "products": [
-                {
-                    "id": self._format_id(id=item.id),
-                    "name": item.name,
-                    "quantity": item.quantity,
-                    "price_netto": self._format_number(
-                        number=self._calc_net_price(price=item.price)
-                    ),
-                    "subtotal_netto": self._format_number(
-                        number=self._calc_net_subtotal(
-                            price=item.price, quantity=item.quantity
-                        )
-                    ),
-                    "vat_percent": f"{self.vat_rate}%",
-                    "vat": self._format_number(number=self._calc_vat(price=item.price)),
-                    "price_brutto": self._format_number(number=item.price),
-                    "subtotal_brutto": self._format_number(
-                        number=item.price * item.quantity
-                    ),
-                }
-                for item in self.items
-            ],
+            "products": sorted(
+                [
+                    {
+                        "id": self._format_id(id=item.id),
+                        "name": item.name,
+                        "quantity": item.quantity,
+                        "price_netto": self._format_number(
+                            number=self._calc_net_price(price=item.price)
+                        ),
+                        "subtotal_netto": self._format_number(
+                            number=self._calc_net_subtotal(
+                                price=item.price, quantity=item.quantity
+                            )
+                        ),
+                        "vat_percent": f"{self.vat_rate}%",
+                        "vat": self._format_number(
+                            number=self._calc_vat(price=item.price)
+                        ),
+                        "price_brutto": self._format_number(number=item.price),
+                        "subtotal_brutto": self._format_number(
+                            number=item.price * item.quantity
+                        ),
+                    }
+                    for item in self.items
+                ],
+                key=lambda x: float(x["subtotal_brutto"]),
+                reverse=True,
+            ),
             "total_netto": self._format_price(
                 price=self._calc_net_price(price=self.amount)
             ),

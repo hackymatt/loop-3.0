@@ -4,8 +4,8 @@ import type { Variants } from "framer-motion";
 import type { SubscriptionResult } from "src/types/user";
 
 import { m } from "framer-motion";
-import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useRef, useState, useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -41,9 +41,11 @@ export default function OrderStatusView({ status }: OrderStatusViewProps) {
   const { mutateAsync: createSubscription } = useCreateSubscription();
 
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const hasSubscribed = useRef(false);
 
   useEffect(() => {
-    if (status === SUBSCRIPTION_RESULT.PENDING) {
+    if (status === SUBSCRIPTION_RESULT.PENDING && !hasSubscribed.current) {
+      hasSubscribed.current = true;
       const subscribe = async () => {
         try {
           await createSubscription({
@@ -88,7 +90,7 @@ export default function OrderStatusView({ status }: OrderStatusViewProps) {
             size="large"
             color="inherit"
             variant="contained"
-            endIcon={<Iconify icon="carbon:chevron-right" />}
+            startIcon={<Iconify icon="carbon:chevron-left" />}
           >
             {t(`${status}.button`)}
           </Button>
@@ -114,7 +116,14 @@ export default function OrderStatusView({ status }: OrderStatusViewProps) {
         size="large"
         color="inherit"
         variant="contained"
-        endIcon={<Iconify icon="carbon:chevron-right" />}
+        startIcon={
+          status === SUBSCRIPTION_RESULT.FAILED ? <Iconify icon="carbon:chevron-left" /> : undefined
+        }
+        endIcon={
+          status === SUBSCRIPTION_RESULT.SUCCESS ? (
+            <Iconify icon="carbon:chevron-right" />
+          ) : undefined
+        }
       >
         {t(`${status}.button`)}
       </Button>
