@@ -6,8 +6,8 @@ from project.progress.models import ProjectProgress
 from project.enrollment.models import ProjectEnrollment
 from certificate.models import Certificate
 from const import Urls
-from ..factory import create_student, create_project
-from ..helpers import login
+from ....factory import create_student, create_project
+from ....helpers import login
 
 
 class DashboardViewTest(TestCase):
@@ -44,11 +44,11 @@ class DashboardViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
-        self.assertIn("total_points", data)
-        self.assertEqual(data["total_points"], step.points)
+        self.assertIn("profile", data)
+        self.assertEqual(data["profile"]["total_points"], step.points)
 
-        self.assertIn("daily_streak", data)
-        self.assertEqual(data["daily_streak"], 1)
+        self.assertIn("profile", data)
+        self.assertEqual(data["profile"]["daily_streak"], 1)
 
         self.assertIn("projects", data)
         self.assertEqual(len(data["projects"]), 1)
@@ -70,11 +70,11 @@ class DashboardViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
-        self.assertIn("total_points", data)
-        self.assertEqual(data["total_points"], step.points)
+        self.assertIn("profile", data)
+        self.assertEqual(data["profile"]["total_points"], step.points)
 
-        self.assertIn("daily_streak", data)
-        self.assertEqual(data["daily_streak"], 0)
+        self.assertIn("profile", data)
+        self.assertEqual(data["profile"]["daily_streak"], 0)
 
         self.assertIn("projects", data)
         self.assertEqual(len(data["projects"]), 1)
@@ -88,11 +88,11 @@ class DashboardViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
-        self.assertIn("total_points", data)
-        self.assertEqual(data["total_points"], 0)
+        self.assertIn("profile", data)
+        self.assertEqual(data["profile"]["total_points"], 0)
 
-        self.assertIn("daily_streak", data)
-        self.assertEqual(data["daily_streak"], 0)
+        self.assertIn("profile", data)
+        self.assertEqual(data["profile"]["daily_streak"], 0)
 
         self.assertIn("projects", data)
         self.assertEqual(len(data["projects"]), 1)

@@ -2,8 +2,8 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 from const import Urls, JoinType
-from ..factory import create_student
-from ..helpers import login
+from ....factory import create_student
+from ....helpers import login
 
 
 class ChangePasswordTestCase(TestCase):

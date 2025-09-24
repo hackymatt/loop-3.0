@@ -4,8 +4,8 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from const import Urls
 from utils.google.gmail import GmailApi
-from ..helpers import mock_send_message
-from ..factory import create_student
+from ...helpers import mock_send_message
+from ...factory import create_student
 
 
 class PasswordResetTest(TestCase):

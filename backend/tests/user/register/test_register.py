@@ -5,8 +5,8 @@ from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 from const import Urls
 from utils.google.gmail import GmailApi
-from ..helpers import mock_send_message
-from ..factory import create_student
+from ...helpers import mock_send_message
+from ...factory import create_student
 
 
 class RegisterViewTestCase(TestCase):

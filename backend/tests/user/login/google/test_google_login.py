@@ -3,7 +3,8 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
 from unittest.mock import patch
-from ..helpers import mock_auth_return_value
+from ....helpers import mock_auth_return_value
+from ....factory import create_student
 from const import Urls
 
 
@@ -44,13 +45,9 @@ class GoogleLoginViewTest(TestCase):
         """Test login for an existing user"""
         mock_auth_return_value(get_mock, self.google_data)
 
-        get_user_model().objects.create_user(
-            email="testuser@example.com",
-            username="testuser",
-            first_name="Test",
-            last_name="User",
-            image="https://example.com/avatar.jpg",
-        )
+        student, _ = create_student()
+        student.user.email = "testuser@example.com"
+        student.user.save()
 
         response = self.client.post(self.url, {"token": "valid_token"}, format="json")
 

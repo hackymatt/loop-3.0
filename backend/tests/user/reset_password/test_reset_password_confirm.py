@@ -3,8 +3,8 @@ from rest_framework import status
 from django.test import TestCase
 from rest_framework.test import APIClient
 from const import Urls
-from ..factory import create_student
-from ..helpers import generate_valid_token, generate_expired_token
+from ...factory import create_student
+from ...helpers import generate_valid_token, generate_expired_token
 
 
 class PasswordResetConfirmTests(TestCase):

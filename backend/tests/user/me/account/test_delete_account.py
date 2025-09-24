@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 from const import Urls
-from ..factory import create_student
-from ..helpers import login
+from ....factory import create_student
+from ....helpers import login
 
 
 class DeleteAccountTestCase(TestCase):

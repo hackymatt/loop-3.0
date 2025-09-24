@@ -5,8 +5,8 @@ from rest_framework.test import APIClient
 from unittest.mock import patch
 from const import Urls
 from utils.google.gmail import GmailApi
-from ..helpers import mock_send_message, generate_valid_token
-from ..factory import create_student
+from ...helpers import mock_send_message, generate_valid_token
+from ...factory import create_student
 
 
 class ResendActivationLinkViewTest(TestCase):

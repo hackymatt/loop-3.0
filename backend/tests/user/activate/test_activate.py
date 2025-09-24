@@ -5,8 +5,8 @@ from rest_framework.test import APIClient
 import jwt
 import uuid
 from const import Urls
-from ..factory import create_student
-from ..helpers import generate_valid_token, generate_expired_token
+from ...factory import create_student
+from ...helpers import generate_valid_token, generate_expired_token
 
 
 class ActivateAccountViewTest(TestCase):

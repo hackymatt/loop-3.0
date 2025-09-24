@@ -81,11 +81,19 @@ def create_user():
     email = _generate_random_email()
     username = get_unique_username(email.split("@")[0])
     password = _generate_random_string(12)
+    street_address = _generate_random_string(12)
+    zip_code = _generate_random_string(12)
+    city = _generate_random_string(12)
+    country = _generate_random_string(12)
 
     user = get_user_model().objects.create_user(
         email=email,
         first_name=first_name,
         last_name=last_name,
+        street_address=street_address,
+        zip_code=zip_code,
+        city=city,
+        country=country,
         password=password,
         username=username,
         is_active=True,

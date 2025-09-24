@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
 from const import Urls
-from ..factory import create_student
+from ....factory import create_student
 
 
 class LoginViewTest(TestCase):

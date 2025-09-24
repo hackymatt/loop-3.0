@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from ...utils import check_password
+from django.utils.translation import gettext as _
 
 
 class ChangePasswordSerializer(serializers.Serializer):
