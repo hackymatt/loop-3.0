@@ -45,9 +45,7 @@ class GoogleLoginViewTest(TestCase):
         """Test login for an existing user"""
         mock_auth_return_value(get_mock, self.google_data)
 
-        student, _ = create_student()
-        student.user.email = "testuser@example.com"
-        student.user.save()
+        create_student(email="testuser@example.com", is_active=True)
 
         response = self.client.post(self.url, {"token": "valid_token"}, format="json")
 

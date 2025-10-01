@@ -13,15 +13,18 @@ class CategoryViewTest(TestCase):
         self.url = f"/{Urls.API}/{Urls.PROJECT_CATEGORY}"
 
         # Create admin and regular user
-        self.admin, self.admin_password = create_admin()
-        self.student, self.student_password = create_student()
+        self.admin, self.admin_password = create_admin(is_active=True)
+        self.student, self.student_password = create_student(is_active=True)
 
         # Create a project category and translations
         self.category = create_category()
         self.project_category = create_category()
-        project = create_project()
-        project.category = self.project_category
-        project.save()
+        create_project(
+            category=self.project_category,
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+        )
 
     # CREATE (Only Admin)
     def test_create_category_admin(self):

@@ -14,7 +14,7 @@ class ActivateAccountViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.ACTIVATE}"
 
-        self.student, _ = create_student()
+        self.student, _ = create_student(is_active=True)
 
         # Generate a valid JWT token
         self.valid_token = generate_valid_token(self.student.user.id)
@@ -38,9 +38,6 @@ class ActivateAccountViewTest(TestCase):
         """
         Test account activation with a valid token but the user is already active.
         """
-        self.student.user.is_active = True
-        self.student.user.save()
-
         data = {"token": self.valid_token}
         response = self.client.post(self.url, data, format="json")
 

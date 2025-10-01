@@ -14,9 +14,7 @@ class ResendActivationLinkViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.RESEND}"
         # Create a test user (inactive)
-        self.student, _ = create_student()
-        self.student.user.is_active = False
-        self.student.user.save()
+        self.student, _ = create_student(is_active=False)
 
         # Generate a token for the user
         self.token = generate_valid_token(self.student.user.id)

@@ -65,9 +65,7 @@ class GithubLoginViewTest(TestCase):
         # Mock the response for retrieving user data
         mock_auth_return_value(get_mock, self.github_user_data)
 
-        student, _ = create_student()
-        student.user.email = "testuser@example.com"
-        student.user.save()
+        create_student(email="testuser@example.com", is_active=True)
 
         response = self.client.post(self.url, {"code": self.valid_code}, format="json")
 

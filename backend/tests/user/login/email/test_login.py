@@ -10,12 +10,12 @@ class LoginViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.LOGIN}"
         # Create an active user
-        self.student, self.student_password = create_student()
+        self.student, self.student_password = create_student(is_active=True)
 
         # Create an inactive user
-        self.inactive_student, self.inactive_student_password = create_student()
-        self.inactive_student.user.is_active = False
-        self.inactive_student.user.save()
+        self.inactive_student, self.inactive_student_password = create_student(
+            is_active=False
+        )
 
     def test_successful_login(self):
         """Test login with valid credentials returns 200 and JWT tokens."""

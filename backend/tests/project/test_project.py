@@ -3,11 +3,16 @@ from django.db.models import Avg, Count
 from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework import status
-from review.models import Review
 from project.models import Project
-from project.enrollment.models import ProjectEnrollment
-from project.progress.models import ProjectProgress
-from ..factory import create_student, create_project, create_stage, create_step
+from ..factory import (
+    create_student,
+    create_project,
+    create_stage,
+    create_step,
+    create_review,
+    create_project_enrollment,
+    create_project_progress,
+)
 from ..helpers import login
 from const import Urls, Language, ProjectStatus, ProjectDuration
 
@@ -17,46 +22,51 @@ class ProjectViewSetTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PROJECT}"
 
-        self.student_1, self.student_1_password = create_student()
-        self.student_2, _ = create_student()
+        self.student_1, self.student_1_password = create_student(is_active=True)
+        self.student_2, _ = create_student(is_active=True)
 
-        self.project_1 = create_project(True)
-        project_prerequisites = [create_project() for _ in range(3)]
-        self.project_1.project_prerequisites.add(*project_prerequisites)
+        project_prerequisites = [
+            create_project(active=True, project_prerequisites=[], blog_prerequisites=[])
+            for _ in range(3)
+        ]
+        self.project_1 = create_project(
+            active=True,
+            project_prerequisites=project_prerequisites,
+            blog_prerequisites=[],
+        )
 
-        self.project_2 = create_project()
-        self.project_2.stages.clear()
-        self.project_2.save()
+        self.project_2 = create_project(
+            stages=[], active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
 
-        self.project_3 = create_project()
-        self.project_3.stages.clear()
-        stage = create_stage()
-        stage.steps.clear()
-        stage.save()
-        self.project_3.stages.add(stage)
-        self.project_3.save()
+        self.project_3 = create_project(
+            stages=[create_stage(steps=[], active=True)],
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+        )
 
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student_1,
             completed_at=timezone.now(),
             step=self.project_1.stages.all()[0].steps.all()[0],
         )
 
-        self.review_1 = Review.objects.create(
+        self.review_1 = create_review(
             student=self.student_1,
             project=self.project_1,
             rating=5,
             language=Language.EN,
             comment="Great project!",
         )
-        self.review_2 = Review.objects.create(
+        self.review_2 = create_review(
             student=self.student_2,
             project=self.project_1,
             rating=4,
             language=Language.EN,
             comment="Good project!",
         )
-        self.review_3 = Review.objects.create(
+        self.review_3 = create_review(
             student=self.student_2,
             project=self.project_2,
             rating=3,
@@ -191,37 +201,38 @@ class ProjectViewSetTest(TestCase):
 
     def test_filter_projects_by_duration(self):
         # Krótki projekt < 120
-        short_project = create_project()
-        short_project.stages.clear()
-        stage = create_stage()
-        step = create_step()
-        step.duration = 60
-        step.save()
-        stage.steps.clear()
-        stage.steps.add(*[step])
-        short_project.stages.add(*[stage])
+        short_project = create_project(
+            stages=[
+                create_stage(steps=[create_step(duration=60, active=True)], active=True)
+            ],
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+        )
 
         # Średni projekt 120–299
-        medium_project = create_project()
-        medium_project.stages.clear()
-        stage = create_stage()
-        step = create_step()
-        step.duration = 180
-        step.save()
-        stage.steps.clear()
-        stage.steps.add(*[step])
-        medium_project.stages.add(*[stage])
+        medium_project = create_project(
+            stages=[
+                create_stage(
+                    steps=[create_step(duration=180, active=True)], active=True
+                )
+            ],
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+        )
 
         # Długi projekt >= 300
-        long_project = create_project()
-        long_project.stages.clear()
-        stage = create_stage()
-        step = create_step()
-        step.duration = 360
-        step.save()
-        stage.steps.clear()
-        stage.steps.add(*[step])
-        long_project.stages.add(*[stage])
+        long_project = create_project(
+            stages=[
+                create_stage(
+                    steps=[create_step(duration=360, active=True)], active=True
+                )
+            ],
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+        )
 
         # SHORT
         response = self.client.get(f"{self.url}?duration={ProjectDuration.SHORT}")
@@ -253,36 +264,26 @@ class FeaturedProjectsViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.FEATURED_PROJECT}"
 
-        self.student_1, _ = create_student()
-        self.student_2, _ = create_student()
+        self.student_1, _ = create_student(is_active=True)
+        self.student_2, _ = create_student(is_active=True)
 
         # Create 7 projects with varying ratings, enrollments, and created_at
         self.projects = []
         for i in range(7):
-            project = create_project()
+            project = create_project(
+                active=True, project_prerequisites=[], blog_prerequisites=[]
+            )
             self.projects.append(project)
 
         # Ratings
-        Review.objects.create(
-            project=self.projects[3], rating=5, student=self.student_1
-        )
-        Review.objects.create(
-            project=self.projects[2], rating=4, student=self.student_1
-        )
-        Review.objects.create(
-            project=self.projects[2], rating=2, student=self.student_2
-        )
+        create_review(project=self.projects[3], rating=5, student=self.student_1)
+        create_review(project=self.projects[2], rating=4, student=self.student_1)
+        create_review(project=self.projects[2], rating=2, student=self.student_2)
 
         # Enrollments
-        ProjectEnrollment.objects.create(
-            project=self.projects[2], student=self.student_1
-        )
-        ProjectEnrollment.objects.create(
-            project=self.projects[2], student=self.student_2
-        )
-        ProjectEnrollment.objects.create(
-            project=self.projects[3], student=self.student_1
-        )
+        create_project_enrollment(project=self.projects[2], student=self.student_1)
+        create_project_enrollment(project=self.projects[2], student=self.student_2)
+        create_project_enrollment(project=self.projects[3], student=self.student_1)
 
     def test_view_returns_success(self):
         response = self.client.get(self.url)
@@ -341,18 +342,29 @@ class SimilarProjectsViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.SIMILAR_PROJECTS}"
 
-        # Create a base project
-        self.base_project = create_project()
-
         # Create similar projects (matching at least one attribute)
-        self.similar_1 = create_project()
-        self.similar_2 = create_project()
-        self.similar_3 = create_project()
+        self.similar_1 = create_project(
+            active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
+        self.similar_2 = create_project(
+            active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
+        self.similar_3 = create_project(
+            active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
 
-        self.base_project.similar.set([self.similar_1, self.similar_2, self.similar_3])
+        # Create a base project
+        self.base_project = create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[self.similar_1, self.similar_2, self.similar_3],
+        )
 
         # Project that should not be returned
-        self.unrelated = create_project()
+        self.unrelated = create_project(
+            active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
 
     def test_view_returns_success(self):
         response = self.client.get(
@@ -386,7 +398,9 @@ class SimilarProjectsViewTest(TestCase):
 
     def test_returns_empty_if_no_similar(self):
         # Create a project with a unique category, tech, and level
-        unique_project = create_project()
+        unique_project = create_project(
+            active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
         response = self.client.get(self.url.replace("<slug:slug>", unique_project.slug))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)

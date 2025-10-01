@@ -12,7 +12,7 @@ class LogoutViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.LOGOUT}"
         """Set up a user and generate JWT tokens for testing."""
-        self.student, self.student_password = create_student()
+        self.student, self.student_password = create_student(is_active=True)
         self.refresh = RefreshToken.for_user(self.student.user)
         self.access_token = str(self.refresh.access_token)
         self.refresh_token = str(self.refresh)

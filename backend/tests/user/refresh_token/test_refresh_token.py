@@ -12,7 +12,7 @@ class RefreshTokenViewTest(TestCase):
         self.url = f"/{Urls.API}/{Urls.REFRESH_TOKEN}"
 
         # Create a user to test the token refresh
-        self.student, self.student_password = create_student()
+        self.student, self.student_password = create_student(is_active=True)
 
         # Generate refresh token for the user
         self.refresh_token = RefreshToken.for_user(self.student.user)

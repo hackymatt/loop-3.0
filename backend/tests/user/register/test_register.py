@@ -19,7 +19,9 @@ class RegisterViewTestCase(TestCase):
             "password": "Password123!",
         }
         # Create a user in the database for testing the existing email scenario
-        self.existing_student, self.existing_student_password = create_student()
+        self.existing_student, self.existing_student_password = create_student(
+            is_active=True
+        )
 
     @patch.object(GmailApi, "_send_message")
     def test_register_user_valid_data(self, send_message_mock):

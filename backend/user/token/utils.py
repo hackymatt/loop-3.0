@@ -3,15 +3,16 @@ import tiktoken
 from plan.subscription.utils import get_subscription
 from user.token.models import TokenUsage
 from django.db.models import Sum
-from dateutil.relativedelta import relativedelta
+from django.utils import timezone
 from calendar import monthrange
+from const import UserType
 
 
 def months_fraction_or_full(start_date, end_date):
     if start_date > end_date:
         return 0
 
-    delta = relativedelta(end_date, start_date)
+    delta = timezone.timedelta(end_date, start_date)
     total_months = delta.years * 12 + delta.months
 
     if total_months == 0:
@@ -25,6 +26,9 @@ def months_fraction_or_full(start_date, end_date):
 
 
 def get_user_tokens_left(user):
+    if user.user_type != UserType.STUDENT:
+        return 0
+
     subscription = get_subscription(user)
 
     plan_limit = subscription.plan.tokens_limit

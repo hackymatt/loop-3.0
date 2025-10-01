@@ -1,23 +1,21 @@
 from django.test import TestCase
 from django.utils import timezone
-from dateutil.relativedelta import relativedelta
 from rest_framework.test import APIClient
 from unittest.mock import patch
 from rest_framework import status
-from project.enrollment.models import ProjectEnrollment
-from project.progress.models import ProjectProgress
 from plan.subscription.utils import subscribe
-from plan.subscription.models import PlanSubscription
 from ...factory import (
     create_student,
     create_project,
     create_step,
     create_stage,
     create_plan,
+    create_project_progress,
+    create_project_enrollment,
 )
 from ...helpers import login, mock_send_request
 from utils.openai.chat import OpenAIChat
-from const import Urls, Currency
+from const import Urls, SubscriptionStatus, PlanType
 
 
 class StepViewSetTestCase(TestCase):
@@ -25,16 +23,18 @@ class StepViewSetTestCase(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.STEP}"
 
-        self.student, self.student_password = create_student()
+        self.student, self.student_password = create_student(is_active=True)
 
-        self.project = create_project()
+        self.project = create_project(
+            active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
         self.stage = self.project.stages.all()[0]
 
-        self.step = create_step()
+        self.step = create_step(active=True)
         self.stage.steps.add(self.step)
         self.stage.save()
 
-        self.paid_plan = create_plan()
+        self.paid_plan = create_plan(type=PlanType.BASIC.value)
 
     def test_requires_authentication(self):
         response = self.client.get(
@@ -72,7 +72,7 @@ class StepViewSetTestCase(TestCase):
     def test_stage_not_in_project(self):
         login(self, self.student.user.email, self.student_password)
 
-        other_stage = create_stage()
+        other_stage = create_stage(active=True)
 
         response = self.client.get(
             self.url.replace("<slug:project_slug>", self.project.slug)
@@ -85,7 +85,7 @@ class StepViewSetTestCase(TestCase):
     def test_step_not_in_step(self):
         login(self, self.student.user.email, self.student_password)
 
-        other_step = create_step()
+        other_step = create_step(active=True)
 
         response = self.client.get(
             self.url.replace("<slug:project_slug>", self.project.slug)
@@ -107,9 +107,11 @@ class StepViewSetTestCase(TestCase):
     def test_default_plan_second_project_forbidden(self):
         login(self, self.student.user.email, self.student_password)
 
-        ProjectEnrollment.objects.create(student=self.student, project=self.project)
+        create_project_enrollment(student=self.student, project=self.project)
 
-        other_project = create_project()
+        other_project = create_project(
+            active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
         other_stage = other_project.stages.all()[0]
         other_step = other_stage.steps.all()[0]
 
@@ -121,18 +123,21 @@ class StepViewSetTestCase(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_paid_plan_second_step_allowed(self):
+    def test_paid_plan_second_project_allowed(self):
         login(self, self.student.user.email, self.student_password)
         subscribe(
             student=self.student,
             plan=self.paid_plan,
-            end_date=timezone.now() + relativedelta(years=1),
-            currency=Currency.PLN,
+            start_date=timezone.now(),
+            end_date=timezone.now() + timezone.timedelta(years=1),
+            status=SubscriptionStatus.ACTIVE,
         )
 
-        ProjectEnrollment.objects.create(student=self.student, project=self.project)
+        create_project_enrollment(student=self.student, project=self.project)
 
-        other_project = create_project()
+        other_project = create_project(
+            active=True, project_prerequisites=[], blog_prerequisites=[]
+        )
         other_stage = other_project.stages.all()[0]
         other_step = other_stage.steps.all()[0]
 
@@ -150,16 +155,18 @@ class StepChatViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.STEP_CHAT}"
 
-        self.student, self.student_password = create_student()
+        self.student, self.student_password = create_student(is_active=True)
 
-        self.step = create_step()
+        self.step = create_step(active=True)
 
     @patch.object(OpenAIChat, "_send_request")
     def test_chat_allowed(self, send_request_mock):
         login(self, self.student.user.email, self.student_password)
         mock_send_request(send_request_mock)
 
-        subscription = PlanSubscription.objects.filter(student=self.student).first()
+        subscription = self.student.current_subscription
+        subscription.end_date = timezone.now() + timezone.timedelta(years=1)
+        subscription.save()
         subscription.plan.tokens_limit = 9999
         subscription.plan.save()
 

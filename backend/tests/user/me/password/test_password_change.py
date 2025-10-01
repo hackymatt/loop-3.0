@@ -11,7 +11,7 @@ class ChangePasswordTestCase(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PASSWORD_CHANGE}"
 
-        self.student, self.student_password = create_student()
+        self.student, self.student_password = create_student(is_active=True)
 
         login(self, self.student.user.email, self.student_password)
 

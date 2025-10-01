@@ -12,7 +12,7 @@ class PasswordResetTest(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PASSWORD_RESET}"
-        self.student, _ = create_student()
+        self.student, _ = create_student(is_active=True)
 
     @patch.object(GmailApi, "_send_message")
     def test_password_reset_request_valid_email(self, send_message_mock):

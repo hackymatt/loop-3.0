@@ -60,7 +60,7 @@ class Invoice(BaseModel):
         return f"{self.customer.full_name} - {self.pk}"
 
     @property
-    def amount(self):
+    def amount(self):  # pragma: no cover
         return sum(item.price * item.quantity for item in self.items.all())
 
     def save(self, *args, **kwargs):

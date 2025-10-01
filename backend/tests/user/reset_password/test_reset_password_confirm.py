@@ -12,7 +12,7 @@ class PasswordResetConfirmTests(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PASSWORD_RESET_CONFIRM}"
         """Create a test user."""
-        self.student, _ = create_student()
+        self.student, _ = create_student(is_active=True)
 
         # Generate a valid JWT token for the user
         self.valid_token = generate_valid_token(self.student.user.id)

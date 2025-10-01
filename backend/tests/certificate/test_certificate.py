@@ -20,16 +20,12 @@ class CertificateViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.CERTIFICATE}"
 
-        self.student_1, self.student_1_password = create_student()
-        self.student_2, self.student_2_password = create_student()
+        self.student_1, self.student_1_password = create_student(is_active=True)
+        self.student_2, self.student_2_password = create_student(is_active=True)
 
-        self.certificate_1 = create_certificate()
-        self.certificate_1.student = self.student_1
-        self.certificate_1.save()
+        self.certificate_1 = create_certificate(student=self.student_1)
 
-        self.certificate_2 = create_certificate()
-        self.certificate_1.student = self.student_1
-        self.certificate_1.save()
+        self.certificate_2 = create_certificate(student=self.student_1)
 
     def test_retrieve_certificate_public(self):
         response = self.client.get(f"{self.url}/{self.certificate_2.id}")
@@ -50,50 +46,48 @@ class CertificateViewTest(TestCase):
 
 class ProjectCompletionSignalTestCase(TestCase):
     def setUp(self):
-        self.student, self.student_password = create_student()
+        self.student, self.student_password = create_student(is_active=True)
 
-        self.project = create_project()
-        self.project.stages.clear()
-        stage = create_stage()
-        stage.steps.clear()
+        self.step1 = create_step(active=True)
+        self.step2 = create_step(active=True)
+        self.step3 = create_step(active=True)
+        self.step4 = create_step(active=True)
 
-        self.step1 = create_step()
-        self.step2 = create_step()
-        self.step3 = create_step()
-        self.step4 = create_step()
-        stage.steps.add(self.step1)
-        stage.steps.add(self.step2)
-        stage.steps.add(self.step3)
-        stage.steps.add(self.step4)
-        stage.save()
-
-        self.project.stages.add(stage)
-        self.project.save()
+        self.project = create_project(
+            stages=[
+                create_stage(
+                    steps=[self.step1, self.step2, self.step3, self.step4], active=True
+                )
+            ],
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+        )
 
     def test_certificate_created_after_all_steps_completed(self):
         # Initially no certificate
         self.assertFalse(Certificate.objects.exists())
 
         # Complete the first step
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step1, completed_at=timezone.now()
         )
         self.assertFalse(Certificate.objects.exists())  # Still incomplete
 
         # Complete the second step
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step2, completed_at=timezone.now()
         )
         self.assertFalse(Certificate.objects.exists())  # Still incomplete
 
         # Complete the third step
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step3, completed_at=timezone.now()
         )
         self.assertFalse(Certificate.objects.exists())  # Still incomplete
 
         # Complete the fourth step
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step4, completed_at=timezone.now()
         )
         self.assertTrue(
@@ -104,7 +98,7 @@ class ProjectCompletionSignalTestCase(TestCase):
 
     def test_certificate_not_created_if_not_all_steps_completed(self):
         # Mark only one as completed
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step1, completed_at=timezone.now()
         )
         self.assertFalse(
@@ -115,16 +109,16 @@ class ProjectCompletionSignalTestCase(TestCase):
 
     def test_certificate_not_duplicated(self):
         # Complete all steps
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step1, completed_at=timezone.now()
         )
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step2, completed_at=timezone.now()
         )
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step3, completed_at=timezone.now()
         )
-        ProjectProgress.objects.create(
+        create_project_progress(
             student=self.student, step=self.step4, completed_at=timezone.now()
         )
 

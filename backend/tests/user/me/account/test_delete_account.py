@@ -12,7 +12,7 @@ class DeleteAccountTestCase(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.DELETE_ACCOUNT}"
 
-        self.student, self.student_password = create_student()
+        self.student, self.student_password = create_student(is_active=True)
         self.username = self.student.user.username
 
         login(self, self.student.user.email, self.student_password)

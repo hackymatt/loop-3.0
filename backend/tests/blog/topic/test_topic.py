@@ -13,15 +13,13 @@ class TopicViewTest(TestCase):
         self.url = f"/{Urls.API}/{Urls.POST_TOPIC}"
 
         # Create admin and regular user
-        self.admin, self.admin_password = create_admin()
-        self.student, self.student_password = create_student()
+        self.admin, self.admin_password = create_admin(is_active=True)
+        self.student, self.student_password = create_student(is_active=True)
 
         # Create a project topic and translations
         self.topic = create_topic()
         self.project_topic = create_topic()
-        blog = create_blog()
-        blog.topic = self.project_topic
-        blog.save()
+        create_blog(topic=self.project_topic, active=True)
 
     # CREATE (Only Admin)
     def test_create_topic_admin(self):
