@@ -14,7 +14,10 @@ class ReviewSummaryViewSetTest(TestCase):
         self.student_1, _ = create_student(is_active=True)
         self.student_2, _ = create_student(is_active=True)
         self.project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
 
         self.review_1 = create_review(
@@ -51,7 +54,10 @@ class ReviewViewSetTest(TestCase):
         self.student_1, _ = create_student(is_active=True)
         self.student_2, _ = create_student(is_active=True)
         self.project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
         self.review_1 = create_review(
             student=self.student_1,
@@ -85,7 +91,10 @@ class FeaturedReviewsViewTest(TestCase):
         self.student_1, _ = create_student(is_active=True)
         self.student_2, _ = create_student(is_active=True)
         self.project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
         self.review_1 = create_review(
             student=self.student_1,
@@ -129,7 +138,10 @@ class SubmitReviewViewTest(TestCase):
 
         self.student, self.student_password = create_student(is_active=True)
         self.project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
 
     def test_create_review_success(self):

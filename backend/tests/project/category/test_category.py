@@ -24,6 +24,7 @@ class CategoryViewTest(TestCase):
             active=True,
             project_prerequisites=[],
             blog_prerequisites=[],
+            similar=[],
         )
 
     # CREATE (Only Admin)

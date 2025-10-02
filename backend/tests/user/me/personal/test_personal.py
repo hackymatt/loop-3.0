@@ -59,6 +59,8 @@ class PersonalDataViewTestCase(TestCase):
         self, mock_update_customer
     ):
         login(self, self.student.user.email, self.student_password)
+        self.student.stripe_customer_id = None
+        self.student.save()
 
         data = {
             "first_name": "NewFirst",

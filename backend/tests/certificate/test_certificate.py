@@ -62,6 +62,7 @@ class ProjectCompletionSignalTestCase(TestCase):
             active=True,
             project_prerequisites=[],
             blog_prerequisites=[],
+            similar=[],
         )
 
     def test_certificate_created_after_all_steps_completed(self):

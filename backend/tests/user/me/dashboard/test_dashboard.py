@@ -25,7 +25,10 @@ class DashboardViewTest(TestCase):
 
         # Create project
         self.project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
 
         # Create project enrollment

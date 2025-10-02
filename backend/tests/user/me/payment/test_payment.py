@@ -5,7 +5,7 @@ from unittest.mock import patch
 import stripe
 from ....factory import create_payment_method
 from ....helpers import login
-from const import Urls
+from const import Urls, PaymentType
 from plan.payment.models import PaymentMethod
 
 
@@ -18,18 +18,22 @@ class PaymentMethodViewSetTests(TestCase):
             self.payment_method,
             self.specific_payment_method,
             self.student_password,
-        ) = create_payment_method()
+        ) = create_payment_method(type=PaymentType.CARD)
         self.payment_method_2, _, _ = create_payment_method(
-            student=self.payment_method.student
+            student=(self.payment_method.student, self.student_password),
+            type=PaymentType.PAYPAL,
         )
         self.payment_method_3, _, _ = create_payment_method(
-            student=self.payment_method.student
+            student=(self.payment_method.student, self.student_password),
+            type=PaymentType.REVOLUT,
         )
         self.payment_method_4, _, _ = create_payment_method(
-            student=self.payment_method.student
+            student=(self.payment_method.student, self.student_password),
+            type=PaymentType.CARD,
         )
         self.payment_method_5, _, _ = create_payment_method(
-            student=self.payment_method.student
+            student=(self.payment_method.student, self.student_password),
+            type=PaymentType.PAYPAL,
         )
 
     def test_list_payment_methods(self):

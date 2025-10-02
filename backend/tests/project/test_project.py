@@ -26,17 +26,24 @@ class ProjectViewSetTest(TestCase):
         self.student_2, _ = create_student(is_active=True)
 
         project_prerequisites = [
-            create_project(active=True, project_prerequisites=[], blog_prerequisites=[])
+            create_project(
+                active=True, project_prerequisites=[], blog_prerequisites=[], similar=[]
+            )
             for _ in range(3)
         ]
         self.project_1 = create_project(
             active=True,
             project_prerequisites=project_prerequisites,
             blog_prerequisites=[],
+            similar=[],
         )
 
         self.project_2 = create_project(
-            stages=[], active=True, project_prerequisites=[], blog_prerequisites=[]
+            stages=[],
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
 
         self.project_3 = create_project(
@@ -44,6 +51,7 @@ class ProjectViewSetTest(TestCase):
             active=True,
             project_prerequisites=[],
             blog_prerequisites=[],
+            similar=[],
         )
 
         create_project_progress(
@@ -208,6 +216,7 @@ class ProjectViewSetTest(TestCase):
             active=True,
             project_prerequisites=[],
             blog_prerequisites=[],
+            similar=[],
         )
 
         # Średni projekt 120–299
@@ -220,6 +229,7 @@ class ProjectViewSetTest(TestCase):
             active=True,
             project_prerequisites=[],
             blog_prerequisites=[],
+            similar=[],
         )
 
         # Długi projekt >= 300
@@ -232,6 +242,7 @@ class ProjectViewSetTest(TestCase):
             active=True,
             project_prerequisites=[],
             blog_prerequisites=[],
+            similar=[],
         )
 
         # SHORT
@@ -271,7 +282,7 @@ class FeaturedProjectsViewTest(TestCase):
         self.projects = []
         for i in range(7):
             project = create_project(
-                active=True, project_prerequisites=[], blog_prerequisites=[]
+                active=True, project_prerequisites=[], blog_prerequisites=[], similar=[]
             )
             self.projects.append(project)
 
@@ -344,13 +355,22 @@ class SimilarProjectsViewTest(TestCase):
 
         # Create similar projects (matching at least one attribute)
         self.similar_1 = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
         self.similar_2 = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
         self.similar_3 = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
 
         # Create a base project
@@ -363,7 +383,10 @@ class SimilarProjectsViewTest(TestCase):
 
         # Project that should not be returned
         self.unrelated = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
 
     def test_view_returns_success(self):
@@ -399,7 +422,10 @@ class SimilarProjectsViewTest(TestCase):
     def test_returns_empty_if_no_similar(self):
         # Create a project with a unique category, tech, and level
         unique_project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
         response = self.client.get(self.url.replace("<slug:slug>", unique_project.slug))
         self.assertEqual(response.status_code, status.HTTP_200_OK)

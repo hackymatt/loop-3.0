@@ -3,7 +3,7 @@ import tiktoken
 from plan.subscription.utils import get_subscription
 from user.token.models import TokenUsage
 from django.db.models import Sum
-from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 from calendar import monthrange
 from const import UserType
 
@@ -12,7 +12,7 @@ def months_fraction_or_full(start_date, end_date):
     if start_date > end_date:
         return 0
 
-    delta = timezone.timedelta(end_date, start_date)
+    delta = relativedelta(end_date, start_date)
     total_months = delta.years * 12 + delta.months
 
     if total_months == 0:

@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 from rest_framework.test import APIClient
 from unittest.mock import patch
 from rest_framework import status
@@ -26,7 +27,10 @@ class StepViewSetTestCase(TestCase):
         self.student, self.student_password = create_student(is_active=True)
 
         self.project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
         self.stage = self.project.stages.all()[0]
 
@@ -110,7 +114,10 @@ class StepViewSetTestCase(TestCase):
         create_project_enrollment(student=self.student, project=self.project)
 
         other_project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
         other_stage = other_project.stages.all()[0]
         other_step = other_stage.steps.all()[0]
@@ -129,14 +136,17 @@ class StepViewSetTestCase(TestCase):
             student=self.student,
             plan=self.paid_plan,
             start_date=timezone.now(),
-            end_date=timezone.now() + timezone.timedelta(years=1),
+            end_date=timezone.now() + relativedelta(years=1),
             status=SubscriptionStatus.ACTIVE,
         )
 
         create_project_enrollment(student=self.student, project=self.project)
 
         other_project = create_project(
-            active=True, project_prerequisites=[], blog_prerequisites=[]
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
         )
         other_stage = other_project.stages.all()[0]
         other_step = other_stage.steps.all()[0]
@@ -165,7 +175,7 @@ class StepChatViewTest(TestCase):
         mock_send_request(send_request_mock)
 
         subscription = self.student.current_subscription
-        subscription.end_date = timezone.now() + timezone.timedelta(years=1)
+        subscription.end_date = timezone.now() + relativedelta(years=1)
         subscription.save()
         subscription.plan.tokens_limit = 9999
         subscription.plan.save()

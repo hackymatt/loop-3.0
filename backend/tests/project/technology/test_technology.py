@@ -31,6 +31,7 @@ class TechnologyViewTest(TestCase):
             active=True,
             project_prerequisites=[],
             blog_prerequisites=[],
+            similar=[],
         )
 
     # CREATE (Only Admin)
@@ -99,12 +100,14 @@ class FeaturedTechnologiesViewTest(TestCase):
             project_prerequisites=[],
             blog_prerequisites=[],
             technology=[self.technology_1],
+            similar=[],
         )
         self.project_2 = create_project(
             active=True,
             project_prerequisites=[],
             blog_prerequisites=[],
             technology=[self.technology_2],
+            similar=[],
         )
 
         self.student_1, _ = create_student(is_active=True)

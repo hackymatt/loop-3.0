@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 from rest_framework.test import APIClient
 from rest_framework import status
 from unittest.mock import patch
@@ -111,7 +112,7 @@ class ChangeSubscriptionViewTests(TestCase):
             timezone.now(),
             SubscriptionStatus.ACTIVE,
             basic_plan.get_pricings()[0],
-            timezone.now() + timezone.timedelta(month=1),
+            timezone.now() + relativedelta(month=1),
             100,
             "sub_123",
             "item_123",

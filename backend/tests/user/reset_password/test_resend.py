@@ -77,6 +77,9 @@ class ResendActivationLinkViewTest(TestCase):
     def test_resend_activation_link_successful(self, send_message_mock):
         mock_send_message(mock=send_message_mock)
         """Test when the user is inactive and an activation email is sent."""
+        self.student.user.is_active = False
+        self.student.user.save()
+
         data = {"token": self.token}
         response = self.client.post(self.url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

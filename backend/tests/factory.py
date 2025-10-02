@@ -56,9 +56,16 @@ languages = [choice.value for choice in Language]
 user_types = [choice.value for choice in UserType]
 plan_types = [choice.value for choice in PlanType]
 currencies = [choice.value for choice in Currency]
+payment_intervals = [choice.value for choice in PaymentInterval]
 payment_types = [choice.value for choice in PaymentType]
 payment_methods = [choice.value for choice in PaymentMethodEnum]
 payment_statuses = [choice.value for choice in PaymentStatus]
+
+
+def _use_if_none(value, fallback):
+    return (
+        value if value is not None else fallback() if callable(fallback) else fallback
+    )
 
 
 def _generate_random_choice(choices):
@@ -103,7 +110,7 @@ def _generate_random_email(domain="example.com", length=10):
 
 def _generate_random_date(date=timezone.now()):
     offset = -1 if _generate_random_bool() else 1
-    return date + timezone.timedelta(day=_generate_random_number()) * offset
+    return date + timezone.timedelta(days=_generate_random_number()) * offset
 
 
 def _create_translations(model, obj, languages, translation_fields, related_field_name):
@@ -139,22 +146,25 @@ def create_user(
     user_type=None,
     is_active=None,
 ):
-    first_name = first_name or _generate_random_string(12)
-    last_name = last_name or _generate_random_string(12)
-    email = email or _generate_random_email()
-    username = username or get_unique_username(email.split("@")[0])
-    password = password or _generate_random_string(12)
-    street_address = street_address or _generate_random_string(12)
-    zip_code = zip_code or _generate_random_string(12)
-    city = city or _generate_random_string(12)
-    country = country or _generate_random_string(12)
-    image = image or SimpleUploadedFile(
-        "avatar.jpg",
-        b"fake image data",
-        content_type="image/jpeg",
+    first_name = _use_if_none(first_name, lambda: _generate_random_string(12))
+    last_name = _use_if_none(last_name, lambda: _generate_random_string(12))
+    email = _use_if_none(email, _generate_random_email)
+    username = _use_if_none(username, lambda: get_unique_username(email.split("@")[0]))
+    password = _use_if_none(password, lambda: _generate_random_string(12))
+    street_address = _use_if_none(street_address, lambda: _generate_random_string(12))
+    zip_code = _use_if_none(zip_code, lambda: _generate_random_string(12))
+    city = _use_if_none(city, lambda: _generate_random_string(12))
+    country = _use_if_none(country, lambda: _generate_random_string(12))
+    image = _use_if_none(
+        image,
+        lambda: SimpleUploadedFile(
+            "avatar.jpg",
+            b"fake image data",
+            content_type="image/jpeg",
+        ),
     )
-    is_active = is_active or _generate_random_bool()
-    user_type = user_type or _generate_random_choice(user_types)
+    is_active = _use_if_none(is_active, _generate_random_bool)
+    user_type = _use_if_none(user_type, lambda: _generate_random_choice(user_types))
 
     user = get_user_model().objects.create_user(
         email=email,
@@ -217,6 +227,9 @@ def create_student(
     country=None,
     image=None,
     is_active=None,
+    stripe_customer_id=None,
+    trial_used=None,
+    first_purchase=None,
 ):
     user, password = create_user(
         first_name=first_name,
@@ -232,7 +245,16 @@ def create_student(
         user_type=UserType.STUDENT,
         is_active=is_active,
     )
-    student = Student.objects.create(user=user)
+    stripe_customer_id = _use_if_none(stripe_customer_id, _generate_random_string)
+    trial_used = _use_if_none(trial_used, _generate_random_bool)
+    first_purchase = _use_if_none(first_purchase, _generate_random_bool)
+
+    student = Student.objects.create(
+        user=user,
+        stripe_customer_id=stripe_customer_id,
+        trial_used=trial_used,
+        first_purchase=first_purchase,
+    )
     subscribe_free_plan(student)
     return student, password
 
@@ -249,6 +271,7 @@ def create_instructor(
     country=None,
     image=None,
     is_active=None,
+    role=None,
 ):
     user, password = create_user(
         first_name=first_name,
@@ -264,13 +287,13 @@ def create_instructor(
         user_type=UserType.INSTRUCTOR,
         is_active=is_active,
     )
-    role = _generate_random_string(5)
+    role = _use_if_none(role, lambda: _generate_random_string(5))
     instructor = Instructor.objects.create(user=user, role=role)
     return instructor, password
 
 
 def create_blog_tag(slug=None):
-    slug = slug or _generate_random_slug()
+    slug = _use_if_none(slug, _generate_random_slug)
     tag = BlogTag.objects.create(slug=slug)
 
     _create_translations(
@@ -285,7 +308,7 @@ def create_blog_tag(slug=None):
 
 
 def create_topic(slug=None):
-    slug = slug or _generate_random_slug()
+    slug = _use_if_none(slug, _generate_random_slug)
     topic = Topic.objects.create(slug=slug)
     _create_translations(TopicTranslation, topic, languages, ["name"], "topic")
     return topic
@@ -301,18 +324,21 @@ def create_blog(
     visits=None,
     active=None,
 ):
-    slug = slug or _generate_random_slug()
-    topic = topic or create_topic()
-    image = image or SimpleUploadedFile(
-        "avatar.jpg",
-        b"fake image data",
-        content_type="image/jpeg",
+    slug = _use_if_none(slug, _generate_random_slug)
+    topic = _use_if_none(topic, create_topic)
+    image = _use_if_none(
+        image,
+        lambda: SimpleUploadedFile(
+            "avatar.jpg", b"fake image data", content_type="image/jpeg"
+        ),
     )
-    published_at = published_at or _generate_random_date()
-    author = author or create_instructor(is_active=True)[0]
-    tags = tags or [create_blog_tag() for _ in range(_generate_random_number(1, 5))]
-    visits = visits or _generate_random_number(0, 100)
-    active = active or _generate_random_bool()
+    published_at = _use_if_none(published_at, _generate_random_date)
+    author = _use_if_none(author, lambda: create_instructor(is_active=True)[0])
+    tags = _use_if_none(
+        tags, lambda: [create_blog_tag() for _ in range(_generate_random_number(1, 5))]
+    )
+    visits = _use_if_none(visits, lambda: _generate_random_number(0, 100))
+    active = _use_if_none(active, _generate_random_bool)
 
     blog = Blog.objects.create(
         slug=slug,
@@ -332,39 +358,39 @@ def create_blog(
 
 
 def create_category(slug=None):
-    slug = slug or _generate_random_slug()
+    slug = _use_if_none(slug, _generate_random_slug)
     category = Category.objects.create(slug=slug)
     _create_translations(CategoryTranslation, category, languages, ["name"], "category")
     return category
 
 
 def create_level(slug=None, order=None):
-    slug = slug or _generate_random_slug()
-    order = order or _generate_random_number()
+    slug = _use_if_none(slug, _generate_random_slug)
+    order = _use_if_none(order, _generate_random_number)
     level = Level.objects.create(slug=slug, order=order)
     _create_translations(LevelTranslation, level, languages, ["name"], "level")
     return level
 
 
 def create_technology(slug=None, name=None):
-    slug = slug or _generate_random_slug()
-    name = name or _generate_random_string(5)
+    slug = _use_if_none(slug, _generate_random_slug)
+    name = _use_if_none(name, lambda: _generate_random_string(5))
     technology = Technology.objects.create(slug=slug, name=name)
     return technology
 
 
 def create_project_tag(slug=None):
-    slug = slug or _generate_random_slug()
+    slug = _use_if_none(slug, _generate_random_slug)
     tag = ProjectTag.objects.create(slug=slug)
     _create_translations(ProjectTagTranslation, tag, languages, ["name"], "tag")
     return tag
 
 
 def create_step(slug=None, points=None, duration=None, active=None):
-    slug = slug or _generate_random_slug()
-    points = points or _generate_random_number(50, 100)
-    duration = duration or _generate_random_number(30, 600)
-    active = active or _generate_random_bool()
+    slug = _use_if_none(slug, _generate_random_slug)
+    points = _use_if_none(points, lambda: _generate_random_number(50, 100))
+    duration = _use_if_none(duration, lambda: _generate_random_number(30, 600))
+    active = _use_if_none(active, _generate_random_bool)
 
     step = Step.objects.create(
         slug=slug, points=points, duration=duration, active=active
@@ -376,16 +402,19 @@ def create_step(slug=None, points=None, duration=None, active=None):
         ["name", "text"],
         "step",
     )
-
     return step
 
 
 def create_stage(slug=None, steps=None, active=None):
-    slug = slug or _generate_random_slug()
-    steps = steps or [
-        create_step(active=True) for _ in range(_generate_random_number(10, 15))
-    ]
-    active = active or _generate_random_bool()
+    slug = _use_if_none(slug, _generate_random_slug)
+    steps = _use_if_none(
+        steps,
+        lambda: [
+            create_step(active=True) for _ in range(_generate_random_number(10, 15))
+        ],
+    )
+    active = _use_if_none(active, _generate_random_bool)
+
     stage = Stage.objects.create(slug=slug, active=active)
     stage.steps.add(*steps)
 
@@ -409,32 +438,61 @@ def create_project(
     tags=None,
     active=None,
 ):
-    slug = slug or _generate_random_slug()
-    level = level or create_level()
-    category = category or create_category()
-    technology = technology or [
-        create_technology() for _ in range(_generate_random_number(1, 5))
-    ]
-    stages = stages or [
-        create_stage(active=True) for _ in range(_generate_random_number(5, 10))
-    ]
-    instructors = instructors or [
-        create_instructor(is_active=True)[0]
-        for _ in range(_generate_random_number(1, 3))
-    ]
-    video_url = video_url or _generate_random_url()
-    project_prerequisites = project_prerequisites or [
-        create_project(active=True, project_prerequisites=[], blog_prerequisites=[])
-    ]
-    blog_prerequisites = blog_prerequisites or [
-        create_blog(active=True) for _ in range(_generate_random_number(1, 2))
-    ]
-    similar = similar or [
-        create_project(active=True, project_prerequisites=[], blog_prerequisites=[])
-        for _ in range(_generate_random_number(1, 5))
-    ]
-    tags = tags or [create_project_tag() for _ in range(_generate_random_number(1, 5))]
-    active = active or _generate_random_bool()
+    slug = _use_if_none(slug, _generate_random_slug)
+    level = _use_if_none(level, create_level)
+    category = _use_if_none(category, create_category)
+    technology = _use_if_none(
+        technology,
+        lambda: [create_technology() for _ in range(_generate_random_number(1, 5))],
+    )
+    stages = _use_if_none(
+        stages,
+        lambda: [
+            create_stage(active=True) for _ in range(_generate_random_number(5, 10))
+        ],
+    )
+    instructors = _use_if_none(
+        instructors,
+        lambda: [
+            create_instructor(is_active=True)[0]
+            for _ in range(_generate_random_number(1, 3))
+        ],
+    )
+    video_url = _use_if_none(video_url, _generate_random_url)
+    project_prerequisites = _use_if_none(
+        project_prerequisites,
+        lambda: [
+            create_project(
+                active=True,
+                project_prerequisites=[],
+                blog_prerequisites=[],
+                similar=[],
+            )
+        ],
+    )
+    blog_prerequisites = _use_if_none(
+        blog_prerequisites,
+        lambda: [
+            create_blog(active=True) for _ in range(_generate_random_number(1, 2))
+        ],
+    )
+    similar = _use_if_none(
+        similar,
+        lambda: [
+            create_project(
+                active=True,
+                project_prerequisites=[],
+                blog_prerequisites=[],
+                similar=[],
+            )
+            for _ in range(_generate_random_number(1, 5))
+        ],
+    )
+    tags = _use_if_none(
+        tags,
+        lambda: [create_project_tag() for _ in range(_generate_random_number(1, 5))],
+    )
+    active = _use_if_none(active, _generate_random_bool)
 
     project = Project.objects.create(
         slug=slug,
@@ -462,18 +520,23 @@ def create_project(
 
 
 def create_project_enrollment(student=None, project=None):
-    student = student or create_student(is_active=True)[0]
-    project = project or create_project(
-        active=True, project_prerequisites=[], blog_prerequisites=[]
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
+    project = _use_if_none(
+        project,
+        lambda: create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        ),
     )
-
     return ProjectEnrollment.objects.create(student=student, project=project)
 
 
 def create_project_progress(student=None, step=None, completed_at=None):
-    student = student or create_student(is_active=True)[0]
-    step = step or create_step(active=True)
-    completed_at = completed_at or _generate_random_date()
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
+    step = _use_if_none(step, lambda: create_step(active=True))
+    completed_at = _use_if_none(completed_at, _generate_random_date)
 
     return ProjectProgress.objects.create(
         student=student, step=step, completed_at=completed_at
@@ -481,29 +544,64 @@ def create_project_progress(student=None, step=None, completed_at=None):
 
 
 def create_review(student=None, project=None, rating=None, language=None, comment=None):
-    student, _ = student or create_student(is_active=True)
-    project = project or create_project(
-        active=True, project_prerequisites=[], blog_prerequisites=[]
+    student = _use_if_none(student, lambda: create_student(is_active=True))[0]
+    project = _use_if_none(
+        project,
+        lambda: create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        ),
     )
-    rating = rating or _generate_random_number(1, 5)
-    language = language or _generate_random_choice(languages)
-    comment = comment or _generate_random_string(50)
+    rating = _use_if_none(rating, lambda: _generate_random_number(1, 5))
+    language = _use_if_none(language, lambda: _generate_random_choice(languages))
+    comment = _use_if_none(comment, lambda: _generate_random_string(50))
 
-    review = Review.objects.create(
+    return Review.objects.create(
         student=student,
         project=project,
         rating=rating,
         language=language,
         comment=comment,
     )
-    return review
+
+
+def create_plan_pricing(
+    plan, currency=None, interval=None, price=None, valid_from=None
+):
+    currency = _use_if_none(currency, lambda: _generate_random_choice(currencies))
+    interval = _use_if_none(
+        interval, lambda: _generate_random_choice(payment_intervals)
+    )
+
+    price = _use_if_none(
+        price,
+        lambda: 0
+        if plan.type == PlanType.FREE
+        else _generate_random_number(
+            min_val=1 if plan.type == PlanType.BASIC else 100,
+            max_val=99 if plan.type == PlanType.BASIC else 1000,
+        ),
+    )
+    valid_from = _use_if_none(valid_from, _generate_random_date)
+
+    return PlanPricing.objects.create(
+        plan=plan,
+        currency=currency,
+        interval=interval,
+        price=price,
+        valid_from=valid_from,
+    )
 
 
 def create_plan(type=None, popular=None, tokens_limit=None, stripe_product_id=None):
-    type = type or _generate_random_choice(plan_types)
-    popular = popular or _generate_random_bool()
-    tokens_limit = tokens_limit or _generate_random_number(0, 1000000)
-    stripe_product_id = stripe_product_id or _generate_random_string()
+    type = _use_if_none(type, lambda: _generate_random_choice(plan_types))
+    popular = _use_if_none(popular, _generate_random_bool)
+    tokens_limit = _use_if_none(
+        tokens_limit, lambda: _generate_random_number(0, 1000000)
+    )
+    stripe_product_id = _use_if_none(stripe_product_id, _generate_random_string)
 
     plan = Plan.objects.create(
         type=type,
@@ -512,29 +610,23 @@ def create_plan(type=None, popular=None, tokens_limit=None, stripe_product_id=No
         stripe_product_id=stripe_product_id,
     )
 
-    translations = {}
-    for language in languages:
-        translations[language] = PlanTranslation.objects.create(
-            language=language,
-            plan=plan,
-            license=license,
-        )
+    _create_translations(
+        PlanTranslation,
+        plan,
+        languages,
+        ["license"],
+        "plan",
+    )
 
     for currency in Currency:
         for interval in PaymentInterval:
-            PlanPricing.objects.create(
-                plan=plan,
-                currency=currency,
-                interval=interval,
-                price=0,
-                valid_from=timezone.now(),
-            )
+            create_plan_pricing(plan, currency, interval, type=type)
 
     return plan
 
 
 def create_plan_option(slug=None):
-    slug = slug or _generate_random_slug()
+    slug = _use_if_none(slug, _generate_random_slug)
 
     plan_option = Option.objects.create(slug=slug)
 
@@ -550,10 +642,16 @@ def create_plan_option(slug=None):
 
 
 def create_certificate(project=None, student=None):
-    project = project or create_project(
-        active=True, project_prerequisites=[], blog_prerequisites=[]
+    project = _use_if_none(
+        project,
+        lambda: create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        ),
     )
-    student, _ = student or create_student(is_active=True)
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
 
     return Certificate.objects.create(student=student, project=project)
 
@@ -566,12 +664,12 @@ def create_invoice_customer(
     zip_code=None,
     country=None,
 ):
-    email = email or _generate_random_email()
-    full_name = full_name or _generate_random_string(15)
-    street_address = street_address or _generate_random_string(15)
-    city = city or _generate_random_string(15)
-    zip_code = zip_code or _generate_random_string(15)
-    country = country or _generate_random_string(15)
+    email = _use_if_none(email, _generate_random_email)
+    full_name = _use_if_none(full_name, lambda: _generate_random_string(15))
+    street_address = _use_if_none(street_address, lambda: _generate_random_string(15))
+    city = _use_if_none(city, lambda: _generate_random_string(15))
+    zip_code = _use_if_none(zip_code, lambda: _generate_random_string(15))
+    country = _use_if_none(country, lambda: _generate_random_string(15))
 
     return InvoiceCustomer.objects.create(
         email=email,
@@ -584,10 +682,10 @@ def create_invoice_customer(
 
 
 def create_invoice_item(item_id=None, name=None, price=None, quantity=None):
-    item_id = item_id or _generate_random_number()
-    name = name or _generate_random_string(15)
-    price = price or _generate_random_number(100, 10000) / 100
-    quantity = quantity or _generate_random_number()
+    item_id = _use_if_none(item_id, lambda: _generate_random_number())
+    name = _use_if_none(name, lambda: _generate_random_string(15))
+    price = _use_if_none(price, lambda: _generate_random_number(100, 10000) / 100)
+    quantity = _use_if_none(quantity, lambda: _generate_random_number())
     return InvoiceItem.objects.create(
         item_id=item_id, name=name, price=price, quantity=quantity
     )
@@ -605,18 +703,19 @@ def create_invoice(
     language=None,
     auto_generate=None,
 ):
-    customer = customer or create_invoice_customer()
-    items = items or [
-        create_invoice_item() for _ in range(_generate_random_number(1, 3))
-    ]
-    invoice_date = invoice_date or _generate_random_date()
-    service_date = service_date or _generate_random_date()
-    currency = currency or _generate_random_choice(currencies)
-    status = status or _generate_random_choice(payment_statuses)
-    method = method or _generate_random_choice(payment_methods)
-    notes = notes or _generate_random_string()
-    language = language or _generate_random_choice(languages)
-    auto_generate = auto_generate or _generate_random_bool()
+    customer = _use_if_none(customer, create_invoice_customer)
+    items = _use_if_none(
+        items,
+        lambda: [create_invoice_item() for _ in range(_generate_random_number(1, 3))],
+    )
+    invoice_date = _use_if_none(invoice_date, _generate_random_date)
+    service_date = _use_if_none(service_date, _generate_random_date)
+    currency = _use_if_none(currency, lambda: _generate_random_choice(currencies))
+    status = _use_if_none(status, lambda: _generate_random_choice(payment_statuses))
+    method = _use_if_none(method, lambda: _generate_random_choice(payment_methods))
+    notes = _use_if_none(notes, _generate_random_string)
+    language = _use_if_none(language, lambda: _generate_random_choice(languages))
+    auto_generate = _use_if_none(auto_generate, _generate_random_bool)
 
     invoice = Invoice.objects.create(
         customer=customer,
@@ -636,7 +735,7 @@ def create_invoice(
 
 def create_student_invoice(student=None, invoice=None):
     student, student_password = student or create_student(is_active=True)
-    invoice = invoice or create_invoice()
+    invoice = _use_if_none(invoice, lambda: create_invoice(auto_generate=False))
     student_invoice = StudentInvoice.objects.create(student=student, invoice=invoice)
     return student_invoice, student_password
 
@@ -651,15 +750,16 @@ def create_card_payment_method(
     holder=None,
     wallet=None,
 ):
-    brand = brand or _generate_random_string()
-    display_brand = display_brand or _generate_random_string()
-    last4 = last4 or _generate_random_string(4)
-    exp_month = exp_month or _generate_random_number(1, 12)
-    exp_year = exp_year or _generate_random_number(
-        timezone.now().year, timezone.now().year + 5
+    brand = _use_if_none(brand, _generate_random_string)
+    display_brand = _use_if_none(display_brand, _generate_random_string)
+    last4 = _use_if_none(last4, lambda: _generate_random_string(4))
+    exp_month = _use_if_none(exp_month, lambda: _generate_random_number(1, 12))
+    exp_year = _use_if_none(
+        exp_year,
+        lambda: _generate_random_number(timezone.now().year, timezone.now().year + 5),
     )
-    holder = holder or _generate_random_string()
-    wallet = wallet or _generate_random_string()
+    holder = _use_if_none(holder, _generate_random_string)
+    wallet = _use_if_none(wallet, _generate_random_string)
 
     return CardPaymentMethod.objects.create(
         payment_method=payment_method,
@@ -674,7 +774,7 @@ def create_card_payment_method(
 
 
 def create_paypal_payment_method(payment_method, payer_email=None):
-    payer_email = payer_email or _generate_random_email()
+    payer_email = _use_if_none(payer_email, _generate_random_email)
     return PayPalPaymentMethod.objects.create(
         payment_method=payment_method, payer_email=payer_email
     )
@@ -691,8 +791,10 @@ def create_payment_method(
     is_default=None,
 ):
     student, student_password = student or create_student(is_active=True)
-    stripe_payment_method_id = stripe_payment_method_id or _generate_random_string(50)
-    type = type or _generate_random_choice(payment_types)
+    stripe_payment_method_id = _use_if_none(
+        stripe_payment_method_id, _generate_random_string
+    )
+    type = _use_if_none(type, lambda: _generate_random_choice(payment_types))
     is_default = is_default if is_default is not None else _generate_random_bool()
 
     payment_method = PaymentMethod.objects.create(
@@ -708,5 +810,7 @@ def create_payment_method(
         specific_payment_method = create_paypal_payment_method(payment_method)
     elif type == PaymentType.REVOLUT:
         specific_payment_method = create_revolut_payment_method(payment_method)
+    else:
+        specific_payment_method = None
 
     return payment_method, specific_payment_method, student_password

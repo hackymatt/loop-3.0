@@ -18,7 +18,7 @@ class InvoiceUtilsTests(TestCase):
         self.assertEqual(get_invoice_number(123), "LOOPINV0000123")
 
     def test_invoice_generator_create_pdf(self):
-        invoice = create_invoice()
+        invoice = create_invoice(auto_generate=False)
 
         generator = InvoiceGenerator(invoice, "http://testserver")
 
@@ -32,7 +32,7 @@ class InvoiceUtilsTests(TestCase):
             mock_instance.write_pdf.assert_called_once()
 
     def test_generate_and_send_invoice_calls_mailer(self):
-        invoice = create_invoice()
+        invoice = create_invoice(auto_generate=False)
 
         with (
             patch("invoice.utils.Mailer.send") as mock_send,
