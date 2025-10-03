@@ -260,7 +260,9 @@ class CreateSubscriptionViewTest(TestCase):
             subscription_args["items"], [{"price": self.pricing.stripe_price_id}]
         )
 
-        mock_retrieve_promo.called_once_with(self.discount.stripe_promotion_code_id)
+        mock_retrieve_promo.assert_called_once_with(
+            self.discount.stripe_promotion_code_id
+        )
 
     def test_create_subscription_invalid_discount(self):
         login(self, self.student.user.email, self.student_password)
@@ -525,7 +527,9 @@ class ValidateCouponViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data["discount"], "Coupon has already been used")
 
-        mock_retrieve_promo.called_once_with(self.discount.stripe_promotion_code_id)
+        mock_retrieve_promo.assert_called_once_with(
+            self.discount.stripe_promotion_code_id
+        )
 
     @patch("plan.payment.utils.retrieve_promotion_code")
     def test_restriction_wrong_product(self, mock_retrieve_promo):

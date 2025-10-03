@@ -46,7 +46,7 @@ class CancelSubscriptionViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.student.current_subscription.refresh_from_db()
         self.assertTrue(self.student.current_subscription.cancel_at_period_end)
-        self.assertTrue(mock_modify.called_once())
+        mock_modify.assert_called_once()
 
     @patch(
         "user.me.subscription.views.modify_subscription",
@@ -59,7 +59,7 @@ class CancelSubscriptionViewTests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        self.assertTrue(mock_modify.called_once())
+        mock_modify.assert_called_once()
 
 
 class RenewSubscriptionViewTests(TestCase):
@@ -82,7 +82,7 @@ class RenewSubscriptionViewTests(TestCase):
         self.student.current_subscription.refresh_from_db()
         self.assertFalse(self.student.current_subscription.cancel_at_period_end)
 
-        self.assertTrue(mock_modify.called_once())
+        mock_modify.assert_called_once()
 
     @patch(
         "user.me.subscription.views.modify_subscription",
@@ -94,7 +94,7 @@ class RenewSubscriptionViewTests(TestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        self.assertTrue(mock_modify.called_once())
+        mock_modify.assert_called_once()
 
 
 class ChangeSubscriptionViewTests(TestCase):
