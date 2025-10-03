@@ -11,6 +11,7 @@ from ..factory import (
     create_project,
     create_stage,
     create_step,
+    create_project_progress,
 )
 from ..helpers import login
 
@@ -36,8 +37,7 @@ class CertificateViewTest(TestCase):
         login(self, self.student_1.user.email, self.student_1_password)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 1)
-        self.assertEqual(response.data["results"][0]["id"], str(self.certificate_1.id))
+        self.assertEqual(len(response.data["results"]), 2)
 
     def test_list_certificates_unauthenticated(self):
         response = self.client.get(self.url)

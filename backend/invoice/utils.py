@@ -53,34 +53,30 @@ class InvoiceGenerator:
                 "zip_code": self.customer.zip_code,
                 "country": self.customer.country,
             },
-            "products": sorted(
-                [
-                    {
-                        "id": self._format_id(id=item.id),
-                        "name": item.name,
-                        "quantity": item.quantity,
-                        "price_netto": self._format_number(
-                            number=self._calc_net_price(price=item.price)
-                        ),
-                        "subtotal_netto": self._format_number(
-                            number=self._calc_net_subtotal(
-                                price=item.price, quantity=item.quantity
-                            )
-                        ),
-                        "vat_percent": f"{self.vat_rate}%",
-                        "vat": self._format_number(
-                            number=self._calc_vat(price=item.price)
-                        ),
-                        "price_brutto": self._format_number(number=item.price),
-                        "subtotal_brutto": self._format_number(
-                            number=item.price * item.quantity
-                        ),
-                    }
-                    for item in self.items
-                ],
-                key=lambda x: float(x["subtotal_brutto"]),
-                reverse=True,
-            ),
+            "products": [
+                {
+                    "id": self._format_id(id=item.id),
+                    "name": item.name,
+                    "quantity": item.quantity,
+                    "price_netto": self._format_number(
+                        number=self._calc_net_price(price=item.price)
+                    ),
+                    "subtotal_netto": self._format_number(
+                        number=self._calc_net_subtotal(
+                            price=item.price, quantity=item.quantity
+                        )
+                    ),
+                    "vat_percent": f"{self.vat_rate}%",
+                    "vat": self._format_number(number=self._calc_vat(price=item.price)),
+                    "price_brutto": self._format_number(number=item.price),
+                    "subtotal_brutto": self._format_number(
+                        number=item.price * item.quantity
+                    ),
+                }
+                for item in sorted(
+                    self.items, key=lambda i: i.price * i.quantity, reverse=True
+                )
+            ],
             "total_netto": self._format_price(
                 price=self._calc_net_price(price=self.amount)
             ),
@@ -121,8 +117,7 @@ class InvoiceGenerator:
         start_date = date(previous_year, 1, 1)
         end_date = date(previous_year, 12, 31)
         sales = Invoice.objects.filter(created_at__date__range=(start_date, end_date))
-        total_sales = sum(invoice.amount for invoice in sales) if sales.exists() else 0
-        return total_sales
+        return sum(invoice.amount for invoice in sales)
 
     def _is_vat(self):
         return self._calc_sales() > CONFIG["vat_limit"]

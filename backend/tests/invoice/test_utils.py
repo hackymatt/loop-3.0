@@ -22,7 +22,7 @@ class InvoiceUtilsTests(TestCase):
 
         generator = InvoiceGenerator(invoice, "http://testserver")
 
-        with patch("invoice.generator.HTML") as mock_html:
+        with patch("invoice.utils.HTML") as mock_html:
             mock_instance = mock_html.return_value
             mock_instance.write_pdf.return_value = None
 
@@ -69,3 +69,46 @@ class InvoiceUtilsTests(TestCase):
             args, kwargs = mock_send.call_args
             self.assertEqual(kwargs["email_template"], "subscription_cancelled.html")
             self.assertIn("Subscription Canceled", kwargs["subject"])
+
+    @patch("invoice.utils.get_storage_class")
+    @patch("invoice.utils.InvoiceGenerator._upload")
+    def test_invoice_generator_upload_returns_url(
+        self, mock_upload, mock_get_storage_class
+    ):
+        invoice = create_invoice(auto_generate=False)
+        generator = InvoiceGenerator(invoice, "http://testserver")
+
+        # Mock storage class instance and its `.url()` method
+        mock_storage_instance = mock_get_storage_class.return_value.return_value
+        mock_storage_instance.url.return_value = "https://mockstorage.com/invoice.pdf"
+        mock_upload.return_value = "2025/10/LOOPINV0000001.pdf"
+
+        url = generator.upload()
+
+        mock_upload.assert_called_once()
+        mock_storage_instance.url.assert_called_once_with("2025/10/LOOPINV0000001.pdf")
+        self.assertEqual(url, "https://mockstorage.com/invoice.pdf")
+
+    @patch("os.remove")
+    @patch("os.path.exists", return_value=True)
+    def test_invoice_generator_remove_deletes_file(self, mock_exists, mock_remove):
+        invoice = create_invoice(auto_generate=False)
+        generator = InvoiceGenerator(invoice, "http://testserver")
+
+        generator.remove()
+
+        mock_exists.assert_called_once_with(generator.path)
+        mock_remove.assert_called_once_with(generator.path)
+
+    @patch("os.remove")
+    @patch("os.path.exists", return_value=False)
+    def test_invoice_generator_remove_skips_if_file_not_exists(
+        self, mock_exists, mock_remove
+    ):
+        invoice = create_invoice(auto_generate=False)
+        generator = InvoiceGenerator(invoice, "http://testserver")
+
+        generator.remove()
+
+        mock_exists.assert_called_once_with(generator.path)
+        mock_remove.assert_not_called()

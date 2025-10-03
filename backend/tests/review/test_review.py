@@ -1,6 +1,7 @@
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
+from review.models import Review
 from const import Language, Urls
 from ..factory import create_student, create_project, create_review
 from ..helpers import login

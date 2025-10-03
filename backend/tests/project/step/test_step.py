@@ -5,13 +5,14 @@ from rest_framework.test import APIClient
 from unittest.mock import patch
 from rest_framework import status
 from plan.subscription.utils import subscribe
+from project.enrollment.models import ProjectEnrollment
+from project.progress.models import ProjectProgress
 from ...factory import (
     create_student,
     create_project,
     create_step,
     create_stage,
     create_plan,
-    create_project_progress,
     create_project_enrollment,
 )
 from ...helpers import login, mock_send_request

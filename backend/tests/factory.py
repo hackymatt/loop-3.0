@@ -24,6 +24,7 @@ from blog.topic.models import Topic, TopicTranslation
 from blog.models import Blog, BlogTranslation
 
 from project.category.models import Category, CategoryTranslation
+from project.channel.models import ChannelPost, ChannelPostLike, ChannelPostComment
 from project.level.models import Level, LevelTranslation
 from project.technology.models import Technology
 from project.tag.models import (
@@ -116,17 +117,14 @@ def _generate_random_date(date=timezone.now()):
 def _create_translations(model, obj, languages, translation_fields, related_field_name):
     translations = {}
     for language in languages:
-        # Create translation data with random string generation
         translation_data = {
             field: _generate_random_string(50) for field in translation_fields
         }
 
-        # Add the related object (e.g., 'level' or 'topic') dynamically
         translation_data.update(
             {"language": language, related_field_name: obj, **translation_data}
         )
 
-        # Create the translation instance and store it in the dictionary
         translations[language] = model.objects.create(**translation_data)
 
     return translations
@@ -544,7 +542,7 @@ def create_project_progress(student=None, step=None, completed_at=None):
 
 
 def create_review(student=None, project=None, rating=None, language=None, comment=None):
-    student = _use_if_none(student, lambda: create_student(is_active=True))[0]
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
     project = _use_if_none(
         project,
         lambda: create_project(
@@ -620,7 +618,7 @@ def create_plan(type=None, popular=None, tokens_limit=None, stripe_product_id=No
 
     for currency in Currency:
         for interval in PaymentInterval:
-            create_plan_pricing(plan, currency, interval, type=type)
+            create_plan_pricing(plan, currency, interval)
 
     return plan
 
@@ -733,8 +731,9 @@ def create_invoice(
     return invoice
 
 
-def create_student_invoice(student=None, invoice=None):
-    student, student_password = student or create_student(is_active=True)
+def create_student_invoice(student=None, student_password=None, invoice=None):
+    if student is None or student_password is None:
+        student, student_password = create_student(is_active=True)
     invoice = _use_if_none(invoice, lambda: create_invoice(auto_generate=False))
     student_invoice = StudentInvoice.objects.create(student=student, invoice=invoice)
     return student_invoice, student_password
@@ -786,11 +785,13 @@ def create_revolut_payment_method(payment_method):
 
 def create_payment_method(
     student=None,
+    student_password=None,
     stripe_payment_method_id=None,
     type=None,
     is_default=None,
 ):
-    student, student_password = student or create_student(is_active=True)
+    if student is None or student_password is None:
+        student, student_password = create_student(is_active=True)
     stripe_payment_method_id = _use_if_none(
         stripe_payment_method_id, _generate_random_string
     )
@@ -814,3 +815,52 @@ def create_payment_method(
         specific_payment_method = None
 
     return payment_method, specific_payment_method, student_password
+
+
+def create_channel_post(
+    project=None, student=None, language=None, title=None, message=None
+):
+    project = _use_if_none(
+        project,
+        lambda: create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        ),
+    )
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
+    language = _use_if_none(language, lambda: _generate_random_choice(languages))
+    title = _use_if_none(title, lambda: _generate_random_string())
+    message = _use_if_none(message, lambda: _generate_random_string(100))
+
+    return ChannelPost.objects.create(
+        project=project,
+        student=student,
+        language=language,
+        title=title,
+        message=message,
+    )
+
+
+def create_channel_post_like(channel_post=None, student=None):
+    channel_post = _use_if_none(
+        channel_post,
+        lambda: create_channel_post(),
+    )
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
+
+    return ChannelPostLike.objects.create(channel_post=channel_post, student=student)
+
+
+def create_channel_post_comment(channel_post=None, student=None, message=None):
+    channel_post = _use_if_none(
+        channel_post,
+        lambda: create_channel_post(),
+    )
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
+    message = _use_if_none(message, lambda: _generate_random_string(100))
+
+    return ChannelPostComment.objects.create(
+        channel_post=channel_post, student=student, message=message
+    )

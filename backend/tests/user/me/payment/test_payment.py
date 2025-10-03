@@ -20,19 +20,23 @@ class PaymentMethodViewSetTests(TestCase):
             self.student_password,
         ) = create_payment_method(type=PaymentType.CARD)
         self.payment_method_2, _, _ = create_payment_method(
-            student=(self.payment_method.student, self.student_password),
+            student=self.payment_method.student,
+            student_password=self.student_password,
             type=PaymentType.PAYPAL,
         )
         self.payment_method_3, _, _ = create_payment_method(
-            student=(self.payment_method.student, self.student_password),
+            student=self.payment_method.student,
+            student_password=self.student_password,
             type=PaymentType.REVOLUT,
         )
         self.payment_method_4, _, _ = create_payment_method(
-            student=(self.payment_method.student, self.student_password),
+            student=self.payment_method.student,
+            student_password=self.student_password,
             type=PaymentType.CARD,
         )
         self.payment_method_5, _, _ = create_payment_method(
-            student=(self.payment_method.student, self.student_password),
+            student=self.payment_method.student,
+            student_password=self.student_password,
             type=PaymentType.PAYPAL,
         )
 
@@ -101,7 +105,14 @@ class PaymentMethodViewSetTests(TestCase):
     )
     def test_destroy_stripe_error(self, mock_detach):
         login(self, self.payment_method.student.user.email, self.student_password)
-        response = self.client.delete(f"{self.url}/{self.payment_method.id}")
 
+        self.payment_method.is_default = False
+        self.payment_method.save()
+
+        response = self.client.delete(f"{self.url}/{self.payment_method.id}")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", response.data)
+
+        mock_detach.assert_called_once_with(
+            self.payment_method.stripe_payment_method_id
+        )

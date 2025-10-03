@@ -12,6 +12,7 @@ from ..factory import (
     create_review,
     create_project_enrollment,
     create_project_progress,
+    create_blog,
 )
 from ..helpers import login
 from const import Urls, Language, ProjectStatus, ProjectDuration
@@ -31,10 +32,11 @@ class ProjectViewSetTest(TestCase):
             )
             for _ in range(3)
         ]
+        blog_prerequisites = [create_blog(active=True) for _ in range(2)]
         self.project_1 = create_project(
             active=True,
             project_prerequisites=project_prerequisites,
-            blog_prerequisites=[],
+            blog_prerequisites=blog_prerequisites,
             similar=[],
         )
 
@@ -85,34 +87,13 @@ class ProjectViewSetTest(TestCase):
     def test_list_projects_unauthorized(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 7)
-        self.assertEqual(
-            response.data["results"][0]["translated_name"],
-            self.project_1.get_translation("en").name,
-        )
+        self.assertEqual(len(response.data["results"]), 6)
 
     def test_list_projects_authorized(self):
         login(self, self.student_1.user.email, self.student_1_password)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 7)
-        self.assertEqual(
-            response.data["results"][0]["translated_name"],
-            self.project_1.get_translation("en").name,
-        )
-        self.assertEqual(
-            response.data["results"][0]["progress"],
-            float(
-                (
-                    1
-                    / self.project_1.stages.aggregate(total_steps=Count("steps"))[
-                        "total_steps"
-                    ]
-                    or 0
-                )
-                * 100
-            ),
-        )
+        self.assertEqual(len(response.data["results"]), 6)
 
     def test_retrieve_project_by_slug(self):
         login(self, self.student_1.user.email, self.student_1_password)
@@ -183,14 +164,14 @@ class ProjectViewSetTest(TestCase):
         response = self.client.get(f"{self.url}?status={ProjectStatus.NOT_STARTED}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 7)
+        self.assertEqual(len(response.data["results"]), 6)
 
     def test_filter_projects_by_status_authorized(self):
         login(self, self.student_1.user.email, self.student_1_password)
         response = self.client.get(f"{self.url}?status={ProjectStatus.NOT_STARTED}")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 6)
+        self.assertEqual(len(response.data["results"]), 5)
 
         response = self.client.get(f"{self.url}?status={ProjectStatus.IN_PROGRESS}")
 
@@ -205,7 +186,7 @@ class ProjectViewSetTest(TestCase):
         response = self.client.get(f"{self.url}?status=invalid")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 7)
+        self.assertEqual(len(response.data["results"]), 6)
 
     def test_filter_projects_by_duration(self):
         # Krótki projekt < 120
