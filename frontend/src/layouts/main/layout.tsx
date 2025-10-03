@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import { Toolbar, Container } from "@mui/material";
 
 import { CONFIG } from "src/global-config";
+import { PLAN_TYPE } from "src/consts/plan";
 
 import { Logo } from "src/components/logo";
 import { useUserContext } from "src/components/user";
@@ -67,7 +68,11 @@ export function MainLayout({
   layoutQuery = "md",
 }: MainLayoutProps) {
   const user = useUserContext();
-  const { isLoggedIn } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type },
+  } = user.state;
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
   const navData = useNavData(data);
 
@@ -102,7 +107,7 @@ export function MainLayout({
               ),
               bottomArea: (
                 <Box sx={{ py: 3, px: 2.5, display: "flex", flexDirection: "column", gap: 2 }}>
-                  {isLoggedIn ? (
+                  {isLoggedIn && isFreePlan ? (
                     <>
                       {/* @slot Upgrade button */}
                       <UpgradeButton
@@ -188,8 +193,10 @@ export function MainLayout({
 
           {isLoggedIn ? (
             <>
-              {/* @slot Upgrade button */}
-              <UpgradeButton sx={{ display: { xs: "none", [layoutQuery]: "inline-flex" } }} />
+              {isFreePlan && (
+                // @slot Upgrade button
+                <UpgradeButton sx={{ display: { xs: "none", [layoutQuery]: "inline-flex" } }} />
+              )}
               {/* @slot Account button */}
               <NavAccountPopover />
             </>

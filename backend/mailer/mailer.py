@@ -4,6 +4,8 @@ from utils.google.gmail import GmailApi
 from global_config import CONFIG
 from utils.logger.logger import logger
 from django.utils.translation import gettext as _
+from django.utils import translation
+from contextlib import nullcontext
 
 
 class Mailer:
@@ -12,21 +14,31 @@ class Mailer:
         self.website_url = website_url
 
     def send(
-        self, email_template: str, to: List[str], subject: str, data, attachments=[]
+        self,
+        email_template: str,
+        to: List[str],
+        subject: str,
+        data,
+        attachments=[],
+        language=None,
     ):
-        email_body = render_to_string(
-            email_template,
-            {
-                **data,
-                **{
-                    "website_url": self.website_url,
-                    "footer": _(
-                        "You received this email to notify you of important changes to your account in loop."
-                    ),
-                    "company": "loop",
+        context_manager = translation.override(language) if language else nullcontext()
+
+        with context_manager:
+            email_body = render_to_string(
+                email_template,
+                {
+                    **data,
+                    **{
+                        "website_url": self.website_url,
+                        "footer": _(
+                            "You received this email to notify you of important changes to your account in loop."
+                        ),
+                        "company": "loop",
+                    },
                 },
-            },
-        )
+            )
+
         try:
             self.gmail_api.send(
                 CONFIG["noreply_email"],

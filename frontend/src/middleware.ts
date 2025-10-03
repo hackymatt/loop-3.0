@@ -12,11 +12,15 @@ const locales = Object.values(LANGUAGE);
 const AUTHORIZED_PATHS = [
   paths.certificates,
   paths.learn,
+  paths.channel,
   paths.account.dashboard,
   paths.account.personal,
   paths.account.manage,
   paths.account.subscription,
+  paths.account.payment,
+  paths.account.invoices,
   paths.payment,
+  paths.orderStatus,
 ];
 
 const UNAUTHORIZED_PATHS = [
@@ -27,6 +31,7 @@ const UNAUTHORIZED_PATHS = [
   paths.auth.resetPassword,
   paths.auth.updatePassword,
   paths.about,
+  // paths.pricing,
 ];
 
 const PUBLIC_FILE = /\.(.*)$/;

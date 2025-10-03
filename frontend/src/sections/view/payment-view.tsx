@@ -1,65 +1,128 @@
 "use client";
 
+import type { IPlanProps } from "src/types/plan";
 import type { BoxProps } from "@mui/material/Box";
 import type { Language } from "src/locales/types";
-import type { PlanType, IPlanProps } from "src/types/plan";
+import type { IPersonalDataProps } from "src/types/user";
 
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
-import { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { loadStripe } from "@stripe/stripe-js";
+import { useSetState } from "minimal-shared/hooks";
+import { useMemo, useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Elements,
+  useStripe,
+  useElements,
+  AddressElement,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import { Divider } from "@mui/material";
 import Container from "@mui/material/Container";
+import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
 
 import { useQueryParams } from "src/hooks/use-query-params";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
-import { useFormErrorHandler } from "src/hooks/use-form-error-handler";
 
-import { PLAN_TYPE } from "src/consts/plan";
-import { useSubscribe } from "src/api/plan/subscribe";
+import { CONFIG } from "src/global-config";
+import { PLAN_INTERVAL } from "src/consts/plan";
+import { useUpdateData } from "src/api/me/data";
+import { SUBSCRIPTION_RESULT } from "src/consts/subscription";
+import { useCreateSubscription } from "src/api/plan/subscription";
 
-import { useUserContext } from "src/components/user";
-import { Form, Field } from "src/components/hook-form";
+import { Form } from "src/components/hook-form";
 
-import { PaymentForm } from "../payment/payment-form";
+import { usePaymentSchema } from "../payment/schema";
 import { PaymentSummary } from "../payment/payment-summary";
-import { usePaymentSchema, useCustomerSchema, usePaymentMethods } from "../payment/schema";
 
 // ----------------------------------------------------------------------
+
+const stripePromise = loadStripe(CONFIG.stripePublishableKey);
+
+// ----------------------------------------------------------------------
+
 type PaymentViewProps = {
-  data: { plan: IPlanProps };
+  data: {
+    plan: IPlanProps;
+    personal: IPersonalDataProps;
+    clientSecret: string;
+    customerSessionClientSecret: string;
+  };
   language: Language;
 };
 
+export type DiscountProps = {
+  code: string | null;
+  details: { isPercentage: boolean; value: number } | null;
+  error: string | null;
+};
+
 export function PaymentView({ data, language }: PaymentViewProps) {
-  const { query } = useQueryParams();
-  const router = useRouter();
+  const theme = useTheme();
+  const { clientSecret, customerSessionClientSecret } = data;
+
+  return (
+    <Elements
+      stripe={stripePromise}
+      options={{
+        clientSecret,
+        customerSessionClientSecret,
+        appearance: {
+          theme: "flat",
+          variables: {
+            borderRadius: "8px",
+            colorPrimary: theme.palette.primary.main,
+            spacingUnit: "4px",
+          },
+        },
+      }}
+    >
+      <Payment data={data} language={language} />
+    </Elements>
+  );
+}
+
+function Payment({ data }: PaymentViewProps) {
+  const { t } = useTranslation("payment");
+  const { t: locale } = useTranslation("locale");
+  const { t: c } = useTranslation("countries");
   const localize = useLocalizedPath();
 
-  const { t: account } = useTranslation("account");
-  const { t } = useTranslation("payment");
+  const discount = useSetState<DiscountProps>({
+    code: null,
+    details: null,
+    error: null,
+  });
 
-  const user = useUserContext();
-  const { email, firstName, lastName } = user.state;
+  const countries = c("countries", { returnObjects: true }) as {
+    code: string;
+    label: string;
+    phone: string;
+  }[];
 
-  const { plan } = data;
+  const { query } = useQueryParams();
 
-  const { mutateAsync: subscribe } = useSubscribe(language);
+  const interval = query?.interval ?? PLAN_INTERVAL.YEARLY;
+  const currency = query?.currency ?? locale("currency");
 
-  const isFreePlan = (plan.slug || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+
+  const { mutateAsync: updateData } = useUpdateData();
+  const { mutateAsync: createSubscription } = useCreateSubscription();
+
+  const { plan, personal } = data;
+  const { email, firstName, lastName, streetAddress, zipCode, city, country } = personal;
 
   const PaymentSchema = zod.object({
     summary: usePaymentSchema(),
-    customer: useCustomerSchema(),
-    paymentMethods: usePaymentMethods(),
   });
 
   type PaymentSchemaType = zod.infer<typeof PaymentSchema>;
@@ -67,17 +130,8 @@ export function PaymentView({ data, language }: PaymentViewProps) {
   const defaultValues: PaymentSchemaType = useMemo(
     () => ({
       summary: { termsAcceptance: false },
-      customer: {
-        email: email || "",
-        firstName: firstName || "",
-        lastName: lastName || "",
-      },
-      paymentMethods: {
-        method: "card",
-        card: { number: "", holder: "", expiration: "", security: "" },
-      },
     }),
-    [email, firstName, lastName]
+    []
   );
 
   const methods = useForm<PaymentSchemaType>({
@@ -89,75 +143,109 @@ export function PaymentView({ data, language }: PaymentViewProps) {
   const { handleSubmit, reset } = methods;
 
   useEffect(() => {
-    reset({
-      ...defaultValues,
-      paymentMethods: {
-        method: isFreePlan ? "" : "card",
-        card: { number: "", holder: "", expiration: "", security: "" },
-      },
+    reset(defaultValues);
+  }, [defaultValues, reset]);
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const onSubmit = handleSubmit(async (formData) => {
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const addressElement = elements.getElement(AddressElement);
+    const {
+      value: { name, address },
+    } = await addressElement!.getValue();
+
+    const nameParts = name?.trim().split(" ") || [];
+
+    await updateData({
+      first_name: nameParts[0] || "",
+      last_name: nameParts.slice(1).join(" ") || "",
+      street_address: [address.line1, address.line2].filter(Boolean).join(", "),
+      zip_code: address.postal_code || "",
+      city: address.city || "",
+      country: countries.find(({ code }) => code === address.country)?.label || "",
     });
-  }, [defaultValues, isFreePlan, reset]);
 
-  const handleFormError = useFormErrorHandler(methods);
+    const baseUrl = `${window.location.origin}${paths.orderStatus}?status=${SUBSCRIPTION_RESULT.PENDING}&plan=${plan.type}&currency=${currency}&interval=${interval}`;
+    const redirectUrl = discount.state.details ? `${baseUrl}&code=${discount.state.code}` : baseUrl;
 
-  const onSubmit = handleSubmit(async (newData) => {
+    const { error } = await stripe.confirmSetup({
+      elements,
+      confirmParams: {
+        return_url: localize(redirectUrl),
+      },
+      redirect: "if_required",
+    });
+
+    if (error) {
+      setPaymentError(error.message || "Something went wrong");
+      return;
+    }
+
     try {
-      const { data: response } = await subscribe({
-        plan: query.plan,
-        interval:
-          query.plan === PLAN_TYPE.FREE ? null : query.yearly === "true" ? "yearly" : "monthly",
-        currency: plan.currency,
-        user: { first_name: newData.customer.firstName, last_name: newData.customer.lastName },
+      await createSubscription({
+        plan: plan.type,
+        currency,
+        interval,
+        code: discount.state.details ? discount.state.code : null,
       });
-      const { type, ...rest } = response;
-      user.setField("plan", { ...rest, type: type as PlanType });
-      router.push(localize(paths.account.dashboard));
-    } catch (error) {
-      handleFormError(error);
+    } catch (err) {
+      setPaymentError((err as Error).message || "Something went wrong");
     }
   });
 
   const renderAccountDetails = () => (
     <>
       <StepLabel title={t("customer.label")} step="1" />
-      <Box sx={{ gap: 5, display: "flex", flexDirection: "column" }}>
-        <Box
-          sx={{
-            rowGap: 2,
-            display: "grid",
-            gridTemplateColumns: "repeat(1, 1fr)",
-          }}
-        >
-          <Field.Text name="customer.email" label={account("email.label")} disabled />
-          <Field.Text name="customer.firstName" label={account("firstName.label")} />
-          <Field.Text name="customer.lastName" label={account("lastName.label")} />
-        </Box>
-      </Box>
+      <AddressElement
+        options={{
+          mode: "billing",
+          defaultValues: {
+            name: `${firstName} ${lastName}`,
+            address: {
+              line1: streetAddress || undefined,
+              postal_code: zipCode || undefined,
+              city: city || undefined,
+              country: countries.find(({ label }) => label === country)?.code || locale("country"),
+            },
+          },
+        }}
+      />
     </>
   );
 
   const renderPaymentMethods = () => (
     <>
       <StepLabel title={t("paymentMethods.label")} step="2" />
-      <PaymentForm
-        name="paymentMethods.method"
-        options={[
-          {
-            label: t("paymentMethods.card.label"),
-            value: "card",
-            description: t("paymentMethods.card.description"),
+      {paymentError && (
+        <Typography variant="body2" color="error" sx={{ width: 1, p: 1 }}>
+          {paymentError}
+        </Typography>
+      )}
+      <PaymentElement
+        options={{
+          defaultValues: {
+            billingDetails: {
+              name: `${firstName} ${lastName}`,
+              email: email || undefined,
+              address: {
+                line1: streetAddress || undefined,
+                postal_code: zipCode || undefined,
+                city: city || undefined,
+                country: country || undefined,
+              },
+            },
           },
-          {
-            label: t("paymentMethods.applepay.label"),
-            value: "applepay",
-            description: t("paymentMethods.applepay.description"),
+          layout: {
+            type: "accordion",
+            radios: true,
+            defaultCollapsed: false,
           },
-          {
-            label: t("paymentMethods.googlepay.label"),
-            value: "googlepay",
-            description: t("paymentMethods.googlepay.description"),
-          },
-        ]}
+        }}
       />
     </>
   );
@@ -169,27 +257,23 @@ export function PaymentView({ data, language }: PaymentViewProps) {
       </Typography>
 
       <Typography sx={{ textAlign: "center", color: "text.secondary", mb: 5 }}>
-        {t("subtitle").replace("{plan}", plan?.license || "")}
+        {t("subtitle", { plan: plan?.license || "" })}
       </Typography>
 
       <Form methods={methods} onSubmit={onSubmit}>
-        {!isFreePlan ? (
-          <Grid container spacing={{ xs: 5, md: 8 }}>
-            <Grid size={{ xs: 12, md: 7 }}>
-              {renderAccountDetails()}
+        <Grid container spacing={{ xs: 5, md: 8 }}>
+          <Grid size={{ xs: 12, md: 7 }}>
+            {renderAccountDetails()}
 
-              <Divider sx={{ my: 5, borderStyle: "dashed" }} />
+            <Divider sx={{ my: 5, borderStyle: "dashed" }} />
 
-              {renderPaymentMethods()}
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 5 }}>{plan && <PaymentSummary plan={plan} />}</Grid>
+            {renderPaymentMethods()}
           </Grid>
-        ) : (
-          <Grid container spacing={{ xs: 5, md: 8 }} justifyContent="center">
-            <Grid size={{ xs: 12, md: 5 }}>{plan && <PaymentSummary plan={plan} />}</Grid>
+
+          <Grid size={{ xs: 12, md: 5 }}>
+            {plan && <PaymentSummary plan={plan} discount={discount} />}
           </Grid>
-        )}
+        </Grid>
       </Form>
     </Container>
   );

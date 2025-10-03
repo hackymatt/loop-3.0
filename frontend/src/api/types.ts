@@ -9,6 +9,7 @@ export interface ListApiResponse<T = any> {
   results: T[];
   records_count: number;
   pages_count: number;
+  error?: AxiosError;
 }
 
 export interface GetQueryResponse<T = any> {

@@ -2,8 +2,12 @@
 
 import type { IDashboardProps } from "src/types/user";
 
+import { useEffect } from "react";
+
 import Grid from "@mui/material/Grid2";
 import { Box, Container } from "@mui/material";
+
+import { useUserContext } from "src/components/user";
 
 import { ProfileSummary } from "../dashboard/profile-summary";
 import { ProjectsProgress } from "../dashboard/projects-progress";
@@ -15,6 +19,18 @@ type DashboardProps = {
 };
 
 export function DashboardView({ data }: DashboardProps) {
+  const { setState } = useUserContext();
+  const { projects, certificates, profile } = data;
+
+  useEffect(() => {
+    const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      planLicense: _,
+      ...rest
+    } = profile.user;
+    setState(rest);
+  }, [profile.user, setState]);
+
   const renderContent = () => (
     <Box
       sx={{
@@ -33,9 +49,9 @@ export function DashboardView({ data }: DashboardProps) {
           mb: 1,
         }}
       >
-        <ProjectsProgress projects={data.projects || []} />
+        <ProjectsProgress projects={projects || []} />
 
-        <CertificatesProgress certificates={data.certificates || []} />
+        <CertificatesProgress certificates={certificates || []} />
       </Box>
     </Box>
   );
@@ -46,11 +62,7 @@ export function DashboardView({ data }: DashboardProps) {
         py: 5,
       }}
     >
-      <ProfileSummary
-        totalPoints={data.totalPoints || 0}
-        dailyStreak={data.dailyStreak || 0}
-        tokens={data.tokens || 0}
-      />
+      <ProfileSummary profile={profile} />
     </Box>
   );
 

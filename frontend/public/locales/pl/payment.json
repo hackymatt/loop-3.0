@@ -4,12 +4,14 @@
     "description": "Zrealizuj płatność szybko i bezpiecznie. Wybierz preferowaną metodę i rozpocznij naukę programowania bez opóźnień."
   },
   "title": "Dokończmy ulepszenie Twojego konta!",
-  "subtitle": "Plan {plan} to idealny wybór dla Ciebie.",
+  "subtitle": "Plan {{plan}} to idealny wybór dla Ciebie.",
   "summary": {
     "label": "Podsumowanie",
     "plan": "Plan",
     "yearly": { "save": "Zaoszczędź", "part1": "wybierając", "part2": "rozliczanie roczne" },
-    "total": "Łącznie",
+    "due": "Do zapłaty",
+    "total": "Do zapłaty dziś",
+    "trial": "({{days}} dni za darmo)",
     "button": { "free": "Subskrybuj", "other": "Zapłać i subskrybuj" },
     "info": "Zatwierdzając subskrypcję, zezwalasz loop na obciążenie Twojego konta przyszłymi płatnościami zgodnie z jego warunkami. Zawsze możesz anulować subskrypcję.",
     "stripe": {
@@ -18,46 +20,12 @@
       "privacy": "Prywatność"
     }
   },
-
   "customer": { "label": "Dane konta" },
   "paymentMethods": {
-    "label": "Metody płatności",
-    "card": { "label": "Karta", "description": "Obsługujemy karty Mastercard i Visa." },
-    "applepay": {
-      "label": "Apple Pay",
-      "description": "Po złożeniu zamówienia pojawi się dodatkowy krok w celu uzupełnienia szczegółów płatności."
-    },
-    "googlepay": {
-      "label": "Google Pay",
-      "description": "Po złożeniu zamówienia pojawi się dodatkowy krok w celu uzupełnienia szczegółów płatności."
-    }
+    "label": "Metody płatności"
   },
-  "card": {
-    "number": {
-      "label": "Numer karty",
-      "errors": {
-        "required": "Numer karty jest wymagany",
-        "invalid": "Numer karty jest niekompletny."
-      }
-    },
-    "holder": {
-      "label": "Właściciel karty",
-      "placeholder": "Jan Kowalski",
-      "errors": { "required": "Właściciel karty jest wymagany" }
-    },
-    "expiration": {
-      "label": "Data ważności",
-      "errors": {
-        "required": "Data ważności jest wymagana",
-        "invalid": "Data ważności jest nieprawidłowa."
-      }
-    },
-    "security": {
-      "label": "CVC",
-      "errors": {
-        "required": "Kod CVC jest wymagany",
-        "invalid": "Kod CVC karty jest niekompletny."
-      }
-    }
+  "discount": {
+    "placeholder": "Kod rabatowy",
+    "button": "Zastosuj"
   }
 }

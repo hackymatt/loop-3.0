@@ -29,10 +29,10 @@ export const recentPostsQuery = (language: Language) => {
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IBlogRecentProps[]>> => {
-    const results = await getSimpleListData<IBlog>(queryUrl, {
+    const { data } = await getSimpleListData<IBlog>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    const modifiedResults: IBlogRecentProps[] = (results ?? []).map(
+    const modifiedResults: IBlogRecentProps[] = (data ?? []).map(
       ({ translated_name, topic, image, published_at, ...rest }: IBlog) => ({
         ...rest,
         name: translated_name,

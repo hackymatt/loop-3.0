@@ -225,7 +225,7 @@
           "value": "7. Koszty Klienta związane z dostępem do sieci internetowej oraz transmisją danych ponoszone są wyłącznie przez Klienta, zgodnie z taryfą ustaloną przez dostawcę usług internetowych, z którym Klient zawarł umowę."
         },
         {
-          "value": "8. Subskrypcja odnawia się automatycznie na kolejny okres rozliczeniowy (miesięczny lub roczny), chyba że Klient wypowie ją najpóźniej 3 dni przed końcem bieżącego okresu. Wypowiedzenie subskrypcji może być złożone przez panel użytkownika."
+          "value": "8. Subskrypcja odnawia się automatycznie na kolejny okres rozliczeniowy (miesięczny lub roczny), chyba że Klient wypowie ją przed końcem bieżącego okresu rozliczeniowego. Wypowiedzenie subskrypcji może być złożone przez panel użytkownika."
         }
       ]
     },

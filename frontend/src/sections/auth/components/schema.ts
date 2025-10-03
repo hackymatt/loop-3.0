@@ -19,10 +19,9 @@ export const useSignInSchema = () => {
       .string()
       .min(1, { message: t("password.errors.required") })
       .min(CONFIG.minPasswordLength, {
-        message: t("password.errors.minLength").replace(
-          "minPasswordLength",
-          String(CONFIG.minPasswordLength)
-        ),
+        message: t("password.errors.minLength", {
+          minPasswordLength: CONFIG.minPasswordLength,
+        }),
       })
       .regex(/[A-Z]/, { message: t("password.errors.bigLetter") })
       .regex(/[a-z]/, { message: t("password.errors.smallLetter") })
@@ -48,10 +47,9 @@ export const useSignUpSchema = () => {
       .string()
       .min(1, { message: t("password.errors.required") })
       .min(CONFIG.minPasswordLength, {
-        message: t("password.errors.minLength").replace(
-          "minPasswordLength",
-          String(CONFIG.minPasswordLength)
-        ),
+        message: t("password.errors.minLength", {
+          minPasswordLength: CONFIG.minPasswordLength,
+        }),
       })
       .regex(/[A-Z]/, { message: t("password.errors.bigLetter") })
       .regex(/[a-z]/, { message: t("password.errors.smallLetter") })
@@ -93,10 +91,9 @@ export const useUpdatePasswordSchema = () => {
       .string()
       .min(1, { message: t("password.errors.required") })
       .min(CONFIG.minPasswordLength, {
-        message: t("password.errors.minLength").replace(
-          "minPasswordLength",
-          String(CONFIG.minPasswordLength)
-        ),
+        message: t("password.errors.minLength", {
+          minPasswordLength: CONFIG.minPasswordLength,
+        }),
       })
       .regex(/[A-Z]/, { message: t("password.errors.bigLetter") })
       .regex(/[a-z]/, { message: t("password.errors.smallLetter") })

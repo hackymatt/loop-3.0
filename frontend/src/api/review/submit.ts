@@ -2,6 +2,8 @@ import type { AxiosError } from "axios";
 
 import { useMutation } from "@tanstack/react-query";
 
+import { useRouter } from "src/routes/hooks";
+
 import { URLS } from "src/api/urls";
 import { Api } from "src/api/service";
 
@@ -15,11 +17,21 @@ type ISubmit = {
 
 type ISubmitReturn = { data: ISubmit; status: number };
 
-export const useReviewSubmit = () =>
-  useMutation<ISubmitReturn, AxiosError, ISubmit>(async (variables) => {
-    const result = await Api.post(endpoint, variables);
-    return {
-      status: result.status,
-      data: result.data,
-    };
-  });
+export const useReviewSubmit = () => {
+  const router = useRouter();
+
+  return useMutation<ISubmitReturn, AxiosError, ISubmit>(
+    async (variables) => {
+      const result = await Api.post(endpoint, variables);
+      return {
+        status: result.status,
+        data: result.data,
+      };
+    },
+    {
+      onSuccess: () => {
+        router.refresh();
+      },
+    }
+  );
+};

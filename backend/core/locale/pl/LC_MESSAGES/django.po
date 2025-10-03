@@ -92,3 +92,195 @@ msgstr "Pomagasz w realizacji kroku projektu programistycznego. Odpowiadaj wył�
 
 msgid "Token usage limit exceeded. Please upgrade your plan or wait until next period."
 msgstr "Limit wykorzystania tokenów został przekroczony. Proszę zmienić plan lub poczekać do kolejnego okresu rozliczeniowego."
+
+msgid "Payment confirmation"
+msgstr "Potwierdzenie płatności"
+
+msgid "Hi %(first_name)s, we have successfully received your payment."
+msgstr "Cześć %(first_name)s, Twoja płatność została pomyślnie przetworzona."
+
+msgid "Payment details:"
+msgstr "Szczegóły płatności:"
+
+msgid "Invoice Number:"
+msgstr "Numer faktury:"
+
+msgid "Amount:"
+msgstr "Kwota:"
+
+msgid "Payment Method:"
+msgstr "Metoda płatności:"
+
+msgid "Status:"
+msgstr "Status:"
+
+msgid "Paid"
+msgstr "Zapłacono"
+
+msgid "Due"
+msgstr "Do zapłaty"
+
+msgid "Stripe"
+msgstr "Stripe"
+
+msgid "Bank transfer"
+msgstr "Przelew bankowy"
+
+msgid "The invoice is attached."
+msgstr "Faktura znajduje się w załączniku."
+
+msgid "Invoice"
+msgstr "Faktura"
+
+msgid "Invoice Date"
+msgstr "Data wystawienia faktury"
+
+msgid "Service Date"
+msgstr "Data wykonania usługi"
+
+msgid "Invoice Number"
+msgstr "Numer faktury"
+
+msgid "VAT ID"
+msgstr "NIP"
+
+msgid "EU VAT"
+msgstr "VAT UE"
+
+msgid "Poland"
+msgstr "Polska"
+
+msgid "No."
+msgstr "L.p."
+
+msgid "Service ID"
+msgstr "Numer usługi"
+
+msgid "Service Name"
+msgstr "Nazwa usługi"
+
+msgid "Unit"
+msgstr "J.m."
+
+msgid "Quantity"
+msgstr "Ilość"
+
+msgid "Net Price"
+msgstr "Cena netto"
+
+msgid "Net Total"
+msgstr "Wartość netto"
+
+msgid "VAT %"
+msgstr "VAT %"
+
+msgid "VAT"
+msgstr "VAT"
+
+msgid "Gross Price"
+msgstr "Cena brutto"
+
+msgid "Gross Total"
+msgstr "Wartość brutto"
+
+msgid "Payment Details"
+msgstr "Szczegóły płatności"
+
+msgid "Payment Method"
+msgstr "Forma płatności"
+
+msgid "Account Number"
+msgstr "Nr konta"
+
+msgid "Payment Due"
+msgstr "Termin płatności"
+
+msgid "Payment Status"
+msgstr "Status płatności"
+
+msgid "Notes"
+msgstr "Uwagi"
+
+msgid "Delivery of goods or services exempt from VAT under Article 113 (1) and (9) of the VAT Act."
+msgstr "Dostawa towarów lub świadczenie usług zwolnionych od podatku VAT na podstawie art. 113 ust. 1 i 9 ustawy o VAT."
+
+msgid "pcs"
+msgstr "szt."
+
+msgid "Sum Net Total"
+msgstr "Suma netto"
+
+msgid "Sum VAT Total"
+msgstr "Suma podatku VAT"
+
+msgid "Sum Gross Total"
+msgstr "Suma brutto"
+
+msgid "Payment Failed"
+msgstr "Nieudana płatność"
+
+msgid "Hi %(first_name)s, unfortunately your recent payment has failed."
+msgstr "Cześć %(first_name)s, niestety Twoja ostatnia płatność nie powiodła się."
+
+msgid "Please check your payment details and try again."
+msgstr "Sprawdź swoje dane płatności i spróbuj ponownie."
+
+msgid "To update your payment method, please visit your account"
+msgstr "Aby zaktualizować metodę płatności, odwiedź portal klienta"
+
+msgid "Update Payment Method"
+msgstr "Zaktualizuj metodę płatności"
+
+msgid "This payment method does not belong to your account."
+msgstr "Ta metoda płatności nie należy do Twojego konta."
+
+msgid "Cannot delete the default payment method."
+msgstr "Nie można usunąć domyślnej metody płatności."
+
+msgid "Subscription Canceled"
+msgstr "Subskrypcja została anulowana"
+
+msgid "Hi %(first_name)s, your subscription has been canceled."
+msgstr "Cześć %(first_name)s, Twoja subskrypcja została anulowana."
+
+msgid "You no longer have access to premium features."
+msgstr "Nie masz już dostępu do funkcji premium."
+
+msgid "If this was a mistake, you can manage your subscription in"
+msgstr "Jeśli to pomyłka, możesz zarządzać swoją subskrypcją w"
+
+msgid "You are now on the free plan. Upgrade anytime to regain premium features."
+msgstr "Teraz korzystasz z darmowego planu. W każdej chwili możesz uaktualnić, aby odzyskać funkcje premium."
+
+msgid "your account"
+msgstr "swoim koncie"
+
+msgid "Invalid promotion code"
+msgstr "Nieprawidłowy kod promocyjny"
+
+msgid "Coupon is inactive"
+msgstr "Kupon nieaktywny"
+
+msgid "Coupon has expired"
+msgstr "Kupon wygasł"
+
+msgid "Coupon has already been used"
+msgstr "Kupon został już wykorzystany"
+
+msgid "Coupon does not apply to this product"
+msgstr "Kupon nie dotyczy tego produktu"
+
+msgid "Coupon is not valid for this currency"
+msgstr "Kupon nie jest ważny dla tej waluty"
+
+msgid "Coupon is only for first-time purchase"
+msgstr "Kupon tylko dla pierwszego zakupu"
+
+msgid "Coupon cannot be used by this customer"
+msgstr "Nie można wykorzystać tego kuponu"
+
+msgid "Plan"
+msgstr "Plan"
+
+msgid "Discount"
+msgstr "Zniżka"

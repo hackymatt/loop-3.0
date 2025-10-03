@@ -27,10 +27,10 @@ export const featuredReviewsQuery = (language: Language) => {
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<ITestimonialProps[]>> => {
-    const results = await getSimpleListData<IReview>(queryUrl, {
+    const { data } = await getSimpleListData<IReview>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    const modifiedResults: ITestimonialProps[] = (results ?? []).map(
+    const modifiedResults: ITestimonialProps[] = (data ?? []).map(
       ({ student, comment, created_at, ...rest }: IReview) => ({
         ...rest,
         student: {

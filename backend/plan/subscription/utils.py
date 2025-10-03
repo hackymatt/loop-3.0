@@ -1,24 +1,46 @@
 from .models import PlanSubscription
 from django.utils import timezone
-from django.db.models import Q
 from plan.utils import get_default_plan
+from user.type.student_user.models import Student
+from const import SubscriptionStatus
 
 
 def get_subscription(user):
-    return PlanSubscription.objects.filter(
-        Q(end_date__gte=timezone.now()) | Q(end_date__isnull=True), student__user=user
-    ).first()
+    student = Student.objects.get(user=user)
+    return student.current_subscription
 
 
-def subscribe(student, plan, end_date, currency):
-    current_plan = get_subscription(student.user)
-    current_plan.end_date = timezone.now()
-    current_plan.save()
-    return PlanSubscription.objects.create(
-        student=student, plan=plan, end_date=end_date, currency=currency
+def subscribe(
+    student,
+    plan,
+    start_date,
+    status,
+    plan_pricing=None,
+    end_date=None,
+    amount_due=None,
+    stripe_subscription_id=None,
+    stripe_subscription_item_id=None,
+    stripe_promotion_code_id=None,
+    cancel_at_period_end=None,
+):
+    subscription, _ = PlanSubscription.objects.update_or_create(
+        student=student,
+        defaults={
+            "plan": plan,
+            "plan_pricing": plan_pricing,
+            "start_date": start_date,
+            "end_date": end_date,
+            "amount_due": amount_due,
+            "status": status,
+            "stripe_subscription_id": stripe_subscription_id,
+            "stripe_subscription_item_id": stripe_subscription_item_id,
+            "stripe_promotion_code_id": stripe_promotion_code_id,
+            "cancel_at_period_end": cancel_at_period_end,
+        },
     )
+    return subscription
 
 
-def subscribe_free_plan(student):
+def subscribe_free_plan(student, start_date=timezone.now()):
     plan = get_default_plan()
-    return PlanSubscription.objects.create(student=student, plan=plan)
+    return subscribe(student, plan, start_date, SubscriptionStatus.ACTIVE)

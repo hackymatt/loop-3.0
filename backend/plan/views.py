@@ -17,4 +17,4 @@ class PlanViewSet(viewsets.ModelViewSet):
     ).all()
     serializer_class = PlanSerializer
     pagination_class = None
-    lookup_field = "slug"
+    lookup_field = "type"

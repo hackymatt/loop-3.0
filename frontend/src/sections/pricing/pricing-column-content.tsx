@@ -1,14 +1,16 @@
 import type { BoxProps } from "@mui/material/Box";
+import type { Currency, PlanInterval } from "src/types/plan";
 
 import { useTranslation } from "react-i18next";
 import { useBoolean } from "minimal-shared/hooks";
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Collapse, { collapseClasses } from "@mui/material/Collapse";
 
 import { paths } from "src/routes/paths";
+import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
@@ -26,29 +28,55 @@ import type { PricingCardProps } from "./types";
 
 type PricingColumnContentProps = BoxProps & {
   plan: PricingCardProps;
-  isYearly: boolean;
+  interval: PlanInterval;
+  currency: Currency;
 };
 
 export function PricingColumnContentMobile({
   plan,
-  isYearly,
+  interval,
+  currency,
   sx,
   ...other
 }: PricingColumnContentProps) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const router = useRouter();
 
   const user = useUserContext();
-  const { isLoggedIn, plan: userPlan } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type, interval: userInterval, currency: userCurrency },
+  } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.slug === userPlan.type;
+  const isCurrentPlan =
+    isLoggedIn &&
+    plan.type === type &&
+    ((interval === userInterval && currency === userCurrency) || plan.type === PLAN_TYPE.FREE);
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
-  const redirect = localize(
-    plan.slug === PLAN_TYPE.FREE
-      ? `${paths.payment}?plan=${plan.slug}`
-      : `${paths.payment}?plan=${plan.slug}&yearly=${isYearly}`
-  );
+  const handleRedirect = async () => {
+    if (!isLoggedIn) {
+      if (plan.type === PLAN_TYPE.FREE) {
+        user.setField("redirect", localize(paths.account.dashboard));
+      } else {
+        user.setField(
+          "redirect",
+          localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+        );
+      }
+      router.push(localize(paths.auth.register));
+      return;
+    }
+
+    if (isFreePlan) {
+      router.push(
+        localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+      );
+      return;
+    }
+  };
 
   const { trackEvent } = useAnalytics();
 
@@ -128,23 +156,20 @@ export function PricingColumnContentMobile({
         {renderList()}
       </div>
 
-      <Button
+      <LoadingButton
         fullWidth
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        href={isLoggedIn ? redirect : localize(paths.auth.register)}
         disabled={isCurrentPlan}
-        onClick={() => {
-          if (!isLoggedIn) {
-            user.setField("redirect", redirect);
-          }
+        onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
+          await handleRedirect();
         }}
-        sx={{ mt: 5 }}
+        sx={{ mt: 5, textWrap: "nowrap" }}
       >
         {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
-      </Button>
+      </LoadingButton>
     </Box>
   );
 }
@@ -153,24 +178,49 @@ export function PricingColumnContentMobile({
 
 export function PricingColumnContentDesktop({
   plan,
-  isYearly,
+  interval,
+  currency,
   sx,
   ...other
 }: PricingColumnContentProps) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const router = useRouter();
 
   const user = useUserContext();
-  const { isLoggedIn, plan: userPlan } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type, interval: userInterval, currency: userCurrency },
+  } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.slug === userPlan.type;
+  const isCurrentPlan =
+    isLoggedIn &&
+    plan.type === type &&
+    ((interval === userInterval && currency === userCurrency) || plan.type === PLAN_TYPE.FREE);
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
-  const redirect = localize(
-    plan.slug === PLAN_TYPE.FREE
-      ? `${paths.payment}?plan=${plan.slug}`
-      : `${paths.payment}?plan=${plan.slug}&yearly=${isYearly}`
-  );
+  const handleRedirect = async () => {
+    if (!isLoggedIn) {
+      if (plan.type === PLAN_TYPE.FREE) {
+        user.setField("redirect", localize(paths.account.dashboard));
+      } else {
+        user.setField(
+          "redirect",
+          localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+        );
+      }
+      router.push(localize(paths.auth.register));
+      return;
+    }
+
+    if (isFreePlan) {
+      router.push(
+        localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+      );
+      return;
+    }
+  };
 
   const { trackEvent } = useAnalytics();
 
@@ -212,7 +262,7 @@ export function PricingColumnContentDesktop({
 
       <Box
         sx={{
-          py: 5,
+          p: 5,
           textAlign: "center",
           ...(plan.popular && {
             bgcolor: "background.neutral",
@@ -220,21 +270,20 @@ export function PricingColumnContentDesktop({
           }),
         }}
       >
-        <Button
+        <LoadingButton
+          fullWidth
           size="large"
           variant={isCurrentPlan ? "outlined" : "contained"}
           color={plan.popular ? "primary" : "inherit"}
-          href={isLoggedIn ? redirect : paths.auth.register}
           disabled={isCurrentPlan}
-          onClick={() => {
-            if (!isLoggedIn) {
-              user.setField("redirect", redirect);
-            }
+          onClick={async () => {
             trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
+            await handleRedirect();
           }}
+          sx={{ textWrap: "nowrap" }}
         >
           {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );

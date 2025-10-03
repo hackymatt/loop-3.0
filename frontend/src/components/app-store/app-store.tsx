@@ -149,10 +149,7 @@ function DownloadPrompt({ platform, onClose, ...other }: Props) {
       </Stack>
 
       <DialogContent sx={{ py: 0, typography: "body2" }}>
-        {t("subtitle").replace(
-          "[platform]",
-          platform === Platform.iOS ? "App Store" : "Google Play"
-        )}{" "}
+        {t("subtitle", { platform: platform === Platform.iOS ? "App Store" : "Google Play" })}{" "}
         {content}
       </DialogContent>
     </Dialog>

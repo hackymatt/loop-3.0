@@ -13,7 +13,7 @@ import type { SettingsState } from "../types";
 
 // ----------------------------------------------------------------------
 
-export type FontFamilyOptionsProps = BoxProps & {
+export type LanguageOptionsProps = BoxProps & {
   options: {
     value: Language;
     label: string;
@@ -29,7 +29,7 @@ export function LanguageOptions({
   options,
   onChangeOption,
   ...other
-}: FontFamilyOptionsProps) {
+}: LanguageOptionsProps) {
   return (
     <Box
       sx={[

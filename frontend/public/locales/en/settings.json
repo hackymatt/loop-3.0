@@ -2,6 +2,7 @@
   "title": "Settings",
   "mode": "Dark mode",
   "language": "Language",
+  "currency": "Currency",
   "reset": "Reset",
   "close": "Close"
 }

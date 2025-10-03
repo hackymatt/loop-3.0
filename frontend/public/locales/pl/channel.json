@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "title": "Kanał [name] - dołącz do dyskusji",
+    "description": "Bierz udział w rozmowach, dziel się wiedzą i inspiruj innych w kanale [name]. Twoje pomysły mogą pomóc całej społeczności!"
+  },
+  "button": "Opublikuj",
+  "newPost": {
+    "header": "Nowy post",
+    "title": "Tytuł",
+    "submit": "Opublikuj post",
+    "errors": {
+      "title": { "required": "Tytuł jest wymagany" },
+      "message": { "required": "Opis jest wymagany" }
+    },
+    "placeholder": "Napisz odpowiedź..."
+  },
+  "editPost": {
+    "title": "Tytuł",
+    "submit": "Zapisz post",
+    "errors": {
+      "title": { "required": "Tytuł jest wymagany" },
+      "message": { "required": "Opis jest wymagany" }
+    }
+  },
+  "newComment": {
+    "submit": "Opublikuj komentarz",
+    "errors": {
+      "message": { "required": "Opis jest wymagany" }
+    },
+    "placeholder": "Napisz komentarz..."
+  },
+  "editComment": {
+    "submit": "Zapisz komentarz",
+    "errors": {
+      "message": { "required": "Opis jest wymagany" }
+    }
+  },
+  "title": "Kanał",
+  "ago": "temu",
+  "helpful": "Pomocne",
+  "reply": "Odpowiedz",
+  "showAll": [
+    "Pokaż [comments] poprzedni komentarz",
+    "Pokaż [comments] poprzednie komentarze",
+    "Pokaż [comments] poprzednich komentarzy"
+  ],
+  "delete": {
+    "post": {
+      "button": "Usuń post",
+      "description": "Czy na pewno chcesz usunąć ten post?",
+      "cancel": "Anuluj"
+    },
+    "comment": {
+      "button": "Usuń komentarz",
+      "description": "Czy na pewno chcesz usunąć ten komentarz?",
+      "cancel": "Anuluj"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Subscription Canceled" %}{% endblock %}
+
+{% block content %}
+    <p>{{ message_1|safe }}</p>
+
+    <p>
+        {{ message_2|safe }}
+    </p>
+
+    <p>
+        {{ message_3|safe }}:
+        <a href="{{ link }}" target="_blank">{{ account }}</a>
+    </p>
+
+    <p>
+        {% trans "You are now on the free plan. Upgrade anytime to regain premium features." %}
+    </p>
+{% endblock %}

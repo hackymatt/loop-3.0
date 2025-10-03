@@ -19,8 +19,8 @@ export const reviewsSummaryQuery = (slug: string) => {
   const queryUrl = `${url}/${slug}`;
 
   const queryFn = async (): Promise<GetQueryResponse<IReviewSummaryProps[]>> => {
-    const results = await getSimpleListData<IReviewSummary>(queryUrl);
-    return { results };
+    const { data } = await getSimpleListData<IReviewSummary>(queryUrl);
+    return { results: data };
   };
 
   return { url, queryFn, queryKey: compact([url, slug]) };

@@ -1,4 +1,4 @@
-import { CURRENCY, PLAN_TYPE } from "src/consts/plan";
+import { PLAN_TYPE } from "src/consts/plan";
 import { JOIN_TYPE, USER_TYPE } from "src/consts/user";
 
 import type { UserState } from "./types";
@@ -16,13 +16,7 @@ export const defaultUser: UserState = {
   joinType: JOIN_TYPE.EMAIL,
   isActive: false,
   isLoggedIn: false,
-  plan: {
-    type: PLAN_TYPE.FREE,
-    license: "",
-    interval: null,
-    valid_to: null,
-    price: null,
-    currency: CURRENCY.PLN,
-  },
+  plan: { type: PLAN_TYPE.FREE, currency: null, interval: null },
+  trialUsed: false,
   redirect: null,
 };

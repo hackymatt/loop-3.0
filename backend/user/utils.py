@@ -171,7 +171,7 @@ def set_cookies(response, access_token, refresh_token):
         httponly=True,
         secure=True,
         max_age=60 * 60,  # 1 hour expiration for access token
-        samesite="Strict",
+        samesite="None",
     )
 
     # Set the refresh token cookie (HTTP-only)
@@ -181,7 +181,7 @@ def set_cookies(response, access_token, refresh_token):
         httponly=True,
         secure=True,  # Use `secure=True` in production (ensure HTTPS)
         max_age=24 * 60 * 60,  # 1 day expiration for refresh token
-        samesite="Strict",
+        samesite="None",
     )
 
     # Return the response with no tokens in the body
@@ -204,4 +204,4 @@ def download_and_assign_image(instance, image_url):
             file_name = os.path.basename(urlparse(image_url).path)
             instance.image.save(file_name, ContentFile(response.content), save=True)
     except Exception as e:
-        logger.warning(f"Could not download or assign image: {e}")
+        logger.warning(f"Could not download or assign image: {e}", exc_info=True)

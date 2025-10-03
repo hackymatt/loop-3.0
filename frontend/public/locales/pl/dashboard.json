@@ -12,8 +12,8 @@
   "certificates": {
     "title": "Twoje certyfikaty",
     "button": "Zobacz wszystkie certyfikaty",
-    "lack": "Nie masz jeszcze żadnych certyfikatów. Ukończ projekt lub ścieżkę, aby zdobyć swój pierwszy!",
-    "start": "Zobacz dostępne ścieżki",
+    "lack": "Nie masz jeszcze żadnych certyfikatów. Ukończ projekt, aby zdobyć swój pierwszy!",
+    "start": "Zobacz dostępne projekty",
     "blocked": "Zwiększ swoje szanse na rynku pracy dzięki certyfikatom potwierdzającym praktyczne umiejętności. Odblokuj je, kończąc projekty.",
     "project": "Twój pierwszy projekt w Pythonie: Generator haseł"
   },

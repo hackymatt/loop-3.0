@@ -1,0 +1,649 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% trans "Invoice" %}</title>
+    <style>
+      *,
+      ::before,
+      ::after {
+        box-sizing: border-box;
+        border-width: 0;
+        border-style: solid;
+        border-color: #e5e7eb;
+      }
+
+      ::before,
+      ::after {
+        --tw-content: "";
+      }
+
+      html {
+        line-height: 1.5;
+        -webkit-text-size-adjust: 100%;
+        -moz-tab-size: 4;
+        tab-size: 4;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+          "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+          "Noto Color Emoji";
+        font-feature-settings: normal;
+        font-variation-settings: normal;
+      }
+
+      body {
+        margin: 0;
+        line-height: inherit;
+      }
+
+      hr {
+        height: 0;
+        color: inherit;
+        border-top-width: 1px;
+      }
+
+      abbr:where([title]) {
+        -webkit-text-decoration: underline dotted;
+        text-decoration: underline dotted;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-size: inherit;
+        font-weight: inherit;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
+
+      b,
+      strong {
+        font-weight: bolder;
+      }
+
+      code,
+      kbd,
+      samp,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 1em;
+      }
+
+      small {
+        font-size: 80%;
+      }
+
+      sub,
+      sup {
+        font-size: 75%;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+      }
+
+      sub {
+        bottom: -0.25em;
+      }
+
+      sup {
+        top: -0.5em;
+      }
+
+      table {
+        text-indent: 0;
+        border-color: inherit;
+        border-collapse: collapse;
+      }
+
+      button,
+      input,
+      optgroup,
+      select,
+      textarea {
+        font-family: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        font-size: 100%;
+        font-weight: inherit;
+        line-height: inherit;
+        color: inherit;
+        margin: 0;
+        padding: 0;
+      }
+
+      button,
+      select {
+        text-transform: none;
+      }
+
+      button,
+      [type="button"],
+      [type="reset"],
+      [type="submit"] {
+        appearance: button;
+        -webkit-appearance: button;
+        background-color: transparent;
+        background-image: none;
+      }
+
+      :-moz-focusring {
+        outline: auto;
+      }
+
+      :-moz-ui-invalid {
+        box-shadow: none;
+      }
+
+      progress {
+        vertical-align: baseline;
+      }
+
+      ::-webkit-inner-spin-button,
+      ::-webkit-outer-spin-button {
+        height: auto;
+      }
+
+      [type="search"] {
+        appearance: textfield;
+        -webkit-appearance: textfield;
+        outline-offset: -2px;
+      }
+
+      ::-webkit-search-decoration {
+        -webkit-appearance: none;
+      }
+
+      ::-webkit-file-upload-button {
+        -webkit-appearance: button;
+        font: inherit;
+      }
+
+      summary {
+        display: list-item;
+      }
+
+      blockquote,
+      dl,
+      dd,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      hr,
+      figure,
+      p,
+      pre {
+        margin: 0;
+      }
+
+      fieldset {
+        margin: 0;
+        padding: 0;
+      }
+
+      legend {
+        padding: 0;
+      }
+
+      ol,
+      ul,
+      menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      dialog {
+        padding: 0;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        opacity: 1;
+        color: #9ca3af;
+      }
+
+      button,
+      [role="button"] {
+        cursor: pointer;
+      }
+
+      :disabled {
+        cursor: default;
+      }
+
+      img,
+      svg,
+      video,
+      canvas,
+      audio,
+      iframe,
+      embed,
+      object {
+        display: block;
+      }
+
+      img,
+      video {
+        max-width: 100%;
+        height: auto;
+      }
+
+      [hidden] {
+        display: none;
+      }
+
+      .fixed {
+        position: fixed;
+      }
+
+      .bottom-0 {
+        bottom: 0px;
+      }
+
+      .left-0 {
+        left: 0px;
+      }
+
+      .table {
+        display: table;
+      }
+
+      .h-12 {
+        height: 1.5rem;
+      }
+
+      .w-1\/2 {
+        width: 50%;
+      }
+
+      .w-full {
+        width: 100%;
+      }
+
+      .border-collapse {
+        border-collapse: collapse;
+      }
+
+      .border-spacing-0 {
+        --tw-border-spacing-x: 0px;
+        --tw-border-spacing-y: 0px;
+        border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
+      }
+
+      .whitespace-nowrap {
+        white-space: nowrap;
+      }
+
+      .border-b {
+        border-bottom-width: 1px;
+      }
+
+      .border-b-2 {
+        border-bottom-width: 2px;
+      }
+
+      .border-r {
+        border-right-width: 1px;
+      }
+
+      .border-main {
+        border-color: #018257;
+      }
+
+      .bg-main {
+        background-color: #018257;
+      }
+
+      .bg-slate-100 {
+        background-color: #c8fad6;
+      }
+
+      .p-3 {
+        padding: 0.75rem;
+      }
+
+      .px-14 {
+        padding-left: 3.5rem;
+        padding-right: 3.5rem;
+      }
+
+      .px-2 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      .py-10 {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+      }
+
+      .py-3 {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+      }
+
+      .py-4 {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+
+      .py-6 {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+      }
+
+      .pb-3 {
+        padding-bottom: 0.75rem;
+      }
+
+      .pl-2 {
+        padding-left: 0.5rem;
+      }
+
+      .pl-3 {
+        padding-left: 0.75rem;
+      }
+
+      .pl-4 {
+        padding-left: 1rem;
+      }
+
+      .pr-3 {
+        padding-right: 0.75rem;
+      }
+
+      .pr-4 {
+        padding-right: 1rem;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .text-right {
+        text-align: right;
+      }
+
+      .align-top {
+        vertical-align: top;
+      }
+
+      .text-sm {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+      }
+
+      .text-xs {
+        font-size: 0.575rem;
+        line-height: 1rem;
+      }
+
+      .font-bold {
+        font-weight: 700;
+      }
+
+      .italic {
+        font-style: italic;
+      }
+
+      .text-main {
+        color: #018257;
+      }
+
+      .text-neutral-600 {
+        color: #525252;
+      }
+
+      .text-neutral-700 {
+        color: #404040;
+      }
+
+      .text-slate-300 {
+        color: #cbd5e1;
+      }
+
+      .text-slate-400 {
+        color: #94a3b8;
+      }
+
+      .text-white {
+        color: #fff;
+      }
+
+      @page {
+        margin: 0;
+      }
+
+      @media print {
+        body {
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+
+    <body>
+    <div>
+      <div class="py-4">
+        <div class="px-14 py-6">
+          <table class="w-full border-collapse border-spacing-0">
+            <tbody>
+              <tr>
+                <td class="w-full align-center">
+                  <div>
+                    <img src="/logo/logo.svg" class="h-12" />
+                  </div>
+                </td>
+
+                <td class="align-top">
+                  <div class="text-xs">
+                    <table class="border-collapse border-spacing-0">
+                      <tbody>
+                        <tr>
+                          <td class="border-r pr-4">
+                            <div>
+                              <p class="whitespace-nowrap text-slate-400 text-right">
+                                {% trans "Invoice Date" %}
+                              </p>
+                              <p class="whitespace-nowrap font-bold text-main text-right">
+                                {{ invoice_date }}
+                              </p>
+                            </div>
+                          </td>
+                          <td class="border-r pr-4 pl-4">
+                            <div>
+                              <p class="whitespace-nowrap text-slate-400 text-right">
+                                {% trans "Service Date" %}
+                              </p>
+                              <p class="whitespace-nowrap font-bold text-main text-right">
+                                {{ service_date }}
+                              </p>
+                            </div>
+                          </td>
+                          <td class="pl-4">
+                            <div>
+                              <p class="whitespace-nowrap text-slate-400 text-right">
+                                {% trans "Invoice Number" %}
+                              </p>
+                              <p class="whitespace-nowrap font-bold text-main text-right">
+                                {{ invoice_number }}
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bg-slate-100 px-14 py-6 text-xs">
+          <table class="w-full border-collapse border-spacing-0">
+            <tbody>
+              <tr>
+                <td class="w-1/2 align-top">
+                  <div class="text-xs text-neutral-600">
+                    <p class="font-bold">"loop" Mateusz Szczepek</p>
+                    <p>{% trans "VAT ID" %}: 6861677925</p>
+                    <p>{% trans "EU VAT" %}: PL6861677925</p>
+                    <p>Przewóz 34E/1</p>
+                    <p>30-716 Kraków</p>
+                    <p>{% trans "Poland" %}</p>
+                  </div>
+                </td>
+                <td class="w-1/2 align-top text-right">
+                  <div class="text-xs text-neutral-600">
+                    <p class="font-bold">{{ customer.full_name }}</p>
+                    {% if customer.street %}
+                      <p>{{ customer.street }}</p>
+                    {% endif %}
+                    {% if customer.zip_code and customer.city %}
+                      <p>{{ customer.zip_code }} {{ customer.city }}</p>
+                    {% endif %}
+                    {% if customer.country %}
+                      <p>{{ customer.country }}</p>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="px-14 py-10 text-xs text-neutral-700">
+          <table class="w-full border-collapse border-spacing-0">
+            <thead class="align-top">
+              <tr>
+                <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main whitespace-nowrap">{% trans "No." %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">{% trans "Service ID" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">{% trans "Service Name" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main whitespace-nowrap">{% trans "Unit" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">{% trans "Quantity" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">{% trans "Net Price" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">{% trans "Net Total" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">{% trans "VAT %" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">{% trans "VAT" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">{% trans "Gross Price" %}</td>
+                <td class="border-b-2 border-main pb-3 pl-2 pr-3 text-right font-bold text-main">{% trans "Gross Total" %}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in products %}
+                <tr>
+                  <td class="border-b py-3 pl-3">{{ forloop.counter }}</td>
+                  <td class="border-b py-3 pl-2">{{ product.id }}</td>
+                  <td class="border-b py-3 pl-2">{{ product.name }}</td>
+                  <td class="border-b py-3 pl-2 text-center">{% trans "pcs" %}</td>
+                  <td class="border-b py-3 pl-2 text-center">{{ product.quantity }}</td>
+                  <td class="border-b py-3 pl-2 text-right whitespace-nowrap">{{ product.price_netto }}</td>
+                  <td class="border-b py-3 pl-2 text-right whitespace-nowrap">{{ product.subtotal_netto }}</td>
+                  <td class="border-b py-3 pl-2 text-center">{{ product.vat_percent }}</td>
+                  <td class="border-b py-3 pl-2 text-right whitespace-nowrap">{{ product.vat }}</td>
+                  <td class="border-b py-3 pl-2 text-right whitespace-nowrap">{{ product.price_brutto }}</td>
+                  <td class="border-b py-3 pl-2 text-right whitespace-nowrap">{{ product.subtotal_brutto }}</td>
+                </tr>
+              {% endfor %}
+            <tr>
+                <td colspan="11">
+                  <table class="w-full border-collapse border-spacing-0">
+                    <tbody>
+                      <tr>
+                        <td class="w-full"></td>
+                        <td>
+                          <table
+                            class="w-full border-collapse border-spacing-0"
+                          >
+							<tbody>
+							  <tr>
+								<td class="border-b p-3">
+								  <div class="whitespace-nowrap text-slate-400">
+									{% trans "Sum Net Total" %}
+								  </div>
+								</td>
+								<td class="border-b p-3 text-right">
+								  <div class="whitespace-nowrap font-bold text-main">
+									{{ total_netto }}
+								  </div>
+								</td>
+							  </tr>
+							  <tr>
+								<td class="p-3">
+								  <div class="whitespace-nowrap text-slate-400">
+									{% trans "Sum VAT Total" %}
+								  </div>
+								</td>
+								<td class="p-3 text-right">
+								  <div class="whitespace-nowrap font-bold text-main">
+									{{ total_vat }}
+								  </div>
+								</td>
+							  </tr>
+							  <tr>
+								<td class="bg-main p-3">
+								  <div class="whitespace-nowrap font-bold text-white">
+									{% trans "Sum Gross Total" %}
+								  </div>
+								</td>
+								<td class="bg-main p-3 text-right">
+								  <div class="whitespace-nowrap font-bold text-white">
+									{{ total_brutto }}
+								  </div>
+								</td>
+							  </tr>
+							</tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="px-14 text-xs text-neutral-700">
+          <p class="text-main font-bold">{% trans "Payment Details" %}</p>
+          <p>{% trans "Payment Method" %}: {{ payment_method }}</p>
+          {% if payment_method != "Przelewy24" %}
+            <p>{% trans "Account Number" %}: PL 59 1160 2202 0000 0006 2440 0188</p>
+            <p>{% trans "Payment Due" %}: {{ payment_due }}</p>
+          {% endif %}
+          <p>{% trans "Payment Status" %}: {{ payment_status}}</p>
+        </div>
+
+        <div class="px-14 py-10 text-xs text-neutral-700">
+          <p class="text-main font-bold">{% trans "Notes" %}:</p>
+          {% if not vat %}
+            <p class="italic">{% trans "Delivery of goods or services exempt from VAT under Article 113 (1) and (9) of the VAT Act." %}</p>
+          {% endif %}
+          <p class="italic">{{ notes }}</p>
+        </div>
+
+        <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
+          loop <span class="text-slate-300 px-2">|</span> info@loop.edu.pl <span class="text-slate-300 px-2">|</span> +48-881-455-596
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

@@ -20,7 +20,9 @@ export const postTopicsQuery = (language: Language, query?: QueryType) => {
   const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<ListQueryResponse<IBlogTopicProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IBlogTopic>(queryUrl, {
+    const {
+      data: { results, records_count, pages_count },
+    } = await getListData<IBlogTopic>(queryUrl, {
       headers: { "Accept-Language": language },
     });
     const modifiedResults: IBlogTopicProp[] = (results ?? []).map(

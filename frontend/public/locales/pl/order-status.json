@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "pending": {
+      "title": "Twoja płatność jest w trakcie przetwarzania",
+      "description": "Twoja płatność została zainicjowana i jest w trakcie realizacji. Po jej zakończeniu otrzymasz dostęp do wszystkich funkcji i materiałów."
+    },
+    "succeeded": {
+      "title": "Twój zakup jest zakończony",
+      "description": "Twoja płatność została pomyślnie przetworzona. Teraz możesz korzystać ze wszystkich funkcji i materiałów. Życzymy owocnej nauki!"
+    },
+    "failed": {
+      "title": "Płatność nie powiodła się",
+      "description": "Twoja płatność nie została przetworzona. Sprawdź dane płatności lub spróbuj ponownie. Jeśli problem będzie się powtarzał, skontaktuj się z naszym wsparciem technicznym."
+    }
+  },
+  "pending": {
+    "title": "Twoja płatność jest w trakcie przetwarzania",
+    "subtitle": "Płatność została zainicjowana i jest w trakcie realizacji. Po jej zakończeniu uzyskasz dostęp do materiałów na swoim koncie.",
+    "button": "Wróć do płatności"
+  },
+  "succeeded": {
+    "title": "Dziękujemy za zakup!",
+    "subtitle": "Płatność została zatwierdzona. Możesz już rozpocząć naukę i korzystać z materiałów dostępnych na Twoim koncie.",
+    "button": "Przejdź do swojego panelu"
+  },
+  "failed": {
+    "title": "Ups, coś poszło nie tak!",
+    "subtitle": "Nie udało się zrealizować płatności. Spróbuj ponownie lub wybierz inną metodę płatności.",
+    "button": "Wróć do płatności"
+  }
+}

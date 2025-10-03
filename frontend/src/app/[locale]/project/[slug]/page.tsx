@@ -15,23 +15,27 @@ import { ProjectView } from "src/sections/view/project-view";
 import { NotFoundView } from "src/sections/error/not-found-view";
 
 // ----------------------------------------------------------------------
+type SearchParams = Record<string, string>;
+
 type PageProps = {
   params: { locale: Language; slug: string };
+  searchParams: SearchParams;
 };
 
 const queries = {
   project: (lang: Language, slug: string) => projectQuery(lang, slug),
   similarProjects: (lang: Language, slug: string) => similarProjectsQuery(lang, slug),
   reviewsSummary: (lang: Language, slug: string) => reviewsSummaryQuery(slug),
-  reviews: (lang: Language, slug: string) => reviewsQuery(lang, slug),
+  reviews: (lang: Language, slug: string, searchParams: SearchParams) =>
+    reviewsQuery(lang, slug, searchParams),
 };
 
-async function getData(language: Language, slug: string) {
+async function getData(language: Language, slug: string, searchParams: SearchParams) {
   try {
     const projectPromise = queries.project(language, slug).queryFn();
     const similarProjectsPromise = queries.similarProjects(language, slug).queryFn();
     const reviewsSummaryPromise = queries.reviewsSummary(language, slug).queryFn();
-    const reviewsPromise = queries.reviews(language, slug).queryFn();
+    const reviewsPromise = queries.reviews(language, slug, searchParams).queryFn();
 
     const [project, similarProjects, reviewsSummary, reviews] = await Promise.all([
       projectPromise,
@@ -52,8 +56,8 @@ async function getData(language: Language, slug: string) {
     return null;
   }
 }
-export default async function Page({ params }: PageProps) {
-  const data = await getData(params.locale, params.slug);
+export default async function Page({ params, searchParams }: PageProps) {
+  const data = await getData(params.locale, params.slug, searchParams);
 
   if (!data) {
     return <NotFoundView />;

@@ -2,6 +2,7 @@
   "title": "Ustawienia",
   "mode": "Tryb ciemny",
   "language": "Język",
+  "currency": "Waluta",
   "reset": "Resetuj",
   "close": "Zamknij"
 }

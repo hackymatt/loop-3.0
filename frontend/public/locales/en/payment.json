@@ -4,12 +4,14 @@
     "description": "Complete your payment quickly and securely. Choose your preferred method and start learning to code without delays."
   },
   "title": "Let’s finish upgrading your account!",
-  "subtitle": "The {plan} plan is the perfect choice for you.",
+  "subtitle": "The {{plan}} plan is the perfect choice for you.",
   "summary": {
     "label": "Summary",
     "plan": "Plan",
     "yearly": { "save": "Save", "part1": "by choosing", "part2": "annual billing" },
-    "total": "Total",
+    "due": "Due",
+    "total": "Due today",
+    "trial": "({{days}} days free)",
     "button": { "free": "Subscribe", "other": "Pay and subscribe" },
     "info": "By confirming your subscription, you authorize loop to charge your account for future payments according to its terms. You can cancel anytime.",
     "stripe": {
@@ -20,43 +22,10 @@
   },
   "customer": { "label": "Account details" },
   "paymentMethods": {
-    "label": "Payment methods",
-    "card": { "label": "Card", "description": "We accept Mastercard and Visa." },
-    "applepay": {
-      "label": "Apple Pay",
-      "description": "After placing your order, you'll complete payment details in a follow-up step."
-    },
-    "googlepay": {
-      "label": "Google Pay",
-      "description": "After placing your order, you'll complete payment details in a follow-up step."
-    }
+    "label": "Payment methods"
   },
-  "card": {
-    "number": {
-      "label": "Card number",
-      "errors": {
-        "required": "Card number is required",
-        "invalid": "Card number is incomplete."
-      }
-    },
-    "holder": {
-      "label": "Cardholder name",
-      "placeholder": "Jan Kowalski",
-      "errors": { "required": "Cardholder name is required" }
-    },
-    "expiration": {
-      "label": "Expiration date",
-      "errors": {
-        "required": "Expiration date is required",
-        "invalid": "Expiration date is invalid."
-      }
-    },
-    "security": {
-      "label": "CVC",
-      "errors": {
-        "required": "CVC code is required",
-        "invalid": "CVC code is incomplete."
-      }
-    }
+  "discount": {
+    "placeholder": "Discount code",
+    "button": "Apply"
   }
 }

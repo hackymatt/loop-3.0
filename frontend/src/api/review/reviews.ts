@@ -1,10 +1,10 @@
 import type { Language } from "src/locales/types";
-import type { ListQueryResponse } from "src/api/types";
 import type { IReviewItemProp } from "src/types/review";
+import type { QueryType, ListQueryResponse } from "src/api/types";
 
 import { compact } from "lodash-es";
 
-import { getListData } from "src/api/utils";
+import { getListData, formatQueryParams } from "src/api/utils";
 
 import { URLS } from "../urls";
 
@@ -22,12 +22,15 @@ type IReview = {
   created_at: string;
 };
 
-export const reviewsQuery = (language: Language, slug: string) => {
-  const url = endpoint;
-  const queryUrl = `${url}/${slug}`;
+export const reviewsQuery = (language: Language, slug: string, query?: QueryType) => {
+  const url = `${endpoint}/${slug}`;
+  const urlParams = formatQueryParams(query);
+  const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<ListQueryResponse<IReviewItemProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IReview>(queryUrl, {
+    const {
+      data: { results, records_count, pages_count },
+    } = await getListData<IReview>(queryUrl, {
       headers: { "Accept-Language": language },
     });
     const modifiedResults: IReviewItemProp[] = (results ?? []).map(

@@ -51,10 +51,10 @@ export const similarProjectsQuery = (language: Language, slug: string) => {
   const queryUrl = `${url}/${slug}`;
 
   const queryFn = async (): Promise<GetQueryResponse<IProjectListProps[]>> => {
-    const results = await getSimpleListData<IProject>(queryUrl, {
+    const { data } = await getSimpleListData<IProject>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    const modifiedResults: IProjectListProps[] = (results ?? []).map(
+    const modifiedResults: IProjectListProps[] = (data ?? []).map(
       ({
         translated_name,
         translated_description,

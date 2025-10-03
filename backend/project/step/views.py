@@ -17,7 +17,6 @@ from ..models import Project
 from ..stage.models import Stage
 from ..step.models import Step
 from plan.subscription.utils import get_subscription
-from plan.utils import is_default_plan
 from user.type.student_user.models import Student
 from user.token.models import TokenUsage
 from user.token.utils import is_user_within_token_limit, count_tokens
@@ -52,7 +51,7 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
             )
 
         # Plan check: limit access for free users
-        if is_default_plan(get_subscription(student.user).plan):
+        if student.current_subscription.plan.is_default_plan:
             if (
                 ProjectEnrollment.objects.filter(student=student)
                 .exclude(project=project)

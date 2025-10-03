@@ -45,6 +45,10 @@
           "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Subskrypcja', aby zobaczyć swój aktualny plan oraz zmienić go na inny."
         },
         {
+          "question": "Gdzie mogę pobrać swoje faktury?",
+          "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Faktury'. W tym miejscu możesz przeglądać historię swoich płatności oraz pobierać faktury w formacie PDF za wszystkie subskrypcje."
+        },
+        {
           "question": "Jak usunąć konto?",
           "answer": "Zaloguj się i przejdź do sekcji 'Ustawienia konta' → 'Zarządzaj kontem'. Znajdziesz tam opcję usunięcia konta."
         }
@@ -145,36 +149,44 @@
       "icon": "solar:wallet-bold",
       "content": [
         {
-          "question": "Jakie metody płatności są dostępne?",
-          "answer": "Obsługujemy płatności kartą płatniczą (Visa, Mastercard, itp.), a także Google Pay i Apple Pay. Wszystkie płatności są realizowane za pośrednictwem Stripe – globalnego i bezpiecznego operatora płatności."
+          "question": "Jak mogę opłacić subskrypcję?",
+          "answer": "Możesz zapłacić subskrypcję kartą płatniczą (Visa, MasterCard, American Express) lub innymi metodami dostępnymi w Stripe, takimi jak Apple Pay czy Google Pay. Wszystkie płatności są przetwarzane bezpiecznie przez Stripe."
         },
         {
-          "question": "Czy płatność jest jednorazowa czy cykliczna?",
-          "answer": "Nasze plany działają w modelu subskrypcyjnym – opłata odnawia się automatycznie co miesiąc lub rok, chyba że anulujesz subskrypcję wcześniej."
+          "question": "Czy moje dane karty są bezpieczne?",
+          "answer": "Tak. Stripe jest w pełni zgodny ze standardem PCI DSS, co oznacza, że Twoje dane są chronione. My nie przechowujemy numerów kart ani kodów CVV na naszych serwerach."
         },
         {
-          "question": "Czy mogę zapłacić przez Google Pay lub Apple Pay?",
-          "answer": "Tak, Stripe obsługuje zarówno Google Pay, jak i Apple Pay – możesz ich użyć podczas płatności na naszej platformie."
+          "question": "Jak działa automatyczne odnawianie subskrypcji?",
+          "answer": "Subskrypcja odnawia się automatycznie w ustalonym cyklu (miesięcznym lub rocznym). Stripe obciąża Twoją kartę automatycznie w dniu odnowienia."
         },
         {
-          "question": "Czy otrzymam fakturę za subskrypcję?",
-          "answer": "Tak, po każdej płatności otrzymasz fakturę, którą możesz pobrać z ustawień konta, w zakładce 'Płatności'."
+          "question": "Czy mogę anulować subskrypcję?",
+          "answer": "Tak. Możesz anulować subskrypcję w dowolnym momencie z poziomu swojego konta. Po anulowaniu dostęp do płatnych funkcji pozostaje do końca opłaconego okresu."
         },
         {
-          "question": "Jak mogę anulować subskrypcję?",
-          "answer": "Możesz anulować subskrypcję w dowolnym momencie w ustawieniach konta, w sekcji 'Subskrypcja'. Po anulowaniu dostęp do projektów pozostanie aktywny do końca bieżącego okresu rozliczeniowego."
+          "question": "Co się stanie, jeśli moja płatność nie przejdzie?",
+          "answer": "Stripe spróbuje pobrać opłatę ponownie kilka razy. W międzyczasie otrzymasz powiadomienie e-mail z informacją o problemie z płatnością. Możesz wtedy zaktualizować dane karty lub użyć innej metody płatności."
         },
         {
-          "question": "Czy moje dane płatnicze są bezpieczne?",
-          "answer": "Tak, korzystamy z Stripe – jednej z najbezpieczniejszych platform płatniczych na świecie. Dane Twojej karty nie są przechowywane na naszych serwerach."
+          "question": "Czy mogę zmienić metodę płatności?",
+          "answer": "Tak. W każdej chwili możesz dodać nową kartę lub wybrać inną metodę płatności w ustawieniach swojego konta."
         },
         {
-          "question": "Czy oferujecie darmowy okres próbny?",
-          "answer": "Każdy użytkownik może rozpocząć pracę za darmo dzięki darmowemu planowi, który daje dostęp do jednego etapu każdego projektu. To świetna okazja, by przetestować platformę przed przejściem na płatny plan."
+          "question": "Czy mogę zmienić plan subskrypcji?",
+          "answer": "Tak. Możesz zmienić plan subskrypcji (np. z miesięcznego na roczny) w panelu użytkownika. Stripe automatycznie rozliczy różnicę w opłatach."
         },
         {
-          "question": "Co zrobić, jeśli moja płatność została odrzucona?",
-          "answer": "Upewnij się, że karta jest aktywna i posiada środki. Możesz także spróbować użyć innej metody płatności (np. Google Pay). W razie dalszych problemów skontaktuj się z naszym wsparciem technicznym."
+          "question": "Czy otrzymam fakturę lub paragon?",
+          "answer": "Tak. Po każdej płatności otrzymasz fakturę, którą otrzymasz e-mailem oraz możesz pobrać z panelu użytkownika."
+        },
+        {
+          "question": "Kto może mi pomóc w sprawach związanych z płatnościami?",
+          "answer": "W razie problemów możesz kontaktować się z naszym działem obsługi klienta pod adresem e-mail info@loop.edu.pl lub przez formularz kontaktowy."
+        },
+        {
+          "question": "Czy mogę skorzystać z okresu próbnego?",
+          "answer": "Tak. Oferujemy 7-dniowy okres próbny na planie płatnym. W tym czasie możesz korzystać ze wszystkich funkcji subskrypcji bez pobierania opłat. Po upływie 7 dni subskrypcja automatycznie przechodzi na pełny plan płatny, jeśli nie zostanie anulowana."
         }
       ]
     }

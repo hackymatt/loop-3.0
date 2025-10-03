@@ -130,7 +130,6 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
     class Meta(BaseProjectSerializer.Meta):
         fields = BaseProjectSerializer.Meta.fields + [
             "translated_overview",
-            "chat_url",
             "video_url",
             "points",
             "reading_count",

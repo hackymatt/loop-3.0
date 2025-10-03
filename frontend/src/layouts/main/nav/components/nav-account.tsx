@@ -17,8 +17,8 @@ import IconButton from "@mui/material/IconButton";
 import ButtonBase, { buttonBaseClasses } from "@mui/material/ButtonBase";
 
 import { paths } from "src/routes/paths";
+import { usePathname } from "src/routes/hooks";
 import { RouterLink } from "src/routes/components";
-import { useRouter, usePathname } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
@@ -68,14 +68,10 @@ export function NavAccountPopover({ sx }: NavItemsProps) {
   const { t } = useTranslation("navigation");
   const { t: account } = useTranslation("account");
 
-  const localize = useLocalizedPath();
-
   const user = useUserContext();
   const { avatarUrl } = user.state;
 
   const { mutateAsync: logout } = useLogout();
-
-  const router = useRouter();
 
   const pathname = usePathname();
 
@@ -113,12 +109,8 @@ export function NavAccountPopover({ sx }: NavItemsProps) {
 
   const handleLogout = async () => {
     try {
-      const { status } = await logout({});
-      if (status === 205) {
-        router.push(localize(paths.home));
-        user.resetState();
-        onClose();
-      }
+      await logout({});
+      onClose();
     } catch {
       enqueueSnackbar(account("logout.error"), { variant: "error" });
     }

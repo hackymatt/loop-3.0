@@ -20,6 +20,9 @@ export const URLS = {
   PROJECT_LEVELS: "/project-levels",
   PROJECT_TECHNOLOGIES: "/project-technologies",
   PROJECT_TAGS: "/project-tags",
+  PROJECT_CHANNEL_POSTS: "/project-channel-posts",
+  PROJECT_CHANNEL_POST_COMMENTS: "/project-channel-post-comments",
+  PROJECT_CHANNEL_POST_LIKES: "/project-channel-post-likes",
   SIMILAR_PROJECTS: "/similar-projects",
   // STEP
   STEP: "/step",
@@ -40,12 +43,21 @@ export const URLS = {
   FEATURED_POST: "/featured-post",
   // PLAN
   PLANS: "/plans",
-  SUBSCRIBE: "/subscribe",
+  CREATE_SETUP_INTENT: "/create-setup-intent",
+  CREATE_SUBSCRIPTION: "/create-subscription",
+  VALIDATE_COUPON: "/validate-coupon",
+  PREVIEW_INVOICE: "/preview-invoice",
   // CERTIFICATES
   CERTIFICATES: "/certificates",
   // ME
   DATA: "/me/data",
   PASSWORD_CHANGE: "/me/password",
   DELETE_ACCOUNT: "/me/delete",
+  SUBSCRIPTION: "/me/subscription",
+  CANCEL_SUBSCRIPTION: "me/subscription/cancel",
+  RENEW_SUBSCRIPTION: "me/subscription/renew",
+  CHANGE_SUBSCRIPTION: "me/subscription/change",
+  PAYMENT_METHODS: "/me/payment-methods",
+  INVOICES: "/me/invoices",
   DASHBOARD: "/me/dashboard",
 } as const;

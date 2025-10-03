@@ -10,9 +10,10 @@ import { URLS } from "../urls";
 
 const endpoint = URLS.PLANS;
 
-type IPrice = {
-  monthly: number;
-  yearly: number;
+type IPricing = {
+  currency: "PLN" | "EUR" | "USD" | "GBP";
+  interval: "monthly" | "yearly";
+  price: number;
 };
 
 type IOption = {
@@ -21,31 +22,34 @@ type IOption = {
 };
 
 type IPlan = {
-  slug: string;
+  type: "free" | "basic" | "premium";
   tokens_limit: number;
   license: string;
   popular: boolean;
-  premium: boolean;
-  price: IPrice;
-  currency: string;
+  pricing: IPricing[];
   options: IOption[];
 };
+
+// Kolejność sortowania typów planów
+const planOrder: PlanType[] = ["free", "basic", "premium"];
 
 export const plansQuery = (language: Language) => {
   const url = endpoint;
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IPlanProps[]>> => {
-    const results = await getSimpleListData<IPlan>(queryUrl, {
+    const { data } = await getSimpleListData<IPlan>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    const modifiedResults: IPlanProps[] = (results ?? []).map(
-      ({ slug, tokens_limit, ...rest }: IPlan) => ({
+
+    const modifiedResults: IPlanProps[] = (data ?? [])
+      .map(({ type, tokens_limit, ...rest }: IPlan) => ({
         ...rest,
-        slug: slug as PlanType,
+        type: type as PlanType,
         tokensLimit: tokens_limit,
-      })
-    );
+      }))
+      .sort((a, b) => planOrder.indexOf(a.type) - planOrder.indexOf(b.type));
+
     return { results: modifiedResults };
   };
 

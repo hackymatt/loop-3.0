@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from core.base_model import BaseModel
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
@@ -9,6 +10,13 @@ class Student(BaseModel):
     user = models.OneToOneField(
         get_user_model(), on_delete=models.CASCADE, related_name="student_profile"
     )
+    stripe_customer_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+    trial_used = models.BooleanField(default=False)
+    first_purchase = models.BooleanField(default=True)
 
     def clean(self):
         """Ensure only users with user_type=STUDENT can be assigned"""
@@ -16,6 +24,10 @@ class Student(BaseModel):
             raise ValidationError(
                 f"Student profile can only be created for {UserType.STUDENT} users."
             )  # pragma: no cover
+
+    @property
+    def current_subscription(self):
+        return self.subscription
 
     def save(self, *args, **kwargs):
         self.clean()

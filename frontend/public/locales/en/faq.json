@@ -45,6 +45,10 @@
           "answer": "Log in and go to 'Account settings' → 'Subscription' to view your current plan and switch to another."
         },
         {
+          "question": "Where can I download my invoices?",
+          "answer": "Log in and go to 'Account Settings' → 'Invoices'. Here you can view your payment history and download PDF invoices for all your subscriptions."
+        },
+        {
           "question": "How do I delete my account?",
           "answer": "Log in and go to 'Account settings' → 'Manage account'. You'll find the option to delete your account there."
         }
@@ -145,36 +149,44 @@
       "icon": "solar:wallet-bold",
       "content": [
         {
-          "question": "What payment methods are available?",
-          "answer": "We accept payments by credit card (Visa, Mastercard, etc.), as well as Google Pay and Apple Pay. All payments are processed through Stripe – a global and secure payment provider."
+          "question": "How can I pay for the subscription?",
+          "answer": "You can pay for the subscription using a credit card (Visa, MasterCard, American Express) or other payment methods available through Stripe, such as Apple Pay or Google Pay. All payments are securely processed by Stripe."
         },
         {
-          "question": "Is the payment one-time or recurring?",
-          "answer": "Our plans work on a subscription basis – payments renew automatically monthly or yearly unless you cancel your subscription."
+          "question": "Are my card details safe?",
+          "answer": "Yes. Stripe is fully PCI DSS compliant, which means your data is protected. We do not store card numbers or CVV codes on our servers."
         },
         {
-          "question": "Can I pay using Google Pay or Apple Pay?",
-          "answer": "Yes, Stripe supports both Google Pay and Apple Pay – you can use them when paying on our platform."
+          "question": "How does automatic subscription renewal work?",
+          "answer": "Subscriptions automatically renew on a set cycle (monthly or yearly). Stripe will automatically charge your card on the renewal date."
         },
         {
-          "question": "Will I receive an invoice for my subscription?",
-          "answer": "Yes, after each payment, you’ll receive an invoice you can download from your account settings under 'Payments'."
+          "question": "Can I cancel my subscription?",
+          "answer": "Yes. You can cancel your subscription at any time from your account. After cancellation, access to paid features remains until the end of the paid period."
         },
         {
-          "question": "How do I cancel my subscription?",
-          "answer": "You can cancel your subscription anytime in account settings under 'Subscription'. After cancellation, access to projects remains active until the end of the current billing period."
+          "question": "What happens if my payment fails?",
+          "answer": "Stripe will attempt to charge your card several times. Meanwhile, you will receive an email notification about the payment issue. You can then update your card details or use another payment method."
         },
         {
-          "question": "Are my payment details secure?",
-          "answer": "Yes, we use Stripe – one of the safest payment platforms worldwide. Your card data is not stored on our servers."
+          "question": "Can I change my payment method?",
+          "answer": "Yes. You can add a new card or select another payment method at any time in your account settings."
         },
         {
-          "question": "Do you offer a free trial period?",
-          "answer": "Every user can start for free with the free plan, which gives access to one stage of each project. It's a great chance to test the platform before switching to a paid plan."
+          "question": "Can I change my subscription plan?",
+          "answer": "Yes. You can change your subscription plan (e.g., from monthly to yearly) in the user panel. Stripe will automatically adjust the payment difference."
         },
         {
-          "question": "What should I do if my payment was declined?",
-          "answer": "Make sure your card is active and has sufficient funds. You can also try another payment method (e.g., Google Pay). If problems persist, contact our support team."
+          "question": "Will I receive an invoice or receipt?",
+          "answer": "Yes. After each payment, you will receive an invoice by email and can also download it from your user panel."
+        },
+        {
+          "question": "Who can help me with payment issues?",
+          "answer": "If you encounter any issues, you can contact our customer support at info@loop.edu.pl or via the contact form."
+        },
+        {
+          "question": "Can I use a trial period?",
+          "answer": "Yes. We offer a 7-day trial on the paid plan. During this period, you can use all subscription features without any charges. After 7 days, the subscription automatically switches to the full paid plan unless canceled."
         }
       ]
     }

@@ -20,12 +20,11 @@ export const projectTechnologiesQuery = (language: Language, query?: QueryType) 
   const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<ListQueryResponse<IProjectTechnologyProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IProjectTechnology>(
-      queryUrl,
-      {
-        headers: { "Accept-Language": language },
-      }
-    );
+    const {
+      data: { results, records_count, pages_count },
+    } = await getListData<IProjectTechnology>(queryUrl, {
+      headers: { "Accept-Language": language },
+    });
     return { results, count: records_count, pagesCount: pages_count };
   };
 

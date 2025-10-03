@@ -52,7 +52,7 @@ export function fCurrency(inputValue: InputNumberValue, options?: Options) {
   const fm = new Intl.NumberFormat(defaultLocale.code, {
     style: "currency",
     currency: defaultLocale.currency,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
     ...rest,
   }).format(number);

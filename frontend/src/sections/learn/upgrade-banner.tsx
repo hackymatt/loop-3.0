@@ -6,7 +6,7 @@ import { varAlpha } from "minimal-shared/utils";
 import { Box, Button, Dialog, Avatar, Typography, DialogTitle, DialogContent } from "@mui/material";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
+import { RouterLink } from "src/routes/components";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
@@ -21,11 +21,6 @@ type Props = DialogProps & {
 export function UpgradeBanner({ slug, ...other }: Props) {
   const { t } = useTranslation("learn");
   const localize = useLocalizedPath();
-  const router = useRouter();
-
-  const handleReturnToProject = () => {
-    router.push(localize(`${paths.project}/${slug}`));
-  };
 
   return (
     <Dialog
@@ -123,7 +118,12 @@ export function UpgradeBanner({ slug, ...other }: Props) {
             }}
           />
 
-          <Button variant="text" color="inherit" onClick={handleReturnToProject}>
+          <Button
+            component={RouterLink}
+            href={localize(`${paths.project}/${slug}`)}
+            variant="text"
+            color="inherit"
+          >
             {t("upgrade.button")}
           </Button>
         </Box>

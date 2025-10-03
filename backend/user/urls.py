@@ -1,44 +1,27 @@
-from django.urls import path
+from django.urls import path, include
 
-from .register.views import RegisterView
-from .activate.views import ActivateAccountView, ResendActivationLinkView
-from .login.email.views import LoginView
-from .login.google.views import GoogleLoginView
-from .login.github.views import GithubLoginView
-from .login.facebook.views import FacebookLoginView
-from .logout.views import LogoutView
-from .reset_password.views import PasswordResetView, PasswordResetConfirmView
-from .me.views import UpdateUserView, ChangePasswordView, DeleteAccountView
-from .refresh_token.views import RefreshTokenView
-from .dashboard.views import DashboardView
+from .me.urls import urlpatterns as me_urls
+from .activate.urls import urlpatterns as activate_urls
+from .register.urls import urlpatterns as register_urls
+from .login.urls import urlpatterns as login_urls
+from .logout.urls import urlpatterns as logout_urls
+from .reset_password.urls import urlpatterns as password_urls
+from .refresh_token.urls import urlpatterns as refresh_token_urls
 
-from const import Urls
 
 # Define all your API URL patterns
 urlpatterns = [
     # Registration and activation routes
-    path(Urls.REGISTER, RegisterView.as_view(), name="register"),
-    path(Urls.ACTIVATE, ActivateAccountView.as_view(), name="activate"),
-    path(Urls.RESEND, ResendActivationLinkView.as_view(), name="resend"),
+    path("", include(register_urls)),
+    path("", include(activate_urls)),
     # Login routes
-    path(Urls.LOGIN, LoginView.as_view(), name="login"),
-    path(Urls.GOOGLE_LOGIN, GoogleLoginView.as_view(), name="google-login"),
-    path(Urls.GITHUB_LOGIN, GithubLoginView.as_view(), name="github-login"),
-    path(Urls.FACEBOOK_LOGIN, FacebookLoginView.as_view(), name="facebook-login"),
+    path("", include(login_urls)),
     # Logout routes
-    path(Urls.LOGOUT, LogoutView.as_view(), name="logout"),
+    path("", include(logout_urls)),
     # Password routes
-    path(Urls.PASSWORD_RESET, PasswordResetView.as_view(), name="password_reset"),
-    path(
-        Urls.PASSWORD_RESET_CONFIRM,
-        PasswordResetConfirmView.as_view(),
-        name="password_reset_confirm",
-    ),
+    path("", include(password_urls)),
     # Auth helpers
-    path(Urls.REFRESH_TOKEN, RefreshTokenView.as_view(), name="refresh-token"),
+    path("", include(refresh_token_urls)),
     # User routes
-    path(Urls.DATA, UpdateUserView.as_view(), name="data"),
-    path(Urls.PASSWORD_CHANGE, ChangePasswordView.as_view(), name="password"),
-    path(Urls.DELETE_ACCOUNT, DeleteAccountView.as_view(), name="delete-account"),
-    path(Urls.DASHBOARD, DashboardView.as_view(), name="dashboard"),
+    path("", include(me_urls)),
 ]

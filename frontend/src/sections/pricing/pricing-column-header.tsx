@@ -1,4 +1,5 @@
 import type { BoxProps } from "@mui/material/Box";
+import type { Currency, PlanInterval } from "src/types/plan";
 
 import { useTranslation } from "react-i18next";
 
@@ -9,6 +10,7 @@ import { getPlanIcon } from "src/utils/plan-icon";
 import { fCurrency } from "src/utils/format-number";
 
 import { CONFIG } from "src/global-config";
+import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 import { Label } from "src/components/label";
 
@@ -18,11 +20,19 @@ import type { PricingCardProps } from "./types";
 
 type PricingColumnHeaderProps = BoxProps & {
   plan: PricingCardProps;
+  interval: PlanInterval;
+  currency: Currency;
 };
 
 const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${name}`;
 
-export function PricingColumnHeader({ plan, sx, ...other }: PricingColumnHeaderProps) {
+export function PricingColumnHeader({
+  plan,
+  interval,
+  currency,
+  sx,
+  ...other
+}: PricingColumnHeaderProps) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
 
@@ -30,7 +40,7 @@ export function PricingColumnHeader({ plan, sx, ...other }: PricingColumnHeaderP
     <Box
       component="img"
       alt={plan.license}
-      src={iconPath(getPlanIcon(plan.slug))}
+      src={iconPath(getPlanIcon(plan.type))}
       sx={{ width: 80, height: 80 }}
     />
   );
@@ -46,7 +56,7 @@ export function PricingColumnHeader({ plan, sx, ...other }: PricingColumnHeaderP
       }}
     >
       <Typography component="span" variant="h3">
-        {fCurrency(plan.price, { code: locale("code"), currency: plan.currency })}
+        {fCurrency(plan.price, { code: locale("code"), currency })}
       </Typography>
 
       <Typography component="span" variant="subtitle2">
@@ -75,22 +85,28 @@ export function PricingColumnHeader({ plan, sx, ...other }: PricingColumnHeaderP
       ]}
       {...other}
     >
-      {plan.popular && (
-        <Label color="info" sx={{ position: "absolute", top: 16, right: 16 }}>
-          {t("popular")}
-        </Label>
-      )}
+      <Box sx={{ position: "absolute", top: 16, right: 16, display: "flex", gap: 1 }}>
+        {plan.popular && <Label color="info">{t("popular")}</Label>}
+        {plan.type !== PLAN_TYPE.FREE && (
+          <Label color="success">{t("trial", { days: CONFIG.trialDays })}</Label>
+        )}
+      </Box>
 
-      <Typography variant="overline" sx={{ color: "text.secondary" }}>
+      <Typography variant="overline" sx={{ color: "text.secondary", mt: 2 }}>
         {plan.license}
       </Typography>
 
       {renderPrices()}
       {renderIcons()}
 
-      <Typography variant="body2" sx={{ color: "text.secondary" }}>
-        {fCurrency(plan.price * 12, { code: locale("code"), currency: plan.currency })}{" "}
-        {t("perYear")}
+      <Typography
+        variant="body2"
+        sx={{
+          color: "text.secondary",
+          visibility: interval === PLAN_INTERVAL.YEARLY ? "visible" : "hidden",
+        }}
+      >
+        {fCurrency(plan.price * 12, { code: locale("code"), currency })} {t("perYear")}
       </Typography>
     </Box>
   );

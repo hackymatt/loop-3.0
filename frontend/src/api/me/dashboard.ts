@@ -1,7 +1,7 @@
 import type { Language } from "src/locales/types";
 import type { LevelType } from "src/types/project";
 import type { GetQueryResponse } from "src/api/types";
-import type { IDashboardProps } from "src/types/user";
+import type { IUserPlan, IDashboardProps } from "src/types/user";
 
 import { compact } from "lodash-es";
 import { cookies } from "next/headers";
@@ -56,12 +56,29 @@ type ICertificate = {
   completed_at: string;
 };
 
+type IPlan = {
+  type: "free" | "basic" | "premium";
+  currency: string | null;
+  interval: "month" | "year" | null;
+};
+
+type IUser = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  image: string | null;
+  user_type: "admin" | "instructor" | "student";
+  join_type: "email" | "google" | "facebook" | "github";
+  is_active: boolean;
+  plan: IPlan;
+  trial_used: boolean;
+  plan_license: string;
+};
+
 type IDashboard = {
-  tokens: number;
-  total_points: number;
-  daily_streak: number;
   projects: IProject[];
   certificates: ICertificate[];
+  profile: { user: IUser; tokens: number; total_points: number; daily_streak: number };
 };
 
 export const dashboardQuery = (language: Language) => {
@@ -73,12 +90,31 @@ export const dashboardQuery = (language: Language) => {
       headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
-    const { total_points, daily_streak, projects, certificates, ...rest } = data;
+    const {
+      projects,
+      certificates,
+      profile: {
+        daily_streak,
+        total_points,
+        user: {
+          first_name,
+          last_name,
+          is_active,
+          join_type,
+          user_type,
+          image,
+          plan,
+          trial_used,
+          plan_license,
+          ...restUser
+        },
+        ...restProfile
+      },
+      ...rest
+    } = data;
 
     const modifiedResult: IDashboardProps = {
       ...rest,
-      totalPoints: total_points,
-      dailyStreak: daily_streak,
       projects: projects.map(
         ({
           translated_name,
@@ -110,10 +146,10 @@ export const dashboardQuery = (language: Language) => {
             slug: technology.slug,
             name: technology.name,
           })),
-          teachers: instructors.map(({ full_name, image, ...restInstructor }) => ({
+          teachers: instructors.map(({ full_name, image: instructorImage, ...restInstructor }) => ({
             ...restInstructor,
             name: full_name,
-            avatarUrl: image,
+            avatarUrl: instructorImage,
           })),
           totalHours: duration / 60,
           totalStages: stages_count,
@@ -131,6 +167,23 @@ export const dashboardQuery = (language: Language) => {
           completedAt: completed_at,
         })
       ),
+      profile: {
+        ...restProfile,
+        user: {
+          ...restUser,
+          avatarUrl: image,
+          firstName: first_name,
+          lastName: last_name,
+          isActive: is_active,
+          joinType: join_type,
+          userType: user_type,
+          plan: plan as IUserPlan,
+          trialUsed: trial_used,
+          planLicense: plan_license,
+        },
+        totalPoints: total_points,
+        dailyStreak: daily_streak,
+      },
     };
 
     return { results: modifiedResult };

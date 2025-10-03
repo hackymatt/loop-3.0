@@ -1,4 +1,16 @@
 from django.contrib import admin
 from .models import Admin
 
-admin.site.register(Admin)
+
+def get_all_fields(model):
+    return [
+        field.name
+        for field in model._meta.get_fields()
+        if not field.many_to_many and not field.one_to_many
+    ]
+
+
+@admin.register(Admin)
+class AdminAdmin(admin.ModelAdmin):
+    list_display = get_all_fields(Admin)
+    search_fields = ("user__email", "user__username")

@@ -1,8 +1,8 @@
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
-from plan.models import PlanOption
-from ..factory import create_plan, create_plan_option
+from plan.models import Plan
+from ..factory import create_option, create_plan_option
 from const import Urls
 import random
 
@@ -12,51 +12,55 @@ class PlanListViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PLAN}"
 
-        self.plan_1 = create_plan()
-        self.plan_2 = create_plan()
-        self.plan_3 = create_plan()
-
-        options = [create_plan_option() for _ in range(10)]
+        self.plans = Plan.objects.all()
+        options = [create_option() for _ in range(10)]
 
         for option in options:
-            PlanOption.objects.create(
-                plan=self.plan_1, option=option, disabled=random.choice([True, False])
-            )
-            PlanOption.objects.create(
-                plan=self.plan_2, option=option, disabled=random.choice([True, False])
-            )
-            PlanOption.objects.create(
-                plan=self.plan_3, option=option, disabled=random.choice([True, False])
-            )
+            for plan in self.plans:
+                create_plan_option(
+                    plan=plan, option=option, disabled=random.choice([True, False])
+                )
 
-    def test_plan_list_view(self):
+    def test_list_plans(self):
         response = self.client.get(self.url)
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsInstance(response.data, list)
-        self.assertEqual(len(response.data), 4)
 
-        plan = next((p for p in response.data if p["slug"] == self.plan_1.slug), None)
-        self.assertIsNotNone(plan)
+        data = response.data
+        self.assertEqual(len(data), 3)
 
-        self.assertEqual(
-            plan["price"]["monthly"],
-            float(self.plan_1.get_translation("en").monthly_price),
-        )
-        self.assertEqual(
-            plan["price"]["yearly"],
-            float(self.plan_1.get_translation("en").yearly_price),
-        )
-        self.assertEqual(plan["license"], self.plan_1.get_translation("en").license)
-        self.assertEqual(plan["popular"], self.plan_1.popular)
-        self.assertEqual(plan["premium"], self.plan_1.premium)
+        first_plan = data[0]
+        self.assertIn("type", first_plan)
+        self.assertIn("tokens_limit", first_plan)
+        self.assertIn("license", first_plan)
+        self.assertIn("popular", first_plan)
+        self.assertIn("pricing", first_plan)
+        self.assertIn("options", first_plan)
 
-        self.assertIn("options", plan)
+        self.assertIsInstance(first_plan["pricing"], list)
 
-        option_data = plan["options"][0]
-        plan_option = self.plan_1.plan_options.first()
+        self.assertIsInstance(first_plan["options"], list)
+        if first_plan["options"]:
+            option = first_plan["options"][0]
+            self.assertIn("title", option)
+            self.assertIn("disabled", option)
 
-        self.assertEqual(
-            option_data["title"], plan_option.option.get_translation("en").title
-        )
-        self.assertEqual(option_data["disabled"], plan_option.disabled)
+    def test_retrieve_plan_by_type(self):
+        plan = self.plans[0]
+        response = self.client.get(f"{self.url}/{plan.type}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        plan_data = response.data
+
+        self.assertEqual(plan_data["type"], plan.type)
+        self.assertEqual(plan_data["tokens_limit"], plan.tokens_limit)
+        self.assertEqual(plan_data["popular"], plan.popular)
+        self.assertIsNotNone(plan_data["license"])
+
+        for pricing in plan_data["pricing"]:
+            self.assertIn("currency", pricing)
+            self.assertIn("interval", pricing)
+            self.assertIn("price", pricing)
+
+        for option in plan_data["options"]:
+            self.assertIn("title", option)
+            self.assertIn("disabled", option)

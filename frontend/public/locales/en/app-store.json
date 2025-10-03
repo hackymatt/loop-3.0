@@ -7,5 +7,5 @@
     "add": { "iOS": "Add to Home Screen", "Android": "Add to Home screen" }
   },
   "title": "Install the app",
-  "subtitle": "Install the app on your device for easy access to learning anytime. No [platform], no downloads, no hassle."
+  "subtitle": "Install the app on your device for easy access to learning anytime. No {{platform}}, no downloads, no hassle."
 }

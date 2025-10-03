@@ -36,7 +36,6 @@ class Project(BaseModel):
         Stage, through="ProjectStage", related_name="projects"
     )
     instructors = models.ManyToManyField(Instructor, related_name="projects")
-    chat_url = models.URLField()
     video_url = models.FileField(
         upload_to=project_directory_path, blank=True, null=True, max_length=500
     )
@@ -89,7 +88,7 @@ class ProjectTranslation(BaseModel):
         return f"{self.name} ({self.language})"
 
 
-class ProjectStage(models.Model):
+class ProjectStage(BaseModel):
     project = models.ForeignKey("project.Project", on_delete=models.CASCADE)
     stage = models.ForeignKey(Stage, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0)

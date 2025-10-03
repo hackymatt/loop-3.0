@@ -33,6 +33,9 @@ class Urls:
     FEATURED_TECHNOLOGIES = "featured-technologies"
     FEATURED_REVIEWS = "featured-reviews"
     SIMILAR_PROJECTS = "similar-projects/<slug:slug>"
+    PROJECT_CHANNEL_POSTS = "project-channel-posts/<slug:slug>"
+    PROJECT_CHANNEL_POST_COMMENTS = "project-channel-post-comments/<slug:slug>"
+    PROJECT_CHANNEL_POST_LIKES = "project-channel-post-likes/<slug:slug>"
     # STEP
     STEP = "step/<slug:project_slug>/<slug:stage_slug>/<slug:step_slug>"
     STEP_CHAT = "step/chat/<slug:step>"
@@ -48,7 +51,11 @@ class Urls:
     FEATURED_POST = "featured-post"
     # PLAN
     PLAN = "plans"
-    SUBSCRIBE = "subscribe"
+    CREATE_SETUP_INTENT = "create-setup-intent"
+    CREATE_SUBSCRIPTION = "create-subscription"
+    VALIDATE_COUPON = "validate-coupon"
+    PREVIEW_INVOICE = "preview-invoice"
+    STRIPE_WEBHOOK = "stripe-webhook"
     # CONTACT
     CONTACT = "contact"
     # CERTIFICATE
@@ -57,6 +64,13 @@ class Urls:
     DATA = "me/data"
     PASSWORD_CHANGE = "me/password"
     DELETE_ACCOUNT = "me/delete"
+    SUBSCRIPTION = "me/subscription"
+    CANCEL_SUBSCRIPTION = "me/subscription/cancel"
+    RENEW_SUBSCRIPTION = "me/subscription/renew"
+    CHANGE_SUBSCRIPTION = "me/subscription/change"
+    PAYMENT_METHODS = "me/payment-methods"
+    CUSTOMER_PORTAL_LINK = "me/customer-portal-link"
+    INVOICES = "me/invoices"
     DASHBOARD = "me/dashboard"
 
 
@@ -90,3 +104,46 @@ class Currency(TextChoices):
     EUR = "EUR"
     USD = "USD"
     GBP = "GBP"
+
+
+class PlanType(TextChoices):
+    FREE = "free"
+    BASIC = "basic"
+    PREMIUM = "premium"
+
+
+class PaymentInterval(TextChoices):
+    MONTHLY = "monthly"
+    YEARLY = "yearly"
+
+
+class SubscriptionStatus(TextChoices):
+    TRIALING = "trialing"
+    ACTIVE = "active"
+    CANCELED = "canceled"
+    INCOMPLETE = "incomplete"
+    INCOMPLETE_EXPIRED = "incomplete_expired"
+    PAST_DUE = "past_due"
+    UNPAID = "unpaid"
+
+
+class PaymentStatus(TextChoices):
+    PAID = "Paid"
+    DUE = "Due"
+
+
+class PaymentMethod(TextChoices):
+    STRIPE = "Stripe"
+    BANK_TRANSFER = "Bank transfer"
+
+
+class PaymentType(TextChoices):
+    CARD = "card"
+    PAYPAL = "paypal"
+    REVOLUT = "revolut_pay"
+
+
+class PaymentDiscountDuration(TextChoices):
+    ONCE = "once"
+    REPEATING = "repeating"
+    FOREVER = "forever"

@@ -1,15 +1,15 @@
-# Python cache files
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Virtual environment folders
+# Virtualenvs
 venv/
 env/
 .env/
 
-# Django settings or environment files
+# Django settings/env
 *.env
 *.local
 *.dev
@@ -19,10 +19,10 @@ env/
 # Logs
 *.log
 
-# Database files
+# DB files
 *.sqlite3
 
-# Test and coverage files
+# Coverage/tests
 coverage/
 *.tox/
 *.nox/
@@ -30,18 +30,23 @@ coverage/
 *.hypothesis/
 *.pytest_cache/
 
-# Static and media files
+# Django collectstatic + media uploads
 static/
 media/
 
-# OS and editor files
+# OS/editor
 .DS_Store
 Thumbs.db
 
-# IDE and editor configurations
+# IDE
 .vscode/
 .idea/
 
-# Docker-specific files
+# Git
+.git/
+.gitignore
+
+# Docker host files (don’t send to context)
 Dockerfile
 .dockerignore
+docker-compose*.yml

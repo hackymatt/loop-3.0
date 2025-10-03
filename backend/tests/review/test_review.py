@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from review.models import Review
 from const import Language, Urls
-from ..factory import create_student, create_project
+from ..factory import create_student, create_project, create_review
 from ..helpers import login
 
 
@@ -12,18 +12,23 @@ class ReviewSummaryViewSetTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PROJECT_REVIEW_SUMMARY}"
         # Set up test data
-        self.student_1, _ = create_student()
-        self.student_2, _ = create_student()
-        self.project = create_project()
+        self.student_1, _ = create_student(is_active=True)
+        self.student_2, _ = create_student(is_active=True)
+        self.project = create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        )
 
-        self.review_1 = Review.objects.create(
+        self.review_1 = create_review(
             student=self.student_1,
             project=self.project,
             rating=5,
             language=Language.EN,
             comment="Great project!",
         )
-        self.review_2 = Review.objects.create(
+        self.review_2 = create_review(
             student=self.student_2,
             project=self.project,
             rating=4,
@@ -47,17 +52,22 @@ class ReviewViewSetTest(TestCase):
     def setUp(self):
         self.url = f"/{Urls.API}/{Urls.PROJECT_REVIEWS}"
         # Set up test data
-        self.student_1, _ = create_student()
-        self.student_2, _ = create_student()
-        self.project = create_project()
-        self.review_1 = Review.objects.create(
+        self.student_1, _ = create_student(is_active=True)
+        self.student_2, _ = create_student(is_active=True)
+        self.project = create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        )
+        self.review_1 = create_review(
             student=self.student_1,
             project=self.project,
             rating=5,
             language=Language.EN,
             comment="Great project!",
         )
-        self.review_2 = Review.objects.create(
+        self.review_2 = create_review(
             student=self.student_2,
             project=self.project,
             rating=4,
@@ -79,17 +89,22 @@ class FeaturedReviewsViewTest(TestCase):
     def setUp(self):
         self.url = f"/{Urls.API}/{Urls.FEATURED_REVIEWS}"
         # Set up test data
-        self.student_1, _ = create_student()
-        self.student_2, _ = create_student()
-        self.project = create_project()
-        self.review_1 = Review.objects.create(
+        self.student_1, _ = create_student(is_active=True)
+        self.student_2, _ = create_student(is_active=True)
+        self.project = create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        )
+        self.review_1 = create_review(
             student=self.student_1,
             project=self.project,
             rating=5,
             language=Language.EN,
             comment="Great project!",
         )
-        self.review_2 = Review.objects.create(
+        self.review_2 = create_review(
             student=self.student_2,
             project=self.project,
             rating=5,
@@ -122,8 +137,13 @@ class SubmitReviewViewTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.REVIEW_SUBMIT}"
 
-        self.student, self.student_password = create_student()
-        self.project = create_project()
+        self.student, self.student_password = create_student(is_active=True)
+        self.project = create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        )
 
     def test_create_review_success(self):
         login(self, self.student.user.email, self.student_password)
@@ -144,7 +164,7 @@ class SubmitReviewViewTest(TestCase):
     def test_update_existing_review(self):
         login(self, self.student.user.email, self.student_password)
         # First, create initial review
-        Review.objects.create(
+        create_review(
             student=self.student,
             project=self.project,
             rating=4,

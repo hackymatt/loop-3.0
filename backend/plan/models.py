@@ -1,30 +1,40 @@
 from django.db import models
-from const import Language, Currency
+from django.utils import timezone
+from core.base_model import BaseModel
+from const import PlanType, Language, Currency, PaymentInterval
 from global_config import CONFIG
 
 
-class Plan(models.Model):
-    slug = models.SlugField(unique=True)
+class Plan(BaseModel):
+    type = models.CharField(max_length=10, choices=PlanType.choices)
     popular = models.BooleanField(default=False)
-    premium = models.BooleanField(default=False)
     tokens_limit = models.PositiveIntegerField(default=0)
+    stripe_product_id = models.CharField(max_length=255, blank=True, null=True)
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
+    def get_pricings(self):
+        return self.pricings.all()
+
     def delete(self, *args, **kwargs):  # pragma: no cover
-        if self.slug == CONFIG["default_plan"]:
+        if self.type == CONFIG["default_plan"]:
             raise ValueError("You cannot delete the default plan.")
         super().delete(*args, **kwargs)
 
     def __str__(self):  # pragma: no cover
-        return self.slug
+        return self.type
+
+    @property
+    def is_default_plan(plan):
+        type = CONFIG["default_plan"]
+        return plan.type == type
 
     class Meta:
         db_table = "plan"
 
 
-class PlanTranslation(models.Model):
+class PlanTranslation(BaseModel):
     plan = models.ForeignKey(
         Plan, related_name="translations", on_delete=models.CASCADE
     )
@@ -33,21 +43,48 @@ class PlanTranslation(models.Model):
         choices=Language.choices,
     )
     license = models.CharField(max_length=100)
-    monthly_price = models.DecimalField(max_digits=6, decimal_places=2)
-    yearly_price = models.DecimalField(max_digits=6, decimal_places=2)
-    currency = models.CharField(
-        max_length=3, choices=Currency.choices, default=Currency.PLN
-    )
 
     class Meta:
         unique_together = ("plan", "language")
         db_table = "plan_translation"
 
     def __str__(self):  # pragma: no cover
-        return f"{self.plan.slug} ({self.language})"
+        return f"{self.plan.type} ({self.language})"
 
 
-class Option(models.Model):
+class PlanPricing(BaseModel):
+    plan = models.ForeignKey(Plan, related_name="pricings", on_delete=models.CASCADE)
+    currency = models.CharField(
+        max_length=3, choices=Currency.choices, default=Currency.PLN
+    )
+    interval = models.CharField(max_length=10, choices=PaymentInterval.choices)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stripe_price_id = models.CharField(max_length=255, blank=True, null=True)
+    valid_from = models.DateTimeField()
+
+    class Meta:
+        unique_together = ("plan", "currency", "interval", "valid_from")
+        db_table = "plan_pricing"
+
+    def __str__(self):  # pragma: no cover
+        return f"{self.plan.type} - {self.interval} - {self.price} {self.currency}, since: {self.valid_from}"
+
+    @classmethod
+    def get_current_price(cls, plan, currency, interval):
+        """Get active price for a given plan, currency, and interval."""
+        return (
+            cls.objects.filter(
+                plan=plan,
+                currency=currency,
+                interval=interval,
+                valid_from__lte=timezone.now(),
+            )
+            .order_by("-valid_from")
+            .first()
+        )
+
+
+class Option(BaseModel):
     slug = models.SlugField(unique=True)
 
     def get_translation(self, lang_code):
@@ -60,7 +97,7 @@ class Option(models.Model):
         db_table = "option"
 
 
-class OptionTranslation(models.Model):
+class OptionTranslation(BaseModel):
     option = models.ForeignKey(
         Option, related_name="translations", on_delete=models.CASCADE
     )
@@ -78,7 +115,7 @@ class OptionTranslation(models.Model):
         return f"{self.option.slug} ({self.language})"
 
 
-class PlanOption(models.Model):
+class PlanOption(BaseModel):
     plan = models.ForeignKey(
         Plan, related_name="plan_options", on_delete=models.CASCADE
     )
@@ -94,4 +131,4 @@ class PlanOption(models.Model):
         ordering = ["order"]
 
     def __str__(self):  # pragma: no cover
-        return f"{self.plan.slug} - {self.option.slug} (disabled: {self.disabled}) | Order: {self.order}"
+        return f"{self.plan.type} - {self.option.slug} (disabled: {self.disabled}) | Order: {self.order}"

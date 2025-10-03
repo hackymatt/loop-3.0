@@ -6,11 +6,19 @@
     },
     "manage": {
       "title": "Account settings – change password or delete account",
-      "description": "Keep your loop account secure. Change your password, manage your data, or delete your account if you're finishing your learning path."
+      "description": "Keep your loop account secure. Change your password, manage your data, or delete your account."
     },
     "subscription": {
       "title": "Subscription – manage your project access",
       "description": "Check your active subscription and manage your plan. Get full access to projects, paths, and development certificates on the loop platform."
+    },
+    "payment": {
+      "title": "Payment – manage your payment options",
+      "description": "View your active payment methods, add a new one, and manage your default payment method on the LOOP platform."
+    },
+    "invoices": {
+      "title": "Invoices – manage your payments",
+      "description": "View and download your subscription invoices. Check your payment history on the LOOP platform."
     }
   },
   "email": {
@@ -28,12 +36,29 @@
     "label": "Last name",
     "errors": { "required": "Last name is required" }
   },
+  "streetAddress": {
+    "label": "Street address",
+    "errors": { "required": "Street address is required" }
+  },
+  "zipCode": {
+    "label": "Zip code",
+    "errors": { "required": "Zip code is required" }
+  },
+  "city": {
+    "label": "City",
+    "errors": { "required": "City is required" }
+  },
+  "country": {
+    "label": "Country",
+    "placeholder": "Choose a country",
+    "errors": { "required": "Country is required" }
+  },
   "password": {
     "label": "Password",
     "placeholder": "Enter your password",
     "errors": {
       "required": "Password is required",
-      "minLength": "Password must be at least minPasswordLength characters long",
+      "minLength": "Password must be at least {{minPasswordLength}} characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
@@ -45,7 +70,7 @@
     "placeholder": "Enter your current password",
     "errors": {
       "required": "This field is required",
-      "minLength": "Password must be at least minPasswordLength characters long",
+      "minLength": "Password must be at least {{minPasswordLength}} characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
@@ -57,7 +82,7 @@
     "placeholder": "Enter your new password",
     "errors": {
       "required": "This field is required",
-      "minLength": "Password must be at least minPasswordLength characters long",
+      "minLength": "Password must be at least {{minPasswordLength}} characters long",
       "bigLetter": "Password must contain at least one uppercase letter",
       "smallLetter": "Password must contain at least one lowercase letter",
       "number": "Password must contain at least one number",
@@ -88,19 +113,82 @@
   },
   "subscription": {
     "title": "Subscription",
-    "label": "Current plan",
+    "label": "Current subscription",
+    "license": "{{plan}} plan",
     "billing": {
-      "label": "Billing cycle",
-      "monthly": "Monthly",
-      "yearly": "Yearly"
+      "label": {
+        "trial": "After the free trial ends on {{date}}, this subscription will continue automatically.",
+        "cancel": "After the free trial ends on {{date}}, this subscription will no longer be available.",
+        "standard": "Your subscription renews on {{date}}."
+      },
+      "monthly": "monthly",
+      "yearly": "yearly"
     },
-    "renewal": "Renewal amount",
-    "on": "will be charged on",
-    "button": "Cancel subscription",
-    "cancel": "Cancel",
-    "description": "Are you sure you want to cancel your subscription? You will lose access to active projects and learning paths.",
-    "sell": "Build your portfolio, learn with projects, and earn certificates. Choose a plan and grow with loop.",
+    "sell": "Build your portfolio, learn through projects, and earn certificates. Choose a plan and grow with Loop.",
+    "error": "Something went wrong. Please try again.",
+    "trial": "Trial ends on {{date}}",
+    "ending": "Cancels on {{date}}",
+    "cancelled": "Your subscription has been cancelled and will end at the end of the billing period on {{date}}.",
+    "buttons": {
+      "change": "Update subscription",
+      "cancel": "Cancel subscription",
+      "renew": "Do not cancel subscription"
+    },
+    "change": {
+      "title": "Update your subscription",
+      "approve": "Continue",
+      "cancel": "Back",
+      "summary": "Summary"
+    },
+    "confirm": {
+      "title": "Confirm update",
+      "approve": "Subscribe and pay",
+      "cancel": "Back",
+      "license": "Plan {{plan}}",
+      "frequency": { "monthly": "monthly", "yearly": "yearly" },
+      "summary": "Charge {{frequency}} starting from {{date}}",
+      "payNow": "Amount due today",
+      "payAfterTrial": "Amount due on {{date}}"
+    },
+    "cancel": {
+      "title": "Cancel subscription",
+      "description": {
+        "part_1": "Your subscription will be cancelled but remain active until the end of your billing period, which ends on {{date}}.",
+        "part_2": "If you change your mind, you can renew your subscription."
+      },
+      "approve": "Cancel subscription",
+      "cancel": "Back"
+    },
+    "renew": {
+      "title": "Renew subscription",
+      "description": "This subscription will not be cancelled. It will renew on {{date}}.",
+      "approve": "Renew subscription",
+      "cancel": "Back"
+    }
+  },
+  "payment": {
+    "title": "Payment",
+    "card": {
+      "holder": "Card Holder",
+      "expiration": "Expiration Date"
+    },
+    "revolut": {
+      "info": "Linked Revolut Pay account"
+    },
+    "default": "Default",
+    "setDefault": "Set as Default",
+    "add": "Add Payment Method",
+    "delete": "Delete Payment Method",
     "error": "Something went wrong. Please try again."
+  },
+  "invoices": {
+    "title": "Invoices",
+    "invoice_number": "Invoice number",
+    "invoice_date": "Invoice date",
+    "amount": "Amount",
+    "all": "All",
+    "rows_per_page": "Rows per page",
+    "button": "Download"
   },
   "logout": {
     "title": "Log out",

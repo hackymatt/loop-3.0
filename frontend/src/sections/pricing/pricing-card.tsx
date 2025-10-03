@@ -1,14 +1,16 @@
 import type { PaperProps } from "@mui/material/Paper";
+import type { Currency, PlanInterval } from "src/types/plan";
 
 import { useTranslation } from "react-i18next";
 import { varAlpha } from "minimal-shared/utils";
 
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import { paths } from "src/routes/paths";
+import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
@@ -16,8 +18,8 @@ import { getPlanIcon } from "src/utils/plan-icon";
 import { fCurrency, fShortenNumber } from "src/utils/format-number";
 
 import { CONFIG } from "src/global-config";
-import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
+import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
@@ -29,26 +31,51 @@ import type { PricingCardProps } from "./types";
 
 type Props = PaperProps & {
   plan: PricingCardProps;
-  isYearly: boolean;
+  interval: PlanInterval;
+  currency: Currency;
 };
 
 const iconPath = (name: string) => `${CONFIG.assetsDir}/assets/icons/plans/${name}`;
 
-export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
+export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const router = useRouter();
 
   const user = useUserContext();
-  const { isLoggedIn, plan: userPlan } = user.state;
+  const {
+    isLoggedIn,
+    plan: { type, interval: userInterval, currency: userCurrency },
+  } = user.state;
 
-  const isCurrentPlan = isLoggedIn && plan.slug === userPlan.type;
+  const isCurrentPlan =
+    isLoggedIn &&
+    plan.type === type &&
+    ((interval === userInterval && currency === userCurrency) || plan.type === PLAN_TYPE.FREE);
+  const isFreePlan = type === PLAN_TYPE.FREE;
 
-  const redirect = localize(
-    plan.slug === PLAN_TYPE.FREE
-      ? `${paths.payment}?plan=${plan.slug}`
-      : `${paths.payment}?plan=${plan.slug}&yearly=${isYearly}`
-  );
+  const handleRedirect = async () => {
+    if (!isLoggedIn) {
+      if (plan.type === PLAN_TYPE.FREE) {
+        user.setField("redirect", localize(paths.account.dashboard));
+      } else {
+        user.setField(
+          "redirect",
+          localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+        );
+      }
+      router.push(localize(paths.auth.register));
+      return;
+    }
+
+    if (isFreePlan) {
+      router.push(
+        localize(`${paths.payment}/${plan.type}?interval=${interval}&currency=${currency}`)
+      );
+      return;
+    }
+  };
 
   const { trackEvent } = useAnalytics();
 
@@ -56,7 +83,7 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
     <Box
       component="img"
       alt={plan.license}
-      src={iconPath(getPlanIcon(plan.slug))}
+      src={iconPath(getPlanIcon(plan.type))}
       sx={{ width: 80, height: 80 }}
     />
   );
@@ -64,18 +91,36 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
   const renderPrices = () => (
     <Box
       sx={{
-        gap: 0.5,
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
+        lineHeight: 1,
         ...(plan.popular && { color: "primary.main" }),
       }}
     >
-      <Typography component="span" variant="h3">
-        {fCurrency(plan.price, { code: locale("code"), currency: plan.currency })}
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "baseline" }}>
+        <Typography component="span" variant="h3">
+          {fCurrency(plan.price, {
+            code: locale("code"),
+            currency,
+          })}
+        </Typography>
 
-      <Typography component="span" variant="subtitle2">
-        /{t("monthlyShort")}
+        <Typography component="span" variant="subtitle2">
+          /{t("monthlyShort")}
+        </Typography>
+      </Box>
+
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{
+          mt: "-2px",
+          lineHeight: 1,
+          visibility: interval === PLAN_INTERVAL.YEARLY ? "visible" : "hidden",
+        }}
+      >
+        {t("billed")}
       </Typography>
     </Box>
   );
@@ -151,36 +196,37 @@ export function PricingCard({ plan, isYearly, sx, ...other }: Props) {
       ]}
       {...other}
     >
-      {plan.popular && (
-        <Label color="info" sx={{ position: "absolute", top: 16, right: 16 }}>
-          {t("popular")}
-        </Label>
-      )}
+      <Box sx={{ position: "absolute", top: 16, right: 16, display: "flex", gap: 1 }}>
+        {plan.popular && <Label color="info">{t("popular")}</Label>}
+        {plan.type !== PLAN_TYPE.FREE && (
+          <Label color="success">{t("trial", { days: CONFIG.trialDays })}</Label>
+        )}
+      </Box>
 
       <Box component="span" sx={{ color: "text.secondary", typography: "overline" }}>
         {plan.license}
       </Box>
 
       {renderIcons()}
+
       {renderPrices()}
+
       {renderList()}
 
-      <Button
+      <LoadingButton
         fullWidth
         size="large"
         variant={isCurrentPlan ? "outlined" : "contained"}
         color={plan.popular ? "primary" : "inherit"}
-        href={isLoggedIn ? redirect : localize(paths.auth.register)}
         disabled={isCurrentPlan}
-        onClick={() => {
-          if (!isLoggedIn) {
-            user.setField("redirect", redirect);
-          }
+        onClick={async () => {
           trackEvent({ category: "pricing", label: plan.license, action: "choosePlan" });
+          await handleRedirect();
         }}
+        sx={{ textWrap: "nowrap" }}
       >
         {isCurrentPlan ? t("current") : `${t("choose")} ${plan.license}`}
-      </Button>
+      </LoadingButton>
     </Paper>
   );
 }

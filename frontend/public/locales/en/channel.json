@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Channel [name] - join the discussion",
+    "description": "Take part in conversations, share your knowledge, and inspire others in the [name] channel. Your ideas can help the entire community!"
+  },
+  "button": "Post",
+  "newPost": {
+    "header": "New post",
+    "title": "Title",
+    "submit": "Publish post",
+    "placeholder": "Write post...",
+    "errors": {
+      "title": { "required": "Title is required" },
+      "message": { "required": "Description is required" }
+    }
+  },
+  "editPost": {
+    "title": "Title",
+    "submit": "Save post",
+    "errors": {
+      "title": { "required": "Title is required" },
+      "message": { "required": "Description is required" }
+    }
+  },
+  "newComment": {
+    "submit": "Publish comment",
+    "placeholder": "Write comment...",
+    "errors": {
+      "message": { "required": "Description is required" }
+    }
+  },
+  "editComment": {
+    "submit": "Save comment",
+    "errors": {
+      "message": { "required": "Description is required" }
+    }
+  },
+  "title": "Channel",
+  "ago": "ago",
+  "helpful": "Helpful",
+  "reply": "Reply",
+  "showAll": [
+    "Open [comments] previous comment",
+    "Open [comments] previous comments",
+    "Open [comments] previous comments"
+  ]
+}

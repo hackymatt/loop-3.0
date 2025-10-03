@@ -1,4 +1,5 @@
-import type { CURRENCY, PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
+import type { CURRENCY } from "src/consts/currency";
+import type { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 // ----------------------------------------------------------------------
 
@@ -6,11 +7,12 @@ export type PlanType = (typeof PLAN_TYPE)[keyof typeof PLAN_TYPE];
 
 export type PlanInterval = (typeof PLAN_INTERVAL)[keyof typeof PLAN_INTERVAL];
 
-export type CurrencyType = (typeof CURRENCY)[keyof typeof CURRENCY];
+export type Currency = (typeof CURRENCY)[keyof typeof CURRENCY];
 
-export type IPlanPriceProp = {
-  monthly: number;
-  yearly: number;
+export type IPlanPricingProp = {
+  currency: Currency;
+  interval: PlanInterval;
+  price: number;
 };
 
 type IPlanOptionProp = {
@@ -19,12 +21,10 @@ type IPlanOptionProp = {
 };
 
 export type IPlanProps = {
-  slug: PlanType;
+  type: PlanType;
   tokensLimit: number;
   license: string;
   popular: boolean;
-  premium: boolean;
-  price: IPlanPriceProp;
-  currency: CurrencyType;
+  pricing: IPlanPricingProp[];
   options: IPlanOptionProp[];
 };

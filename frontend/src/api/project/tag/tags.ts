@@ -20,7 +20,9 @@ export const projectTagsQuery = (language: Language, query?: QueryType) => {
   const queryUrl = urlParams ? `${url}?${urlParams}` : url;
 
   const queryFn = async (): Promise<ListQueryResponse<IProjectTagProp[]>> => {
-    const { results, records_count, pages_count } = await getListData<IProjectTag>(queryUrl, {
+    const {
+      data: { results, records_count, pages_count },
+    } = await getListData<IProjectTag>(queryUrl, {
       headers: { "Accept-Language": language },
     });
     const modifiedResults: IProjectTagProp[] = (results ?? []).map(
