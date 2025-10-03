@@ -398,6 +398,86 @@ class CreateSubscriptionViewTest(TestCase):
             subscription_args["items"], [{"price": self.pricing.stripe_price_id}]
         )
 
+    @patch("plan.payment.views.create_customer")
+    @patch("plan.payment.views.create_subscription")
+    def test_create_subscription_success_with_first_purchase(
+        self, mock_create_subscription, mock_create_customer
+    ):
+        login(self, self.student.user.email, self.student_password)
+
+        mock_create_customer.return_value = MagicMock(id="cus_test123")
+
+        self.student.stripe_customer_id = None
+        self.student.first_purchase = True
+        self.student.save()
+
+        mock_subscription = MagicMock()
+        mock_subscription.status = SubscriptionStatus.ACTIVE
+        mock_subscription.latest_invoice.payment_intent = None
+        mock_create_subscription.return_value = mock_subscription
+
+        data = {
+            "plan": self.plan.type,
+            "interval": self.pricing.interval,
+            "currency": self.pricing.currency,
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["status"], "succeeded")
+
+        self.student.refresh_from_db()
+        self.assertEqual(self.student.stripe_customer_id, "cus_test123")
+
+        mock_create_customer.assert_called_once_with(email=self.student.user.email)
+        mock_create_subscription.assert_called_once()
+        subscription_args = mock_create_subscription.call_args[1]
+        self.assertEqual(subscription_args["customer_id"], "cus_test123")
+        self.assertEqual(
+            subscription_args["items"], [{"price": self.pricing.stripe_price_id}]
+        )
+
+    @patch("plan.payment.views.create_customer")
+    @patch("plan.payment.views.create_subscription")
+    def test_create_subscription_success_without_first_purchase(
+        self, mock_create_subscription, mock_create_customer
+    ):
+        login(self, self.student.user.email, self.student_password)
+
+        mock_create_customer.return_value = MagicMock(id="cus_test123")
+
+        self.student.stripe_customer_id = None
+        self.student.first_purchase = False
+        self.student.save()
+
+        mock_subscription = MagicMock()
+        mock_subscription.status = SubscriptionStatus.ACTIVE
+        mock_subscription.latest_invoice.payment_intent = None
+        mock_create_subscription.return_value = mock_subscription
+
+        data = {
+            "plan": self.plan.type,
+            "interval": self.pricing.interval,
+            "currency": self.pricing.currency,
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["status"], "succeeded")
+
+        self.student.refresh_from_db()
+        self.assertEqual(self.student.stripe_customer_id, "cus_test123")
+
+        mock_create_customer.assert_called_once_with(email=self.student.user.email)
+        mock_create_subscription.assert_called_once()
+        subscription_args = mock_create_subscription.call_args[1]
+        self.assertEqual(subscription_args["customer_id"], "cus_test123")
+        self.assertEqual(
+            subscription_args["items"], [{"price": self.pricing.stripe_price_id}]
+        )
+
     @patch(
         "plan.payment.views.create_subscription",
         side_effect=stripe.error.StripeError("Stripe failed"),
