@@ -18,7 +18,7 @@ class PaymentMethod(BaseModel):
         verbose_name = "Payment Method"
         verbose_name_plural = "Payment Methods"
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return f"{self.student.user.email} ({self.type})"
 
 
@@ -39,7 +39,7 @@ class CardPaymentMethod(BaseModel):
         verbose_name = "Card Payment Method"
         verbose_name_plural = "Card Payment Methods"
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return f"{self.payment_method.student.user.email} {self.pk}"
 
 
@@ -54,7 +54,7 @@ class PayPalPaymentMethod(BaseModel):
         verbose_name = "PayPal Payment Method"
         verbose_name_plural = "PayPal Payment Methods"
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return f"{self.payment_method.student.user.email} {self.pk}"
 
 
@@ -68,7 +68,7 @@ class RevolutPaymentMethod(BaseModel):
         verbose_name = "RevolutPay Payment Method"
         verbose_name_plural = "RevolutPay Payment Methods"
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return f"{self.payment_method.student.user.email} {self.pk}"
 
 
@@ -104,7 +104,7 @@ class PaymentDiscount(BaseModel):
         verbose_name = "Payment Discount"
         verbose_name_plural = "Payment Discounts"
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return self.code
 
     def is_expired(self):

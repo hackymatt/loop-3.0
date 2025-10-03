@@ -31,6 +31,7 @@ from .models import (
     RevolutPaymentMethod,
     PaymentDiscount,
 )
+from .utils import is_coupon_valid
 from utils.url.url import get_website_url
 from utils.stripe.customer import (
     create_customer,
@@ -41,7 +42,6 @@ from utils.stripe.setup_intent import create_setup_intent
 from utils.stripe.payment_method import modify_payment_method, retrieve_payment_method
 from utils.stripe.subscription import create_subscription
 from utils.stripe.webhook import construct_event
-from utils.stripe.promotion_code import retrieve_promotion_code
 from utils.stripe.invoice import preview_invoice
 from global_config import CONFIG
 
@@ -56,14 +56,12 @@ class CreateSetupIntentView(APIView):
                 customer = create_customer(email=student.user.email)
                 student.stripe_customer_id = customer.id
                 student.save()
-            else:
-                customer = {"id": student.stripe_customer_id}
 
             setup_intent = create_setup_intent(
-                customer_id=customer["id"],
+                customer_id=student.stripe_customer_id,
             )
             customer_session = create_customer_session(
-                customer_id=customer["id"],
+                customer_id=student.stripe_customer_id,
                 components={
                     "payment_element": {
                         "enabled": True,
@@ -103,10 +101,15 @@ class CreateSubscriptionView(APIView):
             pricing = PlanPricing.get_current_price(plan, currency, interval)
 
             if code:
-                discount = PaymentDiscount.objects.filter(code=code).first()
-                if not discount:
+                is_valid, payload = is_coupon_valid(
+                    user=request.user,
+                    code=code,
+                    type=type,
+                    currency=currency,
+                )
+                if not is_valid:
                     return Response(
-                        {"discount": _("Invalid promotion code.")},
+                        {"discount": payload},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
 
@@ -129,8 +132,12 @@ class CreateSubscriptionView(APIView):
             if trial_days > 0:
                 subscription_params["payment_behavior"] = "default_incomplete"
 
-            if discount:
-                promotion_code = discount.stripe_promotion_code_id
+            if code and is_valid:
+                promotion_code = (
+                    PaymentDiscount.objects.filter(code=code)
+                    .first()
+                    .stripe_promotion_code_id
+                )
                 subscription_params["discounts"] = [{"promotion_code": promotion_code}]
                 subscription_params["metadata"]["promotion_code_id"] = promotion_code
 
@@ -163,76 +170,17 @@ class ValidateCouponView(APIView):
         type = request.data.get("plan")
         currency = request.data.get("currency")
 
-        plan = Plan.objects.get(type=type)
-
-        student = Student.objects.get(user=request.user)
-
-        discount = PaymentDiscount.objects.filter(code=code).first()
-        if not discount:
-            return Response(
-                {"discount": _("Invalid promotion code")},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        if not discount.active:
-            return Response(
-                {"discount": _("Coupon is inactive")},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        if discount.is_expired():
-            return Response(
-                {"discount": _("Coupon has expired")},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        if discount.currency and discount.currency != currency:
-            return Response(
-                {"discount": _("Coupon is not valid for this currency")},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        if (
-            discount.max_redemptions
-            and retrieve_promotion_code(
-                discount.stripe_promotion_code_id
-            ).times_redeemed
-            >= discount.max_redemptions
-        ):
-            return Response(
-                {"discount": _("Coupon has already been used")},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        restrictions = discount.restrictions or {}
-        allowed_products = restrictions.get("applies_to", {}).get("products", [])
-        if allowed_products and plan.stripe_product_id not in allowed_products:
-            return Response(
-                {"discount": _("Coupon does not apply to this product")},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        if restrictions.get("first_time_transaction") and not student.first_purchase:
-            return Response(
-                {"discount": _("Coupon is only for first-time purchase")},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        allowed_customer = restrictions.get("customer")
-        if allowed_customer and student.stripe_customer_id != allowed_customer:
-            return Response(
-                {"discount": _("Coupon cannot be used by this customer")},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        return Response(
-            {
-                "value": discount.percent_off
-                if discount.percent_off
-                else discount.amount_off,
-                "is_percentage": discount.percent_off is not None,
-            }
+        is_valid, payload = is_coupon_valid(
+            user=request.user,
+            code=code,
+            type=type,
+            currency=currency,
         )
+
+        if not is_valid:
+            return Response({"discount": payload}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(payload, status=status.HTTP_200_OK)
 
 
 class PreviewInvoiceView(APIView):
@@ -307,6 +255,8 @@ class StripeWebhookView(APIView):
             self.handle_invoice_payment_failed(data)
         elif event_type == "setup_intent.succeeded":
             self.handle_setup_intent_succeeded(data)
+        else:
+            logger.info(f"Not handled event_type: {event_type}")
 
         return Response(status=status.HTTP_200_OK)
 
@@ -389,6 +339,8 @@ class StripeWebhookView(APIView):
         ]:
             subscribe_free_plan(student, start_date=end_date)
             send_cancel_email(student, student.user.email, website_url, language)
+        else:
+            logger.info(f"Not handled subscription status: {status}")
 
     def handle_subscription_deleted(self, data):
         customer_id = data["customer"]
@@ -494,7 +446,7 @@ class StripeWebhookView(APIView):
 
             invoice_items.append(invoice_item)
 
-        if discount:
+        if promotion_code_id and discount:
             invoice_item, created = InvoiceItem.objects.get_or_create(
                 item_id=discount.id,
                 name=f"{discount_label}: {discount.code}",

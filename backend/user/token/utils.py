@@ -19,10 +19,8 @@ def months_fraction_or_full(start_date, end_date):
         days_in_month = monthrange(start_date.year, start_date.month)[1]
         fraction = delta.days / days_in_month
         return round(fraction, 2)
-    else:
-        if delta.days >= 0:
-            total_months += 1
-        return total_months
+
+    return total_months + 1
 
 
 def get_user_tokens_left(user):

@@ -13,6 +13,7 @@ from const import (
     PaymentStatus,
     PaymentType,
     PaymentInterval,
+    PaymentDiscountDuration,
 )
 
 from user.type.admin_user.models import Admin
@@ -39,7 +40,14 @@ from project.progress.models import ProjectProgress
 
 from review.models import Review
 
-from plan.models import Plan, PlanTranslation, PlanPricing, Option, OptionTranslation
+from plan.models import (
+    Plan,
+    PlanTranslation,
+    PlanPricing,
+    Option,
+    OptionTranslation,
+    PlanOption,
+)
 from plan.subscription.utils import subscribe_free_plan
 from plan.payment.models import (
     PaymentMethod,
@@ -61,6 +69,7 @@ payment_intervals = [choice.value for choice in PaymentInterval]
 payment_types = [choice.value for choice in PaymentType]
 payment_methods = [choice.value for choice in PaymentMethodEnum]
 payment_statuses = [choice.value for choice in PaymentStatus]
+payment_discount_durations = [choice.value for choice in PaymentDiscountDuration]
 
 
 def _use_if_none(value, fallback):
@@ -566,7 +575,12 @@ def create_review(student=None, project=None, rating=None, language=None, commen
 
 
 def create_plan_pricing(
-    plan, currency=None, interval=None, price=None, valid_from=None
+    plan,
+    currency=None,
+    interval=None,
+    price=None,
+    stripe_price_id=None,
+    valid_from=None,
 ):
     currency = _use_if_none(currency, lambda: _generate_random_choice(currencies))
     interval = _use_if_none(
@@ -582,6 +596,7 @@ def create_plan_pricing(
             max_val=99 if plan.type == PlanType.BASIC else 1000,
         ),
     )
+    stripe_price_id = _use_if_none(stripe_price_id, _generate_random_string)
     valid_from = _use_if_none(valid_from, _generate_random_date)
 
     return PlanPricing.objects.create(
@@ -589,6 +604,7 @@ def create_plan_pricing(
         currency=currency,
         interval=interval,
         price=price,
+        stripe_price_id=stripe_price_id,
         valid_from=valid_from,
     )
 
@@ -623,7 +639,7 @@ def create_plan(type=None, popular=None, tokens_limit=None, stripe_product_id=No
     return plan
 
 
-def create_plan_option(slug=None):
+def create_option(slug=None):
     slug = _use_if_none(slug, _generate_random_slug)
 
     plan_option = Option.objects.create(slug=slug)
@@ -637,6 +653,17 @@ def create_plan_option(slug=None):
     )
 
     return plan_option
+
+
+def create_plan_option(plan=None, option=None, disabled=None, order=None):
+    plan = _use_if_none(plan, lambda: create_plan())
+    option = _use_if_none(option, lambda: create_option())
+    disabled = _use_if_none(disabled, lambda: _generate_random_bool())
+    order = _use_if_none(order, lambda: _generate_random_number())
+
+    return PlanOption.objects.create(
+        plan=plan, option=option, disabled=disabled, order=order
+    )
 
 
 def create_certificate(project=None, student=None):
@@ -815,6 +842,66 @@ def create_payment_method(
         specific_payment_method = None
 
     return payment_method, specific_payment_method, student_password
+
+
+def create_payment_discount(
+    code=None,
+    stripe_promotion_code_id=None,
+    stripe_coupon_id=None,
+    percent_off=None,
+    amount_off=None,
+    currency=None,
+    expires_at=None,
+    max_redemptions=None,
+    active=None,
+    restrictions=None,
+    duration=None,
+    duration_in_months=None,
+):
+    code = _use_if_none(code, lambda: _generate_random_string())
+    stripe_promotion_code_id = _use_if_none(
+        stripe_promotion_code_id, lambda: _generate_random_string()
+    )
+    stripe_coupon_id = _use_if_none(stripe_coupon_id, lambda: _generate_random_string())
+    percent_off = _use_if_none(percent_off, lambda: _generate_random_number())
+    amount_off = _use_if_none(amount_off, lambda: _generate_random_number())
+    currency = _use_if_none(currency, lambda: _generate_random_choice(currencies))
+    expires_at = _use_if_none(expires_at, lambda: _generate_random_date())
+    max_redemptions = _use_if_none(max_redemptions, lambda: _generate_random_number())
+    active = _use_if_none(active, lambda: _generate_random_bool())
+    restrictions = _use_if_none(
+        restrictions,
+        lambda: {
+            "applies_to": {
+                "products": [
+                    _generate_random_string() for _ in range(_generate_random_number(3))
+                ]
+            },
+            "first_time_transaction": _generate_random_bool(),
+            "customer": _generate_random_string(),
+        },
+    )
+    duration = _use_if_none(
+        duration, lambda: _generate_random_choice(payment_discount_durations)
+    )
+    duration_in_months = _use_if_none(
+        duration_in_months, lambda: _generate_random_number()
+    )
+
+    return PaymentDiscount.objects.create(
+        code=code,
+        stripe_promotion_code_id=stripe_promotion_code_id,
+        stripe_coupon_id=stripe_coupon_id,
+        percent_off=percent_off,
+        amount_off=amount_off,
+        currency=currency,
+        expires_at=expires_at,
+        max_redemptions=max_redemptions,
+        active=active,
+        restrictions=restrictions,
+        duration=duration,
+        duration_in_months=duration_in_months,
+    )
 
 
 def create_channel_post(

@@ -196,6 +196,34 @@ class StepChatViewTest(TestCase):
         self.assertIn(b'data: {"text": "Hello"}\n\n', chunks)
         self.assertIn(b'data: {"text": "World"}\n\n', chunks)
 
+    @patch.object(OpenAIChat, "_send_request")
+    def test_chat_allowed_incorrect_end_date(self, send_request_mock):
+        login(self, self.student.user.email, self.student_password)
+        mock_send_request(send_request_mock)
+
+        subscription = self.student.current_subscription
+        subscription.end_date = timezone.now() - relativedelta(years=1)
+        subscription.save()
+        subscription.plan.tokens_limit = 9999
+        subscription.plan.save()
+
+        response = self.client.post(
+            self.url.replace("<slug:step>", self.step.slug),
+            {"messages": [{"role": "user", "text": "What's next?"}]},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response["Content-Type"], "text/event-stream")
+        self.assertTrue(response.streaming)
+
+        # Make sure streamed content is correct
+        chunks = list(response.streaming_content)
+        self.assertIn(
+            b'data: {"text": "Token usage limit exceeded. Please upgrade your plan or wait until next period."}\n\n',
+            chunks,
+        )
+
     def test_chat_not_allowed(self):
         login(self, self.student.user.email, self.student_password)
 
