@@ -398,86 +398,6 @@ class CreateSubscriptionViewTest(TestCase):
             subscription_args["items"], [{"price": self.pricing.stripe_price_id}]
         )
 
-    @patch("plan.payment.views.create_customer")
-    @patch("plan.payment.views.create_subscription")
-    def test_create_subscription_success_with_first_purchase(
-        self, mock_create_subscription, mock_create_customer
-    ):
-        login(self, self.student.user.email, self.student_password)
-
-        mock_create_customer.return_value = MagicMock(id="cus_test123")
-
-        self.student.stripe_customer_id = None
-        self.student.first_purchase = True
-        self.student.save()
-
-        mock_subscription = MagicMock()
-        mock_subscription.status = SubscriptionStatus.ACTIVE
-        mock_subscription.latest_invoice.payment_intent = None
-        mock_create_subscription.return_value = mock_subscription
-
-        data = {
-            "plan": self.plan.type,
-            "interval": self.pricing.interval,
-            "currency": self.pricing.currency,
-        }
-
-        response = self.client.post(self.url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["status"], "succeeded")
-
-        self.student.refresh_from_db()
-        self.assertEqual(self.student.stripe_customer_id, "cus_test123")
-
-        mock_create_customer.assert_called_once_with(email=self.student.user.email)
-        mock_create_subscription.assert_called_once()
-        subscription_args = mock_create_subscription.call_args[1]
-        self.assertEqual(subscription_args["customer_id"], "cus_test123")
-        self.assertEqual(
-            subscription_args["items"], [{"price": self.pricing.stripe_price_id}]
-        )
-
-    @patch("plan.payment.views.create_customer")
-    @patch("plan.payment.views.create_subscription")
-    def test_create_subscription_success_without_first_purchase(
-        self, mock_create_subscription, mock_create_customer
-    ):
-        login(self, self.student.user.email, self.student_password)
-
-        mock_create_customer.return_value = MagicMock(id="cus_test123")
-
-        self.student.stripe_customer_id = None
-        self.student.first_purchase = False
-        self.student.save()
-
-        mock_subscription = MagicMock()
-        mock_subscription.status = SubscriptionStatus.ACTIVE
-        mock_subscription.latest_invoice.payment_intent = None
-        mock_create_subscription.return_value = mock_subscription
-
-        data = {
-            "plan": self.plan.type,
-            "interval": self.pricing.interval,
-            "currency": self.pricing.currency,
-        }
-
-        response = self.client.post(self.url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["status"], "succeeded")
-
-        self.student.refresh_from_db()
-        self.assertEqual(self.student.stripe_customer_id, "cus_test123")
-
-        mock_create_customer.assert_called_once_with(email=self.student.user.email)
-        mock_create_subscription.assert_called_once()
-        subscription_args = mock_create_subscription.call_args[1]
-        self.assertEqual(subscription_args["customer_id"], "cus_test123")
-        self.assertEqual(
-            subscription_args["items"], [{"price": self.pricing.stripe_price_id}]
-        )
-
     @patch(
         "plan.payment.views.create_subscription",
         side_effect=stripe.error.StripeError("Stripe failed"),
@@ -1173,6 +1093,148 @@ class StripeWebhookViewTest(TestCase):
         self, mock_construct, mock_preview_invoice, mock_generate_send
     ):
         mock_preview_invoice.return_value = {"amount_due": 10000}  # cents
+
+        data = {
+            "customer": self.student.stripe_customer_id,
+            "lines": {
+                "data": [
+                    {
+                        "quantity": 1,
+                        "pricing": {
+                            "price_details": {"price": self.pricing.stripe_price_id}
+                        },
+                    }
+                ]
+            },
+            "currency": "USD",
+            "parent": {
+                "subscription_details": {
+                    "metadata": {
+                        "language": "en",
+                        "website_url": "http://test",
+                    },
+                    "subscription": "sub_123",
+                }
+            },
+            "amount_due": 10000,
+        }
+
+        mock_construct.return_value = {
+            "type": "invoice.payment_succeeded",
+            "data": {"object": data},
+        }
+
+        # Trigger webhook like a real event
+        response = self.client.post(
+            self.url, data=b"{}", content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Reload student
+        self.student.refresh_from_db()
+        self.assertFalse(self.student.first_purchase)
+        self.assertEqual(
+            self.student.current_subscription.amount_due, Decimal("100.00")
+        )
+
+        # Check Invoice is created
+        invoice = Invoice.objects.get(customer__email=self.student.user.email)
+        self.assertEqual(invoice.currency, "USD")
+        self.assertEqual(invoice.status, PaymentStatus.PAID)
+        self.assertEqual(invoice.language, "en")
+        self.assertEqual(invoice.items.count(), 1)  # plan
+
+        # Check StudentInvoice created
+        student_invoice = StudentInvoice.objects.get(student=self.student)
+        self.assertEqual(student_invoice.invoice, invoice)
+
+        # Check generate_and_send_invoice called
+        mock_generate_send.assert_called_once_with(
+            invoice, "http://test", self.student.user.first_name
+        )
+
+    @patch("plan.payment.views.generate_and_send_invoice")
+    @patch("plan.payment.views.preview_invoice")
+    @patch("plan.payment.views.construct_event")
+    def test_handle_invoice_payment_succeeded_with_first_purchase(
+        self, mock_construct, mock_preview_invoice, mock_generate_send
+    ):
+        mock_preview_invoice.return_value = {"amount_due": 10000}  # cents
+
+        self.student.first_purchase = True
+        self.student.save()
+
+        data = {
+            "customer": self.student.stripe_customer_id,
+            "lines": {
+                "data": [
+                    {
+                        "quantity": 1,
+                        "pricing": {
+                            "price_details": {"price": self.pricing.stripe_price_id}
+                        },
+                    }
+                ]
+            },
+            "currency": "USD",
+            "total_discount_amounts": [{"amount": 1000}],
+            "parent": {
+                "subscription_details": {
+                    "metadata": {
+                        "language": "en",
+                        "website_url": "http://test",
+                        "promotion_code_id": self.discount.stripe_promotion_code_id,
+                    },
+                    "subscription": "sub_123",
+                }
+            },
+            "amount_due": 10000,
+        }
+
+        mock_construct.return_value = {
+            "type": "invoice.payment_succeeded",
+            "data": {"object": data},
+        }
+
+        # Trigger webhook like a real event
+        response = self.client.post(
+            self.url, data=b"{}", content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Reload student
+        self.student.refresh_from_db()
+        self.assertFalse(self.student.first_purchase)
+        self.assertEqual(
+            self.student.current_subscription.amount_due, Decimal("100.00")
+        )
+
+        # Check Invoice is created
+        invoice = Invoice.objects.get(customer__email=self.student.user.email)
+        self.assertEqual(invoice.currency, "USD")
+        self.assertEqual(invoice.status, PaymentStatus.PAID)
+        self.assertEqual(invoice.language, "en")
+        self.assertEqual(invoice.items.count(), 2)  # plan + discount
+
+        # Check StudentInvoice created
+        student_invoice = StudentInvoice.objects.get(student=self.student)
+        self.assertEqual(student_invoice.invoice, invoice)
+
+        # Check generate_and_send_invoice called
+        mock_generate_send.assert_called_once_with(
+            invoice, "http://test", self.student.user.first_name
+        )
+
+    @patch("plan.payment.views.generate_and_send_invoice")
+    @patch("plan.payment.views.preview_invoice")
+    @patch("plan.payment.views.construct_event")
+    def test_handle_invoice_payment_succeeded_without_first_purchase(
+        self, mock_construct, mock_preview_invoice, mock_generate_send
+    ):
+        mock_preview_invoice.return_value = {"amount_due": 10000}  # cents
+
+        self.student.first_purchase = False
+        self.student.save()
 
         data = {
             "customer": self.student.stripe_customer_id,
