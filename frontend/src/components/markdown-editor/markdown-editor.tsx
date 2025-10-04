@@ -6,8 +6,9 @@ import type { MDXEditorMethods } from "@mdxeditor/editor";
 
 import { forwardRef } from "react";
 import { MDXEditor } from "@mdxeditor/editor";
+import { useTranslation } from "react-i18next";
 
-import { allPlugins } from "../markdown/pluggins";
+import { toolbar, usePlugins } from "../markdown/pluggins";
 
 // ----------------------------------------------------------------------
 
@@ -17,15 +18,21 @@ interface EditorProps {
 }
 
 export const MarkdownEditor = forwardRef<MDXEditorMethods | null, EditorProps>(
-  ({ value, onChange, ...otherProps }, ref) => (
-    <MDXEditor
-      onChange={onChange}
-      ref={ref}
-      markdown={value}
-      plugins={allPlugins}
-      {...otherProps}
-    />
-  )
+  ({ value, onChange, ...otherProps }, ref) => {
+    const { t } = useTranslation("markdown");
+    const plugins = usePlugins();
+    const allPlugins = [toolbar, ...plugins];
+    return (
+      <MDXEditor
+        onChange={onChange}
+        ref={ref}
+        markdown={value}
+        plugins={allPlugins}
+        translation={(key, def) => t(key, def)}
+        {...otherProps}
+      />
+    );
+  }
 );
 
 MarkdownEditor.displayName = "MarkdownEditor";

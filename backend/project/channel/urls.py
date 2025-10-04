@@ -1,4 +1,9 @@
-from .views import ChannelPostViewSet, ChannelPostCommentViewSet, ChannelPostLikeViewSet
+from .views import (
+    ChannelPostViewSet,
+    ChannelPostCommentViewSet,
+    ChannelPostLikeViewSet,
+    ChannelPostImageViewSet,
+)
 from django.urls import path
 from const import Urls
 
@@ -27,5 +32,10 @@ urlpatterns = [
         Urls.PROJECT_CHANNEL_POST_LIKES,
         ChannelPostLikeViewSet.as_view({"post": "create"}),
         name="project-channel-post-likes",
+    ),
+    path(
+        Urls.PROJECT_CHANNEL_POST_IMAGES,
+        ChannelPostImageViewSet.as_view({"post": "create"}),
+        name="project-channel-post-images",
     ),
 ]

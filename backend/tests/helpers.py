@@ -2,7 +2,9 @@ from const import Urls
 import jwt
 import datetime
 from global_config import CONFIG
-from unittest.mock import MagicMock
+from io import BytesIO
+from PIL import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 def mock_send_message(mock):
@@ -65,3 +67,11 @@ def login(self, email, password, language="en"):
     self.client.credentials(
         HTTP_AUTHORIZATION=f"Bearer {token}", HTTP_ACCEPT_LANGUAGE=language
     )
+
+
+def get_test_image_file(name="test.png", ext="PNG"):
+    file = BytesIO()
+    image = Image.new("RGB", (10, 10), color="red")
+    image.save(file, ext)
+    file.seek(0)
+    return SimpleUploadedFile(name, file.read(), content_type="image/png")

@@ -1,4 +1,6 @@
 import markdown
+import os
+import uuid
 from django.db import models
 from django.core.exceptions import ValidationError
 from mdeditor import fields
@@ -74,3 +76,24 @@ class ChannelPostComment(BaseModel):
 
     def __str__(self):  # pragma: no cover
         return f"Comment {self.pk} on Post {self.channel_post.pk}"
+
+
+def image_directory_path(instance, filename):  # pragma: no cover
+    """
+    Generate a unique filename for the file.
+    Example: media/images/8f3a9b2d-5c4a-4a2a-ae4b-91d2f4b7a6e8.jpg
+    """
+    ext = filename.split(".")[-1]  # Get file extension (e.g., jpg, png)
+    filename = f"{uuid.uuid4()}.{ext}"  # Generate a unique filename
+    return os.path.join("images", filename)
+
+
+class ChannelPostImage(BaseModel):
+    student = models.ForeignKey(
+        Student, on_delete=models.CASCADE, related_name="uploads"
+    )
+    image = models.ImageField(upload_to=image_directory_path, max_length=500)
+
+    class Meta:
+        db_table = "channel_post_image"
+        verbose_name_plural = "Channel post images"

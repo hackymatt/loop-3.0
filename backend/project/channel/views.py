@@ -6,6 +6,7 @@ from .serializers import (
     ChannelPostSerializer,
     ChannelPostCreateEditSerializer,
     ChannelPostCommentCreateEditSerializer,
+    ChannelPostImageSerializer,
 )
 from .models import ChannelPost, ChannelPostLike, ChannelPostComment
 from project.models import Project
@@ -168,3 +169,24 @@ class ChannelPostLikeViewSet(viewsets.ModelViewSet):
             ChannelPostLike.objects.create(student=student, channel_post=post)
 
         return Response(status=status.HTTP_200_OK)
+
+
+class ChannelPostImageViewSet(viewsets.ModelViewSet):
+    http_method_names = ["post"]
+    permission_classes = [IsAuthenticated]
+    serializer_class = ChannelPostImageSerializer
+
+    def create(self, request, *args, **kwargs):
+        student = Student.objects.get(user=request.user)
+
+        # Plan check: limit access for free users
+        if student.current_subscription.plan.is_default_plan:
+            return Response({}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = self.get_serializer(
+            data=request.data, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save(student=student)
+
+        return Response({"url": serializer.data["url"]}, status=status.HTTP_201_CREATED)

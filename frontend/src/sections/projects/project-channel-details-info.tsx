@@ -60,7 +60,7 @@ export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
           startIcon={<Iconify icon="solar:chat-line-outline" />}
           href={localize(paths.auth.register)}
           onClick={() => {
-            user.setField("redirect", localize(`${paths.project}/${slug}`));
+            user.setField("redirect", localize(`${paths.channel}/${slug}`));
             trackEvent({ category: "project", label: `project (${slug})`, action: "chat" });
           }}
           sx={{ px: 2, borderRadius: "inherit", textAlign: "center" }}
