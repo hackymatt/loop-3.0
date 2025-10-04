@@ -380,8 +380,8 @@ class SimilarProjectsViewTest(TestCase):
         response = self.client.get(
             self.url.replace("<slug:slug>", self.base_project.slug)
         )
-        returned_slugs = [project["slug"] for project in response.data]
-        similar = [project.slug for project in self.base_project.similar.all()]
+        returned_slugs = sorted([project["slug"] for project in response.data])
+        similar = sorted([project.slug for project in self.base_project.similar.all()])
         self.assertEqual(similar, returned_slugs)
 
         # The unrelated project should not be in the results
