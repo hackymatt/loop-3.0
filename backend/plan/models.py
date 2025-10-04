@@ -14,6 +14,9 @@ class Plan(BaseModel):
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
 
+    def get_pricings(self):
+        return self.pricings.all()
+
     def delete(self, *args, **kwargs):  # pragma: no cover
         if self.type == CONFIG["default_plan"]:
             raise ValueError("You cannot delete the default plan.")

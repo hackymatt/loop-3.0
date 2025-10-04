@@ -15,6 +15,12 @@ class PlanSubscription(BaseModel):
     )
     start_date = models.DateTimeField()
     end_date = models.DateTimeField(blank=True, null=True)
+    amount_due = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
     status = models.CharField(
         max_length=20,
         choices=SubscriptionStatus.choices,
@@ -22,6 +28,10 @@ class PlanSubscription(BaseModel):
     )
     cancel_at_period_end = models.BooleanField(null=True)
     stripe_subscription_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_subscription_item_id = models.CharField(
+        max_length=255, blank=True, null=True
+    )
+    stripe_promotion_code_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):  # pragma: no cover
         pricing_str = (

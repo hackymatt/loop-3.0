@@ -13,15 +13,19 @@ class LevelViewTest(TestCase):
         self.url = f"/{Urls.API}/{Urls.PROJECT_LEVEL}"
 
         # Create admin and regular user
-        self.admin, self.admin_password = create_admin()
-        self.student, self.student_password = create_student()
+        self.admin, self.admin_password = create_admin(is_active=True)
+        self.student, self.student_password = create_student(is_active=True)
 
         # Create a project level and translations
         self.level = create_level()
         self.project_level = create_level()
-        project = create_project()
-        project.level = self.project_level
-        project.save()
+        create_project(
+            level=self.project_level,
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        )
 
     # CREATE (Only Admin)
     def test_create_level_admin(self):

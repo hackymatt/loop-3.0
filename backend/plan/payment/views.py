@@ -1,10 +1,12 @@
 import stripe
+from decimal import Decimal
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django.utils import translation
 from user.type.student_user.models import Student
 from plan.models import Plan, PlanPricing
 from invoice.models import Invoice, InvoiceCustomer, InvoiceItem, StudentInvoice
@@ -17,7 +19,7 @@ from plan.subscription.utils import subscribe, subscribe_free_plan
 from const import (
     SubscriptionStatus,
     PaymentStatus,
-    PaymentMethod,
+    PaymentMethod as PaymentMethodEnum,
     Language,
     PaymentType,
 )
@@ -27,7 +29,9 @@ from .models import (
     CardPaymentMethod,
     PayPalPaymentMethod,
     RevolutPaymentMethod,
+    PaymentDiscount,
 )
+from .utils import is_coupon_valid
 from utils.url.url import get_website_url
 from utils.stripe.customer import (
     create_customer,
@@ -38,6 +42,7 @@ from utils.stripe.setup_intent import create_setup_intent
 from utils.stripe.payment_method import modify_payment_method, retrieve_payment_method
 from utils.stripe.subscription import create_subscription
 from utils.stripe.webhook import construct_event
+from utils.stripe.invoice import preview_invoice
 from global_config import CONFIG
 
 
@@ -51,14 +56,12 @@ class CreateSetupIntentView(APIView):
                 customer = create_customer(email=student.user.email)
                 student.stripe_customer_id = customer.id
                 student.save()
-            else:
-                customer = {"id": student.stripe_customer_id}
 
             setup_intent = create_setup_intent(
-                customer_id=customer["id"],
+                customer_id=student.stripe_customer_id,
             )
             customer_session = create_customer_session(
-                customer_id=customer["id"],
+                customer_id=student.stripe_customer_id,
                 components={
                     "payment_element": {
                         "enabled": True,
@@ -92,9 +95,23 @@ class CreateSubscriptionView(APIView):
             type = request.data.get("plan")
             interval = request.data.get("interval")
             currency = request.data.get("currency")
+            code = request.data.get("code", None)
 
             plan = Plan.objects.get(type=type)
             pricing = PlanPricing.get_current_price(plan, currency, interval)
+
+            if code:
+                is_valid, payload = is_coupon_valid(
+                    user=request.user,
+                    code=code,
+                    type=type,
+                    currency=currency,
+                )
+                if not is_valid:
+                    return Response(
+                        {"discount": payload},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
 
             student = Student.objects.get(user=request.user)
             if not student.stripe_customer_id:
@@ -102,21 +119,37 @@ class CreateSubscriptionView(APIView):
                 student.stripe_customer_id = customer.id
                 student.save()
 
-            trial_days = 0 if student.trial_used else CONFIG["free_trial_days"]
+            trial_days = 0 if student.trial_used else CONFIG.get("free_trial_days", 0)
 
-            subscription = create_subscription(
-                customer_id=student.stripe_customer_id,
-                items=[{"price": pricing.stripe_price_id}],
-                metadata={"website_url": website_url, "language": language},
-                payment_behavior="default_incomplete",
-                expand=["latest_invoice.payment_intent"],
-                trial_period_days=trial_days,
-            )
+            subscription_params = {
+                "customer_id": student.stripe_customer_id,
+                "items": [{"price": pricing.stripe_price_id}],
+                "metadata": {"website_url": website_url, "language": language},
+                "trial_period_days": trial_days,
+                "expand": ["latest_invoice.payment_intent"],
+            }
+
+            if trial_days > 0:
+                subscription_params["payment_behavior"] = "default_incomplete"
+
+            if code and is_valid:
+                promotion_code = (
+                    PaymentDiscount.objects.filter(code=code)
+                    .first()
+                    .stripe_promotion_code_id
+                )
+                subscription_params["discounts"] = [{"promotion_code": promotion_code}]
+                subscription_params["metadata"]["promotion_code_id"] = promotion_code
+
+            subscription = create_subscription(**subscription_params)
 
             payment_intent = getattr(
                 subscription.latest_invoice, "payment_intent", None
             )
-            if subscription.status == SubscriptionStatus.TRIALING:
+            if subscription.status in [
+                SubscriptionStatus.TRIALING,
+                SubscriptionStatus.ACTIVE,
+            ]:
                 status_flag = "succeeded"
             elif payment_intent and payment_intent.status == "succeeded":
                 status_flag = "succeeded"
@@ -126,6 +159,69 @@ class CreateSubscriptionView(APIView):
             return Response({"status": status_flag}, status=status.HTTP_200_OK)
 
         except stripe.error.StripeError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ValidateCouponView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        code = request.data.get("code")
+        type = request.data.get("plan")
+        currency = request.data.get("currency")
+
+        is_valid, payload = is_coupon_valid(
+            user=request.user,
+            code=code,
+            type=type,
+            currency=currency,
+        )
+
+        if not is_valid:
+            return Response({"discount": payload}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(payload, status=status.HTTP_200_OK)
+
+
+class PreviewInvoiceView(APIView):
+    def post(self, request, *args, **kwargs):
+        type = request.data.get("plan")
+        interval = request.data.get("interval")
+        currency = request.data.get("currency")
+
+        plan = Plan.objects.get(type=type)
+        pricing = PlanPricing.get_current_price(plan, currency, interval)
+
+        student = Student.objects.get(user=request.user)
+        subscription = student.current_subscription
+
+        try:
+            invoice = preview_invoice(
+                customer_id=student.stripe_customer_id,
+                subscription=subscription.stripe_subscription_id,
+                subscription_details={
+                    "items": [
+                        {
+                            "id": subscription.stripe_subscription_item_id,
+                            "price": pricing.stripe_price_id,
+                        }
+                    ]
+                },
+            )
+
+            old_plan = invoice["lines"]["data"][0]
+            new_plan = invoice["lines"]["data"][1]
+
+            response_data = {
+                "amount_due": (new_plan["amount"] + old_plan["amount"]) / 100,
+                "billing_date": timezone.datetime.fromtimestamp(
+                    new_plan["period"]["end"], tz=timezone.utc
+                ).isoformat(),
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -151,12 +247,16 @@ class StripeWebhookView(APIView):
             self.handle_subscription_created(data)
         elif event_type == "customer.subscription.updated":
             self.handle_subscription_updated(data)
+        elif event_type == "customer.subscription.deleted":
+            self.handle_subscription_deleted(data)
         elif event_type == "invoice.payment_succeeded":
             self.handle_invoice_payment_succeeded(data)
         elif event_type == "invoice.payment_failed":
             self.handle_invoice_payment_failed(data)
         elif event_type == "setup_intent.succeeded":
             self.handle_setup_intent_succeeded(data)
+        else:
+            logger.info(f"Not handled event_type: {event_type}")
 
         return Response(status=status.HTTP_200_OK)
 
@@ -164,9 +264,11 @@ class StripeWebhookView(APIView):
         subscription_id = data["id"]
         customer_id = data["customer"]
         price_id = data["items"]["data"][0]["price"]["id"]
+        subscription_item_id = data["items"]["data"][0]["id"]
         status = data["status"]
         current_period_start = data["items"]["data"][0]["current_period_start"]
         current_period_end = data["items"]["data"][0]["current_period_end"]
+        promotion_code_id = data.get("metadata", {}).get("promotion_code_id", None)
         start_date = timezone.datetime.fromtimestamp(
             current_period_start, tz=timezone.utc
         )
@@ -187,6 +289,8 @@ class StripeWebhookView(APIView):
             end_date=end_date,
             status=status,
             stripe_subscription_id=subscription_id,
+            stripe_subscription_item_id=subscription_item_id,
+            stripe_promotion_code_id=promotion_code_id,
             cancel_at_period_end=False,
         )
 
@@ -194,6 +298,7 @@ class StripeWebhookView(APIView):
         subscription_id = data["id"]
         customer_id = data["customer"]
         price_id = data["items"]["data"][0]["price"]["id"]
+        subscription_item_id = data["items"]["data"][0]["id"]
         status = data["status"]
         cancel_at_period_end = data.get("cancel_at_period_end", False)
         current_period_start = data["items"]["data"][0]["current_period_start"]
@@ -221,6 +326,7 @@ class StripeWebhookView(APIView):
                 end_date=end_date,
                 status=status,
                 stripe_subscription_id=subscription_id,
+                stripe_subscription_item_id=subscription_item_id,
                 cancel_at_period_end=False
                 if status == SubscriptionStatus.PAST_DUE
                 else cancel_at_period_end,
@@ -233,8 +339,49 @@ class StripeWebhookView(APIView):
         ]:
             subscribe_free_plan(student, start_date=end_date)
             send_cancel_email(student, student.user.email, website_url, language)
+        else:
+            logger.info(f"Not handled subscription status: {status}")
+
+    def handle_subscription_deleted(self, data):
+        customer_id = data["customer"]
+        current_period_end = data["items"]["data"][0]["current_period_end"]
+        end_date = timezone.datetime.fromtimestamp(current_period_end, tz=timezone.utc)
+        website_url = data["metadata"]["website_url"]
+        language = data["metadata"]["language"]
+
+        student = Student.objects.get(stripe_customer_id=customer_id)
+
+        subscribe_free_plan(student, start_date=end_date)
+        send_cancel_email(student, student.user.email, website_url, language)
 
     def handle_invoice_payment_succeeded(self, data):
+        student = Student.objects.get(stripe_customer_id=data["customer"])
+
+        if student.first_purchase:
+            student.first_purchase = False
+            student.save(update_fields=["first_purchase"])
+
+        stripe_subscription_id = (
+            data.get("parent", {})
+            .get("subscription_details", {})
+            .get("subscription", None)
+        )
+
+        subscription_id = (
+            student.current_subscription.stripe_subscription_id
+            or stripe_subscription_id
+        )
+
+        invoice = preview_invoice(
+            student.stripe_customer_id, subscription=subscription_id
+        )
+
+        if invoice and invoice.get("amount_due") is not None:
+            student.current_subscription.amount_due = Decimal(
+                invoice["amount_due"]
+            ) / Decimal("100")
+            student.current_subscription.save(update_fields=["amount_due"])
+
         generate_invoice = (data.get("amount_due") or 0) > 0
 
         if not generate_invoice:
@@ -256,46 +403,63 @@ class StripeWebhookView(APIView):
             .get("website_url")
             or CONFIG["website_url"]
         )
-        student = Student.objects.get(stripe_customer_id=data["customer"])
+        promotion_code_id = (
+            data.get("parent", {})
+            .get("subscription_details", {})
+            .get("metadata", {})
+            .get("promotion_code_id")
+            or None
+        )
+
+        if promotion_code_id:
+            discount = PaymentDiscount.objects.get(
+                stripe_promotion_code_id=promotion_code_id
+            )
 
         invoice_customer = InvoiceCustomer.objects.create(
-            email=data["customer_email"],
-            full_name=data["customer_name"],
-            street_address=", ".join(
-                filter(
-                    None,
-                    [
-                        data["customer_address"]["line1"],
-                        data["customer_address"]["line2"],
-                    ],
-                )
-            ),
-            city=", ".join(
-                filter(
-                    None,
-                    [
-                        data["customer_address"]["city"],
-                        data["customer_address"]["state"],
-                    ],
-                )
-            ),
-            zip_code=data["customer_address"]["postal_code"],
-            country=data["customer_address"]["country"],
+            email=student.user.email,
+            full_name=f"{student.user.first_name} {student.user.last_name}",
+            street_address=student.user.street_address,
+            city=student.user.city,
+            zip_code=student.user.zip_code,
+            country=student.user.country,
         )
-        invoice_items = [
-            InvoiceItem.objects.create(
-                item_id=PlanPricing.objects.get(stripe_price_id=price_id).plan.pk,
-                name=item["description"],
-                price=item["amount"],
-                quantity=item["quantity"],
+
+        with translation.override(language):
+            plan_label = _("Plan")
+            discount_label = _("Discount")
+
+        invoice_items = []
+        for item in data["lines"]["data"]:
+            quantity = item["quantity"]
+
+            plan_pricing = PlanPricing.objects.select_related("plan").get(
+                stripe_price_id=price_id
             )
-            for item in data["lines"]["data"]
-        ]
+
+            invoice_item, created = InvoiceItem.objects.get_or_create(
+                item_id=plan_pricing.plan.pk,
+                name=f"{plan_label}: {plan_pricing.plan.get_translation(language).license}",
+                price=plan_pricing.price,
+                quantity=quantity,
+            )
+
+            invoice_items.append(invoice_item)
+
+        if promotion_code_id and discount:
+            invoice_item, created = InvoiceItem.objects.get_or_create(
+                item_id=discount.id,
+                name=f"{discount_label}: {discount.code}",
+                price=-data["total_discount_amounts"][0]["amount"] / 100,
+                quantity=1,
+            )
+            invoice_items.append(invoice_item)
+
         invoice = Invoice.objects.create(
             customer=invoice_customer,
             currency=data["currency"],
             status=PaymentStatus.PAID,
-            method=PaymentMethod.STRIPE,
+            method=PaymentMethodEnum.STRIPE,
             language=language,
         )
         invoice.items.set(invoice_items)

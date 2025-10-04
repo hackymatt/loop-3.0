@@ -22,10 +22,7 @@ class Mailer:
         attachments=[],
         language=None,
     ):
-        if language:
-            context_manager = translation.override(language)
-        else:
-            context_manager = nullcontext()
+        context_manager = translation.override(language) if language else nullcontext()
 
         with context_manager:
             email_body = render_to_string(

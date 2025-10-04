@@ -31,6 +31,7 @@ class LoginResponseSerializer(serializers.ModelSerializer):
             "user_type",
             "is_active",
             "join_type",
+            "trial_used",
             "plan",
         ]
 
@@ -41,7 +42,7 @@ class LoginResponseSerializer(serializers.ModelSerializer):
         subscription = get_subscription(obj)
         return PlanSubscriptionSerializer(subscription).data
 
-    def trial_used(self, obj):
+    def get_trial_used(self, obj):
         if obj.user_type != UserType.STUDENT:
             return None
 

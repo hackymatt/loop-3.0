@@ -13,18 +13,17 @@ class BlogViewSetTestCase(TestCase):
         self.url = f"/{Urls.API}/{Urls.POST}"
 
         # First blog post
-        self.blog1 = create_blog()
-        self.blog1.published_at = self.blog1.published_at - timezone.timedelta(weeks=1)
-        self.blog1.visits = 5
-        self.blog1.save()
+        self.blog1 = create_blog(
+            published_at=timezone.now() - timezone.timedelta(weeks=1),
+            visits=5,
+            active=True,
+        )
 
         # Second blog post
-        self.blog2 = create_blog()
-        self.blog2.visits = 10
-        self.blog2.save()
+        self.blog2 = create_blog(visits=10, active=True)
 
-        self.admin, self.admin_password = create_admin()
-        self.student, self.student_password = create_student()
+        self.admin, self.admin_password = create_admin(is_active=True)
+        self.student, self.student_password = create_student(is_active=True)
 
     def test_blog_list(self):
         # Test the list view of BlogViewSet
@@ -85,9 +84,7 @@ class BlogViewSetTestCase(TestCase):
         self.blog1.save()
 
         # Add another blog with fewer visits
-        another_blog = create_blog()
-        another_blog.visits = 5
-        another_blog.save()
+        another_blog = create_blog(visits=5, active=True)
 
         response = self.client.get(self.url)
 
@@ -104,23 +101,20 @@ class RecentBlogsViewTestCase(TestCase):
         self.url = f"/{Urls.API}/{Urls.RECENT_POST}"  # adjust to your actual RecentBlogsView URL
 
         # First blog post
-        self.blog1 = create_blog()
-        self.blog1.published_at = self.blog1.published_at - timezone.timedelta(weeks=1)
-        self.blog1.visits = 20
-        self.blog1.save()
+        self.blog1 = create_blog(
+            published_at=timezone.now() - timezone.timedelta(weeks=1),
+            visits=20,
+            active=True,
+        )
 
         # Second blog post
-        self.blog2 = create_blog()
-        self.blog2.visits = 5
-        self.blog2.save()
+        self.blog2 = create_blog(visits=5, active=True)
 
         # Third blog post
-        self.blog3 = create_blog()
-        self.blog3.visits = 7
-        self.blog3.save()
+        self.blog3 = create_blog(visits=7, active=True)
 
-        self.admin, self.admin_password = create_admin()
-        self.student, self.student_password = create_student()
+        self.admin, self.admin_password = create_admin(is_active=True)
+        self.student, self.student_password = create_student(is_active=True)
 
     def test_recent_blogs_excludes_most_visited(self):
         response = self.client.get(self.url)
@@ -135,9 +129,10 @@ class RecentBlogsViewTestCase(TestCase):
     def test_recent_blogs_returns_up_to_five(self):
         # Create 4 more recent blogs to reach 6 total (1 will be excluded)
         for i in range(4):
-            blog = create_blog()
-            blog.published_at = timezone.now() - timezone.timedelta(days=i + 3)
-            blog.save()
+            create_blog(
+                published_at=timezone.now() - timezone.timedelta(days=i + 3),
+                active=True,
+            )
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -157,18 +152,17 @@ class FeaturedBlogViewTestCase(TestCase):
         self.url = f"/{Urls.API}/{Urls.FEATURED_POST}"  # replace with your actual featured blog endpoint
 
         # First blog post
-        self.blog1 = create_blog()
-        self.blog1.published_at = self.blog1.published_at - timezone.timedelta(weeks=1)
-        self.blog1.visits = 5
-        self.blog1.save()
+        self.blog1 = create_blog(
+            published_at=timezone.now() - timezone.timedelta(weeks=1),
+            visits=5,
+            active=True,
+        )
 
         # Second blog post
-        self.blog2 = create_blog()
-        self.blog2.visits = 10
-        self.blog2.save()
+        self.blog2 = create_blog(visits=10, active=True)
 
-        self.admin, self.admin_password = create_admin()
-        self.student, self.student_password = create_student()
+        self.admin, self.admin_password = create_admin(is_active=True)
+        self.student, self.student_password = create_student(is_active=True)
 
     def test_featured_blog_is_most_visited(self):
         response = self.client.get(self.url)

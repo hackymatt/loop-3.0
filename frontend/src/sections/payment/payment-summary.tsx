@@ -1,9 +1,10 @@
+import type { AxiosError } from "axios";
 import type { IPlanProps } from "src/types/plan";
 import type { BoxProps } from "@mui/material/Box";
+import type { UseSetStateReturn } from "minimal-shared/hooks";
 
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useSetState } from "minimal-shared/hooks";
 
 import Box from "@mui/material/Box";
 import Switch from "@mui/material/Switch";
@@ -20,6 +21,7 @@ import { fCurrency } from "src/utils/format-number";
 import { fAdd, fDate } from "src/utils/format-time";
 
 import { CONFIG } from "src/global-config";
+import { useValidateCoupon } from "src/api/plan/discount";
 import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
 
 import { Label } from "src/components/label";
@@ -28,30 +30,25 @@ import { useUserContext } from "src/components/user";
 
 import { PaymentTerms } from "./payment-terms";
 
+import type { DiscountProps } from "../view/payment-view";
+
 // ----------------------------------------------------------------------
 
-type PaymentSummaryProps = BoxProps & { plan: IPlanProps };
-
-type DiscountProps = {
-  code: string;
-  details: { isPercentage: boolean; value: number } | null;
-  error: string;
+type PaymentSummaryProps = BoxProps & {
+  plan: IPlanProps;
+  discount: UseSetStateReturn<DiscountProps>;
 };
 
-export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
+export function PaymentSummary({ plan, discount, sx, ...other }: PaymentSummaryProps) {
   const { t } = useTranslation("payment");
   const { t: pricing } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
 
+  const { mutateAsync: validateCoupon, isLoading } = useValidateCoupon();
+
   const {
     state: { trialUsed },
   } = useUserContext();
-
-  const discount = useSetState<DiscountProps>({
-    code: "",
-    details: null,
-    error: "",
-  });
 
   const { query, handleChange } = useQueryParams();
 
@@ -86,16 +83,24 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
     );
   }, [discount.state, priceObj.price]);
 
-  const handleApplyDiscount = () => {
-    discount.setField("error", "");
+  const handleApplyDiscount = async () => {
+    discount.setField("error", null);
+    discount.setField("details", null);
     if (discount.state.code === "") {
       discount.resetState();
       return;
     }
     try {
-      discount.setField("details", { isPercentage: true, value: 20 });
+      const {
+        data: { value, is_percentage },
+      } = await validateCoupon({ code: discount.state.code || "", plan: plan.type, currency });
+      discount.setField("details", { isPercentage: is_percentage, value });
     } catch (error) {
-      discount.setField("error", (error as Error).message);
+      console.log(error as Error);
+      discount.setField(
+        "error",
+        ((error as AxiosError)?.response?.data as { discount: string })?.discount
+      );
     }
   };
 
@@ -170,28 +175,25 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
   );
 
   const renderDiscount = () => (
-    <>
-      <TextField
-        hiddenLabel
-        value={discount.state.code}
-        onChange={(event) => discount.setField("code", event.target.value)}
-        placeholder={t("discount.placeholder")}
-        slotProps={{
-          input: {
-            endAdornment: (
-              <InputAdornment position="end">
-                <LoadingButton onClick={handleApplyDiscount}>{t("discount.button")}</LoadingButton>
-              </InputAdornment>
-            ),
-          },
-        }}
-      />
-      {discount.state.error && (
-        <Typography variant="body2" color="error" sx={{ width: 1, p: 1 }}>
-          {discount.state.error}
-        </Typography>
-      )}
-    </>
+    <TextField
+      hiddenLabel
+      value={discount.state.code}
+      onChange={(event) => discount.setField("code", event.target.value)}
+      placeholder={t("discount.placeholder")}
+      error={!!discount.state.error}
+      helperText={discount.state.error}
+      slotProps={{
+        input: {
+          endAdornment: (
+            <InputAdornment position="end">
+              <LoadingButton onClick={handleApplyDiscount} loading={isLoading}>
+                {t("discount.button")}
+              </LoadingButton>
+            </InputAdornment>
+          ),
+        },
+      }}
+    />
   );
 
   const renderTotalDue = () => (
@@ -202,11 +204,26 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
           ({fDate(fAdd({ days: CONFIG.trialDays }))})
         </Typography>
       </Box>
-      <Box component="span">
-        {fCurrency(!trialUsed ? price : priceObj.price, {
-          code: locale("code"),
-          currency,
-        })}
+      <Box sx={{ display: "flex", gap: 1 }}>
+        {discount.state.details && (
+          <Box component="span" sx={{ color: "text.disabled", textDecoration: "line-through" }}>
+            {fCurrency(priceObj.price, {
+              code: locale("code"),
+              currency,
+            })}
+          </Box>
+        )}
+        <Box
+          component="span"
+          sx={{
+            color: discount.state.details ? "primary.main" : "text.primary",
+          }}
+        >
+          {fCurrency(!trialUsed ? price : priceObj.price, {
+            code: locale("code"),
+            currency,
+          })}
+        </Box>
       </Box>
     </Box>
   );
@@ -222,11 +239,21 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         )}
       </Box>
 
-      <Box component="span">
-        {fCurrency(!trialUsed ? 0 : price, {
-          code: locale("code"),
-          currency,
-        })}
+      <Box sx={{ display: "flex", gap: 1 }}>
+        {discount.state.details && trialUsed && (
+          <Box component="span" sx={{ color: "text.disabled", textDecoration: "line-through" }}>
+            {fCurrency(priceObj.price, {
+              code: locale("code"),
+              currency,
+            })}
+          </Box>
+        )}
+        <Box component="span">
+          {fCurrency(!trialUsed ? 0 : price, {
+            code: locale("code"),
+            currency,
+          })}
+        </Box>
       </Box>
     </Box>
   );
@@ -332,6 +359,7 @@ export function PaymentSummary({ plan, sx, ...other }: PaymentSummaryProps) {
         color="inherit"
         type="submit"
         variant="contained"
+        disabled={isLoading}
         sx={{ my: 3 }}
       >
         {isFreePlan ? t("summary.button.free") : t("summary.button.other")}

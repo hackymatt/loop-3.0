@@ -52,6 +52,6 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
         elif obj.type == PaymentType.PAYPAL:
             paypal = PayPalPaymentMethod.objects.get(payment_method=obj)
             return PaypalSerializer(paypal).data
-        elif obj.type == PaymentType.REVOLUT:
+        else:
             revolut = RevolutPaymentMethod.objects.get(payment_method=obj)
             return RevolutSerializer(revolut).data

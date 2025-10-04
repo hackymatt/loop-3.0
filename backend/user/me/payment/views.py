@@ -17,9 +17,11 @@ class PaymentMethodViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return PaymentMethod.objects.filter(student__user=user).select_related(
-            "card", "paypal", "revolut"
-        ).order_by("-created_at")
+        return (
+            PaymentMethod.objects.filter(student__user=user)
+            .select_related("card", "paypal", "revolut")
+            .order_by("-created_at")
+        )
 
     def update(self, request, *args, **kwargs):
         user = request.user

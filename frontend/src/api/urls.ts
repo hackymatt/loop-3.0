@@ -23,6 +23,7 @@ export const URLS = {
   PROJECT_CHANNEL_POSTS: "/project-channel-posts",
   PROJECT_CHANNEL_POST_COMMENTS: "/project-channel-post-comments",
   PROJECT_CHANNEL_POST_LIKES: "/project-channel-post-likes",
+  PROJECT_CHANNEL_POST_IMAGES: "project-channel-post-images",
   SIMILAR_PROJECTS: "/similar-projects",
   // STEP
   STEP: "/step",
@@ -45,6 +46,8 @@ export const URLS = {
   PLANS: "/plans",
   CREATE_SETUP_INTENT: "/create-setup-intent",
   CREATE_SUBSCRIPTION: "/create-subscription",
+  VALIDATE_COUPON: "/validate-coupon",
+  PREVIEW_INVOICE: "/preview-invoice",
   // CERTIFICATES
   CERTIFICATES: "/certificates",
   // ME

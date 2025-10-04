@@ -73,7 +73,9 @@ class InvoiceGenerator:
                         number=item.price * item.quantity
                     ),
                 }
-                for item in self.items
+                for item in sorted(
+                    self.items, key=lambda i: i.price * i.quantity, reverse=True
+                )
             ],
             "total_netto": self._format_price(
                 price=self._calc_net_price(price=self.amount)
@@ -115,8 +117,7 @@ class InvoiceGenerator:
         start_date = date(previous_year, 1, 1)
         end_date = date(previous_year, 12, 31)
         sales = Invoice.objects.filter(created_at__date__range=(start_date, end_date))
-        total_sales = sum(invoice.amount for invoice in sales) if sales.exists() else 0
-        return total_sales
+        return sum(invoice.amount for invoice in sales)
 
     def _is_vat(self):
         return self._calc_sales() > CONFIG["vat_limit"]

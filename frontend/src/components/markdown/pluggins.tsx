@@ -17,58 +17,66 @@ import {
   AdmonitionDirectiveDescriptor,
 } from "@mdxeditor/editor";
 
+import { usePostImage } from "src/api/project/channel/images";
+
 import { Toolbar } from "./toolbar";
 
 export const toolbar = toolbarPlugin({ toolbarContents: () => <Toolbar /> });
 
-export const plugins = [
-  listsPlugin(),
-  quotePlugin(),
-  headingsPlugin({ allowedHeadingLevels: [1, 2, 3, 4, 5, 6] }),
-  linkPlugin(),
-  linkDialogPlugin(),
-  imagePlugin(),
-  tablePlugin(),
-  thematicBreakPlugin(),
-  frontmatterPlugin(),
-  codeBlockPlugin({ defaultCodeBlockLanguage: "txt" }),
-  codeMirrorPlugin({
-    codeBlockLanguages: {
-      txt: "Tekst",
-      javascript: "JavaScript",
-      python: "Python",
-      java: "Java",
-      cpp: "C++",
-      csharp: "C#",
-      html: "HTML",
-      css: "CSS",
-      sql: "SQL",
-      bash: "Bash (Shell)",
-      php: "PHP",
-      go: "Go (Golang)",
-      ruby: "Ruby",
-      rust: "Rust",
-      kotlin: "Kotlin",
-      swift: "Swift",
-      r: "R",
-      typescript: "TypeScript",
-      yaml: "YAML",
-      json: "JSON",
-      dockerfile: "Dockerfile",
-      markdown: "Markdown",
-      powershell: "PowerShell",
-      perl: "Perl",
-      lua: "Lua",
-      haskell: "Haskell",
-      scala: "Scala",
-      vba: "VBA",
-    },
-  }),
-  directivesPlugin({
-    directiveDescriptors: [AdmonitionDirectiveDescriptor],
-  }),
-  diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: "" }),
-  markdownShortcutPlugin(),
-];
-
-export const allPlugins = [toolbar, ...plugins];
+export const usePlugins = () => {
+  const { mutateAsync: uploadImage } = usePostImage();
+  return [
+    listsPlugin(),
+    quotePlugin(),
+    headingsPlugin({ allowedHeadingLevels: [1, 2, 3, 4, 5, 6] }),
+    linkPlugin(),
+    linkDialogPlugin(),
+    imagePlugin({
+      imageUploadHandler: async (file: File) => {
+        const { url } = await uploadImage(file);
+        return url;
+      },
+    }),
+    tablePlugin(),
+    thematicBreakPlugin(),
+    frontmatterPlugin(),
+    codeBlockPlugin({ defaultCodeBlockLanguage: "txt" }),
+    codeMirrorPlugin({
+      codeBlockLanguages: {
+        txt: "Tekst",
+        javascript: "JavaScript",
+        python: "Python",
+        java: "Java",
+        cpp: "C++",
+        csharp: "C#",
+        html: "HTML",
+        css: "CSS",
+        sql: "SQL",
+        bash: "Bash (Shell)",
+        php: "PHP",
+        go: "Go (Golang)",
+        ruby: "Ruby",
+        rust: "Rust",
+        kotlin: "Kotlin",
+        swift: "Swift",
+        r: "R",
+        typescript: "TypeScript",
+        yaml: "YAML",
+        json: "JSON",
+        dockerfile: "Dockerfile",
+        markdown: "Markdown",
+        powershell: "PowerShell",
+        perl: "Perl",
+        lua: "Lua",
+        haskell: "Haskell",
+        scala: "Scala",
+        vba: "VBA",
+      },
+    }),
+    directivesPlugin({
+      directiveDescriptors: [AdmonitionDirectiveDescriptor],
+    }),
+    diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: "" }),
+    markdownShortcutPlugin(),
+  ];
+};

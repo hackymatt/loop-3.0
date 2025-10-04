@@ -6,7 +6,7 @@ import { MDXEditor } from "@mdxeditor/editor";
 
 import { useTheme } from "@mui/material/styles";
 
-import { plugins } from "./pluggins";
+import { usePlugins } from "./pluggins";
 
 // ----------------------------------------------------------------------
 
@@ -16,6 +16,7 @@ type MarkdownProps = {
 
 export function Markdown({ content, ...other }: MarkdownProps) {
   const theme = useTheme();
+  const plugins = usePlugins();
 
   const themeClass = theme.palette.mode === "dark" ? "dark-theme" : "light-theme";
 

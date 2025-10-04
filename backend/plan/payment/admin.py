@@ -4,6 +4,7 @@ from .models import (
     CardPaymentMethod,
     PayPalPaymentMethod,
     RevolutPaymentMethod,
+    PaymentDiscount,
 )
 
 
@@ -62,3 +63,10 @@ class RevolutPaymentMethodAdmin(admin.ModelAdmin):
     list_display = get_all_fields(RevolutPaymentMethod)
     search_fields = ["payment_method__student__user__email"]
     ordering = ["-payment_method__created_at"]
+
+
+@admin.register(PaymentDiscount)
+class PaymentDiscountAdmin(admin.ModelAdmin):
+    list_display = get_all_fields(PaymentDiscount)
+    list_filter = ["code", "active"]
+    ordering = ["-created_at"]

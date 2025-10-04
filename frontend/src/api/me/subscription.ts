@@ -17,6 +17,7 @@ type ISubscription = {
   interval: "monthly" | "yearly" | null;
   next_billing_date: string | null;
   price: number | null;
+  amount_due: number | null;
   currency: "PLN" | "EUR" | "GBP" | "USD" | null;
   status:
     | "trialing"
@@ -38,11 +39,12 @@ export const subscriptionQuery = (language: Language) => {
       headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
-    const { next_billing_date, cancel_at_period_end, ...rest } = data;
+    const { next_billing_date, amount_due, cancel_at_period_end, ...rest } = data;
 
     const modifiedResult: ISubscriptionProps = {
       ...rest,
       nextBillingDate: next_billing_date,
+      amountDue: amount_due,
       isCancelAtPeriodEnd: cancel_at_period_end,
     };
 

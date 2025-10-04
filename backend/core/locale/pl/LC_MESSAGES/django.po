@@ -249,5 +249,38 @@ msgstr "Nie masz już dostępu do funkcji premium."
 msgid "If this was a mistake, you can manage your subscription in"
 msgstr "Jeśli to pomyłka, możesz zarządzać swoją subskrypcją w"
 
+msgid "You are now on the free plan. Upgrade anytime to regain premium features."
+msgstr "Teraz korzystasz z darmowego planu. W każdej chwili możesz uaktualnić, aby odzyskać funkcje premium."
+
 msgid "your account"
 msgstr "swoim koncie"
+
+msgid "Invalid promotion code"
+msgstr "Nieprawidłowy kod promocyjny"
+
+msgid "Coupon is inactive"
+msgstr "Kupon nieaktywny"
+
+msgid "Coupon has expired"
+msgstr "Kupon wygasł"
+
+msgid "Coupon has already been used"
+msgstr "Kupon został już wykorzystany"
+
+msgid "Coupon does not apply to this product"
+msgstr "Kupon nie dotyczy tego produktu"
+
+msgid "Coupon is not valid for this currency"
+msgstr "Kupon nie jest ważny dla tej waluty"
+
+msgid "Coupon is only for first-time purchase"
+msgstr "Kupon tylko dla pierwszego zakupu"
+
+msgid "Coupon cannot be used by this customer"
+msgstr "Nie można wykorzystać tego kuponu"
+
+msgid "Plan"
+msgstr "Plan"
+
+msgid "Discount"
+msgstr "Zniżka"

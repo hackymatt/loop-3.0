@@ -7,7 +7,7 @@ from .serializers import SubscriptionSerializer
 from plan.models import Plan, PlanPricing
 from plan.subscription.utils import get_subscription
 from user.type.student_user.models import Student
-from utils.stripe.subscription import modify_subscription, retrieve_subscription
+from utils.stripe.subscription import modify_subscription
 from const import SubscriptionStatus
 
 
@@ -65,7 +65,7 @@ class ChangeSubscriptionView(APIView):
     def post(self, request):
         user = request.user
         student = Student.objects.get(user=user)
-        subscription_id = student.current_subscription.stripe_subscription_id
+        subscription = student.current_subscription
 
         plan = request.data.get("plan")
         interval = request.data.get("interval")
@@ -75,24 +75,24 @@ class ChangeSubscriptionView(APIView):
         pricing = PlanPricing.get_current_price(plan, currency, interval)
 
         try:
-            subscription = retrieve_subscription(subscription_id)
-            current_item_id = subscription["items"]["data"][0].id
-
             modify_kwargs = {
                 "cancel_at_period_end": False,
                 "items": [
                     {
-                        "id": current_item_id,
+                        "id": subscription.stripe_subscription_item_id,
                         "price": pricing.stripe_price_id,
                     }
                 ],
                 "proration_behavior": "create_prorations",
             }
 
-            if subscription.get("trial_end") and subscription["status"] == SubscriptionStatus.TRIALING:
-                modify_kwargs["trial_end"] = subscription["trial_end"]
+            if (
+                subscription.end_date
+                and subscription.status == SubscriptionStatus.TRIALING
+            ):
+                modify_kwargs["trial_end"] = int(subscription.end_date.timestamp())
 
-            modify_subscription(subscription_id, **modify_kwargs)
+            modify_subscription(subscription.stripe_subscription_id, **modify_kwargs)
 
             return Response({}, status=status.HTTP_200_OK)
         except stripe.error.StripeError as e:

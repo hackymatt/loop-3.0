@@ -36,6 +36,7 @@ class Urls:
     PROJECT_CHANNEL_POSTS = "project-channel-posts/<slug:slug>"
     PROJECT_CHANNEL_POST_COMMENTS = "project-channel-post-comments/<slug:slug>"
     PROJECT_CHANNEL_POST_LIKES = "project-channel-post-likes/<slug:slug>"
+    PROJECT_CHANNEL_POST_IMAGES = "project-channel-post-images"
     # STEP
     STEP = "step/<slug:project_slug>/<slug:stage_slug>/<slug:step_slug>"
     STEP_CHAT = "step/chat/<slug:step>"
@@ -53,6 +54,8 @@ class Urls:
     PLAN = "plans"
     CREATE_SETUP_INTENT = "create-setup-intent"
     CREATE_SUBSCRIPTION = "create-subscription"
+    VALIDATE_COUPON = "validate-coupon"
+    PREVIEW_INVOICE = "preview-invoice"
     STRIPE_WEBHOOK = "stripe-webhook"
     # CONTACT
     CONTACT = "contact"
@@ -139,3 +142,9 @@ class PaymentType(TextChoices):
     CARD = "card"
     PAYPAL = "paypal"
     REVOLUT = "revolut_pay"
+
+
+class PaymentDiscountDuration(TextChoices):
+    ONCE = "once"
+    REPEATING = "repeating"
+    FOREVER = "forever"

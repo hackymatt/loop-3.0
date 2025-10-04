@@ -9,6 +9,7 @@ import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { loadStripe } from "@stripe/stripe-js";
+import { useSetState } from "minimal-shared/hooks";
 import { useMemo, useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -26,10 +27,15 @@ import Container from "@mui/material/Container";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
+import { paths } from "src/routes/paths";
+
 import { useQueryParams } from "src/hooks/use-query-params";
+import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { CONFIG } from "src/global-config";
-import { PLAN_TYPE, PLAN_INTERVAL } from "src/consts/plan";
+import { PLAN_INTERVAL } from "src/consts/plan";
+import { useUpdateData } from "src/api/me/data";
+import { SUBSCRIPTION_RESULT } from "src/consts/subscription";
 import { useCreateSubscription } from "src/api/plan/subscription";
 
 import { Form } from "src/components/hook-form";
@@ -51,6 +57,12 @@ type PaymentViewProps = {
     customerSessionClientSecret: string;
   };
   language: Language;
+};
+
+export type DiscountProps = {
+  code: string | null;
+  details: { isPercentage: boolean; value: number } | null;
+  error: string | null;
 };
 
 export function PaymentView({ data, language }: PaymentViewProps) {
@@ -82,6 +94,13 @@ function Payment({ data }: PaymentViewProps) {
   const { t } = useTranslation("payment");
   const { t: locale } = useTranslation("locale");
   const { t: c } = useTranslation("countries");
+  const localize = useLocalizedPath();
+
+  const discount = useSetState<DiscountProps>({
+    code: null,
+    details: null,
+    error: null,
+  });
 
   const countries = c("countries", { returnObjects: true }) as {
     code: string;
@@ -96,12 +115,11 @@ function Payment({ data }: PaymentViewProps) {
 
   const [paymentError, setPaymentError] = useState<string | null>(null);
 
+  const { mutateAsync: updateData } = useUpdateData();
   const { mutateAsync: createSubscription } = useCreateSubscription();
 
   const { plan, personal } = data;
   const { email, firstName, lastName, streetAddress, zipCode, city, country } = personal;
-
-  const isFreePlan = (plan.type || PLAN_TYPE.FREE) === PLAN_TYPE.FREE;
 
   const PaymentSchema = zod.object({
     summary: usePaymentSchema(),
@@ -136,8 +154,30 @@ function Payment({ data }: PaymentViewProps) {
       return;
     }
 
+    const addressElement = elements.getElement(AddressElement);
+    const {
+      value: { name, address },
+    } = await addressElement!.getValue();
+
+    const nameParts = name?.trim().split(" ") || [];
+
+    await updateData({
+      first_name: nameParts[0] || "",
+      last_name: nameParts.slice(1).join(" ") || "",
+      street_address: [address.line1, address.line2].filter(Boolean).join(", "),
+      zip_code: address.postal_code || "",
+      city: address.city || "",
+      country: countries.find(({ code }) => code === address.country)?.label || "",
+    });
+
+    const baseUrl = `${window.location.origin}${paths.orderStatus}?status=${SUBSCRIPTION_RESULT.PENDING}&plan=${plan.type}&currency=${currency}&interval=${interval}`;
+    const redirectUrl = discount.state.details ? `${baseUrl}&code=${discount.state.code}` : baseUrl;
+
     const { error } = await stripe.confirmSetup({
       elements,
+      confirmParams: {
+        return_url: localize(redirectUrl),
+      },
       redirect: "if_required",
     });
 
@@ -147,7 +187,12 @@ function Payment({ data }: PaymentViewProps) {
     }
 
     try {
-      await createSubscription({ plan: plan.type, currency, interval });
+      await createSubscription({
+        plan: plan.type,
+        currency,
+        interval,
+        code: discount.state.details ? discount.state.code : null,
+      });
     } catch (err) {
       setPaymentError((err as Error).message || "Something went wrong");
     }
@@ -216,23 +261,19 @@ function Payment({ data }: PaymentViewProps) {
       </Typography>
 
       <Form methods={methods} onSubmit={onSubmit}>
-        {!isFreePlan ? (
-          <Grid container spacing={{ xs: 5, md: 8 }}>
-            <Grid size={{ xs: 12, md: 7 }}>
-              {renderAccountDetails()}
+        <Grid container spacing={{ xs: 5, md: 8 }}>
+          <Grid size={{ xs: 12, md: 7 }}>
+            {renderAccountDetails()}
 
-              <Divider sx={{ my: 5, borderStyle: "dashed" }} />
+            <Divider sx={{ my: 5, borderStyle: "dashed" }} />
 
-              {renderPaymentMethods()}
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 5 }}>{plan && <PaymentSummary plan={plan} />}</Grid>
+            {renderPaymentMethods()}
           </Grid>
-        ) : (
-          <Grid container spacing={{ xs: 5, md: 8 }} justifyContent="center">
-            <Grid size={{ xs: 12, md: 5 }}>{plan && <PaymentSummary plan={plan} />}</Grid>
+
+          <Grid size={{ xs: 12, md: 5 }}>
+            {plan && <PaymentSummary plan={plan} discount={discount} />}
           </Grid>
-        )}
+        </Grid>
       </Form>
     </Container>
   );

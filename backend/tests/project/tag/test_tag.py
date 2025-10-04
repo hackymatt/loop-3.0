@@ -13,15 +13,18 @@ class TagViewTest(TestCase):
         self.url = f"/{Urls.API}/{Urls.PROJECT_TAG}"
 
         # Create admin and regular user
-        self.admin, self.admin_password = create_admin()
-        self.student, self.student_password = create_student()
+        self.admin, self.admin_password = create_admin(is_active=True)
+        self.student, self.student_password = create_student(is_active=True)
 
         # Create a blog tag and translations
         self.tag = create_project_tag()
-        project = create_project()
-        project.tags.clear()
-        project.tags.add(self.tag)
-        project.save()
+        create_project(
+            tags=[self.tag],
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        )
 
     # CREATE (Only Admin)
     def test_create_tag_admin(self):

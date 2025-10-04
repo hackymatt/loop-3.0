@@ -16,6 +16,7 @@ type ISubscription = {
   plan: string;
   currency: string;
   interval: string;
+  code: string | null;
 };
 
 type ISubscriptionReturn = {

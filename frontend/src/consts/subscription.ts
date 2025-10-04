@@ -9,6 +9,7 @@ export const SUBSCRIPTION_STATUS = {
 } as const;
 
 export const SUBSCRIPTION_RESULT = {
+  PENDING: "pending",
   SUCCESS: "succeeded",
   FAILED: "failed",
 } as const;

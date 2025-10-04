@@ -12,8 +12,8 @@
   "certificates": {
     "title": "Your certificates",
     "button": "See all certificates",
-    "lack": "You don't have any certificates yet. Complete a project or a learning path to earn your first one!",
-    "start": "See available learning paths",
+    "lack": "You don't have any certificates yet. Complete a project to earn your first one!",
+    "start": "See available projects",
     "blocked": "Boost your job market chances with certificates confirming practical skills. Unlock them by completing projects.",
     "project": "Your first Python project: Password Generator"
   },

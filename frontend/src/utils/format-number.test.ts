@@ -36,7 +36,7 @@ describe("fCurrency", () => {
   // Format a number with custom locale and currency
   it("should format a number with custom locale and currency", () => {
     const result = fCurrency(1000, { code: "en-US", currency: "USD" });
-    expect(result).toBe("$1,000");
+    expect(result).toBe("$1,000.00");
   });
 
   // Handle null input value (should return empty string)

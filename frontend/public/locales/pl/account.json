@@ -6,7 +6,7 @@
     },
     "manage": {
       "title": "Ustawienia konta – zmień hasło lub usuń konto",
-      "description": "Zadbaj o bezpieczeństwo swojego konta na platformie loop. Zmieniaj hasło, zarządzaj danymi lub usuń konto, jeśli kończysz swoją ścieżkę."
+      "description": "Zadbaj o bezpieczeństwo swojego konta na platformie loop. Zmieniaj hasło, zarządzaj danymi lub usuń konto."
     },
     "subscription": {
       "title": "Subskrypcja – zarządzaj dostępem do projektów",
@@ -124,6 +124,7 @@
       "monthly": "miesięcznie",
       "yearly": "rocznie"
     },
+    "invoice": "Twoja kolejna szacowana płatność będzie wynosić",
     "sell": "Zbuduj swoje portfolio, ucz się z projektami i zdobądź certyfikaty. Wybierz plan i rozwijaj się razem z loop.",
     "error": "Coś poszło nie tak. Spróbuj ponownie.",
     "trial": "Okres próbny kończy się {{date}}",

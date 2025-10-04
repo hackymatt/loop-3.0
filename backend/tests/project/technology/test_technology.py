@@ -1,8 +1,6 @@
 from django.test import TestCase
 from rest_framework import status
 from project.technology.models import Technology
-from project.enrollment.models import ProjectEnrollment
-from review.models import Review
 from rest_framework.test import APIClient
 from const import Urls
 from ...helpers import login
@@ -12,6 +10,8 @@ from ...factory import (
     create_technology,
     create_student,
     create_project,
+    create_review,
+    create_project_enrollment,
 )
 
 
@@ -21,15 +21,18 @@ class TechnologyViewTest(TestCase):
         self.url = f"/{Urls.API}/{Urls.PROJECT_TECHNOLOGY}"
 
         # Create admin and regular user
-        self.admin, self.admin_password = create_admin()
-        self.student, self.student_password = create_student()
+        self.admin, self.admin_password = create_admin(is_active=True)
+        self.student, self.student_password = create_student(is_active=True)
 
         # Create a project technology
         self.project_technology = create_technology()
-        project = create_project()
-        project.technology.clear()
-        project.technology.add(self.project_technology)
-        project.save()
+        create_project(
+            technology=[self.project_technology],
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        )
 
     # CREATE (Only Admin)
     def test_create_project_technology_admin(self):
@@ -92,28 +95,36 @@ class FeaturedTechnologiesViewTest(TestCase):
         # Create projects for Python
         self.technology_1 = create_technology()
         self.technology_2 = create_technology()
-        self.project_1 = create_project()
-        self.project_2 = create_project()
-        self.project_1.technology.clear()
-        self.project_1.technology.add(self.technology_1)
-        self.project_2.technology.clear()
-        self.project_2.technology.add(self.technology_2)
+        self.project_1 = create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            technology=[self.technology_1],
+            similar=[],
+        )
+        self.project_2 = create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            technology=[self.technology_2],
+            similar=[],
+        )
 
-        self.student_1, _ = create_student()
-        self.student_2, _ = create_student()
-        self.student_3, _ = create_student()
+        self.student_1, _ = create_student(is_active=True)
+        self.student_2, _ = create_student(is_active=True)
+        self.student_3, _ = create_student(is_active=True)
 
         # Enroll users in projects
-        ProjectEnrollment.objects.create(project=self.project_1, student=self.student_1)
-        ProjectEnrollment.objects.create(project=self.project_2, student=self.student_2)
+        create_project_enrollment(project=self.project_1, student=self.student_1)
+        create_project_enrollment(project=self.project_2, student=self.student_2)
 
         # Add reviews for Python project
-        Review.objects.create(project=self.project_1, rating=5, student=self.student_1)
-        Review.objects.create(project=self.project_1, rating=4, student=self.student_2)
+        create_review(student=self.student_1, project=self.project_1, rating=5)
+        create_review(student=self.student_2, project=self.project_1, rating=4)
 
         # Add reviews for JavaScript project
-        Review.objects.create(project=self.project_2, rating=4, student=self.student_2)
-        Review.objects.create(project=self.project_2, rating=3, student=self.student_3)
+        create_review(student=self.student_2, project=self.project_2, rating=4)
+        create_review(student=self.student_3, project=self.project_2, rating=5)
 
     def test_get_featured_technologies(self):
         # Call the API endpoint

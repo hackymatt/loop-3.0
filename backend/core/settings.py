@@ -296,6 +296,7 @@ DBBACKUP_FREQ = {"DEV": "0 0 * * *", "UAT": "0 0 * * *", "PROD": "0 * * * *"}
 CRONJOBS = (
     [
         (DBBACKUP_FREQ[ENV], "core.cron.create_backup"),
+        ("0 2 * * *", "core.cron.remove_images"),
     ]
     if not LOCAL
     else []
@@ -408,7 +409,7 @@ if LOCAL:
     STATIC_URL = "/static/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     MEDIA_URL = "/media/"
-else:
+else:  # pragma: no cover
     STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{STATIC_LOCATION}/"
     MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/{MEDIA_LOCATION}/"
     STORAGES = {
