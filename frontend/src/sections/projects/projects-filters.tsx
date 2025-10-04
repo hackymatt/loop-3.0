@@ -1,3 +1,4 @@
+import type { IPlanProps } from "src/types/plan";
 import type { BoxProps } from "@mui/material/Box";
 import type {
   IProjectTagProp,
@@ -38,6 +39,7 @@ type FiltersProps = {
     ratings: string[];
     statuses: IProjectStatusProp[];
     tags: IProjectTagProp[];
+    plans: IPlanProps[];
   };
 };
 
@@ -75,6 +77,9 @@ export function ProjectsFilters({ open, onClose, options }: FiltersProps) {
     const tags = query?.tags;
     const currentTags = tags ? tags.split(",") : [];
     const visibleTags = showAll.value ? options.tags : options.tags.slice(0, 10);
+
+    const plans = query?.plans;
+    const currentPlans = plans ? plans.split(",") : [];
 
     return (
       <>
@@ -309,6 +314,33 @@ export function ProjectsFilters({ open, onClose, options }: FiltersProps) {
             )}
           </Box>
         </Block>
+
+        {options.plans?.length > 0 ? (
+          <Block title={t("filter.plans")}>
+            <Box sx={{ display: "flex", flexDirection: "column", pt: 1 }}>
+              {options.plans.map((option) => {
+                const isSelected = currentPlans.includes(option.type);
+                return (
+                  <FormControlLabel
+                    key={option.type}
+                    control={
+                      <Checkbox
+                        size="small"
+                        value={option}
+                        checked={isSelected}
+                        onChange={() => {
+                          handleChange("plans", getSelected(currentPlans, option.type).join(","));
+                        }}
+                        inputProps={{ id: `${option}-checkbox` }}
+                      />
+                    }
+                    label={option.license}
+                  />
+                );
+              })}
+            </Box>
+          </Block>
+        ) : null}
       </>
     );
   };

@@ -5,17 +5,17 @@ import { useTranslation } from "react-i18next";
 
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
-import { Box, Link } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
 import { paths } from "src/routes/paths";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
+import { PLAN_TYPE } from "src/consts/plan";
 import { useAnalytics } from "src/app/analytics-provider";
 
-import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
+import { AvailabilityMark } from "src/components/availability-mark";
 
 import { Certificate } from "../certificates";
 import { findNextStep } from "./find-next-step";
@@ -67,15 +67,7 @@ export function ProjectCertificateDetailsInfo({
 
       <Typography variant="body2">{t("certificate.subtitle")}</Typography>
 
-      <Box sx={{ gap: 1, display: "flex", alignItems: "center" }}>
-        <Iconify icon="carbon:checkmark-filled" sx={{ color: "success.main" }} />
-        <Typography variant="caption">
-          {t("included.start")}{" "}
-          <Link href={localize(paths.pricing)} color="text.primary" underline="always">
-            {t("included.plans")}
-          </Link>
-        </Typography>
-      </Box>
+      <AvailabilityMark plans={[PLAN_TYPE.BASIC, PLAN_TYPE.PREMIUM]} />
 
       {!completed ? (
         <Button

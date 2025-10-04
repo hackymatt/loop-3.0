@@ -1,6 +1,7 @@
 "use client";
 
 import type { PaperProps } from "@mui/material";
+import type { DatePickerFormat } from "src/utils/format-time";
 import type { Currency, PlanType, IPlanProps, PlanInterval } from "src/types/plan";
 import type { ICardProps, ISubscriptionProps, IPaymentMethodProps } from "src/types/user";
 
@@ -419,7 +420,7 @@ function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
             >
               {options.map((plan) => (
                 <SubscriptionOption
-                  key={plan.license}
+                  key={plan.type}
                   subscription={subscription}
                   plan={plan}
                   interval={setting.state.interval}

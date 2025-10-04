@@ -31,6 +31,10 @@ type IInstructor = {
   role: string;
 };
 
+type IPlan = {
+  type: "free" | "basic" | "premium";
+};
+
 type IProject = {
   slug: string;
   translated_name: string;
@@ -44,6 +48,7 @@ type IProject = {
   average_rating: number | null;
   ratings_count: number;
   students_count: number;
+  plans: IPlan[];
 };
 
 export const similarProjectsQuery = (language: Language, slug: string) => {

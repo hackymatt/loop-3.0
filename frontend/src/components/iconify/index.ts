@@ -2,4 +2,4 @@ export * from "./classes";
 
 export * from "./iconify";
 
-export { default as isIconExists } from "./isIconExists";
+export * from "./is-icon-exists";

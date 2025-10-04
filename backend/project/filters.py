@@ -33,6 +33,9 @@ class ProjectFilter(django_filters.FilterSet):
         method="filter_by_min_rating"
     )  # Filter by minimum average rating
     tags = filters.BaseInFilter(field_name="tags__slug", lookup_expr="in")
+    plans = filters.BaseInFilter(
+        field_name="plans__type", lookup_expr="in"
+    )  # Filter by multiple plan types
     status = filters.CharFilter(method="filter_by_status")  # Filter by progress status
 
     class Meta:
@@ -44,6 +47,7 @@ class ProjectFilter(django_filters.FilterSet):
             "duration",
             "rating",
             "tags",
+            "plans",
             "active",
         ]
 

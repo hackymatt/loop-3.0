@@ -130,9 +130,8 @@ export function HomePricing({ plans, sx, ...other }: HomePricingProps) {
           }}
         >
           {pricingCards.map((plan) => (
-            <m.div key={plan.license}>
+            <m.div key={plan.type}>
               <PricingCard
-                key={plan.license}
                 plan={plan}
                 interval={setting.state.interval}
                 currency={setting.state.currency}

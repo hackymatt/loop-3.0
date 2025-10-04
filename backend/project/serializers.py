@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Case, When, Value, IntegerField
 from .models import Project
 from .stage.serializers import StageSerializer
 from .level.serializers import LevelSerializer
@@ -8,8 +9,9 @@ from .tag.serializers import TagSerializer
 from user.type.instructor_user.serializers import InstructorSerializer
 from .progress.models import ProjectProgress
 from blog.models import Blog
+from plan.models import Plan
 from review.models import Review
-from const import UserType
+from const import UserType, PlanType
 
 
 class ProjectPrerequisiteSerializer(serializers.ModelSerializer):
@@ -36,6 +38,12 @@ class BlogPrerequisiteSerializer(serializers.ModelSerializer):
         return obj.get_translation(lang).name
 
 
+class PlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plan
+        fields = ["type"]
+
+
 class BaseProjectSerializer(serializers.ModelSerializer):
     name = serializers.CharField(write_only=True)
     language = serializers.CharField(write_only=True)
@@ -52,6 +60,8 @@ class BaseProjectSerializer(serializers.ModelSerializer):
     ratings_count = serializers.IntegerField(read_only=True)
     students_count = serializers.IntegerField(read_only=True)
     duration = serializers.IntegerField(read_only=True)
+
+    plans = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
@@ -70,6 +80,7 @@ class BaseProjectSerializer(serializers.ModelSerializer):
             "average_rating",
             "ratings_count",
             "students_count",
+            "plans",
         ]
 
     def get_translated_name(self, obj):
@@ -106,6 +117,14 @@ class BaseProjectSerializer(serializers.ModelSerializer):
         ).count()
 
         return float((completed / total) * 100)
+
+    def get_plans(self, obj):
+        order_map = {
+            plan_type.value: index for index, plan_type in enumerate(PlanType, start=1)
+        }
+        whens = [When(type=k, then=Value(v)) for k, v in order_map.items()]
+        plans = obj.plans.order_by(Case(*whens, output_field=IntegerField()))
+        return PlanSerializer(plans, many=True).data
 
 
 class ProjectListSerializer(BaseProjectSerializer):

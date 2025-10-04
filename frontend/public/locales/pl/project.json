@@ -58,7 +58,8 @@
         "more": "Pokaż więcej",
         "less": "Pokaż mniej"
       }
-    }
+    },
+    "plans": "Plan"
   },
   "instructor": ["mentor", "mentorów", "mentorów"],
   "student": ["uczestnik", "uczestników", "uczestników"],
@@ -99,7 +100,7 @@
   },
   "included": {
     "start": "Dostępne w planie",
-    "plans": { "basic": "Podstawowym", "premium": "Premium" },
+    "plans": { "free": "Darmowym", "basic": "Podstawowym", "premium": "Premium" },
     "and": "oraz"
   },
   "overview": "Opis projektu",

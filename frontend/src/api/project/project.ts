@@ -57,6 +57,10 @@ type ITag = {
   translated_name: string;
 };
 
+type IPlan = {
+  type: "free" | "basic" | "premium";
+};
+
 type IProject = {
   slug: string;
   translated_name: string;
@@ -73,6 +77,7 @@ type IProject = {
   average_rating: number | null;
   ratings_count: number;
   students_count: number;
+  plans: IPlan[];
   stages: IStage[];
   project_prerequisites: IPrerequisite[];
   blog_prerequisites: IPrerequisite[];

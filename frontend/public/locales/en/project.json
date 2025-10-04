@@ -58,7 +58,8 @@
         "more": "Show more",
         "less": "Show less"
       }
-    }
+    },
+    "plans": "Plan"
   },
   "instructor": ["mentor", "mentors", "mentors"],
   "tags": "Tags",
@@ -99,7 +100,8 @@
   },
   "included": {
     "start": "Included in the",
-    "plans": "Basic and Premium plans"
+    "plans": { "free": "Free", "basic": "Basic", "premium": "Premium" },
+    "and": "and"
   },
   "overview": "Project overview",
   "similar": "Similar projects",
