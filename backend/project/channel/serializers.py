@@ -74,7 +74,7 @@ class ChannelPostImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChannelPostImage
-        fields = ["image", "url"]  # include 'image' so it can be uploaded
+        fields = ["image", "url"]
 
     def get_url(self, obj):
         request = self.context.get("request")

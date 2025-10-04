@@ -15,17 +15,19 @@ from const import (
     PaymentInterval,
     PaymentDiscountDuration,
 )
-
 from user.type.admin_user.models import Admin
 from user.type.instructor_user.models import Instructor
 from user.type.student_user.models import Student
-
 from blog.tag.models import Tag as BlogTag, TagTranslation as BlogTagTranslation
 from blog.topic.models import Topic, TopicTranslation
 from blog.models import Blog, BlogTranslation
-
 from project.category.models import Category, CategoryTranslation
-from project.channel.models import ChannelPost, ChannelPostLike, ChannelPostComment
+from project.channel.models import (
+    ChannelPost,
+    ChannelPostLike,
+    ChannelPostComment,
+    ChannelPostImage,
+)
 from project.level.models import Level, LevelTranslation
 from project.technology.models import Technology
 from project.tag.models import (
@@ -37,9 +39,7 @@ from project.step.models import Step, StepTranslation
 from project.models import Project, ProjectTranslation
 from project.enrollment.models import ProjectEnrollment
 from project.progress.models import ProjectProgress
-
 from review.models import Review
-
 from plan.models import (
     Plan,
     PlanTranslation,
@@ -56,10 +56,9 @@ from plan.payment.models import (
     RevolutPaymentMethod,
     PaymentDiscount,
 )
-
 from certificate.models import Certificate
-
 from invoice.models import InvoiceCustomer, InvoiceItem, Invoice, StudentInvoice
+from .helpers import get_test_image_file
 
 languages = [choice.value for choice in Language]
 user_types = [choice.value for choice in UserType]
@@ -951,3 +950,10 @@ def create_channel_post_comment(channel_post=None, student=None, message=None):
     return ChannelPostComment.objects.create(
         channel_post=channel_post, student=student, message=message
     )
+
+
+def create_channel_post_image(student=None, image=None):
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
+    image = _use_if_none(image, lambda: get_test_image_file())
+
+    return ChannelPostImage.objects.create(student=student, image=image)
