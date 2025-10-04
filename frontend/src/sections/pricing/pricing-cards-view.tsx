@@ -105,7 +105,7 @@ export function PricingCardsView({ plans }: PricingCardsViewProps) {
       >
         {pricingCards.map((plan) => (
           <PricingCard
-            key={plan.license}
+            key={plan.type}
             plan={plan}
             interval={setting.state.interval}
             currency={setting.state.currency}

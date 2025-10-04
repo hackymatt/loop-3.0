@@ -1,5 +1,6 @@
 import type { LEVEL_TYPE } from "src/consts/level";
 
+import type { PlanType } from "./plan";
 import type { IInstructorProps } from "./user";
 
 // ----------------------------------------------------------------------
@@ -33,6 +34,10 @@ export type IProjectDurationProp = {
 
 export type IProjectTeacherProp = IInstructorProps;
 
+export type IProjectPlanProp = {
+  type: PlanType;
+};
+
 export type IProjectStepProp = {
   slug: string;
   name: string;
@@ -62,6 +67,7 @@ type IProjectBaseProps = {
   ratingNumber: number | null;
   totalReviews: number;
   totalStudents: number;
+  plans: IProjectPlanProp[];
   progress: number | null;
 };
 

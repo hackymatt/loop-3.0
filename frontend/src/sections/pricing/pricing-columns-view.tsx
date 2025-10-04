@@ -124,7 +124,7 @@ export function PricingColumnsView({ plans }: PricingColumnsViewProps) {
 
       {pricingColumns.map((plan) => (
         <Grid
-          key={plan.license}
+          key={plan.type}
           size={{ xs: 12, md: 3 }}
           sx={(theme) => ({ borderTop: { md: `solid 1px ${theme.vars.palette.divider}` } })}
         >
@@ -159,7 +159,7 @@ export function PricingColumnsView({ plans }: PricingColumnsViewProps) {
 
         {pricingColumns.map((plan) => (
           <Grid
-            key={plan.license}
+            key={plan.type}
             sx={(theme) => ({
               mb: 4,
               borderRadius: 2,

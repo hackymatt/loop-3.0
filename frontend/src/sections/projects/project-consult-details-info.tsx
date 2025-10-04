@@ -21,7 +21,7 @@ import { AvailabilityMark } from "src/components/availability-mark";
 // ----------------------------------------------------------------------
 
 type Props = CardProps & Pick<IProjectProps, "slug">;
-export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
+export function ProjectConsultDetailsInfo({ sx, slug, ...other }: Props) {
   const { t } = useTranslation("project");
   const localize = useLocalizedPath();
 
@@ -39,36 +39,36 @@ export function ProjectChannelDetailsInfo({ sx, slug, ...other }: Props) {
       {...other}
     >
       <Typography component="h6" variant="h6">
-        {t("channel.title")}
+        {t("consult.title")}
       </Typography>
 
-      <Typography variant="body2">{t("channel.subtitle")}</Typography>
+      <Typography variant="body2">{t("consult.subtitle")}</Typography>
 
-      <AvailabilityMark plans={[PLAN_TYPE.BASIC, PLAN_TYPE.PREMIUM]} />
+      <AvailabilityMark plans={[PLAN_TYPE.PREMIUM]} />
 
       {!isLoggedIn ? (
         <Button
           variant="contained"
           size="large"
-          startIcon={<Iconify icon="solar:chat-line-outline" />}
+          startIcon={<Iconify icon="solar:call-chat-linear" />}
           href={localize(paths.auth.register)}
           onClick={() => {
-            user.setField("redirect", localize(`${paths.channel}/${slug}`));
+            user.setField("redirect", localize(`${paths.project}/${slug}`));
             trackEvent({ category: "project", label: `project (${slug})`, action: "chat" });
           }}
           sx={{ px: 2, borderRadius: "inherit", textAlign: "center" }}
         >
-          {t("channel.button")}
+          {t("consult.button")}
         </Button>
       ) : (
         <Button
           variant="contained"
           size="large"
-          startIcon={<Iconify icon="solar:chat-line-outline" />}
+          startIcon={<Iconify icon="solar:call-chat-linear" />}
           href={localize(`${paths.channel}/${slug}`)}
           sx={{ px: 2, borderRadius: "inherit", textAlign: "center" }}
         >
-          {t("channel.button")}
+          {t("consult.button")}
         </Button>
       )}
     </Card>

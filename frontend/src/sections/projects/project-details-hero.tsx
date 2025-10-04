@@ -26,6 +26,7 @@ import { useAnalytics } from "src/app/analytics-provider";
 import { Iconify } from "src/components/iconify";
 import { useUserContext } from "src/components/user";
 import { AnimateBorder } from "src/components/animate";
+import { AvailabilityMark } from "src/components/availability-mark";
 import { CustomBreadcrumbs } from "src/components/custom-breadcrumbs";
 
 import { findNextStep } from "./find-next-step";
@@ -50,6 +51,7 @@ type Props = BoxProps &
     | "totalReviews"
     | "totalStages"
     | "totalStudents"
+    | "plans"
     | "stages"
     | "progress"
   > & { language: Language };
@@ -70,6 +72,7 @@ export function ProjectDetailsHero({
   totalReviews,
   totalStages,
   totalStudents,
+  plans,
   stages,
   progress,
   ...other
@@ -224,6 +227,8 @@ export function ProjectDetailsHero({
     </Box>
   );
 
+  const renderAvailabilityMark = () => <AvailabilityMark plans={plans.map((plan) => plan.type)} />;
+
   const renderButton = () => (
     <AnimateBorder
       sx={(theme) => ({
@@ -319,6 +324,7 @@ export function ProjectDetailsHero({
             {!completed && renderButton()}
             {renderContent()}
             {renderSummary()}
+            {renderAvailabilityMark()}
           </Grid>
 
           {!isLoggedIn ? (

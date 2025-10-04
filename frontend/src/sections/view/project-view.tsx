@@ -25,6 +25,7 @@ import { ProjectDetailsSummary } from "../projects/project-details-summary";
 import { ProjectDetailsTeachers } from "../projects/project-details-teachers-info";
 import { ProjectChannelDetailsInfo } from "../projects/project-channel-details-info";
 import { ProjectDetailsPrerequisites } from "../projects/project-prerequisites-info";
+import { ProjectConsultDetailsInfo } from "../projects/project-consult-details-info";
 import { ProjectCertificateDetailsInfo } from "../projects/project-certificate-details-info";
 
 // ----------------------------------------------------------------------
@@ -99,6 +100,7 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
         totalReviews={project.totalReviews || 0}
         totalStages={project.totalStages || 0}
         totalStudents={project.totalStudents || 0}
+        plans={project.plans || []}
         stages={project.stages || []}
         progress={project.progress || 0}
       />
@@ -127,7 +129,9 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
               sx={{ mb: 3 }}
             />
 
-            <ProjectChannelDetailsInfo slug={slug} />
+            <ProjectChannelDetailsInfo slug={slug} sx={{ mb: 3 }} />
+
+            <ProjectConsultDetailsInfo slug={slug} />
           </Grid>
 
           <ProjectTags tags={project.tags || []} />

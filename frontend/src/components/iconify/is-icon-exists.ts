@@ -1,6 +1,6 @@
 import { loadIcons, iconExists } from "@iconify/react";
 
-const isIconExists = (iconName: string): boolean => {
+export function isIconExists(iconName: string) {
   if (iconExists(iconName)) {
     return true;
   }
@@ -11,6 +11,4 @@ const isIconExists = (iconName: string): boolean => {
   } catch {
     return false;
   }
-};
-
-export default isIconExists;
+}

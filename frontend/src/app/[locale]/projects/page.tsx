@@ -1,17 +1,11 @@
 import type { Language } from "src/locales/types";
-import type {
-  IProjectTagProp,
-  IProjectLevelProp,
-  IProjectListProps,
-  IProjectCategoryProp,
-  IProjectTechnologyProp,
-} from "src/types/project";
 
 import { paths } from "src/routes/paths";
 
 import { createMetadata } from "src/utils/create-metadata";
 
 import { LANGUAGE } from "src/consts/language";
+import { plansQuery } from "src/api/plan/plans";
 import { projectsQuery } from "src/api/project/projects";
 import { projectTagsQuery } from "src/api/project/tag/tags";
 import { projectLevelsQuery } from "src/api/project/level/levels";
@@ -35,6 +29,7 @@ const queries = {
   projectCategories: (lang: Language) => projectCategoriesQuery(lang, { page_size: "-1" }),
   projectTags: (lang: Language) => projectTagsQuery(lang, { page_size: "-1" }),
   projects: (lang: Language, searchParams: SearchParams) => projectsQuery(lang, searchParams),
+  plans: (lang: Language) => plansQuery(lang),
 };
 
 async function getData(language: Language, searchParams: SearchParams) {
@@ -42,14 +37,16 @@ async function getData(language: Language, searchParams: SearchParams) {
   const projectTechnologiesPromise = queries.projectTechnologies(language).queryFn();
   const projectCategoriesPromise = queries.projectCategories(language).queryFn();
   const projectTagsPromise = queries.projectTags(language).queryFn();
+  const plansPromise = queries.plans(language).queryFn();
   const projectsPromise = queries.projects(language, searchParams).queryFn();
 
-  const [projectLevels, projectTechnologies, projectCategories, projectTags, projects] =
+  const [projectLevels, projectTechnologies, projectCategories, projectTags, plans, projects] =
     await Promise.all([
       projectLevelsPromise,
       projectTechnologiesPromise,
       projectCategoriesPromise,
       projectTagsPromise,
+      plansPromise,
       projectsPromise,
     ]);
 
@@ -58,17 +55,10 @@ async function getData(language: Language, searchParams: SearchParams) {
     projectTechnologies: projectTechnologies.results,
     projectCategories: projectCategories.results,
     projectTags: projectTags.results,
+    plans: plans.results,
     projects: projects.results,
     projectsCount: projects.count,
     projectsPageSize: projects.pagesCount,
-  } as {
-    projectLevels: IProjectLevelProp[];
-    projectTechnologies: IProjectTechnologyProp[];
-    projectCategories: IProjectCategoryProp[];
-    projectTags: IProjectTagProp[];
-    projects: IProjectListProps[];
-    projectsCount: number;
-    projectsPageSize: number;
   };
 }
 export default async function Page({ params, searchParams }: PageProps) {

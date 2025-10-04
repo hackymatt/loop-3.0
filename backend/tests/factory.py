@@ -442,6 +442,7 @@ def create_project(
     blog_prerequisites=None,
     similar=None,
     tags=None,
+    plans=None,
     active=None,
 ):
     slug = _use_if_none(slug, _generate_random_slug)
@@ -498,6 +499,10 @@ def create_project(
         tags,
         lambda: [create_project_tag() for _ in range(_generate_random_number(1, 5))],
     )
+    plans = _use_if_none(
+        plans,
+        lambda: Plan.objects.filter(type__in=_generate_random_choice(plan_types)),
+    )
     active = _use_if_none(active, _generate_random_bool)
 
     project = Project.objects.create(
@@ -514,6 +519,7 @@ def create_project(
     project.blog_prerequisites.add(*blog_prerequisites)
     project.similar.add(*similar)
     project.tags.add(*tags)
+    project.plans.add(*plans)
 
     _create_translations(
         ProjectTranslation,

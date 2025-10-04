@@ -23,6 +23,7 @@ import { getTechnologyIcon } from "src/utils/technology-icon";
 import { DEFAULT_AVATAR_URL } from "src/consts/avatar";
 
 import { Iconify } from "src/components/iconify";
+import { AvailabilityMark } from "src/components/availability-mark";
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +51,6 @@ export function ProjectItem({ project, isVertical, isHome }: Props) {
       <Typography variant="overline" sx={{ color: "primary.main", flexGrow: 1 }}>
         {project.category.name}
       </Typography>
-
       {project.progress ? (
         <>
           <LinearProgress
@@ -131,6 +131,10 @@ export function ProjectItem({ project, isVertical, isHome }: Props) {
         )}
       </Box>
     </Box>
+  );
+
+  const renderAvailabilityMark = () => (
+    <AvailabilityMark plans={project.plans.map((plan) => plan.type)} />
   );
 
   const renderInfo = () => (
@@ -229,6 +233,15 @@ export function ProjectItem({ project, isVertical, isHome }: Props) {
         }}
       />
       {renderBottom()}
+
+      <Divider
+        sx={{
+          borderStyle: "dashed",
+          display: { sm: "none" },
+          ...(isVertical && { display: "block" }),
+        }}
+      />
+      {renderAvailabilityMark()}
     </Box>
   );
 

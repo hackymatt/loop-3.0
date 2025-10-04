@@ -58,7 +58,8 @@
         "more": "Show more",
         "less": "Show less"
       }
-    }
+    },
+    "plans": "Plan"
   },
   "instructor": ["mentor", "mentors", "mentors"],
   "tags": "Tags",
@@ -82,6 +83,11 @@
     "subtitle": "Join the project channel to get support and share experiences with other participants.",
     "button": "Join the discussion"
   },
+  "consult": {
+    "title": "1:1 Consultation",
+    "subtitle": "Book a session with a mentor to discuss your programming project, get guidance, and receive personalized support.",
+    "button": "Book a consultation"
+  },
   "preview": "Project preview",
   "prerequisites": {
     "title": "Prerequisites",
@@ -94,7 +100,8 @@
   },
   "included": {
     "start": "Included in the",
-    "plans": "Basic and Premium plans"
+    "plans": { "free": "Free", "basic": "Basic", "premium": "Premium" },
+    "and": "and"
   },
   "overview": "Project overview",
   "similar": "Similar projects",
