@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ChannelPost, ChannelPostComment, ChannelPostLike
+from .models import ChannelPost, ChannelPostComment, ChannelPostImage
 from user.type.student_user.serializers import StudentSerializer
 
 
@@ -67,3 +67,15 @@ class ChannelPostCommentCreateEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChannelPostComment
         fields = ["message"]
+
+
+class ChannelPostImageSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ChannelPostImage
+        fields = ["image", "url"]  # include 'image' so it can be uploaded
+
+    def get_url(self, obj):
+        request = self.context.get("request")
+        return request.build_absolute_uri(obj.image.url) if request else obj.image.url

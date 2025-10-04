@@ -31,7 +31,6 @@ const UNAUTHORIZED_PATHS = [
   paths.auth.resetPassword,
   paths.auth.updatePassword,
   paths.about,
-  // paths.pricing,
 ];
 
 const PUBLIC_FILE = /\.(.*)$/;

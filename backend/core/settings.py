@@ -296,6 +296,7 @@ DBBACKUP_FREQ = {"DEV": "0 0 * * *", "UAT": "0 0 * * *", "PROD": "0 * * * *"}
 CRONJOBS = (
     [
         (DBBACKUP_FREQ[ENV], "core.cron.create_backup"),
+        ("0 2 * * *", "core.cron.remove_images"),
     ]
     if not LOCAL
     else []

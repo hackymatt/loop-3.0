@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ChannelPost, ChannelPostLike, ChannelPostComment
+from .models import ChannelPost, ChannelPostLike, ChannelPostComment, ChannelPostImage
 
 
 def get_all_fields(model):
@@ -40,4 +40,13 @@ class ChannelPostCommentAdmin(admin.ModelAdmin):
         "student__user__first_name",
         "student__user__last_name",
         "message",
+    )
+
+
+@admin.register(ChannelPostImage)
+class ChannelPostImageAdmin(admin.ModelAdmin):
+    list_display = get_all_fields(ChannelPostImage)
+    search_fields = (
+        "student__user__first_name",
+        "student__user__last_name",
     )
