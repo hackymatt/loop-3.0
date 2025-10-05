@@ -3,7 +3,6 @@ import type { PlanType } from "src/types/plan";
 import { useTranslation } from "react-i18next";
 
 import { Box, Link } from "@mui/material";
-import Typography from "@mui/material/Typography";
 
 import { paths } from "src/routes/paths";
 
@@ -50,11 +49,9 @@ export function AvailabilityMark({ plans }: AvailabilityMarkProps) {
   };
 
   return (
-    <Box sx={{ gap: 1, display: "flex", alignItems: "center" }}>
+    <Box sx={{ gap: 0.5, display: "flex", alignItems: "center", typography: "caption" }}>
       <Iconify icon="carbon:checkmark-filled" sx={{ color: "success.main" }} />
-      <Typography variant="caption">
-        {t("included.start")} {renderPlans()}
-      </Typography>
+      {t("included.start")} {renderPlans()}
     </Box>
   );
 }

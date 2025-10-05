@@ -31,6 +31,8 @@ class PlanListViewTest(TestCase):
         first_plan = data[0]
         self.assertIn("type", first_plan)
         self.assertIn("tokens_limit", first_plan)
+        self.assertIn("consultation_limit", first_plan)
+        self.assertIn("projects_count", first_plan)
         self.assertIn("license", first_plan)
         self.assertIn("popular", first_plan)
         self.assertIn("pricing", first_plan)
@@ -53,6 +55,7 @@ class PlanListViewTest(TestCase):
 
         self.assertEqual(plan_data["type"], plan.type)
         self.assertEqual(plan_data["tokens_limit"], plan.tokens_limit)
+        self.assertEqual(plan_data["consultation_limit"], plan.consultation_limit)
         self.assertEqual(plan_data["popular"], plan.popular)
         self.assertIsNotNone(plan_data["license"])
 

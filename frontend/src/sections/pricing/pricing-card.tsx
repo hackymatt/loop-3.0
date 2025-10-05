@@ -12,6 +12,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 
+import { usePluralize } from "src/hooks/use-pluralize";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { getPlanIcon } from "src/utils/plan-icon";
@@ -41,7 +42,11 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const languagePluralize = usePluralize();
   const router = useRouter();
+
+  const projects = t("projects", { returnObjects: true }) as string[];
+  const consultations = t("consultations", { returnObjects: true }) as string[];
 
   const user = useUserContext();
   const {
@@ -142,8 +147,30 @@ export function PricingCard({ plan, interval, currency, sx, ...other }: Props) {
           alignItems: "center",
         }}
       >
+        <Iconify icon="carbon:repo-source-code" />
+        {fShortenNumber(plan.projectsCount, { code: locale("code") })}{" "}
+        {languagePluralize(projects, plan.projectsCount)}
+      </Box>
+      <Box
+        sx={{
+          gap: 1.5,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <Iconify icon="logos:openai-icon" />
         {fShortenNumber(plan.tokensLimit, { code: locale("code") })} {t("token")}
+      </Box>
+      <Box
+        sx={{
+          gap: 1.5,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Iconify icon="solar:call-chat-linear" />
+        {fShortenNumber(plan.consultationLimit, { code: locale("code") })}{" "}
+        {languagePluralize(consultations, plan.consultationLimit)}
       </Box>
       {plan.options.map((option) => (
         <Box

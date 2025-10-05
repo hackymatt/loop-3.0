@@ -614,11 +614,20 @@ def create_plan_pricing(
     )
 
 
-def create_plan(type=None, popular=None, tokens_limit=None, stripe_product_id=None):
+def create_plan(
+    type=None,
+    popular=None,
+    tokens_limit=None,
+    consultation_limit=None,
+    stripe_product_id=None,
+):
     type = _use_if_none(type, lambda: _generate_random_choice(plan_types))
     popular = _use_if_none(popular, _generate_random_bool)
     tokens_limit = _use_if_none(
         tokens_limit, lambda: _generate_random_number(0, 1000000)
+    )
+    consultation_limit = _use_if_none(
+        consultation_limit, lambda: _generate_random_number(0, 10)
     )
     stripe_product_id = _use_if_none(stripe_product_id, _generate_random_string)
 
@@ -626,6 +635,7 @@ def create_plan(type=None, popular=None, tokens_limit=None, stripe_product_id=No
         type=type,
         popular=popular,
         tokens_limit=tokens_limit,
+        consultation_limit=consultation_limit,
         stripe_product_id=stripe_product_id,
     )
 

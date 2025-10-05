@@ -24,6 +24,8 @@ type IOption = {
 type IPlan = {
   type: "free" | "basic" | "premium";
   tokens_limit: number;
+  consultation_limit: number;
+  projects_count: number;
   license: string;
   popular: boolean;
   pricing: IPricing[];
@@ -43,10 +45,12 @@ export const plansQuery = (language: Language) => {
     });
 
     const modifiedResults: IPlanProps[] = (data ?? [])
-      .map(({ type, tokens_limit, ...rest }: IPlan) => ({
+      .map(({ type, tokens_limit, consultation_limit, projects_count, ...rest }: IPlan) => ({
         ...rest,
         type: type as PlanType,
         tokensLimit: tokens_limit,
+        consultationLimit: consultation_limit,
+        projectsCount: projects_count,
       }))
       .sort((a, b) => planOrder.indexOf(a.type) - planOrder.indexOf(b.type));
 

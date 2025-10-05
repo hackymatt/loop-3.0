@@ -24,6 +24,8 @@ type IOption = {
 type IPlan = {
   type: string;
   tokens_limit: number;
+  consultation_limit: number;
+  projects_count: number;
   license: string;
   popular: boolean;
   pricing: IPricing[];
@@ -38,12 +40,20 @@ export const planQuery = (language: Language, type: string) => {
     const { data } = await getData<IPlan>(queryUrl, {
       headers: { "Accept-Language": language },
     });
-    const { type: planType, tokens_limit, ...rest }: IPlan = data;
+    const {
+      type: planType,
+      tokens_limit,
+      consultation_limit,
+      projects_count,
+      ...rest
+    }: IPlan = data;
 
     const modifiedResults: IPlanProps = {
       ...rest,
       type: planType as PlanType,
       tokensLimit: tokens_limit,
+      consultationLimit: consultation_limit,
+      projectsCount: projects_count,
     };
     return { results: modifiedResults };
   };

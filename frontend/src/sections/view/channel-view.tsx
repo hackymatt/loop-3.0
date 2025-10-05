@@ -115,7 +115,7 @@ export function ChannelView({ data }: ChannelViewProps) {
         </Box>
       </Container>
 
-      {isLocked && <UpgradeBanner slug={project.slug} open />}
+      {isLocked && <UpgradeBanner slug={project.slug} type="feature" open />}
     </>
   );
 }

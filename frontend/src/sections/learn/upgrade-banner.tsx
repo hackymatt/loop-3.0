@@ -16,9 +16,10 @@ import { Iconify } from "src/components/iconify";
 
 type Props = DialogProps & {
   slug: string;
+  type: "project" | "feature";
 };
 
-export function UpgradeBanner({ slug, ...other }: Props) {
+export function UpgradeBanner({ slug, type, ...other }: Props) {
   const { t } = useTranslation("learn");
   const localize = useLocalizedPath();
 
@@ -91,10 +92,10 @@ export function UpgradeBanner({ slug, ...other }: Props) {
           })}
         >
           <Typography variant="body1" sx={{ color: "text.primary" }}>
-            {t("upgrade.banner.title")}
+            {t(`upgrade.banner.${type}.title`)}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
-            {t("upgrade.banner.description")}
+            {t(`upgrade.banner.${type}.description`)}
           </Typography>
         </Box>
 

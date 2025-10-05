@@ -13,7 +13,6 @@ from ...factory import (
     create_step,
     create_stage,
     create_plan,
-    create_project_enrollment,
 )
 from ...helpers import login, mock_send_request
 from utils.openai.chat import OpenAIChat
@@ -32,6 +31,7 @@ class StepViewSetTestCase(TestCase):
             project_prerequisites=[],
             blog_prerequisites=[],
             similar=[],
+            plans=[self.student.current_subscription.plan],
         )
         self.stage = self.project.stages.all()[0]
 
@@ -100,7 +100,7 @@ class StepViewSetTestCase(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_default_plan_first_project_allowed(self):
+    def test_user_plan_in_project_plans(self):
         login(self, self.student.user.email, self.student_password)
         response = self.client.get(
             self.url.replace("<slug:project_slug>", self.project.slug)
@@ -109,29 +109,7 @@ class StepViewSetTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_default_plan_second_project_forbidden(self):
-        login(self, self.student.user.email, self.student_password)
-
-        create_project_enrollment(student=self.student, project=self.project)
-
-        other_project = create_project(
-            active=True,
-            project_prerequisites=[],
-            blog_prerequisites=[],
-            similar=[],
-        )
-        other_stage = other_project.stages.all()[0]
-        other_step = other_stage.steps.all()[0]
-
-        response = self.client.get(
-            self.url.replace("<slug:project_slug>", other_project.slug)
-            .replace("<slug:stage_slug>", other_stage.slug)
-            .replace("<slug:step_slug>", other_step.slug)
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-    def test_paid_plan_second_project_allowed(self):
+    def test_user_plan_not_in_project_plans(self):
         login(self, self.student.user.email, self.student_password)
         subscribe(
             student=self.student,
@@ -141,24 +119,13 @@ class StepViewSetTestCase(TestCase):
             status=SubscriptionStatus.ACTIVE,
         )
 
-        create_project_enrollment(student=self.student, project=self.project)
-
-        other_project = create_project(
-            active=True,
-            project_prerequisites=[],
-            blog_prerequisites=[],
-            similar=[],
-        )
-        other_stage = other_project.stages.all()[0]
-        other_step = other_stage.steps.all()[0]
-
         response = self.client.get(
-            self.url.replace("<slug:project_slug>", other_project.slug)
-            .replace("<slug:stage_slug>", other_stage.slug)
-            .replace("<slug:step_slug>", other_step.slug)
+            self.url.replace("<slug:project_slug>", self.project.slug)
+            .replace("<slug:stage_slug>", self.stage.slug)
+            .replace("<slug:step_slug>", self.step.slug)
         )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class StepChatViewTest(TestCase):

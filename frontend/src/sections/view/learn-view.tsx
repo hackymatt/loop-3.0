@@ -126,7 +126,7 @@ export function LearnView({ data, locale, projectSlug, stageSlug, stepSlug }: Le
         <Content />
       </Container>
 
-      {isLocked && <UpgradeBanner slug={projectSlug} open />}
+      {isLocked && <UpgradeBanner slug={projectSlug} type="project" open />}
     </Box>
   );
 }

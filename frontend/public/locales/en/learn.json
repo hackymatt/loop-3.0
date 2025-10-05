@@ -6,10 +6,16 @@
   "estimatedTime": "Estimated time",
   "upgrade": {
     "title": "Unlock full access!",
-    "description": "Get access to all projects, more points, and additional materials!",
+    "description": "Unlock all projects, features, and materials — get the full experience!",
     "banner": {
-      "title": "You’re on the free plan with access to only one project.",
-      "description": "To continue working and unlock more projects, upgrade your plan!"
+      "project": {
+        "title": "Project available in a different plan",
+        "description": "This project isn’t available in your current plan. Upgrade your plan to gain access."
+      },
+      "feature": {
+        "title": "Feature available in a higher plan",
+        "description": "This feature isn’t available in your current plan. Upgrade to access it."
+      }
     },
     "button": "Return to project"
   },
