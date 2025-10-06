@@ -73,12 +73,12 @@ def send_confirmation_email(request, user, id):
             % {"request_number": "{:06d}".format(id)}
         )
 
-    data = {
-        "message_1": message_1,
-        "message_2": message_2,
-        "message_3": message_3,
-        "message_4": message_4,
-    }
+        data = {
+            "message_1": message_1,
+            "message_2": message_2,
+            "message_3": message_3,
+            "message_4": message_4,
+        }
 
     mailer.send(
         email_template="consultation_confirmation.html",
