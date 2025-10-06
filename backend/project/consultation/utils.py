@@ -68,10 +68,9 @@ def send_confirmation_email(request, user, id):
         message_3 = _(
             "If you received this email by mistake or need to contact us regarding your request, please reply to"
         )
-        message_4 = _(
-            ", and include your request number: %(request_number)s."
-            % {"request_number": "{:06d}".format(id)}
-        )
+        message_4 = _(", and include your request number: %(request_number)s.") % {
+            "request_number": "{:06d}".format(id)
+        }
 
         data = {
             "message_1": message_1,
