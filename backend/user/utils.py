@@ -83,6 +83,7 @@ def send_activation_email(request, user):
     mailer.send(
         email_template="activate.html",
         to=[email],
+        bcc=[],
         subject=subject,
         data=data,
         language=request.LANGUAGE_CODE,
@@ -137,6 +138,7 @@ def send_reset_password_email(request, user):
     mailer.send(
         email_template="reset_password.html",
         to=[email],
+        bcc=[],
         subject=subject,
         data=data,
         language=request.LANGUAGE_CODE,

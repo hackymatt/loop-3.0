@@ -19,6 +19,7 @@ class ContactView(APIView):
         mailer.send(
             email_template="contact.html",
             to=[CONFIG["contact_email"]],
+            bcc=[],
             subject="Nowa wiadomość ze strony",
             data=contact_data,
             language=request.LANGUAGE_CODE,
