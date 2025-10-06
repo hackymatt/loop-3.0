@@ -18,8 +18,8 @@ type PageProps = {
   searchParams: SearchParams;
 };
 
-export default async function Page({ searchParams }: PageProps) {
-  return <OrderStatusView status={searchParams.status} />;
+export default async function Page({ params, searchParams }: PageProps) {
+  return <OrderStatusView status={searchParams.status} language={params.locale} />;
 }
 
 export async function generateMetadata({ params, searchParams }: PageProps) {

@@ -85,6 +85,7 @@ def send_activation_email(request, user):
         to=[email],
         subject=subject,
         data=data,
+        language=request.LANGUAGE_CODE,
     )
 
 
@@ -138,6 +139,7 @@ def send_reset_password_email(request, user):
         to=[email],
         subject=subject,
         data=data,
+        language=request.LANGUAGE_CODE,
     )
 
 

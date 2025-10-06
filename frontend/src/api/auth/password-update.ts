@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -19,12 +20,14 @@ type IPasswordUpdate = {
 
 type IPasswordUpdateReturn = { data: { email: string }; status: number };
 
-export const usePasswordUpdate = () => {
+export const usePasswordUpdate = (language: Language) => {
   const router = useRouter();
   const localize = useLocalizedPath();
   return useMutation<IPasswordUpdateReturn, AxiosError, IPasswordUpdate>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(endpoint, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,

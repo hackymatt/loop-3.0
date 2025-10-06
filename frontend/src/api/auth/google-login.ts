@@ -36,6 +36,7 @@ type ILoginReturn = {
     is_active: boolean;
     plan: IPlan;
     trial_used: boolean;
+    first_purchase: boolean;
   };
   status: number;
 };
@@ -67,6 +68,7 @@ export const useLoginGoogle = (language: Language) => {
           is_active,
           plan,
           trial_used,
+          first_purchase,
         } = responseData.data;
 
         user.setState({
@@ -80,6 +82,7 @@ export const useLoginGoogle = (language: Language) => {
           joinType: join_type,
           plan,
           trialUsed: trial_used,
+          firstPurchase: first_purchase,
           redirect: null,
         });
 

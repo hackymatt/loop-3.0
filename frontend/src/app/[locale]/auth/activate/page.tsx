@@ -13,8 +13,8 @@ type PageProps = {
   params: { locale: Language };
 };
 
-export default function Page() {
-  return <ActivateView token={undefined} />;
+export default function Page({ params }: PageProps) {
+  return <ActivateView token={undefined} language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

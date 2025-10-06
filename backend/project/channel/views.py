@@ -28,7 +28,7 @@ class ChannelPostViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if student.current_subscription.plan.is_default_plan:
+        if student.current_subscription.plan.is_free:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         return super().list(request, *args, **kwargs)
@@ -37,7 +37,7 @@ class ChannelPostViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if student.current_subscription.plan.is_default_plan:
+        if student.current_subscription.plan.is_free:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         project_slug = self.kwargs["slug"]
@@ -89,7 +89,7 @@ class ChannelPostCommentViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if student.current_subscription.plan.is_default_plan:
+        if student.current_subscription.plan.is_free:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         project_slug = self.kwargs["slug"]
@@ -149,7 +149,7 @@ class ChannelPostLikeViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if student.current_subscription.plan.is_default_plan:
+        if student.current_subscription.plan.is_free:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         project_slug = self.kwargs["slug"]
@@ -180,7 +180,7 @@ class ChannelPostImageViewSet(viewsets.ModelViewSet):
         student = Student.objects.get(user=request.user)
 
         # Plan check: limit access for free users
-        if student.current_subscription.plan.is_default_plan:
+        if student.current_subscription.plan.is_free:
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.get_serializer(

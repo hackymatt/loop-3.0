@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { IPaymentMethodProps } from "src/types/user";
 
 import { compact } from "lodash-es";
@@ -30,7 +31,7 @@ type IPaymentMethod = {
   is_default: boolean;
   details: ICard | IPaypal;
 };
-export const paymentMethodsQuery = (query?: QueryType) => {
+export const paymentMethodsQuery = (language: Language, query?: QueryType) => {
   const url = endpoint;
   const urlParams = formatQueryParams(query);
   const queryUrl = urlParams ? `${url}?${urlParams}` : url;
@@ -39,7 +40,7 @@ export const paymentMethodsQuery = (query?: QueryType) => {
     const {
       data: { results },
     } = await getListData<IPaymentMethod>(queryUrl, {
-      headers: { Cookie: cookies().toString() },
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
     const modifiedResults: IPaymentMethodProps[] = (results || []).map((method) => {

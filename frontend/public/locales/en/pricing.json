@@ -32,6 +32,6 @@
   "token": "OpenAI tokens / mo",
   "projectsLimit": "Number of projects",
   "projects": ["project", "projects", "projects"],
-  "consultationsLimit": "Consultation limit / mo",
+  "consultationsLimit": "Consultation limit (30 min) / mo",
   "consultations": ["consultation / mo", "consultations / mo", "consultations / mo"]
 }

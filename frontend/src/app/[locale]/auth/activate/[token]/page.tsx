@@ -14,7 +14,7 @@ type PageProps = {
 };
 
 export default function Page({ params }: PageProps) {
-  return <ActivateView token={params.token} />;
+  return <ActivateView token={params.token} language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

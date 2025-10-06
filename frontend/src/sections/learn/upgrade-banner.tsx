@@ -17,9 +17,10 @@ import { Iconify } from "src/components/iconify";
 type Props = DialogProps & {
   slug: string;
   type: "project" | "feature";
+  onClose?: () => void;
 };
 
-export function UpgradeBanner({ slug, type, ...other }: Props) {
+export function UpgradeBanner({ slug, type, onClose, ...other }: Props) {
   const { t } = useTranslation("learn");
   const localize = useLocalizedPath();
 
@@ -122,6 +123,7 @@ export function UpgradeBanner({ slug, type, ...other }: Props) {
           <Button
             component={RouterLink}
             href={localize(`${paths.project}/${slug}`)}
+            onClick={onClose}
             variant="text"
             color="inherit"
           >

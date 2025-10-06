@@ -55,6 +55,7 @@ export type IDashboardProps = {
       isActive: boolean;
       plan: IUserPlan;
       trialUsed: boolean;
+      firstPurchase: boolean;
       planLicense: string;
     };
     tokens: number;

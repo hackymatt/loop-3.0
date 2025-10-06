@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { IChannelItemProp } from "src/types/channel";
 import type { Theme, SxProps } from "@mui/material/styles";
 
@@ -32,11 +33,13 @@ type Props = Pick<IChannelItemProp, "id" | "student" | "message" | "createdAt"> 
     hasReply?: boolean;
     commentId?: string;
     slug: string;
+    language: Language;
     sx?: SxProps<Theme>;
   };
 
 export function ChannelItem({
   sx,
+  language,
   slug,
   id,
   student,
@@ -54,7 +57,7 @@ export function ChannelItem({
   const deletePostFormOpen = useBoolean();
   const deletePostCommentFormOpen = useBoolean();
 
-  const { mutateAsync: likePost } = useLikePost(slug);
+  const { mutateAsync: likePost } = useLikePost(slug, language);
 
   const { t } = useTranslation("channel");
 
@@ -150,10 +153,12 @@ export function ChannelItem({
               slug={slug}
               id={id}
               defaultValues={{ title: title!, message }}
+              language={language}
               onClose={editMode.onFalse}
             />
           ) : (
             <ChannelPostCommentEditForm
+              language={language}
               slug={slug}
               id={id}
               commentId={commentId}
@@ -165,7 +170,12 @@ export function ChannelItem({
           {!hasReply && renderActions()}
 
           {!hasReply && openReply.value && (
-            <ChannelPostCommentNewForm postId={id} slug={slug} onClose={openReply.onFalse} />
+            <ChannelPostCommentNewForm
+              postId={id}
+              slug={slug}
+              language={language}
+              onClose={openReply.onFalse}
+            />
           )}
         </Box>
       </Box>

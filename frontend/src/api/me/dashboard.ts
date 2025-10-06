@@ -33,6 +33,10 @@ type IInstructor = {
   role: string;
 };
 
+type IProjectPlan = {
+  type: "free" | "basic" | "premium";
+};
+
 type IProject = {
   slug: string;
   translated_name: string;
@@ -46,6 +50,7 @@ type IProject = {
   average_rating: number | null;
   ratings_count: number;
   students_count: number;
+  plans: IProjectPlan[];
   progress?: number;
 };
 
@@ -72,6 +77,7 @@ type IUser = {
   is_active: boolean;
   plan: IPlan;
   trial_used: boolean;
+  first_purchase: boolean;
   plan_license: string;
 };
 
@@ -105,6 +111,7 @@ export const dashboardQuery = (language: Language) => {
           image,
           plan,
           trial_used,
+          first_purchase,
           plan_license,
           ...restUser
         },
@@ -128,6 +135,7 @@ export const dashboardQuery = (language: Language) => {
           average_rating,
           ratings_count,
           students_count,
+          plans,
           progress,
           ...restProject
         }: IProject) => ({
@@ -156,6 +164,7 @@ export const dashboardQuery = (language: Language) => {
           ratingNumber: average_rating,
           totalReviews: ratings_count,
           totalStudents: students_count,
+          plans,
           progress: progress ?? null,
         })
       ),
@@ -179,6 +188,7 @@ export const dashboardQuery = (language: Language) => {
           userType: user_type,
           plan: plan as IUserPlan,
           trialUsed: trial_used,
+          firstPurchase: first_purchase,
           planLicense: plan_license,
         },
         totalPoints: total_points,

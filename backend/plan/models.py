@@ -27,9 +27,12 @@ class Plan(BaseModel):
         return self.type
 
     @property
-    def is_default_plan(plan):
-        type = CONFIG["default_plan"]
-        return plan.type == type
+    def is_free(plan):
+        return plan.type == PlanType.FREE
+
+    @property
+    def is_premium(plan):
+        return plan.type == PlanType.PREMIUM
 
     class Meta:
         db_table = "plan"

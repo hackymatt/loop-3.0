@@ -24,6 +24,7 @@ export const URLS = {
   PROJECT_CHANNEL_POST_COMMENTS: "/project-channel-post-comments",
   PROJECT_CHANNEL_POST_LIKES: "/project-channel-post-likes",
   PROJECT_CHANNEL_POST_IMAGES: "project-channel-post-images",
+  PROJECT_CONSULTATIONS: "/project-consultations",
   SIMILAR_PROJECTS: "/similar-projects",
   // STEP
   STEP: "/step",

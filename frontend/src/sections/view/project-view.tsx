@@ -39,10 +39,10 @@ type ProjectViewProps = {
     reviewsCount: number;
     reviewsPageSize: number;
   };
-  locale: Language;
+  language: Language;
 };
 
-export function ProjectView({ slug, data, locale }: ProjectViewProps) {
+export function ProjectView({ slug, data, language }: ProjectViewProps) {
   const { handleChange, query } = useQueryParams();
 
   const { project, similarProjects, reviewsSummary, reviews, reviewsCount, reviewsPageSize } = data;
@@ -77,6 +77,7 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
 
       <ReviewNewForm
         slug={project.slug || ""}
+        language={language}
         open={openReviewForm.value}
         onClose={openReviewForm.onFalse}
       />
@@ -86,7 +87,7 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
   return (
     <>
       <ProjectDetailsHero
-        language={locale}
+        language={language}
         slug={slug}
         name={project.name || ""}
         level={project.level || { slug: "" as unknown as LevelType, name: "" }}
@@ -131,7 +132,7 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
 
             <ProjectChannelDetailsInfo slug={slug} sx={{ mb: 3 }} />
 
-            <ProjectConsultDetailsInfo slug={slug} />
+            <ProjectConsultDetailsInfo slug={slug} language={language} />
           </Grid>
 
           <ProjectTags tags={project.tags || []} />
@@ -147,6 +148,7 @@ export function ProjectView({ slug, data, locale }: ProjectViewProps) {
       {showCongratulations && (
         <CongratulationsBanner
           slug={project.slug || ""}
+          language={language}
           open
           onClose={() => {
             setShowCongratulations(false);

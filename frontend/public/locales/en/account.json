@@ -190,6 +190,15 @@
     "rows_per_page": "Rows per page",
     "button": "Download"
   },
+  "consultations": {
+    "title": "Consultations",
+    "invoice_number": "Invoice number",
+    "invoice_date": "Invoice date",
+    "amount": "Amount",
+    "all": "All",
+    "rows_per_page": "Rows per page",
+    "button": "Download"
+  },
   "logout": {
     "title": "Log out",
     "error": "Logout failed. Please try again."

@@ -32,6 +32,6 @@
   "token": "tokenów do OpenAI / mc",
   "projectsLimit": "Liczba projektów",
   "projects": ["projekt", "projekty", "projektów"],
-  "consultationsLimit": "Limit konsultacji / mc",
+  "consultationsLimit": "Limit konsultacji (30 min) / mc",
   "consultations": ["konsultacja / mc", "konsultacje / mc", "konsultacji / mc"]
 }

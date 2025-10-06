@@ -1,5 +1,6 @@
 "use client";
 
+import type { Language } from "src/locales/types";
 import type { ButtonBaseProps } from "@mui/material/ButtonBase";
 import type { Theme, SxProps, Breakpoint } from "@mui/material/styles";
 
@@ -61,8 +62,9 @@ const useNavData = () => {
 };
 
 // ----------------------------------------------------------------------
+type NavAccountPopover = NavItemsProps & { language: Language };
 
-export function NavAccountPopover({ sx }: NavItemsProps) {
+export function NavAccountPopover({ language, sx }: NavAccountPopover) {
   const { open, onClose, onOpen, anchorEl } = usePopover();
 
   const { t } = useTranslation("navigation");
@@ -71,7 +73,7 @@ export function NavAccountPopover({ sx }: NavItemsProps) {
   const user = useUserContext();
   const { avatarUrl } = user.state;
 
-  const { mutateAsync: logout } = useLogout();
+  const { mutateAsync: logout } = useLogout(language);
 
   const pathname = usePathname();
 

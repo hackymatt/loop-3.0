@@ -25,7 +25,7 @@ export function AccountPaymentPopover({ id, isPrimary, openOptions, language }: 
   const { t } = useTranslation("account");
   const { enqueueSnackbar } = useSnackbar();
 
-  const { mutateAsync: editPaymentMethod } = useEditPaymentMethod(id);
+  const { mutateAsync: editPaymentMethod } = useEditPaymentMethod(id, language);
   const { mutateAsync: deletePaymentMethod } = useDeletePaymentMethod(id, language);
 
   const handleSetDefault = async () => {

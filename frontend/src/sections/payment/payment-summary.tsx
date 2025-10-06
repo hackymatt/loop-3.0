@@ -1,6 +1,7 @@
 import type { AxiosError } from "axios";
 import type { IPlanProps } from "src/types/plan";
 import type { BoxProps } from "@mui/material/Box";
+import type { Language } from "src/locales/types";
 import type { UseSetStateReturn } from "minimal-shared/hooks";
 
 import { useMemo } from "react";
@@ -37,14 +38,15 @@ import type { DiscountProps } from "../view/payment-view";
 type PaymentSummaryProps = BoxProps & {
   plan: IPlanProps;
   discount: UseSetStateReturn<DiscountProps>;
+  language: Language;
 };
 
-export function PaymentSummary({ plan, discount, sx, ...other }: PaymentSummaryProps) {
+export function PaymentSummary({ plan, discount, language, sx, ...other }: PaymentSummaryProps) {
   const { t } = useTranslation("payment");
   const { t: pricing } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
 
-  const { mutateAsync: validateCoupon, isLoading } = useValidateCoupon();
+  const { mutateAsync: validateCoupon, isLoading } = useValidateCoupon(language);
 
   const {
     state: { trialUsed },

@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -24,12 +25,14 @@ type ISubscriptionReturn = {
   status: number;
 };
 
-export const useCreateSubscription = () => {
+export const useCreateSubscription = (language: Language) => {
   const router = useRouter();
   const localize = useLocalizedPath();
   return useMutation<ISubscriptionReturn, AxiosError, ISubscription>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(endpoint, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,

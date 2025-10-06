@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -14,9 +15,11 @@ type IPasswordReturn = {
   status: number;
 };
 
-export const useChangePassword = () =>
+export const useChangePassword = (language: Language) =>
   useMutation<IPasswordReturn, AxiosError, IPassword>(async (variables) => {
-    const result = await Api.post(endpoint, variables);
+    const result = await Api.post(endpoint, variables, {
+      headers: { "Accept-Language": language },
+    });
     return {
       status: result.status,
       data: result.data,

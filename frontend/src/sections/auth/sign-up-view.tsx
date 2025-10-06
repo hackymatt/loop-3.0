@@ -29,15 +29,15 @@ import { useSignUpSchema, type SignUpSchemaType } from "./components/schema";
 type Props = {
   header?: React.ReactNode;
   buttonText?: string;
-  locale: Language;
+  language: Language;
 };
 
-export function SignUpView({ header, buttonText = "Utwórz konto", locale }: Props) {
+export function SignUpView({ header, buttonText = "Utwórz konto", language }: Props) {
   const { t } = useTranslation("sign-up");
 
   const localize = useLocalizedPath();
 
-  const { mutateAsync: register } = useRegister();
+  const { mutateAsync: register } = useRegister(language);
 
   const defaultValues: SignUpSchemaType = {
     email: "",
@@ -90,7 +90,7 @@ export function SignUpView({ header, buttonText = "Utwórz konto", locale }: Pro
 
       <FormDivider label={t("or")} />
 
-      <FormSocials methods={methods} locale={locale} />
+      <FormSocials methods={methods} language={language} />
     </>
   );
 }

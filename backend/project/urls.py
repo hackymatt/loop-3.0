@@ -4,6 +4,7 @@ from .category.urls import urlpatterns as category_urls
 from .tag.urls import urlpatterns as tags_urls
 from .step.urls import urlpatterns as step_urls
 from .channel.urls import urlpatterns as channel_urls
+from .consultation.urls import urlpatterns as consultation_urls
 from .views import ProjectViewSet, FeaturedProjectsView, SimilarProjectsView
 from core.routers import Router
 from django.urls import path, include
@@ -11,7 +12,13 @@ from const import Urls
 
 
 project_urlpatterns = (
-    level_urls + technology_urls + category_urls + tags_urls + step_urls + channel_urls
+    level_urls
+    + technology_urls
+    + category_urls
+    + tags_urls
+    + step_urls
+    + channel_urls
+    + consultation_urls
 )
 
 router = Router(trailing_slash=False)

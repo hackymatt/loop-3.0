@@ -1,5 +1,6 @@
 "use client";
 
+import type { Language } from "src/locales/types";
 import type { ContainerProps } from "@mui/material/Container";
 
 import Box from "@mui/material/Box";
@@ -11,10 +12,11 @@ import { useNavData } from "./nav-config";
 // ----------------------------------------------------------------------
 
 type AccountLayoutProps = ContainerProps & {
+  language: Language;
   children: React.ReactNode;
 };
 
-export function AccountLayout({ children, sx, ...other }: AccountLayoutProps) {
+export function AccountLayout({ language, children, sx, ...other }: AccountLayoutProps) {
   const navData = useNavData();
   return (
     <Container sx={sx} {...other}>
@@ -27,7 +29,7 @@ export function AccountLayout({ children, sx, ...other }: AccountLayoutProps) {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        <NavAccountDesktop data={navData} />
+        <NavAccountDesktop data={navData} language={language} />
 
         <Box
           sx={{

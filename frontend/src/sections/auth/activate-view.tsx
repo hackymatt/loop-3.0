@@ -1,6 +1,7 @@
 "use client";
 
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useEffect } from "react";
 import { notFound } from "next/navigation";
@@ -26,7 +27,13 @@ import { FormResendLink } from "./components/form-resend-link";
 
 // ----------------------------------------------------------------------
 
-export function ActivateView({ token }: { token: string | undefined }) {
+export function ActivateView({
+  token,
+  language,
+}: {
+  token: string | undefined;
+  language: Language;
+}) {
   const { t } = useTranslation("activate");
   const localize = useLocalizedPath();
 
@@ -34,8 +41,8 @@ export function ActivateView({ token }: { token: string | undefined }) {
 
   const user = useUserContext();
 
-  const { mutateAsync: activate } = useActivate();
-  const { mutateAsync: resend } = useResend();
+  const { mutateAsync: activate } = useActivate(language);
+  const { mutateAsync: resend } = useResend(language);
 
   useEffect(() => {
     const activateAccount = async () => {

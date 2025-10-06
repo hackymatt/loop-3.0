@@ -64,6 +64,18 @@
           "answer": "Projekty składają się z interaktywnych etapów, które możesz realizować we własnym tempie. Nie są to zajęcia na żywo – pracujesz, kiedy chcesz."
         },
         {
+          "question": "Do jakich planów przypisane są projekty?",
+          "answer": "Każdy projekt jest przypisany do określonych planów – na przykład niektóre są dostępne tylko w planie Podstawowym i Premium. Dostęp do projektu zależy od wykupionego planu."
+        },
+        {
+          "question": "Czy projekty mają swoje kanały społecznościowe?",
+          "answer": "Tak. Każdy projekt ma dedykowany kanał dla uczestników planu Podstawowego i Premium, gdzie możesz rozmawiać z innymi uczestnikami, dzielić się postami i wymieniać doświadczenia."
+        },
+        {
+          "question": "Czy mogę umówić się na konsultację 1:1 z mentorem?",
+          "answer": "Tak. Użytkownicy planu Premium mogą poprosić o indywidualną konsultację 1:1 z mentorem, aby uzyskać pomoc, omówić kod lub rozwiać wątpliwości dotyczące projektu. Jedna konsultacja trwa 30 minut."
+        },
+        {
           "question": "Czy muszę instalować dodatkowe oprogramowanie?",
           "answer": "Tak. Projekty kodujesz na własnym komputerze, więc potrzebujesz edytora kodu (np. VS Code) i ewentualnych narzędzi zależnych od technologii użytej w projekcie."
         },
@@ -140,6 +152,37 @@
         {
           "question": "Gdzie mogę sprawdzić swoje punkty?",
           "answer": "Twoja aktualna liczba punktów jest widoczna w Twoim panelu."
+        }
+      ]
+    },
+    {
+      "id": "plans",
+      "title": "Plany cenowe",
+      "icon": "solar:layers-bold-duotone",
+      "content": [
+        {
+          "question": "Jakie plany są dostępne na platformie?",
+          "answer": "Oferujemy trzy plany subskrypcyjne: Darmowy, Podstawowy i Premium. Każdy plan zapewnia inny poziom dostępu do projektów, funkcji oraz wsparcia mentorskiego."
+        },
+        {
+          "question": "Czym różnią się plany miesięczne od rocznych?",
+          "answer": "Wszystkie plany są dostępne w wersji miesięcznej lub rocznej. Wybierając plan roczny, płacisz mniej za miesiąc w porównaniu do subskrypcji miesięcznej."
+        },
+        {
+          "question": "W jakich walutach mogę zapłacić?",
+          "answer": "Płatności można dokonywać w czterech walutach: PLN, EUR, GBP i USD. Platforma automatycznie dopasowuje ceny do wybranej waluty."
+        },
+        {
+          "question": "Czym różnią się poszczególne plany?",
+          "answer": "Plany różnią się dostępem do projektów, liczbą tokenów do czatu z AI, liczbą konsultacji 1:1 oraz dostępnymi funkcjami. Na przykład użytkownicy planu Premium mają dostęp do wszystkich projektów, większy limit tokenów AI oraz więcej konsultacji z mentorami."
+        },
+        {
+          "question": "Jak działa czat z AI?",
+          "answer": "Podczas pracy nad projektem możesz korzystać z czatu AI, aby uzyskać pomoc, wyjaśnienia lub wskazówki. Każdy plan ma inny miesięczny limit tokenów do interakcji z AI."
+        },
+        {
+          "question": "Ile projektów mogę realizować w danym planie?",
+          "answer": "Użytkownicy planu Darmowego mają dostęp do wybranych projektów wprowadzających. Plan Podstawowy odblokowuje więcej projektów, a plan Premium zapewnia dostęp do wszystkich dostępnych projektów na platformie."
         }
       ]
     },

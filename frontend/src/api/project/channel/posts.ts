@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -16,12 +17,14 @@ type ICreatePost = {
 
 type ICreatePostReturn = { data: ICreatePost; status: number };
 
-export const useCreatePost = (slug: string) => {
+export const useCreatePost = (slug: string, language: Language) => {
   const router = useRouter();
   const url = `${endpoint}/${slug}`;
   return useMutation<ICreatePostReturn, AxiosError, ICreatePost>(
     async (variables) => {
-      const result = await Api.post(url, variables);
+      const result = await Api.post(url, variables, {
+        headers: { "Accept-Language": language },
+      });
       return { status: result.status, data: result.data };
     },
     {

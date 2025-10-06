@@ -1,0 +1,11 @@
+{
+  "title": "Konsultacja",
+  "submit": "Wyślij prośbę",
+  "cancel": "Anuluj",
+  "comment": {
+    "label": "Twój komentarz (tematyka, termin)",
+    "errors": {
+      "required": "Komentarz jest wymagany."
+    }
+  }
+}

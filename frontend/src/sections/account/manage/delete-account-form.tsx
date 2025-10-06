@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { DialogProps } from "@mui/material/Dialog";
 
 import { useForm } from "react-hook-form";
@@ -19,13 +20,14 @@ import { Form } from "src/components/hook-form";
 // ----------------------------------------------------------------------
 
 type Props = DialogProps & {
+  language: Language;
   onClose: () => void;
 };
 
-export function DeleteAccountForm({ onClose, ...other }: Props) {
+export function DeleteAccountForm({ language, onClose, ...other }: Props) {
   const { t } = useTranslation("account");
 
-  const { mutateAsync: deleteAccount } = useDeleteAccount();
+  const { mutateAsync: deleteAccount } = useDeleteAccount(language);
 
   const methods = useForm();
 

@@ -1,5 +1,7 @@
 "use client";
 
+import type { Language } from "src/locales/types";
+
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useBoolean } from "minimal-shared/hooks";
@@ -29,7 +31,7 @@ import type { UpdatePasswordSchemaType } from "./components/schema";
 
 // ----------------------------------------------------------------------
 
-export function UpdatePasswordView({ token }: { token: string }) {
+export function UpdatePasswordView({ token, language }: { token: string; language: Language }) {
   const showPassword = useBoolean();
 
   const { t } = useTranslation("update-password");
@@ -37,7 +39,7 @@ export function UpdatePasswordView({ token }: { token: string }) {
 
   const localize = useLocalizedPath();
 
-  const { mutateAsync: updatePassword } = usePasswordUpdate();
+  const { mutateAsync: updatePassword } = usePasswordUpdate(language);
 
   const defaultValues: UpdatePasswordSchemaType = {
     password: "",

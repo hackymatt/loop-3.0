@@ -1,5 +1,6 @@
 "use client";
 
+import type { Language } from "src/locales/types";
 import type { Breakpoint } from "@mui/material/styles";
 import type {
   IProjectLevelProp,
@@ -48,6 +49,7 @@ export type MainLayoutProps = LayoutBaseProps & {
     projectTechnologies: IProjectTechnologyProp[];
     projectCategories: IProjectCategoryProp[];
   };
+  language: Language;
   layoutQuery?: Breakpoint;
   slotProps?: {
     header?: HeaderSectionProps;
@@ -61,6 +63,7 @@ export type MainLayoutProps = LayoutBaseProps & {
 
 export function MainLayout({
   data,
+  language,
   sx,
   cssVars,
   children,
@@ -198,7 +201,7 @@ export function MainLayout({
                 <UpgradeButton sx={{ display: { xs: "none", [layoutQuery]: "inline-flex" } }} />
               )}
               {/* @slot Account button */}
-              <NavAccountPopover />
+              <NavAccountPopover language={language} />
             </>
           ) : (
             <>

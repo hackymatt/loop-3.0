@@ -21,6 +21,7 @@ class ContactView(APIView):
             to=[CONFIG["contact_email"]],
             subject="Nowa wiadomość ze strony",
             data=contact_data,
+            language=request.LANGUAGE_CODE,
         )
 
         return Response(status=status.HTTP_200_OK, data=contact_data)

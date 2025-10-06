@@ -1,5 +1,7 @@
 "use client";
 
+import type { Language } from "src/locales/types";
+
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,13 +27,14 @@ import { FormReturnLink } from "./components/form-return-link";
 import type { ResetPasswordSchemaType } from "./components/schema";
 
 // ----------------------------------------------------------------------
+type ResetPasswordViewProps = { language: Language };
 
-export function ResetPasswordView() {
+export function ResetPasswordView({ language }: ResetPasswordViewProps) {
   const { t } = useTranslation("reset-password");
   const { t: account } = useTranslation("account");
   const localize = useLocalizedPath();
 
-  const { mutateAsync: resetPassword } = usePasswordReset();
+  const { mutateAsync: resetPassword } = usePasswordReset(language);
 
   const defaultValues: ResetPasswordSchemaType = { email: "" };
 

@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { IChannelItemProp } from "src/types/channel";
 
 import { useState } from "react";
@@ -15,6 +16,7 @@ import { ChannelItem } from "./channel-item";
 // ----------------------------------------------------------------------
 
 type Props = {
+  language: Language;
   slug: string;
   items: IChannelItemProp[];
   recordsCount: number;
@@ -24,6 +26,7 @@ type Props = {
 };
 
 export function ChannelItemsList({
+  language,
   slug,
   items,
   recordsCount,
@@ -66,6 +69,7 @@ export function ChannelItemsList({
     comments.map((comment) => (
       <ChannelItem
         key={comment.id}
+        language={language}
         id={id}
         commentId={comment.id}
         slug={slug}
@@ -97,6 +101,7 @@ export function ChannelItemsList({
               }}
             >
               <ChannelItem
+                language={language}
                 slug={slug}
                 id={item.id}
                 student={item.student}

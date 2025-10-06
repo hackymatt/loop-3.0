@@ -13,8 +13,8 @@ type PageProps = {
   params: { locale: Language };
 };
 
-export default function Page() {
-  return <ResetPasswordView />;
+export default function Page({ params }: PageProps) {
+  return <ResetPasswordView language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {
