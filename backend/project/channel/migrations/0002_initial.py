@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
         migrations.AddIndex(
             model_name="channelpostcomment",
             index=django.contrib.postgres.indexes.GinIndex(
-                fields=["message"], name="cpc_message_gin"
+                fields=["message"], name="cpc_message_gin", opclasses=["gin_trgm_ops"]
             ),
         ),
         migrations.AddIndex(

@@ -73,7 +73,11 @@ class ChannelPostComment(BaseModel):
         db_table = "channel_post_comment"
         verbose_name_plural = "Channel post comments"
         indexes = [
-            GinIndex(fields=["message"], name="cpc_message_gin"),
+            GinIndex(
+                fields=["message"],
+                name="cpc_message_gin",
+                opclasses=["gin_trgm_ops"],
+            ),
         ]
 
     def clean(self):  # pragma: no cover
