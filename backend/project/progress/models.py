@@ -12,6 +12,13 @@ class ProjectProgress(BaseModel):
     class Meta:
         db_table = "project_progress"
         unique_together = ("student", "step")
+        indexes = [
+            models.Index(
+                fields=["student", "step"],
+                name="projectprogress_completed_idx",
+                condition=models.Q(completed_at__isnull=False),
+            ),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.student.user} - {self.step}"

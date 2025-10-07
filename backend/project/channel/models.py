@@ -27,6 +27,10 @@ class ChannelPost(BaseModel):
     class Meta:
         db_table = "channel_post"
         verbose_name_plural = "Channel posts"
+        indexes = [
+            models.Index(fields=["project", "-created_at"]),
+            models.Index(fields=["student"]),
+        ]
 
     def clean(self):  # pragma: no cover
         try:

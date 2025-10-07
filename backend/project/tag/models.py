@@ -29,6 +29,9 @@ class TagTranslation(BaseModel):
         db_table = "project_tag_translation"
         verbose_name_plural = "Project tag translations"
         unique_together = ("tag", "language")
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.tag.slug} ({self.language})"

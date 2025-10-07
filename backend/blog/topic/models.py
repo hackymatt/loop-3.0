@@ -31,6 +31,9 @@ class TopicTranslation(BaseModel):
         db_table = "blog_topic_translation"
         verbose_name_plural = "Topic translations"
         unique_together = ("topic", "language")
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.topic.slug} ({self.language})"

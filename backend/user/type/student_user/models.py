@@ -38,3 +38,6 @@ class Student(BaseModel):
 
     class Meta:
         db_table = "student"
+        indexes = [
+            models.Index(fields=["stripe_customer_id"]),
+        ]

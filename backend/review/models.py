@@ -37,3 +37,8 @@ class Review(BaseModel):
             "student",
             "project",
         )  # A student can review a project only once
+        indexes = [
+            models.Index(fields=["project", "created_at"]),
+            models.Index(fields=["project", "rating"]),
+            models.Index(fields=["rating", "language"]),
+        ]

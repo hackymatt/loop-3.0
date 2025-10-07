@@ -17,6 +17,10 @@ class PaymentMethod(BaseModel):
         db_table = "payment_method"
         verbose_name = "Payment Method"
         verbose_name_plural = "Payment Methods"
+        indexes = [
+            models.Index(fields=["student", "-created_at"]),
+            models.Index(fields=["-created_at"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.student.user.email} ({self.type})"
@@ -103,6 +107,9 @@ class PaymentDiscount(BaseModel):
         db_table = "payment_discount"
         verbose_name = "Payment Discount"
         verbose_name_plural = "Payment Discounts"
+        indexes = [
+            models.Index(fields=["stripe_promotion_code_id"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return self.code

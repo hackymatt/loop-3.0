@@ -24,6 +24,9 @@ class ProjectEnrollment(BaseModel):
             "student",
             "project",
         )  # Ensures that a student can only enroll in a project once
+        indexes = [
+            models.Index(fields=["student", "-created_at"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.student.user.email} started {self.project.slug} on {self.created_at}"

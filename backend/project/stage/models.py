@@ -11,6 +11,9 @@ class Stage(BaseModel):
 
     class Meta:
         db_table = "project_stage"
+        indexes = [
+            models.Index(fields=["active"]),  # speeds up filtering by active
+        ]
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -34,6 +37,9 @@ class StageTranslation(BaseModel):
         db_table = "project_stage_translation"
         unique_together = ("stage", "language")
         verbose_name_plural = "Stage translations"
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.name} ({self.language})"
@@ -48,6 +54,10 @@ class StageStep(BaseModel):
         db_table = "stage_step_mapping"
         unique_together = ("stage", "step")
         ordering = ["order"]
+        indexes = [
+            models.Index(fields=["stage", "step"]),
+            models.Index(fields=["step", "stage"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return (

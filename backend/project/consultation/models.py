@@ -39,6 +39,10 @@ class Consultation(BaseModel):
     class Meta:
         db_table = "consultation"
         verbose_name_plural = "Consultations"
+        indexes = [
+            models.Index(fields=["student", "created_at"]),
+            models.Index(fields=["created_at"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"Consultation {self.pk} for {self.student.user.first_name} {self.student.user.last_name} of {self.project.slug}"

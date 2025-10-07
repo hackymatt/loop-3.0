@@ -15,3 +15,6 @@ class TokenUsage(BaseModel):
 
     class Meta:
         db_table = "token_usage"
+        indexes = [
+            models.Index(fields=["student", "created_at"]),
+        ]

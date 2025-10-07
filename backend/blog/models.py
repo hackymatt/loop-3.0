@@ -35,6 +35,12 @@ class Blog(BaseModel):
 
     class Meta:
         db_table = "blog"
+        indexes = [
+            models.Index(
+                fields=["active", "published_at"],
+            ),
+            models.Index(fields=["-visits"]),
+        ]
 
     def increment_visits(self):
         """Increment visit count atomically."""
@@ -66,6 +72,9 @@ class BlogTranslation(BaseModel):
         db_table = "blog_translation"
         unique_together = ("blog", "language")
         verbose_name_plural = "Blog translations"
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def clean(self):  # pragma: no cover
         try:
