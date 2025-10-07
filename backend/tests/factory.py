@@ -14,6 +14,7 @@ from const import (
     PaymentType,
     PaymentInterval,
     PaymentDiscountDuration,
+    ConsultationStatus,
 )
 from user.type.admin_user.models import Admin
 from user.type.instructor_user.models import Instructor
@@ -28,6 +29,7 @@ from project.channel.models import (
     ChannelPostComment,
     ChannelPostImage,
 )
+from project.consultation.models import Consultation
 from project.level.models import Level, LevelTranslation
 from project.technology.models import Technology
 from project.tag.models import (
@@ -69,6 +71,7 @@ payment_types = [choice.value for choice in PaymentType]
 payment_methods = [choice.value for choice in PaymentMethodEnum]
 payment_statuses = [choice.value for choice in PaymentStatus]
 payment_discount_durations = [choice.value for choice in PaymentDiscountDuration]
+consultation_statuses = [choice.value for choice in ConsultationStatus]
 
 
 def _use_if_none(value, fallback):
@@ -671,7 +674,9 @@ def create_option(slug=None):
 
 
 def create_plan_option(plan=None, option=None, disabled=None, order=None):
-    plan = _use_if_none(plan, lambda: create_plan())
+    plan = _use_if_none(
+        plan, lambda: Plan.objects.get(type=_generate_random_choice(plan_types))
+    )
     option = _use_if_none(option, lambda: create_option())
     disabled = _use_if_none(disabled, lambda: _generate_random_bool())
     order = _use_if_none(order, lambda: _generate_random_number())
@@ -973,3 +978,48 @@ def create_channel_post_image(student=None, image=None):
     image = _use_if_none(image, lambda: get_test_image_file())
 
     return ChannelPostImage.objects.create(student=student, image=image)
+
+
+def create_consultation(
+    project=None,
+    student=None,
+    comment=None,
+    scheduled_at=None,
+    status=None,
+    join_link=None,
+    file=None,
+):
+    project = _use_if_none(
+        project,
+        lambda: create_project(
+            active=True,
+            project_prerequisites=[],
+            blog_prerequisites=[],
+            similar=[],
+        ),
+    )
+    student = _use_if_none(student, lambda: create_student(is_active=True)[0])
+    comment = _use_if_none(comment, lambda: _generate_random_string(100))
+    scheduled_at = _use_if_none(scheduled_at, lambda: _generate_random_date())
+    status = _use_if_none(
+        status, lambda: _generate_random_choice(consultation_statuses)
+    )
+    join_link = _use_if_none(join_link, lambda: _generate_random_url())
+    file = _use_if_none(
+        file,
+        lambda: SimpleUploadedFile(
+            "file.zip",
+            b"fake zip data",
+            content_type="application/zip",
+        ),
+    )
+
+    return Consultation.objects.create(
+        project=project,
+        student=student,
+        comment=comment,
+        scheduled_at=scheduled_at,
+        status=status,
+        join_link=join_link,
+        file=file,
+    )

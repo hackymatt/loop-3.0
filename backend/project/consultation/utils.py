@@ -2,7 +2,6 @@ from plan.subscription.utils import get_subscription
 from project.consultation.models import Consultation
 from dateutil.relativedelta import relativedelta
 from calendar import monthrange
-from const import UserType
 from mailer.mailer import Mailer
 from utils.url.url import get_website_url
 from django.utils.translation import gettext as _
@@ -15,6 +14,7 @@ def months_fraction_or_full(start_date, end_date):
         return 0
 
     delta = relativedelta(end_date, start_date)
+
     total_months = delta.years * 12 + delta.months
 
     if total_months == 0:
@@ -22,13 +22,10 @@ def months_fraction_or_full(start_date, end_date):
         fraction = delta.days / days_in_month
         return round(fraction, 2)
 
-    return total_months + 1
+    return total_months
 
 
 def get_user_consultations_left(user):
-    if user.user_type != UserType.STUDENT:
-        return 0
-
     subscription = get_subscription(user)
 
     plan_limit = subscription.plan.consultation_limit

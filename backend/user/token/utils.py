@@ -20,7 +20,7 @@ def months_fraction_or_full(start_date, end_date):
         fraction = delta.days / days_in_month
         return round(fraction, 2)
 
-    return total_months + 1
+    return total_months
 
 
 def get_user_tokens_left(user):

@@ -5,15 +5,10 @@ from rest_framework.test import APIClient
 from unittest.mock import patch
 from rest_framework import status
 from plan.subscription.utils import subscribe
+from plan.models import Plan
 from project.enrollment.models import ProjectEnrollment
 from project.progress.models import ProjectProgress
-from ...factory import (
-    create_student,
-    create_project,
-    create_step,
-    create_stage,
-    create_plan,
-)
+from ...factory import create_student, create_project, create_step, create_stage
 from ...helpers import login, mock_send_request
 from utils.openai.chat import OpenAIChat
 from const import Urls, SubscriptionStatus, PlanType
@@ -39,7 +34,7 @@ class StepViewSetTestCase(TestCase):
         self.stage.steps.add(self.step)
         self.stage.save()
 
-        self.paid_plan = create_plan(type=PlanType.BASIC.value)
+        self.paid_plan = Plan.objects.get(type=PlanType.BASIC)
 
     def test_requires_authentication(self):
         response = self.client.get(

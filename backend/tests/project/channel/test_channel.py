@@ -9,6 +9,7 @@ from project.channel.models import (
     ChannelPostImage,
 )
 from project.channel.utils import remove_unused_images
+from plan.models import Plan
 from plan.subscription.utils import subscribe
 from rest_framework.test import APIClient
 from const import Urls, PlanType, SubscriptionStatus
@@ -17,7 +18,6 @@ from ...factory import (
     create_student,
     create_student,
     create_project,
-    create_plan,
     create_channel_post,
     create_channel_post_like,
     create_channel_post_comment,
@@ -30,7 +30,7 @@ class ChannelPostTests(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PROJECT_CHANNEL_POSTS}"
 
-        self.paid_plan = create_plan(type=PlanType.PREMIUM)
+        self.paid_plan = Plan.objects.get(type=PlanType.PREMIUM)
         self.project = create_project(
             active=True, project_prerequisites=[], blog_prerequisites=[], similar=[]
         )
@@ -113,7 +113,7 @@ class ChannelPostCommentTests(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PROJECT_CHANNEL_POST_COMMENTS}"
 
-        self.paid_plan = create_plan(type=PlanType.PREMIUM)
+        self.paid_plan = Plan.objects.get(type=PlanType.PREMIUM)
         self.project = create_project(
             active=True, project_prerequisites=[], blog_prerequisites=[], similar=[]
         )
@@ -222,7 +222,7 @@ class ChannelPostLikeTests(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PROJECT_CHANNEL_POST_LIKES}"
 
-        self.paid_plan = create_plan(type=PlanType.PREMIUM)
+        self.paid_plan = Plan.objects.get(type=PlanType.PREMIUM)
         self.project = create_project(
             active=True, project_prerequisites=[], blog_prerequisites=[], similar=[]
         )
@@ -301,7 +301,7 @@ class ChannelPostImageViewSetTest(TestCase):
         self.client = APIClient()
         self.url = f"/{Urls.API}/{Urls.PROJECT_CHANNEL_POST_IMAGES}"
 
-        self.paid_plan = create_plan(type=PlanType.PREMIUM)
+        self.paid_plan = Plan.objects.get(type=PlanType.PREMIUM)
         self.project = create_project(
             active=True, project_prerequisites=[], blog_prerequisites=[], similar=[]
         )
