@@ -31,6 +31,9 @@ class CategoryTranslation(BaseModel):
         db_table = "project_category_translation"
         verbose_name_plural = "Category translations"
         unique_together = ("category", "language")
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.category.slug} ({self.language})"

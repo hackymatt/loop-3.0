@@ -10,6 +10,9 @@ class Level(BaseModel):
     class Meta:
         db_table = "project_level"
         verbose_name_plural = "Levels"
+        indexes = [
+            models.Index(fields=["order"]),
+        ]
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -31,6 +34,9 @@ class LevelTranslation(BaseModel):
     class Meta:
         db_table = "project_level_translation"
         unique_together = ("level", "language")
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.level.slug} ({self.language})"

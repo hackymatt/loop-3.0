@@ -51,6 +51,9 @@ class PlanTranslation(BaseModel):
     class Meta:
         unique_together = ("plan", "language")
         db_table = "plan_translation"
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.plan.type} ({self.language})"
@@ -69,6 +72,10 @@ class PlanPricing(BaseModel):
     class Meta:
         unique_together = ("plan", "currency", "interval", "valid_from")
         db_table = "plan_pricing"
+        indexes = [
+            models.Index(fields=["stripe_price_id"]),
+            models.Index(fields=["plan", "currency", "interval", "-valid_from"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.plan.type} - {self.interval} - {self.price} {self.currency}, since: {self.valid_from}"
@@ -114,6 +121,9 @@ class OptionTranslation(BaseModel):
     class Meta:
         unique_together = ("option", "language")
         db_table = "option_translation"
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.option.slug} ({self.language})"
@@ -133,6 +143,10 @@ class PlanOption(BaseModel):
         unique_together = ("plan", "option")
         db_table = "plan_option"
         ordering = ["order"]
+        indexes = [
+            models.Index(fields=["plan", "order"]),
+            models.Index(fields=["order"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"{self.plan.type} - {self.option.slug} (disabled: {self.disabled}) | Order: {self.order}"

@@ -15,6 +15,9 @@ class Step(BaseModel):
     class Meta:
         db_table = "project_step"
         verbose_name_plural = "Steps"
+        indexes = [
+            models.Index(fields=["active"]),  # speeds up filtering by active
+        ]
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -37,6 +40,9 @@ class StepTranslation(BaseModel):
     class Meta:
         db_table = "project_step_translation"
         verbose_name_plural = "Step translations"
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def clean(self):  # pragma: no cover
         try:

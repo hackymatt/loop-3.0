@@ -16,3 +16,11 @@ class Certificate(BaseModel):
 
     def __str__(self):  # pragma: no cover
         return f"Certificate for {self.student.user.first_name} {self.student.user.last_name} - {self.project.slug}"
+
+    class Meta:
+        db_table = "certificate"
+        indexes = [
+            models.Index(fields=["student", "project"]),
+            models.Index(fields=["student", "-created_at"]),
+            models.Index(fields=["-created_at"]),
+        ]

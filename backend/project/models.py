@@ -55,6 +55,10 @@ class Project(BaseModel):
 
     class Meta:
         db_table = "project"
+        indexes = [
+            models.Index(fields=["active"]),
+            models.Index(fields=["created_at"]),
+        ]
 
     def get_translation(self, lang_code):
         return self.translations.filter(language=lang_code).first()
@@ -79,6 +83,9 @@ class ProjectTranslation(BaseModel):
         db_table = "project_translation"
         unique_together = ("project", "language")
         verbose_name_plural = "Project translations"
+        indexes = [
+            models.Index(fields=["language"]),
+        ]
 
     def clean(self):  # pragma: no cover
         try:
@@ -99,6 +106,10 @@ class ProjectStage(BaseModel):
         db_table = "project_stage_mapping"
         unique_together = ("project", "stage")
         ordering = ["order"]
+        indexes = [
+            models.Index(fields=["order"]),
+            models.Index(fields=["stage", "order"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return f"Project: {self.project.slug} | Stage: {self.stage.slug} | Order: {self.order}"

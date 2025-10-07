@@ -84,6 +84,10 @@ class Invoice(BaseModel):
 
     class Meta:
         db_table = "invoice"
+        indexes = [
+            models.Index(fields=["created_at"]),
+            models.Index(fields=["customer", "-invoice_date"]),
+        ]
 
 
 class StudentInvoice(BaseModel):

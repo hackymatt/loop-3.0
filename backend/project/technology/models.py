@@ -9,6 +9,9 @@ class Technology(BaseModel):
     class Meta:
         db_table = "project_technology"
         verbose_name_plural = "Technologies"
+        indexes = [
+            models.Index(fields=["name"]),
+        ]
 
     def __str__(self):  # pragma: no cover
         return self.slug
