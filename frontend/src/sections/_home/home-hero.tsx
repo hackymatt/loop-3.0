@@ -28,10 +28,10 @@ import { FormHead } from "../auth/components/form-head";
 const variants: Variants = varFade("inUp", { distance: 24 });
 
 type HomeHeroProps = BoxProps & {
-  locale: Language;
+  language: Language;
 };
 
-export function HomeHero({ locale, sx, ...other }: HomeHeroProps) {
+export function HomeHero({ language, sx, ...other }: HomeHeroProps) {
   const { t } = useTranslation("home");
   const localize = useLocalizedPath();
 
@@ -131,7 +131,7 @@ export function HomeHero({ locale, sx, ...other }: HomeHeroProps) {
         <SignUpView
           header={<FormHead title={t("sign-up.header")} />}
           buttonText={t("sign-up.button")}
-          locale={locale}
+          language={language}
         />
       </m.div>
     </Box>

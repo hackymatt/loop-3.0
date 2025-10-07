@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "src/routes/hooks";
 
 import { URLS } from "src/api/urls";
-import { Api } from "src/api/service";
+import { ClientApi } from "src/api/service";
 
 const endpoint = URLS.PROJECT_CHANNEL_POSTS;
 
@@ -22,7 +22,7 @@ export const useCreatePost = (slug: string, language: Language) => {
   const url = `${endpoint}/${slug}`;
   return useMutation<ICreatePostReturn, AxiosError, ICreatePost>(
     async (variables) => {
-      const result = await Api.post(url, variables, {
+      const result = await ClientApi.post(url, variables, {
         headers: { "Accept-Language": language },
       });
       return { status: result.status, data: result.data };

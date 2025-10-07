@@ -10,11 +10,12 @@ ENV PYTHONUNBUFFERED 1
 # install system dependencies
 RUN apt-get update && apt install wget gnupg2 -y
 RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-RUN apt-get update \
+RUN wget --quiet -O /usr/share/keyrings/postgresql.gpg https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+    && echo "deb [signed-by=/usr/share/keyrings/postgresql.gpg] http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && apt-get update \
     && apt-get -y install postgresql-client-16 cron gettext libpq-dev gcc libcairo2 libcairo2-dev libpangocairo-1.0-0 weasyprint \
     && pip install psycopg2
-
+    
 # install dependencies
 RUN pip install --upgrade pip
 COPY ./requirements.txt .

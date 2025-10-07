@@ -4,7 +4,6 @@ import { isActiveLink, isExternalLink } from "minimal-shared/utils";
 
 import Collapse from "@mui/material/Collapse";
 
-import { paths } from "src/routes/paths";
 import { usePathname } from "src/routes/hooks";
 
 import { NavSectionVertical } from "src/components/nav-section";
@@ -20,9 +19,7 @@ export function NavList({ data, sx, ...other }: NavListProps) {
   const pathname = usePathname();
   const navItemRef = useRef<HTMLButtonElement | null>(null);
 
-  const isNotRootOrDocs = !["/", paths.docs].includes(pathname);
-  const isNotComponentsPath = !pathname.startsWith(paths.components);
-  const isOpenPath = !!data.children && isNotRootOrDocs && isNotComponentsPath;
+  const isOpenPath = !!data.children;
 
   const isActive = isActiveLink(pathname, data.path, !!data.children);
 

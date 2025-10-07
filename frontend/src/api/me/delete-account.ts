@@ -8,10 +8,11 @@ import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
+import { ClientApi } from "src/api/service";
+
 import { useUserContext } from "src/components/user";
 
 import { URLS } from "../urls";
-import { Api } from "../service";
 
 const endpoint = URLS.DELETE_ACCOUNT;
 
@@ -28,7 +29,7 @@ export const useDeleteAccount = (language: Language) => {
   const localize = useLocalizedPath();
   return useMutation<IDeleteAccountReturn, AxiosError, IDeleteAccount>(
     async () => {
-      const result = await Api.delete(endpoint, {
+      const result = await ClientApi.delete(endpoint, {
         headers: { "Accept-Language": language },
       });
       return {

@@ -54,7 +54,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <LearnView
       data={data}
-      locale={params.locale}
+      language={params.locale}
       projectSlug={params.project}
       stageSlug={params.stage}
       stepSlug={params.step}

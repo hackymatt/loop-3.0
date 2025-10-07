@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "src/routes/hooks";
 
 import { URLS } from "src/api/urls";
-import { Api } from "src/api/service";
+import { ClientApi } from "src/api/service";
 
 const endpoint = URLS.REVIEW_SUBMIT;
 
@@ -23,7 +23,7 @@ export const useReviewSubmit = (language: Language) => {
 
   return useMutation<ISubmitReturn, AxiosError, ISubmit>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables, {
+      const result = await ClientApi.post(endpoint, variables, {
         headers: { "Accept-Language": language },
       });
       return {

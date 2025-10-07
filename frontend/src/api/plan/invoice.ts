@@ -3,8 +3,9 @@ import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
+import { ClientApi } from "src/api/service";
+
 import { URLS } from "../urls";
-import { Api } from "../service";
 
 const endpoint = URLS.PREVIEW_INVOICE;
 
@@ -21,7 +22,7 @@ type IInvoiceReturn = {
 
 export const useInvoicePreview = (language: Language) =>
   useMutation<IInvoiceReturn, AxiosError, IInvoice>(async (variables) => {
-    const result = await Api.post(endpoint, variables, {
+    const result = await ClientApi.post(endpoint, variables, {
       headers: { "Accept-Language": language },
     });
     return {

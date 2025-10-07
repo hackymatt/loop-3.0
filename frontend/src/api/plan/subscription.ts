@@ -8,8 +8,9 @@ import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
+import { ClientApi } from "src/api/service";
+
 import { URLS } from "../urls";
-import { Api } from "../service";
 
 const endpoint = URLS.CREATE_SUBSCRIPTION;
 
@@ -30,7 +31,7 @@ export const useCreateSubscription = (language: Language) => {
   const localize = useLocalizedPath();
   return useMutation<ISubscriptionReturn, AxiosError, ISubscription>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables, {
+      const result = await ClientApi.post(endpoint, variables, {
         headers: { "Accept-Language": language },
       });
       return {

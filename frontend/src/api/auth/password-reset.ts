@@ -3,8 +3,9 @@ import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
+import { ClientApi } from "src/api/service";
+
 import { URLS } from "../urls";
-import { Api } from "../service";
 
 const endpoint = URLS.PASSWORD_RESET;
 
@@ -16,7 +17,7 @@ type IPasswordResetReturn = { data: IPasswordReset; status: number };
 
 export const usePasswordReset = (language: Language) =>
   useMutation<IPasswordResetReturn, AxiosError, IPasswordReset>(async (variables) => {
-    const result = await Api.post(endpoint, variables, {
+    const result = await ClientApi.post(endpoint, variables, {
       headers: { "Accept-Language": language },
     });
     return {

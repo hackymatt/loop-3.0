@@ -14,7 +14,7 @@ type PageProps = {
 };
 
 export default function Page({ params }: PageProps) {
-  return <SignUpView locale={params.locale} />;
+  return <SignUpView language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {
