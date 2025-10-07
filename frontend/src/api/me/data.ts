@@ -5,8 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 
 import { useRouter } from "src/routes/hooks";
 
+import { ClientApi } from "src/api/service";
+
 import { URLS } from "../urls";
-import { Api } from "../service";
 
 const endpoint = URLS.DATA;
 
@@ -29,7 +30,7 @@ export const useUpdateData = (language: Language) => {
   const router = useRouter();
   return useMutation<IDataReturn, AxiosError, IData>(
     async (variables) => {
-      const result = await Api.patch(endpoint, variables, {
+      const result = await ClientApi.patch(endpoint, variables, {
         headers: { "Accept-Language": language, "Content-Type": "multipart/form-data" },
       });
       return {

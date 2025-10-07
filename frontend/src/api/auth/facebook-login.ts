@@ -8,10 +8,11 @@ import { useRouter } from "src/routes/hooks";
 
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
+import { ClientApi } from "src/api/service";
+
 import { useUserContext } from "src/components/user";
 
 import { URLS } from "../urls";
-import { Api } from "../service";
 
 const endpoint = URLS.LOGIN_FACEBOOK;
 
@@ -48,7 +49,7 @@ export const useLoginFacebook = (language: Language) => {
   const localize = useLocalizedPath();
   return useMutation<ILoginReturn, AxiosError, ILogin>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables, {
+      const result = await ClientApi.post(endpoint, variables, {
         headers: { "Accept-Language": language },
       });
       return {

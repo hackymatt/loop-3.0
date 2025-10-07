@@ -2,6 +2,7 @@ import "src/global.css";
 
 // ----------------------------------------------------------------------
 import type { Metadata, Viewport } from "next";
+import type { Language } from "src/locales/types";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -47,7 +48,7 @@ type Props = {
 
 export default async function RootLayout({ children, params: { locale } }: Props) {
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
+    <html lang={locale} dir="ltr" suppressHydrationWarning>
       <body>
         <InitColorSchemeScript
           defaultMode={themeConfig.defaultMode}

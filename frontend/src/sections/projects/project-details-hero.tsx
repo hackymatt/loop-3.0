@@ -291,7 +291,7 @@ export function ProjectDetailsHero({
         <SignUpView
           header={<FormHead title={t("sign-up.header")} />}
           buttonText={t("sign-up.button")}
-          locale={language}
+          language={language}
         />
       </div>
     </Box>

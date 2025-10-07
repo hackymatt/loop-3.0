@@ -37,10 +37,10 @@ type HomeViewProps = {
     recentPosts: IBlogRecentProps[];
     plans: IPlanProps[];
   };
-  locale: Language;
+  language: Language;
 };
 
-export function HomeView({ data, locale }: HomeViewProps) {
+export function HomeView({ data, language }: HomeViewProps) {
   const pageProgress = useScrollProgress();
 
   const { onBackToTop, isVisible } = useBackToTop("90%");
@@ -64,7 +64,7 @@ export function HomeView({ data, locale }: HomeViewProps) {
 
       <BackToTopButton isVisible={isVisible} onClick={onBackToTop} />
 
-      <HomeHero locale={locale} />
+      <HomeHero language={language} />
 
       <HomeNewStart />
 

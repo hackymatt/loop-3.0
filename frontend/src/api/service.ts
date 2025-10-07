@@ -25,9 +25,10 @@ export const createAxiosInstance = (endpoint: string) => {
   return instance;
 };
 
-export const Api = createAxiosInstance(CONFIG.api);
+export const ServiceApi = createAxiosInstance(CONFIG.serverApi);
+export const ClientApi = createAxiosInstance(CONFIG.clientApi);
 
-const PlainApi = createAxiosInstance(CONFIG.api);
+const PlainApi = createAxiosInstance(CONFIG.clientApi);
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
@@ -44,7 +45,7 @@ const processQueue = (error: any, tokenRefreshed: boolean) => {
   failedQueue = [];
 };
 
-Api.interceptors.response.use(
+ClientApi.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -54,7 +55,7 @@ Api.interceptors.response.use(
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
-          .then(() => Api(originalRequest))
+          .then(() => ClientApi(originalRequest))
           .catch((err) => Promise.reject(err));
       }
 
@@ -64,7 +65,7 @@ Api.interceptors.response.use(
       try {
         await PlainApi.post(URLS.REFRESH_TOKEN);
         processQueue(null, true);
-        return Api(originalRequest);
+        return ClientApi(originalRequest);
       } catch (err) {
         processQueue(err, false);
         const serverSide = typeof window === "undefined";

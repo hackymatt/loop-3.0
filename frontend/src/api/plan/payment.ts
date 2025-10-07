@@ -2,8 +2,9 @@ import type { Language } from "src/locales/types";
 
 import { cookies } from "next/headers";
 
+import { ClientApi } from "src/api/service";
+
 import { URLS } from "../urls";
-import { Api } from "../service";
 
 const endpoint = URLS.CREATE_SETUP_INTENT;
 
@@ -13,7 +14,7 @@ type ISetupIntentReturn = {
 };
 
 export async function createSetupIntent(language: Language): Promise<ISetupIntentReturn> {
-  const { data } = await Api.post<ISetupIntentReturn>(
+  const { data } = await ClientApi.post<ISetupIntentReturn>(
     endpoint,
     {},
     {

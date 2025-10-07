@@ -25,11 +25,14 @@ export function DashboardView({ data }: DashboardProps) {
   useEffect(() => {
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      planLicense: _,
+      planLicense,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      avatarUrl,
       ...rest
     } = profile.user;
     setState(rest);
-  }, [profile.user, setState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderContent = () => (
     <Box

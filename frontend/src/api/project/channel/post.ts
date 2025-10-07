@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "src/routes/hooks";
 
 import { URLS } from "src/api/urls";
-import { Api } from "src/api/service";
+import { ClientApi } from "src/api/service";
 
 const endpoint = URLS.PROJECT_CHANNEL_POSTS;
 
@@ -22,7 +22,7 @@ export const useEditPost = (slug: string, id: string, language: Language) => {
   const url = `${endpoint}/${slug}/${id}`;
   return useMutation<IEditPostReturn, AxiosError, IEditPost>(
     async (variables) => {
-      const result = await Api.put(url, variables, {
+      const result = await ClientApi.put(url, variables, {
         headers: { "Accept-Language": language },
       });
       return {
@@ -50,7 +50,7 @@ export const useDeletePost = (slug: string, id: string) => {
   const url = `${endpoint}/${slug}/${id}`;
   return useMutation<IDeletePostReturn, AxiosError, IDeletePost>(
     async () => {
-      const result = await Api.delete(url);
+      const result = await ClientApi.delete(url);
       return {
         status: result.status,
         data: result.data,

@@ -28,14 +28,14 @@ import type { SignInSchemaType } from "./components/schema";
 
 // ----------------------------------------------------------------------
 type SignInViewProps = {
-  locale: Language;
+  language: Language;
 };
 
-export function SignInView({ locale }: SignInViewProps) {
+export function SignInView({ language }: SignInViewProps) {
   const { t } = useTranslation("sign-in");
   const localize = useLocalizedPath();
 
-  const { mutateAsync: login } = useLogin(locale);
+  const { mutateAsync: login } = useLogin(language);
 
   const defaultValues: SignInSchemaType = { email: "", password: "" };
 
@@ -76,7 +76,7 @@ export function SignInView({ locale }: SignInViewProps) {
 
       <FormDivider label={t("or")} />
 
-      <FormSocials methods={methods} locale={locale} />
+      <FormSocials methods={methods} language={language} />
     </>
   );
 }

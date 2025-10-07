@@ -5,7 +5,7 @@ backend:
   env:
     ENV: "DEV"
     CSRF_TRUSTED_ORIGINS: "https://dev.loop.edu.pl,https://www.dev.loop.edu.pl"
-    ALLOWED_HOST: "dev.loop.edu.pl,www.dev.loop.edu.pl"
+    ALLOWED_HOST: "dev.loop.edu.pl,www.dev.loop.edu.pl,nginx"
 
 frontend:
   enabled: true

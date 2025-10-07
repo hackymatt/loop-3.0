@@ -5,8 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 
 import { useRouter } from "src/routes/hooks";
 
+import { ClientApi } from "src/api/service";
+
 import { URLS } from "../urls";
-import { Api } from "../service";
 
 const endpoint = URLS.PAYMENT_METHODS;
 
@@ -22,7 +23,7 @@ export const useEditPaymentMethod = (id: string, language: Language) => {
   const url = `${endpoint}/${id}`;
   return useMutation<IDataReturn, AxiosError, IData>(
     async (variables) => {
-      const result = await Api.put(url, variables, {
+      const result = await ClientApi.put(url, variables, {
         headers: {
           "Accept-Language": language,
           "Content-Type": "multipart/form-data",
@@ -48,7 +49,7 @@ export const useDeletePaymentMethod = (id: string, language: Language) => {
   const url = `${endpoint}/${id}`;
   return useMutation<IDataReturn, AxiosError, IData>(
     async () => {
-      const result = await Api.delete(url, {
+      const result = await ClientApi.delete(url, {
         headers: {
           "Accept-Language": language,
         },

@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "src/routes/hooks";
 
 import { URLS } from "src/api/urls";
-import { Api } from "src/api/service";
+import { ClientApi } from "src/api/service";
 
 type ICancelSubscription = {};
 
@@ -17,7 +17,7 @@ export const useCancelSubscription = (language: Language) => {
   const endpoint = URLS.CANCEL_SUBSCRIPTION;
   return useMutation<ICancelSubscriptionReturn, AxiosError, ICancelSubscription>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables, {
+      const result = await ClientApi.post(endpoint, variables, {
         headers: { "Accept-Language": language },
       });
       return {
@@ -44,7 +44,7 @@ export const useRenewSubscription = (language: Language) => {
   const endpoint = URLS.RENEW_SUBSCRIPTION;
   return useMutation<IRenewSubscriptionReturn, AxiosError, IRenewSubscription>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables, {
+      const result = await ClientApi.post(endpoint, variables, {
         headers: { "Accept-Language": language },
       });
       return {
@@ -75,7 +75,7 @@ export const useChangeSubscription = (language: Language) => {
   const endpoint = URLS.CHANGE_SUBSCRIPTION;
   return useMutation<IChangeSubscriptionReturn, AxiosError, IChangeSubscription>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables, {
+      const result = await ClientApi.post(endpoint, variables, {
         headers: { "Accept-Language": language },
       });
       return {

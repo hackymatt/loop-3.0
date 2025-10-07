@@ -24,12 +24,12 @@ import type { ChatMessage } from "./chat";
 type StepProps = {
   step: IStepProps;
   isLocked?: boolean;
-  locale: Language;
+  language: Language;
 };
 
 // ----------------------------------------------------------------------
 
-export const Step = React.memo(function Step({ step, isLocked = false, locale }: StepProps) {
+export const Step = React.memo(function Step({ step, isLocked = false, language }: StepProps) {
   const { t } = useTranslation("learn");
   const chatBoxOpen = useBoolean();
 
@@ -82,8 +82,8 @@ export const Step = React.memo(function Step({ step, isLocked = false, locale }:
         }}
       >
         <Chat
-          language={locale}
-          url={`${CONFIG.api}${URLS.STEP_CHAT}/${step.slug}`}
+          language={language}
+          url={`${CONFIG.clientApi}${URLS.STEP_CHAT}/${step.slug}`}
           placeholder={t("chat.placeholder")}
           history={chatHistory}
           onMessage={handleHistoryUpdate}

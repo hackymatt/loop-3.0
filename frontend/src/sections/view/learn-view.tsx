@@ -23,7 +23,7 @@ import { ArrowBasicButtons } from "../learn/arrow-buttons/arrow-buttons";
 
 interface LearnViewProps {
   data: { project: IProjectProps; step: IStepProps; isLocked: boolean };
-  locale: Language;
+  language: Language;
   projectSlug: string;
   stageSlug: string;
   stepSlug: string;
@@ -50,7 +50,7 @@ const ContentBox = ({ children, sx }: { children: ReactNode; sx?: BoxProps["sx"]
   </Box>
 );
 
-export function LearnView({ data, locale, projectSlug, stageSlug, stepSlug }: LearnViewProps) {
+export function LearnView({ data, language, projectSlug, stageSlug, stepSlug }: LearnViewProps) {
   const localize = useLocalizedPath();
   const router = useRouter();
 
@@ -112,7 +112,7 @@ export function LearnView({ data, locale, projectSlug, stageSlug, stepSlug }: Le
 
   const Content = () => (
     <ContentBox sx={{ position: "relative" }}>
-      <Step step={step} isLocked={isLocked} locale={locale} />
+      <Step step={step} isLocked={isLocked} language={language} />
     </ContentBox>
   );
 

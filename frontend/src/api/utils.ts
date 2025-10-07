@@ -1,6 +1,6 @@
 import type { AxiosError, AxiosRequestConfig } from "axios";
 
-import { Api } from "./service";
+import { ServiceApi } from "./service";
 
 import type { QueryType, GetApiResponse, ListApiResponse } from "./types";
 
@@ -9,7 +9,7 @@ export async function getListData<T>(queryUrl: string, config?: AxiosRequestConf
   let error: AxiosError | undefined = undefined;
 
   try {
-    const response = await Api.get<ListApiResponse<T>>(queryUrl, config);
+    const response = await ServiceApi.get<ListApiResponse<T>>(queryUrl, config);
     data = response.data;
   } catch (err) {
     error = err as AxiosError;
@@ -29,7 +29,7 @@ export async function getSimpleListData<T>(queryUrl: string, config?: AxiosReque
   let error: AxiosError | undefined = undefined;
 
   try {
-    const response = await Api.get<T[]>(queryUrl, config);
+    const response = await ServiceApi.get<T[]>(queryUrl, config);
     data = response.data;
   } catch (err) {
     error = err as AxiosError;
@@ -48,7 +48,7 @@ export async function getData<T>(
   config?: AxiosRequestConfig<any>
 ): Promise<GetApiResponse<T>> {
   try {
-    const response = await Api.get<T>(queryUrl, config);
+    const response = await ServiceApi.get<T>(queryUrl, config);
     return { data: response.data };
   } catch (error) {
     console.error(error);
