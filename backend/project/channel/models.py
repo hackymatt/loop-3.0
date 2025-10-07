@@ -3,7 +3,6 @@ import os
 import uuid
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.contrib.postgres.indexes import GinIndex
 from mdeditor import fields
 from core.base_model import BaseModel
 from ..models import Project
@@ -72,13 +71,6 @@ class ChannelPostComment(BaseModel):
     class Meta:
         db_table = "channel_post_comment"
         verbose_name_plural = "Channel post comments"
-        indexes = [
-            GinIndex(
-                fields=["message"],
-                name="cpc_message_gin",
-                opclasses=["gin_trgm_ops"],
-            ),
-        ]
 
     def clean(self):  # pragma: no cover
         try:
