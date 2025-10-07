@@ -93,6 +93,10 @@ msgstr "Pomagasz w realizacji kroku projektu programistycznego. Odpowiadaj wył�
 msgid "Token usage limit exceeded. Please upgrade your plan or wait until next period."
 msgstr "Limit wykorzystania tokenów został przekroczony. Proszę zmienić plan lub poczekać do kolejnego okresu rozliczeniowego."
 
+msgid "Consultations limit exceeded. Please upgrade your plan or wait until next period."
+msgstr "Limit konsultacji został przekroczony. Proszę zmienić plan lub poczekać do kolejnego okresu rozliczeniowego."
+
+
 msgid "Payment confirmation"
 msgstr "Potwierdzenie płatności"
 
@@ -284,3 +288,18 @@ msgstr "Plan"
 
 msgid "Discount"
 msgstr "Zniżka"
+
+msgid "Consultation request confirmation"
+msgstr "Potwierdzenie zgłoszenia na konsultację 1:1"
+
+msgid "Hi %(first_name)s, we confirm that we have received your request for a 1:1 consultation with a mentor."
+msgstr "Cześć %(first_name)s, potwierdzamy, że otrzymaliśmy Twoje zgłoszenie na konsultację 1:1 z mentorem."
+
+msgid "Our team will contact you shortly to confirm the date and details of your session."
+msgstr "Nasz zespół wkrótce skontaktuje się z Tobą, aby potwierdzić termin i szczegóły spotkania."
+
+msgid "If you received this email by mistake or need to contact us regarding your request, please reply to"
+msgstr "Jeżeli otrzymasz tego maila przez pomyłkę lub chcesz do nas napisać w sprawie zgłoszenia, prosimy o kontakt na adres"
+
+msgid ", and include your request number: %(request_number)s."
+msgstr ", podając numer zgłoszenia: %(request_number)s."

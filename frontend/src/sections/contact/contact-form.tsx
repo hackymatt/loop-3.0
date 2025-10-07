@@ -1,4 +1,5 @@
 import type { BoxProps } from "@mui/material/Box";
+import type { Language } from "src/locales/types";
 
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
@@ -39,11 +40,11 @@ export const useContactSchema = () => {
 };
 
 // ----------------------------------------------------------------------
-
-export function ContactForm({ sx, ...other }: BoxProps) {
+type ContactFormProps = BoxProps & { language: Language };
+export function ContactForm({ language, sx, ...other }: ContactFormProps) {
   const { t } = useTranslation("contact");
 
-  const { mutateAsync: contact } = useContact();
+  const { mutateAsync: contact } = useContact(language);
 
   const termsAcceptance = useTermsAcceptance();
 

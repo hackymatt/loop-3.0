@@ -18,10 +18,17 @@ class GmailApi:
         )
 
     def _create_message(
-        self, email_from, email_to, email_subject, email_body, email_attachments=[]
+        self,
+        email_from,
+        email_to,
+        email_bcc,
+        email_subject,
+        email_body,
+        email_attachments=[],
     ):
         message = MIMEMultipart()
         message["to"] = email_to
+        message["bcc"] = email_bcc
         message["from"] = f"loop.edu.pl <{email_from}>"
         message["subject"] = email_subject
 
@@ -48,11 +55,18 @@ class GmailApi:
         return message
 
     def send(
-        self, email_from, email_to, email_subject, email_body, email_attachments=[]
+        self,
+        email_from,
+        email_to,
+        email_bcc,
+        email_subject,
+        email_body,
+        email_attachments=[],
     ):
         message = self._create_message(
             email_from=email_from,
             email_to=email_to,
+            email_bcc=email_bcc,
             email_subject=email_subject,
             email_body=email_body,
             email_attachments=email_attachments,

@@ -50,15 +50,12 @@ class StepViewSet(RetrieveModelMixin, GenericViewSet):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        # Plan check: limit access for free users
-        if student.current_subscription.plan.is_default_plan:
-            if (
-                ProjectEnrollment.objects.filter(student=student)
-                .exclude(project=project)
-                .exists()
-            ):
-                serializer = StepBaseSerializer(step, context={"request": request})
-                return Response(serializer.data, status=status.HTTP_403_FORBIDDEN)
+        # Plan check
+        if not project.plans.filter(
+            type=student.current_subscription.plan.type
+        ).exists():
+            serializer = StepBaseSerializer(step, context={"request": request})
+            return Response(serializer.data, status=status.HTTP_403_FORBIDDEN)
 
         # Allow full access
         ProjectEnrollment.objects.get_or_create(student=student, project=project)

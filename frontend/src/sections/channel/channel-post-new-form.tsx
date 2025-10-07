@@ -1,3 +1,5 @@
+import type { Language } from "src/locales/types";
+
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -28,13 +30,14 @@ export const useChannelPostSchema = () => {
 
 type Props = {
   slug: string;
+  language: Language;
   onClose: () => void;
 };
 
-export function ChannelPostNewForm({ slug, onClose }: Props) {
+export function ChannelPostNewForm({ slug, language, onClose }: Props) {
   const { t } = useTranslation("channel");
 
-  const { mutateAsync: createPost } = useCreatePost(slug);
+  const { mutateAsync: createPost } = useCreatePost(slug, language);
 
   const ChannelPostSchema = useChannelPostSchema();
 

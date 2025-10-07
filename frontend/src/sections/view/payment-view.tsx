@@ -90,7 +90,7 @@ export function PaymentView({ data, language }: PaymentViewProps) {
   );
 }
 
-function Payment({ data }: PaymentViewProps) {
+function Payment({ data, language }: PaymentViewProps) {
   const { t } = useTranslation("payment");
   const { t: locale } = useTranslation("locale");
   const { t: c } = useTranslation("countries");
@@ -115,8 +115,8 @@ function Payment({ data }: PaymentViewProps) {
 
   const [paymentError, setPaymentError] = useState<string | null>(null);
 
-  const { mutateAsync: updateData } = useUpdateData();
-  const { mutateAsync: createSubscription } = useCreateSubscription();
+  const { mutateAsync: updateData } = useUpdateData(language);
+  const { mutateAsync: createSubscription } = useCreateSubscription(language);
 
   const { plan, personal } = data;
   const { email, firstName, lastName, streetAddress, zipCode, city, country } = personal;
@@ -271,7 +271,7 @@ function Payment({ data }: PaymentViewProps) {
           </Grid>
 
           <Grid size={{ xs: 12, md: 5 }}>
-            {plan && <PaymentSummary plan={plan} discount={discount} />}
+            {plan && <PaymentSummary plan={plan} discount={discount} language={language} />}
           </Grid>
         </Grid>
       </Form>

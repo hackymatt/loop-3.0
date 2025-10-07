@@ -59,6 +59,7 @@ export const paths = {
     subscription: "/account/subscription",
     payment: "/account/payment",
     invoices: "/account/invoices",
+    consultations: "/account/consultations",
   },
 
   orderStatus: "/order-status",

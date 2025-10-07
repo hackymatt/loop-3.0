@@ -61,27 +61,39 @@
       "content": [
         {
           "question": "How do projects work on the platform?",
-          "answer": "Projects consist of interactive stages you can complete at your own pace. They are not live classes—you work whenever you want."
+          "answer": "Projects consist of interactive stages that you can complete at your own pace. They are not live classes – you work whenever it suits you."
+        },
+        {
+          "question": "Which plans include access to projects?",
+          "answer": "Each project is assigned to specific plans – for example, some are available only in the Basic and Premium plans. Access to a project depends on your active plan."
+        },
+        {
+          "question": "Do projects have their own community channels?",
+          "answer": "Yes. Each project has a dedicated channel for Basic and Premium users, where you can chat with other participants, share posts, and exchange experiences."
+        },
+        {
+          "question": "Can I book a 1:1 consultation with a mentor?",
+          "answer": "Yes. Premium users can request an individual 1:1 consultation with a mentor to get help, review code, or discuss any questions related to the project. Each consultation lasts 30 minutes."
         },
         {
           "question": "Do I need to install additional software?",
-          "answer": "Yes. You code projects on your own computer, so you need a code editor (e.g., VS Code) and any tools required for the technologies used in the project."
+          "answer": "Yes. You’ll be coding projects on your own computer, so you’ll need a code editor (e.g., VS Code) and any tools required for the project’s specific technology."
         },
         {
-          "question": "Can I pause a project and come back later?",
-          "answer": "Yes. Your progress is saved automatically, so you can return to the project anytime."
+          "question": "Can I pause a project and return to it later?",
+          "answer": "Yes. Your progress is saved automatically, so you can return to the project at any time."
         },
         {
-          "question": "Will I get a certificate after completing a project?",
-          "answer": "Yes. After finishing a project on the Basic or Premium plan, you'll receive a certificate that you can download or share."
+          "question": "Will I receive a certificate after completing a project?",
+          "answer": "Yes. After completing a project in the Basic or Premium plan, you’ll receive a certificate that you can download or share."
         },
         {
           "question": "Is access to projects time-limited?",
-          "answer": "No. Once you purchase access, you have unlimited time to use the materials within your plan."
+          "answer": "No. Once you purchase access, you’ll have unlimited, lifetime access to the project materials within your plan."
         },
         {
-          "question": "Can I use projects on my phone?",
-          "answer": "Yes, our platform works on mobile devices too. For the best experience, we recommend using a computer."
+          "question": "Can I use the projects on my phone?",
+          "answer": "Yes, our platform also works on mobile devices. However, for the best experience, we recommend using a computer."
         }
       ]
     },
@@ -140,6 +152,37 @@
         {
           "question": "Where can I check my points?",
           "answer": "Your current points total is visible on your dashboard."
+        }
+      ]
+    },
+    {
+      "id": "plans",
+      "title": "Pricing",
+      "icon": "solar:layers-bold-duotone",
+      "content": [
+        {
+          "question": "What plans are available on the platform?",
+          "answer": "We offer three subscription plans: Free, Basic, and Premium. Each plan provides different levels of access to projects, features, and mentor support."
+        },
+        {
+          "question": "What is the difference between monthly and yearly plans?",
+          "answer": "All plans are available as monthly or yearly subscriptions. The yearly plan offers a lower price per month compared to the monthly option."
+        },
+        {
+          "question": "In which currencies can I pay?",
+          "answer": "You can pay in four currencies: PLN, EUR, GBP, and USD. The platform automatically adjusts prices based on your selected currency."
+        },
+        {
+          "question": "What are the main differences between plans?",
+          "answer": "The plans differ in access to projects, AI chat tokens, the number of 1:1 consultations, and available features. For example, Premium users get access to all projects, more AI chat tokens, and more 1:1 consultations with mentors."
+        },
+        {
+          "question": "How does the AI chat work?",
+          "answer": "While working on a project, you can use AI chat to ask for help, explanations, or hints. Each plan includes a different monthly token limit for AI interactions."
+        },
+        {
+          "question": "How many projects can I access in each plan?",
+          "answer": "Free users can try selected introductory projects. Basic users unlock more projects, while Premium users have access to all available projects on the platform."
         }
       ]
     },

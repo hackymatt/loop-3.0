@@ -9,6 +9,7 @@ class Plan(BaseModel):
     type = models.CharField(max_length=10, choices=PlanType.choices)
     popular = models.BooleanField(default=False)
     tokens_limit = models.PositiveIntegerField(default=0)
+    consultation_limit = models.PositiveIntegerField(default=0)
     stripe_product_id = models.CharField(max_length=255, blank=True, null=True)
 
     def get_translation(self, lang_code):
@@ -26,9 +27,12 @@ class Plan(BaseModel):
         return self.type
 
     @property
-    def is_default_plan(plan):
-        type = CONFIG["default_plan"]
-        return plan.type == type
+    def is_free(plan):
+        return plan.type == PlanType.FREE
+
+    @property
+    def is_premium(plan):
+        return plan.type == PlanType.PREMIUM
 
     class Meta:
         db_table = "plan"

@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { IPersonalDataProps } from "src/types/user";
 
 import { compact } from "lodash-es";
@@ -21,13 +22,13 @@ type IPersonalData = {
   country: string | null;
 };
 
-export const dataQuery = () => {
+export const dataQuery = (language: Language) => {
   const url = endpoint;
   const queryUrl = url;
 
   const queryFn = async (): Promise<GetQueryResponse<IPersonalDataProps>> => {
     const { data } = await getData<IPersonalData>(queryUrl, {
-      headers: { Cookie: cookies().toString() },
+      headers: { "Accept-Language": language, Cookie: cookies().toString() },
     });
 
     const { first_name, last_name, image, street_address, zip_code, ...rest } = data;

@@ -37,6 +37,7 @@ type ILoginReturn = {
     is_active: boolean;
     plan: IPlan;
     trial_used: boolean;
+    first_purchase: boolean;
   };
   status: number;
 };
@@ -48,7 +49,9 @@ export const useLogin = (language: Language) => {
   const localize = useLocalizedPath();
   return useMutation<ILoginReturn, AxiosError, ILogin>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(endpoint, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,
@@ -66,6 +69,7 @@ export const useLogin = (language: Language) => {
           is_active,
           plan,
           trial_used,
+          first_purchase,
         } = responseData.data;
 
         user.setState({
@@ -79,6 +83,7 @@ export const useLogin = (language: Language) => {
           joinType: join_type,
           plan,
           trialUsed: trial_used,
+          firstPurchase: first_purchase,
           redirect: null,
         });
 

@@ -27,5 +27,11 @@
   "hide": "Hide",
   "show": "Show",
   "feature": "FEATURE",
-  "allFeatures": "all features"
+  "allFeatures": "all features",
+  "tokenLimit": "OpenAI token limit / mo",
+  "token": "OpenAI tokens / mo",
+  "projectsLimit": "Number of projects",
+  "projects": ["project", "projects", "projects"],
+  "consultationsLimit": "Consultation limit (30 min) / mo",
+  "consultations": ["consultation / mo", "consultations / mo", "consultations / mo"]
 }

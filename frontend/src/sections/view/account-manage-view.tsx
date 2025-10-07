@@ -1,5 +1,7 @@
 "use client";
 
+import type { Language } from "src/locales/types";
+
 import { z as zod } from "zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -73,15 +75,16 @@ const useAccountPasswordSchema = () => {
 type AccountPasswordSchemaType = zod.infer<ReturnType<typeof useAccountPasswordSchema>>;
 
 // ----------------------------------------------------------------------
+type AccountManageViewProps = { language: Language };
 
-export function AccountManageView() {
+export function AccountManageView({ language }: AccountManageViewProps) {
   const { t } = useTranslation("account");
   const localize = useLocalizedPath();
 
   const user = useUserContext();
   const { userType, joinType } = user.state;
 
-  const { mutateAsync: changePassword } = useChangePassword();
+  const { mutateAsync: changePassword } = useChangePassword(language);
 
   const passwordShow = useBoolean();
   const deleteAccountFormOpen = useBoolean();
@@ -201,6 +204,7 @@ export function AccountManageView() {
       </Button>
 
       <DeleteAccountForm
+        language={language}
         open={deleteAccountFormOpen.value}
         onClose={deleteAccountFormOpen.onFalse}
       />

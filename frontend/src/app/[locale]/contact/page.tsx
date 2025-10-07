@@ -13,8 +13,8 @@ type PageProps = {
   params: { locale: Language };
 };
 
-export default function Page() {
-  return <ContactView />;
+export default function Page({ params }: PageProps) {
+  return <ContactView language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

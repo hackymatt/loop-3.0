@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { IChannelItemProp, IChannelCommentProp } from "src/types/channel";
 
 import { z as zod } from "zod";
@@ -34,13 +35,21 @@ type Props = {
   id: IChannelItemProp["id"];
   commentId: IChannelCommentProp["id"];
   defaultValues: ChannelPostCommentSchemaType;
+  language: Language;
   onClose: () => void;
 };
 
-export function ChannelPostCommentEditForm({ slug, id, commentId, defaultValues, onClose }: Props) {
+export function ChannelPostCommentEditForm({
+  slug,
+  id,
+  commentId,
+  defaultValues,
+  language,
+  onClose,
+}: Props) {
   const { t } = useTranslation("channel");
 
-  const { mutateAsync: editCommentComment } = useEditPostComment(slug, id, commentId);
+  const { mutateAsync: editCommentComment } = useEditPostComment(slug, id, commentId, language);
 
   const ChannelPostCommentSchema = useChannelPostCommentSchema();
 

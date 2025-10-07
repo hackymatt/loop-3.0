@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { DialogProps } from "@mui/material/Dialog";
 
 import { z as zod } from "zod";
@@ -35,13 +36,14 @@ export const useReviewSchema = () => {
 
 type Props = DialogProps & {
   slug: string;
+  language: Language;
   onClose: () => void;
 };
 
-export function ReviewNewForm({ slug, onClose, ...other }: Props) {
+export function ReviewNewForm({ slug, language, onClose, ...other }: Props) {
   const { t } = useTranslation("review");
 
-  const { mutateAsync: submitReview } = useReviewSubmit();
+  const { mutateAsync: submitReview } = useReviewSubmit(language);
 
   const ReviewSchema = useReviewSchema();
 

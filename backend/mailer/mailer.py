@@ -17,6 +17,7 @@ class Mailer:
         self,
         email_template: str,
         to: List[str],
+        bcc: List[str],
         subject: str,
         data,
         attachments=[],
@@ -43,6 +44,7 @@ class Mailer:
             self.gmail_api.send(
                 CONFIG["noreply_email"],
                 email_to=", ".join(to),
+                email_bcc=", ".join(bcc),
                 email_subject=subject,
                 email_body=email_body,
                 email_attachments=attachments,

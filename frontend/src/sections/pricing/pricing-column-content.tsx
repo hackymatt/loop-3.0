@@ -12,6 +12,7 @@ import Collapse, { collapseClasses } from "@mui/material/Collapse";
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 
+import { usePluralize } from "src/hooks/use-pluralize";
 import { useLocalizedPath } from "src/hooks/use-localized-path";
 
 import { fShortenNumber } from "src/utils/format-number";
@@ -42,7 +43,11 @@ export function PricingColumnContentMobile({
   const { t } = useTranslation("pricing");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
+  const languagePluralize = usePluralize();
   const router = useRouter();
+
+  const projects = t("projects", { returnObjects: true }) as string[];
+  const consultations = t("consultations", { returnObjects: true }) as string[];
 
   const user = useUserContext();
   const {
@@ -116,8 +121,32 @@ export function PricingColumnContentMobile({
           typography: "body2",
         }}
       >
+        <Iconify icon="carbon:repo-source-code" />
+        {fShortenNumber(plan.projectsCount, { code: locale("code") })}{" "}
+        {languagePluralize(projects, plan.projectsCount)}
+      </Box>
+      <Box
+        sx={{
+          gap: 1.5,
+          display: "flex",
+          alignItems: "center",
+          typography: "body2",
+        }}
+      >
         <Iconify icon="logos:openai-icon" />
         {fShortenNumber(plan.tokensLimit, { code: locale("code") })} {t("token")}
+      </Box>
+      <Box
+        sx={{
+          gap: 1.5,
+          display: "flex",
+          alignItems: "center",
+          typography: "body2",
+        }}
+      >
+        <Iconify icon="solar:call-chat-linear" />
+        {fShortenNumber(plan.consultationLimit, { code: locale("code") })}{" "}
+        {languagePluralize(consultations, plan.consultationLimit)}
       </Box>
       {plan.options.map((option) => (
         <Box
@@ -237,7 +266,33 @@ export function PricingColumnContentDesktop({
           ...(plan.popular && { bgcolor: "background.neutral" }),
         })}
       >
+        {fShortenNumber(plan.projectsCount, { code: locale("code") })}
+      </Box>
+      <Box
+        sx={(theme) => ({
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "text.secondary",
+          height: "var(--row-height)",
+          borderBottom: `solid 1px ${theme.vars.palette.divider}`,
+          ...(plan.popular && { bgcolor: "background.neutral" }),
+        })}
+      >
         {fShortenNumber(plan.tokensLimit, { code: locale("code") })}
+      </Box>
+      <Box
+        sx={(theme) => ({
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "text.secondary",
+          height: "var(--row-height)",
+          borderBottom: `solid 1px ${theme.vars.palette.divider}`,
+          ...(plan.popular && { bgcolor: "background.neutral" }),
+        })}
+      >
+        {fShortenNumber(plan.consultationLimit, { code: locale("code") })}
       </Box>
       {plan.options.map((item) => (
         <Box

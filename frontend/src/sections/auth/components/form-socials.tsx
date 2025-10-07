@@ -25,9 +25,9 @@ import { GithubIcon, GoogleIcon, FacebookIcon } from "src/assets/icons";
 
 // ----------------------------------------------------------------------
 
-type FormSocialsProps = BoxProps & { methods: UseFormReturn<any>; locale: Language };
+type FormSocialsProps = BoxProps & { methods: UseFormReturn<any>; language: Language };
 
-export function FormSocials({ methods, locale, sx, ...other }: FormSocialsProps) {
+export function FormSocials({ methods, language, sx, ...other }: FormSocialsProps) {
   return (
     <Box
       sx={[
@@ -36,17 +36,17 @@ export function FormSocials({ methods, locale, sx, ...other }: FormSocialsProps)
       ]}
       {...other}
     >
-      <GoogleSignIn methods={methods} locale={locale} />
+      <GoogleSignIn methods={methods} language={language} />
 
-      <GithubSignIn methods={methods} locale={locale} />
+      <GithubSignIn methods={methods} language={language} />
 
-      <FacebookSignIn methods={methods} locale={locale} />
+      <FacebookSignIn methods={methods} language={language} />
     </Box>
   );
 }
 
-function GoogleSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
-  const { mutateAsync: googleLogin } = useLoginGoogle(locale);
+function GoogleSignIn({ methods, language }: { methods: UseFormReturn<any>; language: Language }) {
+  const { mutateAsync: googleLogin } = useLoginGoogle(language);
 
   const handleFormError = useFormErrorHandler(methods);
 
@@ -73,8 +73,8 @@ function GoogleSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
   );
 }
 
-function GithubSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
-  const { mutateAsync: githubLogin } = useLoginGithub(locale);
+function GithubSignIn({ methods, language }: { methods: UseFormReturn<any>; language: Language }) {
+  const { mutateAsync: githubLogin } = useLoginGithub(language);
 
   const handleFormError = useFormErrorHandler(methods);
 
@@ -101,8 +101,14 @@ function GithubSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale
   );
 }
 
-function FacebookSignIn({ methods, locale }: { methods: UseFormReturn<any>; locale: Language }) {
-  const { mutateAsync: facebookLogin } = useLoginFacebook(locale);
+function FacebookSignIn({
+  methods,
+  language,
+}: {
+  methods: UseFormReturn<any>;
+  language: Language;
+}) {
+  const { mutateAsync: facebookLogin } = useLoginFacebook(language);
 
   const handleFormError = useFormErrorHandler(methods);
 

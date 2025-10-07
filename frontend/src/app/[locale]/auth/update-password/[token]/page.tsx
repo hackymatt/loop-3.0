@@ -14,7 +14,7 @@ type PageProps = {
 };
 
 export default function Page({ params }: PageProps) {
-  return <UpdatePasswordView token={params.token} />;
+  return <UpdatePasswordView token={params.token} language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

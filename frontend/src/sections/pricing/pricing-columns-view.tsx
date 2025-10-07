@@ -102,7 +102,31 @@ export function PricingColumnsView({ plans }: PricingColumnsViewProps) {
           })}
         >
           <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+            {t("projectsLimit")}
+          </Typography>
+        </Box>
+        <Box
+          sx={(theme) => ({
+            display: "flex",
+            alignItems: "center",
+            height: "var(--row-height)",
+            borderBottom: `solid 1px ${theme.vars.palette.divider}`,
+          })}
+        >
+          <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
             {t("tokenLimit")}
+          </Typography>
+        </Box>
+        <Box
+          sx={(theme) => ({
+            display: "flex",
+            alignItems: "center",
+            height: "var(--row-height)",
+            borderBottom: `solid 1px ${theme.vars.palette.divider}`,
+          })}
+        >
+          <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+            {t("consultationsLimit")}
           </Typography>
         </Box>
         {(pricingColumns[0]?.options || []).map((option) => (

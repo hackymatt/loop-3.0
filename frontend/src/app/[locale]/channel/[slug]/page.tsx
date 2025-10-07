@@ -51,7 +51,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     return <NotFoundView />;
   }
 
-  return <ChannelView data={data} />;
+  return <ChannelView data={data} language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

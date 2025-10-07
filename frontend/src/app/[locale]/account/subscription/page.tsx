@@ -19,13 +19,13 @@ type PageProps = {
 const queries = {
   subscription: (lang: Language) => subscriptionQuery(lang),
   plans: (lang: Language) => plansQuery(lang),
-  paymentMethods: () => paymentMethodsQuery({ page_size: "-1" }),
+  paymentMethods: (lang: Language) => paymentMethodsQuery(lang, { page_size: "-1" }),
 };
 
 async function getData(locale: Language) {
   const subscriptionPromise = queries.subscription(locale).queryFn();
   const plansPromise = queries.plans(locale).queryFn();
-  const paymentMethodsPromise = queries.paymentMethods().queryFn();
+  const paymentMethodsPromise = queries.paymentMethods(locale).queryFn();
 
   const [subscription, plans, paymentMethods] = await Promise.all([
     subscriptionPromise,
@@ -42,7 +42,7 @@ async function getData(locale: Language) {
 
 export default async function Page({ params }: PageProps) {
   const data = await getData(params.locale);
-  return <AccountSubscriptionView data={data} />;
+  return <AccountSubscriptionView data={data} language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

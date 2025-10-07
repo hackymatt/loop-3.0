@@ -6,10 +6,16 @@
   "estimatedTime": "Szacowany czas",
   "upgrade": {
     "title": "Odblokuj pełny dostęp!",
-    "description": "Uzyskaj dostęp do wszystkich projektów, więcej punktów i dodatkowych materiałów!",
+    "description": "Odblokuj wszystkie projekty, funkcje i materiały — zyskaj pełne możliwości!",
     "banner": {
-      "title": "Jesteś na darmowym planie i masz dostęp tylko do jednego projektu.",
-      "description": "Aby kontynuować pracę i odblokować kolejne projekty — przejdź na wyższy plan!"
+      "project": {
+        "title": "Projekt dostępny w innym planie",
+        "description": "Ten projekt nie jest dostępny w Twoim planie. Zaktualizuj swój plan, aby uzyskać dostęp."
+      },
+      "feature": {
+        "title": "Funkcja dostępna w wyższym planie",
+        "description": "Ta funkcja nie jest dostępna w Twoim planie. Zmień plan, aby z niej skorzystać."
+      }
     },
     "button": "Wróć do projektu"
   },

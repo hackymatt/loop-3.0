@@ -1,6 +1,7 @@
 "use client";
 
 import type { BoxProps } from "@mui/material/Box";
+import type { Language } from "src/locales/types";
 import type { Theme, SxProps } from "@mui/material/styles";
 import type { ButtonBaseProps } from "@mui/material/ButtonBase";
 
@@ -38,9 +39,10 @@ export type NavItemsProps = {
     title: string;
     icon: React.ReactNode;
   }[];
+  language: Language;
 };
 
-export function NavAccountDesktop({ data, sx }: NavItemsProps) {
+export function NavAccountDesktop({ data, language, sx }: NavItemsProps) {
   const pathname = usePathname();
 
   const currentTab = data.find((item) => item.path === pathname)?.title;
@@ -50,7 +52,7 @@ export function NavAccountDesktop({ data, sx }: NavItemsProps) {
 
   const renderUserInfo = () => (
     <Box sx={{ p: 3, pb: 2 }}>
-      <UserPhoto sx={{ mb: 2 }} />
+      <UserPhoto language={language} sx={{ mb: 2 }} />
       <div>
         <Typography variant="subtitle1" noWrap sx={{ mb: 0.5 }}>
           {firstName}
@@ -238,8 +240,9 @@ export function NavItem({ title, path = "", icon, sx, ...other }: NavItemProps) 
 }
 
 // ----------------------------------------------------------------------
+type UserPhotoProps = BoxProps & { language: Language };
 
-export function UserPhoto({ sx, ...other }: BoxProps) {
+export function UserPhoto({ language, sx, ...other }: UserPhotoProps) {
   const { t } = useTranslation("account");
 
   const user = useUserContext();
@@ -247,7 +250,7 @@ export function UserPhoto({ sx, ...other }: BoxProps) {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const { mutateAsync: updateData } = useUpdateData();
+  const { mutateAsync: updateData } = useUpdateData(language);
 
   const [image, setImage] = useState<string>(avatarUrl || DEFAULT_AVATAR_URL);
 

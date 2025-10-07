@@ -23,6 +23,8 @@ type IPlanOptionProp = {
 export type IPlanProps = {
   type: PlanType;
   tokensLimit: number;
+  consultationLimit: number;
+  projectsCount: number;
   license: string;
   popular: boolean;
   pricing: IPlanPricingProp[];

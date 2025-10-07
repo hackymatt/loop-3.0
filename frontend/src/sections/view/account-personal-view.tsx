@@ -1,5 +1,6 @@
 "use client";
 
+import type { Language } from "src/locales/types";
 import type { IPersonalDataProps } from "src/types/user";
 
 import { z as zod } from "zod";
@@ -46,16 +47,17 @@ type AccountPersonalSchemaType = zod.infer<ReturnType<typeof useAccountPersonalS
 // ----------------------------------------------------------------------
 type AccountPersonalViewProps = {
   data: IPersonalDataProps;
+  language: Language;
 };
 
-export function AccountPersonalView({ data }: AccountPersonalViewProps) {
+export function AccountPersonalView({ data, language }: AccountPersonalViewProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
   const user = useUserContext();
   const { firstName, lastName, streetAddress, zipCode, city, country } = data;
 
-  const { mutateAsync: updateData } = useUpdateData();
+  const { mutateAsync: updateData } = useUpdateData(language);
 
   const AccountPersonalSchema = useAccountPersonalSchema();
   const methods = useForm<AccountPersonalSchemaType>({
@@ -119,6 +121,7 @@ export function AccountPersonalView({ data }: AccountPersonalViewProps) {
       </Typography>
 
       <UserPhoto
+        language={language}
         sx={(theme) => ({
           p: 3,
           mt: 3,

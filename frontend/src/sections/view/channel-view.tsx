@@ -1,5 +1,6 @@
 "use client";
 
+import type { Language } from "src/locales/types";
 import type { IProjectProps } from "src/types/project";
 import type { IChannelItemProp } from "src/types/channel";
 
@@ -26,9 +27,10 @@ type ChannelViewProps = {
     channelItemsPageSize: number;
     isLocked: boolean;
   };
+  language: Language;
 };
 
-export function ChannelView({ data }: ChannelViewProps) {
+export function ChannelView({ data, language }: ChannelViewProps) {
   const { t } = useTranslation("channel");
 
   const { handleChange, query } = useQueryParams();
@@ -86,6 +88,7 @@ export function ChannelView({ data }: ChannelViewProps) {
       renderPostSkeleton()
     ) : (
       <ChannelItemsList
+        language={language}
         slug={project.slug}
         items={channelItems}
         recordsCount={channelItemsCount || 0}
@@ -101,7 +104,11 @@ export function ChannelView({ data }: ChannelViewProps) {
         {renderHead()}
 
         {openPostForm.value && (
-          <ChannelPostNewForm slug={project.slug || ""} onClose={openPostForm.onFalse} />
+          <ChannelPostNewForm
+            slug={project.slug || ""}
+            language={language}
+            onClose={openPostForm.onFalse}
+          />
         )}
 
         <Box
@@ -115,7 +122,7 @@ export function ChannelView({ data }: ChannelViewProps) {
         </Box>
       </Container>
 
-      {isLocked && <UpgradeBanner slug={project.slug} open />}
+      {isLocked && <UpgradeBanner slug={project.slug} type="feature" open />}
     </>
   );
 }

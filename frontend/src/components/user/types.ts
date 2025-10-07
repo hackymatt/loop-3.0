@@ -14,6 +14,7 @@ export type UserState = {
   isLoggedIn: boolean;
   plan: { type: PlanType; currency: string | null; interval: string | null };
   trialUsed: boolean;
+  firstPurchase: boolean;
   redirect: string | null;
 };
 

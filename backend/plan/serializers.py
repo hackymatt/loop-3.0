@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Plan, PlanPricing
-from const import PaymentInterval
 
 
 class PlanPricingSerializer(serializers.ModelSerializer):
@@ -16,6 +15,7 @@ class PlanPricingSerializer(serializers.ModelSerializer):
 class PlanSerializer(serializers.ModelSerializer):
     license = serializers.SerializerMethodField()
     pricing = serializers.SerializerMethodField()
+    projects_count = serializers.IntegerField(read_only=True)
     options = serializers.SerializerMethodField()
 
     class Meta:
@@ -23,6 +23,8 @@ class PlanSerializer(serializers.ModelSerializer):
         fields = [
             "type",
             "tokens_limit",
+            "consultation_limit",
+            "projects_count",
             "license",
             "popular",
             "pricing",

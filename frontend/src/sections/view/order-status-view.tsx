@@ -1,6 +1,7 @@
 "use client";
 
 import type { Variants } from "framer-motion";
+import type { Language } from "src/locales/types";
 import type { SubscriptionResult } from "src/types/user";
 
 import { m } from "framer-motion";
@@ -32,13 +33,14 @@ const variants: Variants = varBounce("in");
 
 type OrderStatusViewProps = {
   status: SubscriptionResult;
+  language: Language;
 };
 
-export default function OrderStatusView({ status }: OrderStatusViewProps) {
+export default function OrderStatusView({ status, language }: OrderStatusViewProps) {
   const { t } = useTranslation("order-status");
   const { query } = useQueryParams();
   const localize = useLocalizedPath();
-  const { mutateAsync: createSubscription } = useCreateSubscription();
+  const { mutateAsync: createSubscription } = useCreateSubscription(language);
 
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const hasSubscribed = useRef(false);

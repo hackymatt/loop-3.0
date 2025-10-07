@@ -1,6 +1,7 @@
 "use client";
 
 import type { PaperProps } from "@mui/material";
+import type { Language } from "src/locales/types";
 import type { DatePickerFormat } from "src/utils/format-time";
 import type { Currency, PlanType, IPlanProps, PlanInterval } from "src/types/plan";
 import type { ICardProps, ISubscriptionProps, IPaymentMethodProps } from "src/types/user";
@@ -329,17 +330,18 @@ type ChangeStepProps = {
     plans: IPlanProps[];
     paymentMethods: IPaymentMethodProps[];
   };
+  language: Language;
   onChange: (setting: SettingState & { currency: Currency; invoice: InvoicePreviewProps }) => void;
   onCancel: VoidFunction;
   onClose: VoidFunction;
 };
 
-function ChangeStep({ data, onCancel, onChange, onClose }: ChangeStepProps) {
+function ChangeStep({ data, language, onCancel, onChange, onClose }: ChangeStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
   const { enqueueSnackbar } = useSnackbar();
 
-  const { mutateAsync: previewInvoice } = useInvoicePreview();
+  const { mutateAsync: previewInvoice } = useInvoicePreview(language);
 
   const { subscription, plans } = data;
   const { interval, currency, type } = subscription;
@@ -510,11 +512,12 @@ type ConfirmStepProps = {
     plans: IPlanProps[];
     paymentMethods: IPaymentMethodProps[];
   };
+  language: Language;
   newSubscription: NewSubscriptionProps;
   onClose: VoidFunction;
 };
 
-function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
+function ConfirmStep({ data, language, newSubscription, onClose }: ConfirmStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
   const localize = useLocalizedPath();
@@ -524,7 +527,7 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
 
   const { status, nextBillingDate } = subscription;
 
-  const { mutateAsync: changeSubscription } = useChangeSubscription();
+  const { mutateAsync: changeSubscription } = useChangeSubscription(language);
 
   const defaultPaymentMethod = paymentMethods.find((method) => method.isDefault);
 
@@ -716,10 +719,11 @@ function ConfirmStep({ data, newSubscription, onClose }: ConfirmStepProps) {
 
 type CancelStepProps = {
   subscription: ISubscriptionProps;
+  language: Language;
   onClose: VoidFunction;
 };
 
-function CancelStep({ subscription, onClose }: CancelStepProps) {
+function CancelStep({ subscription, language, onClose }: CancelStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
 
@@ -727,7 +731,7 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
 
   const { license, interval, price, currency, nextBillingDate } = subscription;
 
-  const { mutateAsync: cancelSubscription } = useCancelSubscription();
+  const { mutateAsync: cancelSubscription } = useCancelSubscription(language);
 
   const methods = useForm();
 
@@ -836,17 +840,18 @@ function CancelStep({ subscription, onClose }: CancelStepProps) {
 
 type RenewStepProps = {
   subscription: ISubscriptionProps;
+  language: Language;
   onClose: VoidFunction;
 };
 
-function RenewStep({ subscription, onClose }: RenewStepProps) {
+function RenewStep({ subscription, language, onClose }: RenewStepProps) {
   const { t } = useTranslation("account");
   const { t: locale } = useTranslation("locale");
   const { enqueueSnackbar } = useSnackbar();
 
   const { license, interval, price, currency, nextBillingDate } = subscription;
 
-  const { mutateAsync: renewSubscription } = useRenewSubscription();
+  const { mutateAsync: renewSubscription } = useRenewSubscription(language);
 
   const methods = useForm();
 
@@ -949,6 +954,7 @@ type AccountSubscriptionViewProps = {
     plans: IPlanProps[];
     paymentMethods: IPaymentMethodProps[];
   };
+  language: Language;
 };
 
 type NewSubscriptionProps = {
@@ -958,7 +964,7 @@ type NewSubscriptionProps = {
   invoice: InvoicePreviewProps;
 };
 
-export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) {
+export function AccountSubscriptionView({ data, language }: AccountSubscriptionViewProps) {
   const { t } = useTranslation("account");
 
   const { subscription } = data;
@@ -975,6 +981,7 @@ export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) 
     />,
     <ChangeStep
       data={data}
+      language={language}
       onChange={(selection) => {
         newSubscription.setState(selection);
         setActiveStep(2);
@@ -984,11 +991,12 @@ export function AccountSubscriptionView({ data }: AccountSubscriptionViewProps) 
     />,
     <ConfirmStep
       data={data}
+      language={language}
       newSubscription={newSubscription.state}
       onClose={() => setActiveStep(0)}
     />,
-    <CancelStep subscription={subscription} onClose={() => setActiveStep(0)} />,
-    <RenewStep subscription={subscription} onClose={() => setActiveStep(0)} />,
+    <CancelStep subscription={subscription} language={language} onClose={() => setActiveStep(0)} />,
+    <RenewStep subscription={subscription} language={language} onClose={() => setActiveStep(0)} />,
   ];
 
   return (

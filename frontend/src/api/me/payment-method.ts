@@ -17,13 +17,14 @@ type IDataReturn = {
   status: number;
 };
 
-export const useEditPaymentMethod = (id: string) => {
+export const useEditPaymentMethod = (id: string, language: Language) => {
   const router = useRouter();
   const url = `${endpoint}/${id}`;
   return useMutation<IDataReturn, AxiosError, IData>(
     async (variables) => {
       const result = await Api.put(url, variables, {
         headers: {
+          "Accept-Language": language,
           "Content-Type": "multipart/form-data",
         },
       });

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Consultation request confirmation" %}{% endblock %}
+
+{% block content %}
+    {{ message_1|safe }}
+    <br /><br />
+    {{ message_2|safe }}
+    <br /><br />
+    {{ message_3|safe }} <a href="mailto:info@loop.edu.pl">info@loop.edu.pl</a>{{ message_4|safe }}
+{% endblock %}

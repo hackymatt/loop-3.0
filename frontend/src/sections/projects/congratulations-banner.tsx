@@ -1,3 +1,4 @@
+import type { Language } from "src/locales/types";
 import type { DialogProps } from "@mui/material/Dialog";
 
 import Confetti from "react-confetti";
@@ -27,16 +28,17 @@ import type { ReviewSchemaType } from "./review-new-form";
 
 type Props = DialogProps & {
   slug: string;
+  language: Language;
   onClose: () => void;
 };
 
-export function CongratulationsBanner({ slug, onClose, ...other }: Props) {
+export function CongratulationsBanner({ slug, language, onClose, ...other }: Props) {
   const { t } = useTranslation("review");
 
   const user = useUserContext();
   const { firstName } = user.state;
 
-  const { mutateAsync: submitReview } = useReviewSubmit();
+  const { mutateAsync: submitReview } = useReviewSubmit(language);
 
   const ReviewSchema = useReviewSchema();
 

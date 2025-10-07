@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -14,8 +15,10 @@ type ISetupIntentReturn = {
   customer_session_client_secret: string;
 };
 
-export const useCreateSetupIntent = () =>
+export const useCreateSetupIntent = (language: Language) =>
   useMutation<ISetupIntentReturn, AxiosError, ISetupIntent>(async (variables) => {
-    const { data } = await Api.post<ISetupIntentReturn>(endpoint, variables);
+    const { data } = await Api.post<ISetupIntentReturn>(endpoint, variables, {
+      headers: { "Accept-Language": language },
+    });
     return data;
   });

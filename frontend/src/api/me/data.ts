@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -24,14 +25,12 @@ type IDataReturn = {
   status: number;
 };
 
-export const useUpdateData = () => {
+export const useUpdateData = (language: Language) => {
   const router = useRouter();
   return useMutation<IDataReturn, AxiosError, IData>(
     async (variables) => {
       const result = await Api.patch(endpoint, variables, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Accept-Language": language, "Content-Type": "multipart/form-data" },
       });
       return {
         status: result.status,

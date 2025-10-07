@@ -20,6 +20,7 @@ class LoginResponseSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     plan = serializers.SerializerMethodField()
     trial_used = serializers.SerializerMethodField()
+    first_purchase = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
@@ -32,6 +33,7 @@ class LoginResponseSerializer(serializers.ModelSerializer):
             "is_active",
             "join_type",
             "trial_used",
+            "first_purchase",
             "plan",
         ]
 
@@ -48,6 +50,13 @@ class LoginResponseSerializer(serializers.ModelSerializer):
 
         student = Student.objects.get(user=obj)
         return student.trial_used
+
+    def get_first_purchase(self, obj):
+        if obj.user_type != UserType.STUDENT:
+            return None
+
+        student = Student.objects.get(user=obj)
+        return student.first_purchase
 
     def get_image(self, obj):
         request = self.context.get("request")

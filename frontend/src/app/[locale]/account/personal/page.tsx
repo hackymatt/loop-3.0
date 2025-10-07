@@ -14,9 +14,9 @@ type PageProps = {
   params: { locale: Language };
 };
 
-export default async function Page() {
-  const data = (await dataQuery().queryFn()).results;
-  return <AccountPersonalView data={data} />;
+export default async function Page({ params }: PageProps) {
+  const data = (await dataQuery(params.locale).queryFn()).results;
+  return <AccountPersonalView data={data} language={params.locale} />;
 }
 
 export async function generateMetadata({ params }: PageProps) {

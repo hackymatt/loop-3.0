@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -17,12 +18,14 @@ type ISubmit = {
 
 type ISubmitReturn = { data: ISubmit; status: number };
 
-export const useReviewSubmit = () => {
+export const useReviewSubmit = (language: Language) => {
   const router = useRouter();
 
   return useMutation<ISubmitReturn, AxiosError, ISubmit>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(endpoint, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,

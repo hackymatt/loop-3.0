@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -20,13 +21,15 @@ type IActivate = {
 
 type IActivateReturn = { data: { email: string }; status: number };
 
-export const useActivate = () => {
+export const useActivate = (language: Language) => {
   const router = useRouter();
   const user = useUserContext();
   const localize = useLocalizedPath();
   return useMutation<IActivateReturn, AxiosError, IActivate>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(endpoint, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,

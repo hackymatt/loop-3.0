@@ -23,13 +23,13 @@ type PageProps = {
 
 const queries = {
   plan: (lang: Language, type: string) => planQuery(lang, type),
-  personal: () => dataQuery(),
+  personal: (lang: Language) => dataQuery(lang),
   setupIntent: (lang: Language) => createSetupIntent(lang),
 };
 
 async function getData(language: Language, type: string) {
   const planPromise = queries.plan(language, type).queryFn();
-  const personalPromise = queries.personal().queryFn();
+  const personalPromise = queries.personal(language).queryFn();
   const createSetupIntentPromise = queries.setupIntent(language);
   const [plan, personal, setupIntent] = await Promise.all([
     planPromise,

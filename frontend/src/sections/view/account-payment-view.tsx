@@ -50,7 +50,7 @@ export function AccountPaymentView({ data, language }: AccountPaymentViewProps) 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
   const { paymentMethods, personal } = data;
-  const { mutateAsync: createSetupIntent, isLoading } = useCreateSetupIntent();
+  const { mutateAsync: createSetupIntent, isLoading } = useCreateSetupIntent(language);
 
   useEffect(() => {
     if (query?.redirect_status === PAYMENT_RESULT.SUCCESS) {

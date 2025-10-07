@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -16,12 +17,19 @@ type IEditPostCommentReturn = {
   status: number;
 };
 
-export const useEditPostComment = (slug: string, postId: string, commentId: string) => {
+export const useEditPostComment = (
+  slug: string,
+  postId: string,
+  commentId: string,
+  language: Language
+) => {
   const router = useRouter();
   const url = `${endpoint}/${slug}/${postId}/${commentId}`;
   return useMutation<IEditPostCommentReturn, AxiosError, IEditPostComment>(
     async (variables) => {
-      const result = await Api.put(url, variables);
+      const result = await Api.put(url, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,

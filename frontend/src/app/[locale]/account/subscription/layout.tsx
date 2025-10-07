@@ -9,14 +9,14 @@ import { AccountLayout } from "src/sections/account/layout";
 
 type Props = {
   children: React.ReactNode;
-  params: { locale: string };
+  params: { locale: Language };
 };
 
 export default async function Layout({ children, params }: Props) {
   const data = await getData(params.locale as Language);
   return (
-    <MainLayout data={data}>
-      <AccountLayout>{children}</AccountLayout>
+    <MainLayout data={data} language={params.locale}>
+      <AccountLayout language={params.locale}>{children}</AccountLayout>
     </MainLayout>
   );
 }

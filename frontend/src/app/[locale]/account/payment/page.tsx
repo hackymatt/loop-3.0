@@ -16,13 +16,13 @@ type PageProps = {
 };
 
 const queries = {
-  paymentMethods: () => paymentMethodsQuery({ page_size: "-1" }),
-  personal: () => dataQuery(),
+  paymentMethods: (lang: Language) => paymentMethodsQuery(lang, { page_size: "-1" }),
+  personal: (lang: Language) => dataQuery(lang),
 };
 
-async function getData() {
-  const paymentMethodsPromise = queries.paymentMethods().queryFn();
-  const personalPromise = queries.personal().queryFn();
+async function getData(language: Language) {
+  const paymentMethodsPromise = queries.paymentMethods(language).queryFn();
+  const personalPromise = queries.personal(language).queryFn();
 
   const [paymentMethods, personal] = await Promise.all([paymentMethodsPromise, personalPromise]);
 
@@ -33,7 +33,7 @@ async function getData() {
 }
 
 export default async function Page({ params }: PageProps) {
-  const data = await getData();
+  const data = await getData(params.locale);
   return <AccountPaymentView data={data} language={params.locale} />;
 }
 

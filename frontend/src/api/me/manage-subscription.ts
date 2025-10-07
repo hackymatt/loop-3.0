@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import type { Language } from "src/locales/types";
 
 import { useMutation } from "@tanstack/react-query";
 
@@ -11,12 +12,14 @@ type ICancelSubscription = {};
 
 type ICancelSubscriptionReturn = { data: ICancelSubscription; status: number };
 
-export const useCancelSubscription = () => {
+export const useCancelSubscription = (language: Language) => {
   const router = useRouter();
   const endpoint = URLS.CANCEL_SUBSCRIPTION;
   return useMutation<ICancelSubscriptionReturn, AxiosError, ICancelSubscription>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(endpoint, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,
@@ -36,12 +39,14 @@ type IRenewSubscription = {};
 
 type IRenewSubscriptionReturn = { data: IRenewSubscription; status: number };
 
-export const useRenewSubscription = () => {
+export const useRenewSubscription = (language: Language) => {
   const router = useRouter();
   const endpoint = URLS.RENEW_SUBSCRIPTION;
   return useMutation<IRenewSubscriptionReturn, AxiosError, IRenewSubscription>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(endpoint, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,
@@ -65,12 +70,14 @@ type IChangeSubscription = {
 
 type IChangeSubscriptionReturn = { data: IChangeSubscription; status: number };
 
-export const useChangeSubscription = () => {
+export const useChangeSubscription = (language: Language) => {
   const router = useRouter();
   const endpoint = URLS.CHANGE_SUBSCRIPTION;
   return useMutation<IChangeSubscriptionReturn, AxiosError, IChangeSubscription>(
     async (variables) => {
-      const result = await Api.post(endpoint, variables);
+      const result = await Api.post(endpoint, variables, {
+        headers: { "Accept-Language": language },
+      });
       return {
         status: result.status,
         data: result.data,

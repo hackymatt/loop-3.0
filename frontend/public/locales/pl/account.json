@@ -191,6 +191,15 @@
     "rows_per_page": "Wierszy na stronę",
     "button": "Pobierz"
   },
+  "consultations": {
+    "title": "Konsultacje",
+    "invoice_number": "Numer faktury",
+    "invoice_date": "Data wystawienia",
+    "amount": "Kwota",
+    "all": "Wszystkie",
+    "rows_per_page": "Wierszy na stronę",
+    "button": "Pobierz"
+  },
   "logout": {
     "title": "Wyloguj się",
     "error": "Wylogowanie nie powiodło się. Spróbuj ponownie."

@@ -29,5 +29,9 @@
   "feature": "FUNKCJA",
   "allFeatures": "wszystkie funkcje",
   "tokenLimit": "Limit tokenów do OpenAI / mc",
-  "token": "tokenów do OpenAI / mc"
+  "token": "tokenów do OpenAI / mc",
+  "projectsLimit": "Liczba projektów",
+  "projects": ["projekt", "projekty", "projektów"],
+  "consultationsLimit": "Limit konsultacji (30 min) / mc",
+  "consultations": ["konsultacja / mc", "konsultacje / mc", "konsultacji / mc"]
 }

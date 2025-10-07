@@ -203,6 +203,7 @@ def generate_and_send_invoice(invoice, website_url, first_name):
     mailer.send(
         email_template="payment_confirmation.html",
         to=[invoice.customer.email],
+        bcc=[],
         subject=subject,
         data=data,
         attachments=[invoice_path],
@@ -236,6 +237,7 @@ def send_payment_failed_email(student, email, website_url, language):
     mailer.send(
         email_template="payment_failed.html",
         to=[email],
+        bcc=[],
         subject=subject,
         data=data,
         attachments=[],
@@ -266,6 +268,7 @@ def send_cancel_email(student, email, website_url, language):
     mailer.send(
         email_template="subscription_cancelled.html",
         to=[email],
+        bcc=[],
         subject=subject,
         data=data,
         attachments=[],

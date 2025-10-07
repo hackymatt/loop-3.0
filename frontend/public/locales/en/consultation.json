@@ -1,0 +1,11 @@
+{
+  "title": "Consultation",
+  "submit": "Send request",
+  "cancel": "Cancel",
+  "comment": {
+    "label": "Your comment (topic, preferred date)",
+    "errors": {
+      "required": "Comment is required."
+    }
+  }
+}
