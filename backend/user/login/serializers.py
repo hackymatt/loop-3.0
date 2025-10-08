@@ -4,6 +4,7 @@ from plan.subscription.models import PlanSubscription
 from plan.subscription.utils import get_subscription
 from user.type.student_user.models import Student
 from const import UserType
+from global_config import CONFIG
 
 
 class PlanSubscriptionSerializer(serializers.ModelSerializer):
@@ -60,6 +61,13 @@ class LoginResponseSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         request = self.context.get("request")
-        if obj.image and hasattr(obj.image, "url") and request:
-            return request.build_absolute_uri(obj.image.url)
-        return None
+        return (
+            f"http://localhost:8000{obj.image.url}"
+            if obj.image
+            and hasattr(obj.image, "url")
+            and request
+            and CONFIG["is_local"]
+            else request.build_absolute_uri(obj.image.url)
+            if obj.image and hasattr(obj.image, "url") and request
+            else None
+        )

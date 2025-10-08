@@ -18,7 +18,8 @@ export function Markdown({ content, ...other }: MarkdownProps) {
   const theme = useTheme();
   const plugins = usePlugins();
 
-  const themeClass = theme.palette.mode === "dark" ? "dark-theme" : "light-theme";
+  const themeClass =
+    theme.palette.mode === "dark" ? "dark-theme read-only" : "light-theme read-only";
 
   return (
     <MDXEditor markdown={content} plugins={plugins} readOnly className={themeClass} {...other} />

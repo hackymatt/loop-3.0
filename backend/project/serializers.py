@@ -12,6 +12,7 @@ from blog.models import Blog
 from plan.models import Plan
 from review.models import Review
 from const import UserType, PlanType
+from global_config import CONFIG
 
 
 class ProjectPrerequisiteSerializer(serializers.ModelSerializer):
@@ -146,6 +147,8 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
 
     tags = TagSerializer(many=True, read_only=True)
 
+    video_url = serializers.SerializerMethodField()
+
     class Meta(BaseProjectSerializer.Meta):
         fields = BaseProjectSerializer.Meta.fields + [
             "translated_overview",
@@ -183,6 +186,19 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
             many=True,
             context=self.context,
         ).data
+
+    def get_video_url(self, obj):
+        request = self.context.get("request")
+        return (
+            f"http://localhost:8000{obj.video_url.url}"
+            if obj.video_url
+            and hasattr(obj.video_url, "url")
+            and request
+            and CONFIG["is_local"]
+            else request.build_absolute_uri(obj.video_url.url)
+            if obj.video_url and hasattr(obj.video_url, "url") and request
+            else None
+        )
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

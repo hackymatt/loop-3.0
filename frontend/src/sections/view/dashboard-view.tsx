@@ -26,8 +26,6 @@ export function DashboardView({ data }: DashboardProps) {
     const {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       planLicense,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      avatarUrl,
       ...rest
     } = profile.user;
     setState(rest);

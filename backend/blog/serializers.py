@@ -12,7 +12,7 @@ from global_config import CONFIG
 
 class BlogNavSerializer(serializers.ModelSerializer):
     translated_name = serializers.SerializerMethodField()
-    image = serializers.ImageField(read_only=True)
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Blog
@@ -26,6 +26,19 @@ class BlogNavSerializer(serializers.ModelSerializer):
         lang = self.context.get("request").LANGUAGE_CODE
         return obj.get_translation(lang).name
 
+    def get_image(self, obj):
+        request = self.context.get("request")
+        return (
+            f"http://localhost:8000{obj.image.url}"
+            if obj.image
+            and hasattr(obj.image, "url")
+            and request
+            and CONFIG["is_local"]
+            else request.build_absolute_uri(obj.image.url)
+            if obj.image and hasattr(obj.image, "url") and request
+            else None
+        )
+
 
 class BaseBlogSerializer(serializers.ModelSerializer):
     name = serializers.CharField(write_only=True)
@@ -33,7 +46,7 @@ class BaseBlogSerializer(serializers.ModelSerializer):
     translated_name = serializers.SerializerMethodField()
     topic = TopicSerializer(read_only=True)
     duration = serializers.SerializerMethodField()
-    image = serializers.ImageField(read_only=True)
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Blog
@@ -66,6 +79,19 @@ class BaseBlogSerializer(serializers.ModelSerializer):
         return math.ceil(
             len(words) / CONFIG["words_per_minute"]
         )  # Assuming 200 words per minute
+
+    def get_image(self, obj):
+        request = self.context.get("request")
+        return (
+            f"http://localhost:8000{obj.image.url}"
+            if obj.image
+            and hasattr(obj.image, "url")
+            and request
+            and CONFIG["is_local"]
+            else request.build_absolute_uri(obj.image.url)
+            if obj.image and hasattr(obj.image, "url") and request
+            else None
+        )
 
 
 class BlogRecentSerializer(BaseBlogSerializer):
