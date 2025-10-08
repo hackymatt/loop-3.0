@@ -189,11 +189,13 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
 
     def get_video_url(self, obj):
         request = self.context.get("request")
-        if obj.video_url and hasattr(obj.video_url, "url") and request:
-            if CONFIG["is_local"]:
-                return f"http://localhost:8000{obj.video_url.url}"
-            return request.build_absolute_uri(obj.video_url.url)
-        return None
+        return (
+            f"http://localhost:8000{obj.video_url.url}"
+            if CONFIG["is_local"]
+            else request.build_absolute_uri(obj.video_url.url)
+            if obj.video_url and hasattr(obj.video_url, "url") and request
+            else None
+        )
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

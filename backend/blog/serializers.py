@@ -28,11 +28,13 @@ class BlogNavSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         request = self.context.get("request")
-        if obj.image and hasattr(obj.image, "url") and request:
-            if CONFIG["is_local"]:
-                return f"http://localhost:8000{obj.image.url}"
-            return request.build_absolute_uri(obj.image.url)
-        return None
+        return (
+            f"http://localhost:8000{obj.image.url}"
+            if CONFIG["is_local"]
+            else request.build_absolute_uri(obj.image.url)
+            if obj.image and hasattr(obj.image, "url") and request
+            else None
+        )
 
 
 class BaseBlogSerializer(serializers.ModelSerializer):
@@ -77,11 +79,13 @@ class BaseBlogSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         request = self.context.get("request")
-        if obj.image and hasattr(obj.image, "url") and request:
-            if CONFIG["is_local"]:
-                return f"http://localhost:8000{obj.image.url}"
-            return request.build_absolute_uri(obj.image.url)
-        return None
+        return (
+            f"http://localhost:8000{obj.image.url}"
+            if CONFIG["is_local"]
+            else request.build_absolute_uri(obj.image.url)
+            if obj.image and hasattr(obj.image, "url") and request
+            else None
+        )
 
 
 class BlogRecentSerializer(BaseBlogSerializer):
