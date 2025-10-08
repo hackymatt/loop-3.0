@@ -1,12 +1,11 @@
 from rest_framework import serializers
 from .models import Instructor
+from global_config import CONFIG
 
 
 class InstructorSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()  # Get full name
-    image = serializers.ImageField(
-        source="user.image", read_only=True
-    )  # Get user image
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Instructor
@@ -15,3 +14,11 @@ class InstructorSerializer(serializers.ModelSerializer):
     def get_full_name(self, obj):
         """Return the full name of the instructor."""
         return f"{obj.user.first_name} {obj.user.last_name}".strip()
+
+    def get_image(self, obj):
+        request = self.context.get("request")
+        if obj.user.image and hasattr(obj.user.image, "url") and request:
+            if CONFIG["is_local"]:
+                return f"http://localhost:8000{obj.user.image.url}"
+            return request.build_absolute_uri(obj.user.image.url)
+        return None

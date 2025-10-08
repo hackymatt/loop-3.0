@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import ChannelPost, ChannelPostComment, ChannelPostImage
 from user.type.student_user.serializers import StudentSerializer
+from global_config import CONFIG
 
 
 class ChannelPostCommentSerializer(serializers.ModelSerializer):
@@ -78,4 +79,8 @@ class ChannelPostImageSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         request = self.context.get("request")
-        return request.build_absolute_uri(obj.image.url) if request else obj.image.url
+        if obj.image and hasattr(obj.image, "url") and request:
+            if CONFIG["is_local"]:
+                return f"http://localhost:8000{obj.image.url}"
+            return request.build_absolute_uri(obj.image.url)
+        return None

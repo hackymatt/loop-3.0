@@ -2,7 +2,7 @@ import type { PlanType } from "src/types/plan";
 
 import { useTranslation } from "react-i18next";
 
-import { Box, Link } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 
 import { paths } from "src/routes/paths";
 
@@ -20,7 +20,7 @@ export function AvailabilityMark({ plans }: AvailabilityMarkProps) {
   const localize = useLocalizedPath();
 
   const renderPlans = () => {
-    const plansTranslated = plans.map((plan, index) => (
+    const plansTranslated = plans.map((plan) => (
       <Link key={plan} href={localize(paths.pricing)} color="text.primary" underline="always">
         {t(`included.plans.${plan}`)}
       </Link>
@@ -49,9 +49,26 @@ export function AvailabilityMark({ plans }: AvailabilityMarkProps) {
   };
 
   return (
-    <Box sx={{ gap: 0.5, display: "flex", alignItems: "center", typography: "caption" }}>
-      <Iconify icon="carbon:checkmark-filled" sx={{ color: "success.main" }} />
-      {t("included.start")} {renderPlans()}
+    <Box
+      sx={{
+        gap: 0.5,
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <Iconify icon="carbon:checkmark-filled" sx={{ color: "success.main", flexShrink: 0 }} />
+      <Typography
+        component="span"
+        variant="caption"
+        sx={{
+          display: "inline",
+          whiteSpace: "normal",
+          flexShrink: 1,
+          lineHeight: 1.4,
+        }}
+      >
+        {t("included.start")} {renderPlans()}
+      </Typography>
     </Box>
   );
 }

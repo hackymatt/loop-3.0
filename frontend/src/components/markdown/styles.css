@@ -7,11 +7,16 @@ button._selectTrigger_uazmk_307 {
   background-color: white;
 }
 
-._contentEditable_uazmk_379 {
+._contentEditable_uazmk_379,
+._contentEditable_1e2ox_380 {
   padding: 0 !important;
 }
 
 ul {
   list-style-type: disc;
   padding-left: 20px;
+}
+
+.read-only ._codeMirrorToolbar_1e2ox_409 {
+  visibility: hidden;
 }
