@@ -84,15 +84,12 @@ export function ProjectProgressItem({ project }: Props) {
         minWidth: 0,
       }}
     >
-      {/* <Box sx={{ gap: 0.5, display: "flex", alignItems: "center" }}> */}
       <Iconify icon={getLevelIcon(project.level.slug)} />
-      {/* </Box> */}
 
       <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
 
       {project.technologies.map((technology) => (
         <Iconify icon={getTechnologyIcon(technology.slug)} />
-        // </Box>
       ))}
     </Box>
   );
