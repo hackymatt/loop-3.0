@@ -191,7 +191,10 @@ class ProjectRetrieveSerializer(BaseProjectSerializer):
         request = self.context.get("request")
         return (
             f"http://localhost:8000{obj.video_url.url}"
-            if CONFIG["is_local"]
+            if obj.video_url
+            and hasattr(obj.video_url, "url")
+            and request
+            and CONFIG["is_local"]
             else request.build_absolute_uri(obj.video_url.url)
             if obj.video_url and hasattr(obj.video_url, "url") and request
             else None

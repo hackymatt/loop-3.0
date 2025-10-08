@@ -16,7 +16,10 @@ class StudentSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         return (
             f"http://localhost:8000{obj.user.image.url}"
-            if CONFIG["is_local"]
+            if obj.user.image
+            and hasattr(obj.user.image, "url")
+            and request
+            and CONFIG["is_local"]
             else request.build_absolute_uri(obj.user.image.url)
             if obj.user.image and hasattr(obj.user.image, "url") and request
             else None
