@@ -1,11 +1,13 @@
 import type { Variants } from "framer-motion";
 import type { BoxProps } from "@mui/material/Box";
+import type { Language } from "src/locales/types";
 
 import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
 import { CONFIG } from "src/global-config";
@@ -16,8 +18,12 @@ import { varFade, MotionViewport } from "src/components/animate";
 
 const variants: Variants = varFade("inUp", { distance: 24 });
 
-export function HomeNewStart({ sx, ...other }: BoxProps) {
+type HomeNewStartProps = { language: Language } & BoxProps;
+
+export function HomeNewStart({ language, sx, ...other }: HomeNewStartProps) {
   const { t } = useTranslation("home");
+  const theme = useTheme();
+
   return (
     <Box
       component="section"
@@ -45,7 +51,7 @@ export function HomeNewStart({ sx, ...other }: BoxProps) {
               component="img"
               loading="lazy"
               alt="Cover"
-              src={`${CONFIG.assetsDir}/assets/images/home/demo.webp`}
+              src={`${CONFIG.assetsDir}/assets/images/home/demo/${theme.palette.mode}/${language}.webp`}
               sx={{ width: 720 }}
             />
           </m.div>
@@ -61,9 +67,9 @@ export function HomeNewStart({ sx, ...other }: BoxProps) {
               {t("platform.title")}
               <Box
                 component="span"
-                sx={(theme) => ({
-                  ...theme.mixins.textGradient(
-                    `90deg, ${theme.vars.palette.primary.main} 20%, ${theme.vars.palette.secondary.main} 100%`
+                sx={(thm) => ({
+                  ...thm.mixins.textGradient(
+                    `90deg, ${thm.vars.palette.primary.main} 20%, ${thm.vars.palette.secondary.main} 100%`
                   ),
                 })}
               >

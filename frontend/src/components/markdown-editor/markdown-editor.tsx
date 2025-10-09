@@ -28,7 +28,7 @@ export const MarkdownEditor = forwardRef<MDXEditorMethods | null, EditorProps>(
         ref={ref}
         markdown={value}
         plugins={allPlugins}
-        translation={(key, def) => t(key, def)}
+        translation={(key, defaultValue, options) => t(key, { ...options, defaultValue })}
         {...otherProps}
       />
     );

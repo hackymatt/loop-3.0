@@ -15,7 +15,7 @@ import { useLocalizedPath } from "src/hooks/use-localized-path";
 import { getLevelIcon } from "src/utils/level-icon";
 import { getTechnologyIcon } from "src/utils/technology-icon";
 
-import { Iconify } from "src/components/iconify";
+import { Iconify, isIconExists } from "src/components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -88,9 +88,12 @@ export function ProjectProgressItem({ project }: Props) {
 
       <Divider orientation="vertical" sx={{ height: 20, my: "auto" }} />
 
-      {project.technologies.map((technology) => (
-        <Iconify icon={getTechnologyIcon(technology.slug)} />
-      ))}
+      {project.technologies.map(
+        (technology) =>
+          getTechnologyIcon(technology.slug) !== "carbon:code" && (
+            <Iconify key={technology.slug} icon={getTechnologyIcon(technology.slug)} />
+          )
+      )}
     </Box>
   );
 
