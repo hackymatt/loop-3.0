@@ -210,10 +210,20 @@ class PreviewInvoiceView(APIView):
             )
 
             old_plan = invoice["lines"]["data"][0]
-            new_plan = invoice["lines"]["data"][1]
+            new_plan = (
+                invoice["lines"]["data"][1]
+                if len(invoice["lines"]["data"]) == 2
+                else old_plan
+            )
+
+            amount_due = (
+                (new_plan["amount"] + old_plan["amount"])
+                if len(invoice["lines"]["data"]) == 2
+                else new_plan["amount"]
+            )
 
             response_data = {
-                "amount_due": (new_plan["amount"] + old_plan["amount"]) / 100,
+                "amount_due": (amount_due) / 100,
                 "billing_date": timezone.datetime.fromtimestamp(
                     new_plan["period"]["end"], tz=timezone.utc
                 ).isoformat(),

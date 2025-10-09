@@ -10,11 +10,13 @@ import {
   InsertTable,
   InsertSandpack,
   InsertCodeBlock,
+  BlockTypeSelect,
   ShowSandpackInfo,
   InsertAdmonition,
   InsertFrontmatter,
   ConditionalContents,
   InsertThematicBreak,
+  ChangeAdmonitionType,
   DiffSourceToggleWrapper,
   ChangeCodeMirrorLanguage,
   BoldItalicUnderlineToggles,
@@ -52,6 +54,18 @@ export const Toolbar = () => (
               <CodeToggle />
               <Separator />
               <ListsToggle />
+              <Separator />
+
+              <ConditionalContents
+                options={[
+                  {
+                    when: whenInAdmonition,
+                    contents: () => <ChangeAdmonitionType />,
+                  },
+                  { fallback: () => <BlockTypeSelect /> },
+                ]}
+              />
+
               <Separator />
 
               <CreateLink />

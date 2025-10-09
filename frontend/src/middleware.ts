@@ -36,6 +36,13 @@ const UNAUTHORIZED_PATHS = [
 
 const PUBLIC_FILE = /\.(.*)$/;
 
+function matchesPath(pathname: string, pathsArr: string[]) {
+  return pathsArr.some((p) => pathname === p || pathname.startsWith(p + "/"));
+}
+
+const isAuthorizedPath = (pathname: string) => matchesPath(pathname, AUTHORIZED_PATHS);
+const isUnauthorizedPath = (pathname: string) => matchesPath(pathname, UNAUTHORIZED_PATHS);
+
 export function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
   const accessToken = req.cookies.get("access_token");
@@ -66,11 +73,11 @@ export function middleware(req: NextRequest) {
   const pathWithoutLocale = `/${segments.slice(hasLocale ? 1 : 0).join("/") || ""}`;
   const redirectLocale = `/${locale}`;
 
-  if (!accessToken && AUTHORIZED_PATHS.includes(pathWithoutLocale)) {
+  if (!accessToken && isAuthorizedPath(pathWithoutLocale)) {
     return NextResponse.redirect(new URL(`${redirectLocale}${paths.auth.login}`, origin));
   }
 
-  if (accessToken && UNAUTHORIZED_PATHS.includes(pathWithoutLocale)) {
+  if (accessToken && isUnauthorizedPath(pathWithoutLocale)) {
     return NextResponse.redirect(new URL(`${redirectLocale}${paths.account.dashboard}`, origin));
   }
 

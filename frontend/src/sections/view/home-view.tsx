@@ -66,7 +66,7 @@ export function HomeView({ data, language }: HomeViewProps) {
 
       <HomeHero language={language} />
 
-      <HomeNewStart />
+      <HomeNewStart language={language} />
 
       <HomeCertificate />
 

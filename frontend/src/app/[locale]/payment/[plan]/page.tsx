@@ -56,7 +56,8 @@ export default async function Page({ params }: PageProps) {
   try {
     const data = await getData(params.locale, params.plan);
     return <PaymentView data={data} language={params.locale} />;
-  } catch {
+  } catch (error) {
+    console.error(error);
     return redirect(paths.account.dashboard);
   }
 }

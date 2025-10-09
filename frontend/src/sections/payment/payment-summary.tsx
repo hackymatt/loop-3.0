@@ -179,7 +179,7 @@ export function PaymentSummary({ plan, discount, language, sx, ...other }: Payme
   const renderDiscount = () => (
     <TextField
       hiddenLabel
-      value={discount.state.code}
+      value={discount.state.code || ""}
       onChange={(event) => discount.setField("code", event.target.value)}
       placeholder={t("discount.placeholder")}
       error={!!discount.state.error}
